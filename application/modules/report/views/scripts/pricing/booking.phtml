@@ -1,0 +1,99 @@
+<?php 
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$rss = $this->row_booking;
+	$frm = $this->frms;
+?>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title><?php echo $tr->translate("Car Rental Booking Report");?></title>
+</head>
+
+<body>
+	<form method="post">
+		<table style="font-family: 'Khmer OS Content'; margin: 0 auto;width:28cm;" >
+			<tr>
+		   		<td><?php echo $frm->getElement("adv_search");?></td>
+		   		<td><?php echo $frm->getElement("book_no");?></td>
+		   		<td><?php echo $frm->getElement('customer');?></td>   			
+		   	</tr>
+		    <tr>
+		   		<td><?php echo $frm->getElement('pickup_date');?></td>
+		   		<td><?php echo $frm->getElement('return_date');?></td>
+		   		<td><?php echo $frm->getElement('status');?></td>   			
+		   	</tr>
+		   	 <tr>
+		   			<td></td>
+		   			<td></td>
+		   			<td><button type="submit" class="btn">Search</button></td>   			
+		   	</tr>
+		</table>
+	</form>
+<div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
+	<div id="divPrint" style="width: 100%;">
+	<table width="100%" style="font-family: 'Khmer OS Battambang';" style="margin:0; padding:0;border:none;">
+            	<tr>
+                	<td width="20%"></td>
+                	<td width="60%" valign="top">
+                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("BRANCH_TITLE");?></label></h2>
+                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php echo $tr->translate("Car Rental Booking Report");?></h2>
+                	</td>
+                    <td width="20%"></td>
+                </tr> 
+                <tr>
+                	<td colspan="3">
+		              </td>
+		           </tr>   
+            </table>
+	<table width="100%" border="1" style="border-collapse:collapse;font-size:10px; white-space: nowrap;" bordercolor="black">
+    	<tr​>
+        	<th style="font-family:'Khmer MEF2'"><?php echo $tr->translate("NUM");?></th>
+            <th><?php echo $tr->translate("Booking No.");?></th>
+            <th><?php echo $tr->translate("Booking Date");?></th>
+            <th><?php echo $tr->translate("Pickup Date");?></th>
+            <th><?php echo $tr->translate("Return Date");?></th>
+            <th><?php echo $tr->translate("Pickup Location");?></th>
+            <th><?php echo $tr->translate("Return Location");?></th>
+            <th><?php echo $tr->translate("Customer Id");?></th>
+            <th><?php echo $tr->translate("Customer Name");?></th>
+            <th><?php echo $tr->translate("Booking Fee");?></th>
+            <th><?php echo $tr->translate("Total VAT");?></th>
+            <th><?php echo $tr->translate("Refundable Deposit");?></th>
+            <th><?php echo $tr->translate("Paid Amount");?></th>
+            <th><?php echo $tr->translate("Payment Type");?></th>
+            <th><?php echo $tr->translate("Status");?></th>
+        </tr>
+      <?php if($rss){ $i =0 ;foreach ($rss as $rs){ ?>
+      <tr align="center">
+        	<td><?php echo $i+1;?></td>
+            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["booking_no"]?></a></td>
+            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["date_book"]?></a></td>
+             <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["pickup_date"]?></a></td>
+            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["return_date"]?></a></td>
+            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["pickup_lc"]?></a></td>
+            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["return_lc"]?></a></td>
+            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["customercode"]?></a></td>
+            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["customer"]?></a></td>
+            <td><?php echo number_format($rs["total_fee"],2);?></td>
+            <td><?php echo number_format($rs["total_vat"],2)?></td>
+            <td><?php echo number_format($rs["deposite_fee"],2)?></td>
+            <td><?php echo number_format($rs["total_paymented"],2); ?></td>
+            <td><?php echo $rs["payment_type"]; ?></td>
+            <td><?php //echo $rs["payment_type"]; ?></td>
+        </tr>
+        <?php } }?>
+    </table>
+    <br />
+               <table align="center" width="100%">
+				   <tr style="font-size: 12px;">
+				        <th style="width:20%;text-align:center; font-family:'Khmer MEF2'"><?php echo $tr->translate('VERIFYED BY');?></th>
+				        <th></th>
+				        <th style="width:20%;text-align:center;font-family:'Khmer MEF2'"><?php echo $tr->translate('PREPARE BY');?></th>
+				   </tr>
+			</table>
+</div>
+</div>
+<script>
+dojo.require("dijit.form.DateTextBox");
+</script>
