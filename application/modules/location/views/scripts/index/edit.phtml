@@ -1,0 +1,61 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate('Edit Province')); 
+?>
+<?php  $province= $this->frm_province;?>
+<style>
+.cke_contents{ height: 200px !important;}
+</style>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
+<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
+<form id="add_province" action="<?php echo $this->url(array('module'=>'location','controller'=>'index','action'=>'edit')); ?>" dojoType="dijit.form.Form" method="post" enctype="multipart/form-data">
+	 <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+	</script>
+	<table cellspacing="20" style="margin: 0 auto; width: 100%">
+		<tr>
+			<td>
+				<fieldset>
+					<legend align="center"><strong><?php echo $tr->translate("Edit Province");?></strong></legend>
+					<table cellspacing="20" width="100%" >
+						<tr>
+							<td align="center" valign="top">
+								<table style="margin: 0 auto; width:100%;" cellspacing="10">
+									<tr>
+										<td><?php echo $tr->translate("Province Name")?></td>
+										<td><?php echo $province->getElement("kh_province");?></td>
+									</tr>
+									<tr>
+										<td>Photo</td>
+										<td><input type="file" name="photo" id="photo" /><img width="100px" src="<?php echo $this->baseUrl()."/images/".$this->row['photo'];?>" /><input type="hidden" name="old_photo" value="<?php echo $this->row['photo'];?>" /></td>
+									</tr>
+									<tr>
+										<td>Description</td>
+										<td><textarea class="ckeditor"   height="400px" style="min-height:60px;" id="note" name="note"><?php echo $this->row['note'];?></textarea></td>
+									</tr>
+									<tr>
+										<td><?php echo $tr->translate("STATUS")?></td>
+										<td><?php echo $province->getElement("status");?></td>
+									</tr>
+									<tr>
+										<td colspan="2" align="center">
+											<input type="reset" value="សំអាត" label="<?php echo $tr->translate('CLEAR');?>"dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
+											<input type="submit" value="save_new" name="save_new" label="<?php echo $tr->translate('GO_EDIT');?>" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+										</td>
+									</tr>					
+								</table>
+							</td>							
+						</tr>
+					</table>	
+				</fieldset>
+			</td>			
+		</tr>
+		
+	</table>	
+</form>

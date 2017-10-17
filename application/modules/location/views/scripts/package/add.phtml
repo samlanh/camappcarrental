@@ -1,0 +1,164 @@
+<title>Add Package Name</title>
+<form id="add_location" action="<?php echo $this->url(array('module'=>'location','controller'=>'package','action'=>'add')); ?>" dojoType="dijit.form.Form" method="post" enctype="multipart/form-data">
+	 <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				 if(dijit.byId('record_row').get('value')==''){
+                    alert('Can not submit without record !');
+                    return false;
+                 }
+				return true;
+			} else {
+				return false;
+			}
+	</script>
+	<table cellspacing="10" style="margin: 0 auto; width: 100%">
+		<tr>
+			<td>
+				<fieldset>
+					<legend><strong>Add New Package</strong></legend>
+					<table  width="100%" >
+						<tr>
+							<td align="center" valign="top">
+								<table style="margin: 0 auto; width:100%;" cellspacing="10">
+									<tr>
+										<td>Package Name</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" required="true" id="location_name" name="location_name" value="" type="text"></td>
+										<td>Province Name</td>
+										<td>
+											<select dojoType="dijit.form.FilteringSelect" name="province_name" id="province_name" class="fullside" Onchange="getNewLocation()">
+												<option value="0">---Please Select Province</option>
+												<?php foreach ($this->provincelist as $row){?>
+													<option value="<?php echo $row['id']?>"><?php echo $row['province_name']?></option>
+												<?php }?>
+											</select>
+										</td>
+										<td>Status</td>
+										<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside">
+											    <option value="1" label="Active">Active</option>
+											    <option value="0" label="Deactive">Deactive</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="6">
+											<textarea dojoType="dijit/Editor" style="min-height:60px;" id="note" name="note"></textarea>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="6" align="center">
+											<div style="clear: both;"></div>
+											<input type="hidden" dojoType="dijit.form.TextBox" id="record_row" name="record_row" />
+											<div  id="store_record"></div>
+											<input iconClass="dijitIconClear" type="button" onClick="addPockage();" label="Add Row Destination" dojoType="dijit.form.Button"/>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="6" align="center">
+											<input type="reset" value="សំអាត" label="Clear"dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
+											<input type="submit" value="save_new" name="save_new" label="Save&Close" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+											<input type="submit" value="save_close" name="save_close" label="Save&New" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+										</td>
+									</tr>					
+								</table>
+							</td>							
+						</tr>
+					</table>	
+				</fieldset>
+			</td>			
+		</tr>
+		
+	</table>	
+</form>
+
+<script type="text/javascript">
+dojo.require("dijit.form.Textarea");
+dojo.require("dojo.NodeList-manipulate");
+
+dojo.require("dojo.html");
+require(["dojo/ready"], function(ready){
+	ready(function(){
+		//addNewRecord();
+	});
+});
+province_option = '<?php echo $this->pro_option;?>';
+function addNewRecord(){
+	dojo.query("#store_record").append('');
+	tmp='<table id="t_amountmoneytype" width="100%" style="border-collapse: collapse; border:1px solid #ccc !important;">';
+	tmp+='<tr style="background:#eee; font-size: 12px; height: 30px;margin-bottom: 10px;" id="head_title" class="head-title" align="center"></tr>';
+	tmp+='</table>';
+	dojo.query("#store_record").append(tmp);
+	thead='<th>Delete</th>';
+	//thead+='<th>Province Name</th>';
+	thead+='<th>Name of Destination </th>';
+	fund_title=1;
+	dojo.query("#head_title").append(thead);	
+	dijit.byId('record_row').attr('value','');
+	addPockage();
+	
+}
+r=0;
+function addPockage(){
+	r++;
+	
+	tmp='<tr style="border:1px solid #ccc; " id="row_guide'+r+'">'
+	tmp+="</tr>";
+		dojo.query("#t_amountmoneytype").append(tmp);
+		
+	temp='<td style="width:30px !important;text-align:center;" ><img style="cursor:pointer" onclick="deleteRecord('+r+')" src="<? echo $this->baseUrl(); ?>/images/Delete_16.png"></td>';
+	//temp+='<td><select style="width:300px;" padding-left:5px;"  id="province_id'+r+'" name="province_id'+r+'" dojoType="dijit.form.FilteringSelect" onchange="getLocation('+r+')">'+province_option+'</select></td>';
+	temp+='<td><select style="width:300px;" name="location_id'+r+'" id="location_id'+r+'"></select></td>';
+	
+		dojo.html.set(dojo.byId("row_guide"+r),temp, {
+	    parseContent: true,
+	     
+	});
+		getLocation(r);
+	if(dijit.byId("record_row").get('value')!="") {
+		var ids = dijit.byId("record_row").value;
+		dijit.byId("record_row").attr('value',ids+','+r);
+	} else { dijit.byId("record_row").attr('value',r);}
+}
+function deleteRecord(index){
+	var ids =dijit.byId('record_row').value;
+	if(ids.length=='' || ids.length==null){
+		dijit.byId('record_row').attr('value','');
+		dojo.query("#row_guide"+ids).remove();
+	}else{
+		var arrays = ids.split(',');
+		for(var i=0;i<arrays.length;i++) {
+			if(arrays[i] == index) arrays.splice(i,1);
+		}
+		var strings = arrays.join(',');
+		dijit.byId('record_row').attr('value',strings);
+		dojo.query("#row_guide"+index).remove();
+	}
+}
+var url_getlocation = '<?php echo $this->url(array('module'=>'location','controller'=>'package','action'=>'get-location')); ?>';
+function getLocation(id){
+			province_id = dijit.byId('province_name').get('value');
+			if(province_id==''){
+				return false;
+			}
+			dojo.xhrPost({
+				url:url_getlocation,
+				content:{
+					'province_id':province_id
+					},
+				handleAs:"json",
+				load: function(data) {
+					for(i=0;i<data.length;i++){
+						  $('#location_id'+id).append("<option value="+data[i].id+">"+data[i].location_name+"</option>");
+					}
+					
+				},
+				error: function(err) {
+				}
+			});
+}
+
+function getNewLocation(){
+	addNewRecord();
+} 
+</script>

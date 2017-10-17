@@ -1,0 +1,240 @@
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate('EDIT_CLIENT'));
+?>	
+<?php  $frm = $this->frm_client;?>
+<style>
+fieldset{border: 1px solid #fff;}
+input[type="file"]{
+	width: 90px;
+}
+
+</style>
+<form id='add_client' action="<?php echo $this->url(array('module'=>'group','controller'=>'index','action'=>'edit')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<table style="background:#A44CAE; width: 100%">
+							<tr>
+								<td valign="top" width="34%" style="white-space: nowrap;">
+										<fieldset>
+											<legend><strong>Customer Name</strong></legend>
+											<table style="margin: 0 auto;" cellspacing="10">
+													<tr>
+													   <td><?php echo $tr->translate("Title")?></td>
+													   <td><input type="hidden" id="id" name="id" value="<?php echo $this->id;?>"/><?php echo $frm->getElement('title');?></td>
+													</tr>
+													<tr>
+													   <td><?php echo $tr->translate("Customer's ID");?></td>
+													   <td><?php echo $frm->getElement('client_no');?></td>
+													 </tr>
+													 <tr>
+													   <td><?php echo $tr->translate("First Name")?>*</td>
+													   <td><?php  echo $frm->getElement('name_kh');?></td>
+													</tr>
+													<tr>
+													   <td><?php echo $tr->translate("Last Name")?>*</td>
+													   <td><?php  echo $frm->getElement('name_en');?></td>
+													</tr>
+													<tr>
+													   <td><?php echo $tr->translate("Occupation")?></td>
+													   <td><?php  echo $frm->getElement('occupation');?></td>
+													</tr>
+													<tr>
+													   <td><?php echo $tr->translate("Gender")?></td>
+													   <td><?php  echo $frm->getElement('sex');?></td>
+													</tr>
+													<tr>
+													   <td><?php echo $tr->translate("DOB")?> (M/D/Y)</td>
+													   <td><?php  echo $frm->getElement('dob_client');?></td>
+													</tr>
+													<tr>
+													   <td><?php echo $tr->translate("Place Of Birth")?></td>
+													   <td><?php  echo $frm->getElement('country');?></td>
+													 </tr>
+													 <tr>
+													   <td><?php echo $tr->translate("Nationality")?></td>
+													   <td><?php  echo $frm->getElement('nationality');?></td>
+													 </tr>
+													 <tr> 
+													   <td><?php echo $tr->translate("Company Name")?></td>
+													   <td><?php  echo $frm->getElement('company_name');?></td>
+													</tr>
+													 <tr>
+													   <td valign="top"><?php echo $tr->translate("Add Photo")?></td>
+													   <td valign="top"><?php echo $frm->getElement('photo'); echo $frm->getElement('old_photo');?><img style="height:38px" src="<?php echo $this->baseUrl()."/images/".$this->old_photo;?>" /></td>
+													 </tr>
+													 <tr>
+													   <td valign="top"><?php echo $tr->translate("Customer Type")?></td>
+													   <td valign="top"><?php  echo $frm->getElement('customer_type');?></td>
+													 </tr>
+													<tr>
+													   <td valign="top"><?php echo $tr->translate("NOTE")?></td>
+													   <td><?php  echo $frm->getElement('desc');?></td>
+													</tr>
+													
+											</table>
+										</fieldset>
+								</td>
+								<td width="33%" valign="top">
+										<fieldset><legend><strong>Local Contact</strong></legend>
+									   <table style="padding-left:10px">
+											<tr>
+												<td><?php echo $tr->translate("Group No")?></td>
+											    <td><?php echo $frm->getElement('group_num');?></td>
+											</tr>
+											<tr>	
+												<td><?php echo $tr->translate("Home No")?></td>
+											    <td><?php echo $frm->getElement('address');?></td>
+											 </tr>
+											 <tr>  
+											    <td><?php echo $tr->translate("Street No")?></td>
+											    <td><?php echo $frm->getElement('street');?></td>
+											</tr>
+											<tr>
+												<td><?php echo $tr->translate("Commune Name")?></td>
+											    <td><?php echo $frm->getElement('commune');?></td>
+											</tr>
+											<tr>	
+												<td><?php echo $tr->translate("District")?></td>
+											    <td><?php echo $frm->getElement('district');?></td>
+											 </tr>
+											 <tr>   
+											    <td><?php echo $tr->translate("Province")?></td>
+											    <td><?php echo $frm->getElement('province');?></td>
+											</tr>
+											<tr>
+											   <td><?php echo $tr->translate("PHONE")?></td>
+											   <td><?php  echo $frm->getElement('phone');?></td>
+											</tr>
+											<tr>   
+											   <td><?php echo $tr->translate("Email")?></td>
+											   <td><?php echo $frm->getElement('email');?></td>
+											 </tr>
+											 <tr>  
+											   <td><?php echo $tr->translate("Fax")?></td>
+											   <td><?php echo $frm->getElement('fax');?></td>
+											</tr>
+											</table>
+											</fieldset>
+											<fieldset><legend><strong>International Contact</strong></legend>
+											<table style="padding-left:10px">
+											<tr>
+												<td><?php echo $tr->translate("Address Line 1")?></td>
+												<td><?php echo $frm->getElement('address1');?></td>
+											</tr>
+											<tr>	
+												<td><?php echo $tr->translate("Address Line 2")?></td>
+												<td><?php echo $frm->getElement('address2');?></td>
+											</tr>	
+											<tr>
+												<td><?php echo $tr->translate("City")?></td>
+												<td><?php echo $frm->getElement('i_city');?></td>
+											</tr>
+											<tr>
+												<td><?php echo $tr->translate("Zipcode")?></td>
+												<td><?php echo $frm->getElement('i_zipcode');?></td>
+											<tr>	
+												<td><?php echo $tr->translate("State/Province/Region")?></td>
+												<td><?php echo $frm->getElement('state');?></td>
+											</tr>	
+											<tr>
+												<td><?php echo $tr->translate("Country")?></td>
+												<td><?php echo $frm->getElement('countries');?>
+												</td>
+											</tr>
+											<tr>	
+												<td><?php echo $tr->translate("Cell Phone")?></td>
+												<td><?php echo $frm->getElement('i_phone');?></td>
+											</tr>
+										</table>
+									</fieldset>
+								</td>
+								<td valign="top">
+										<fieldset>
+											<legend><strong>Customer's Document</strong></legend>
+												<table style="width:100%;" cellspacing="10">
+													<tr>
+													   <td><?php echo $tr->translate("Passport No.")?></td>
+													   <td><?php echo $frm->getElement('passport');?></td>
+													</tr>
+													<tr>
+													   <td><?php echo $tr->translate("Issued Date")?></td>
+													   <td><?php echo $frm->getElement('pissue_date');?></td>
+													 </tr>  
+													 <tr>
+													   <td><?php echo $tr->translate("Expired Date")?></td>
+													   <td><?php echo $frm->getElement('pexpired_date');?></td>
+													</tr>
+												</table>
+											</fieldset>
+											<fieldset><legend><strong>ID Card</strong></legend>
+												<table style="padding-left:7px;">
+													<tr>
+													   <td><?php echo $tr->translate("ID Card No.")?></td>
+													   <td><?php echo $frm->getElement('card_code');?></td>
+													 </tr>  
+													 <tr>
+													   <td><?php echo $tr->translate("Issued Date")?></td>
+													   <td><?php echo $frm->getElement('cissue_date');?></td>
+													 <tr> 
+													   <td><?php echo $tr->translate("Expired Date")?></td>
+													   <td><?php echo $frm->getElement('cexpired_date');?></td>
+													 </tr>
+												 </table>
+												</fieldset>
+											<fieldset><legend><strong>Family Book</strong></legend>
+												<table style="padding-left:7px;">
+												<tr>
+												   <td><?php echo $tr->translate("Family Book No.")?></td>
+												   <td><?php echo $frm->getElement('ftb');?></td>
+												 </tr>
+												 <tr> 
+												   <td><?php echo $tr->translate("Issued Date")?></td>
+												   <td><?php echo $frm->getElement('fissue_date');?></td>
+												  </tr>
+												  <tr> 
+												   <td><?php echo $tr->translate("Expired Date")?></td>
+												   <td><?php echo $frm->getElement('fexpired_date');?></td>
+												</tr>
+												<tr>
+													<td><?php echo $tr->translate("Balance")?></td>
+													<td><?php echo $frm->getElement('balance');?></td>
+												</tr>
+												<tr>
+													<td><?php echo $tr->translate("STATUS")?></td>
+													<td><?php echo $frm->getElement('status');?></td>
+												</tr>
+									</table>
+									</fieldset>
+								</td>
+							</tr>
+							<tr style="background: #711A7B">
+									<td colspan="3" align="center">
+										<input type="reset" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" 
+											iconClass="dijitIconClear" /> 
+										<input type="submit" value="SAVE_NEW" label="<?php echo $tr->translate('GO_EDIT');?>" id="save_new" dojoType="dijit.form.Button" name="save_new"
+											iconClass="dijitEditorIcon dijitEditorIconSave"/> 
+								     </td>
+							</tr>
+					</table>	
+</form>
+<script type="text/javascript">
+dojo.require("dijit.form.DateTextBox");
+dojo.ready(function(){
+	
+	try{	
+	
+	}catch(e){
+		alert(e);
+	}
+});
+
+function showPopupclientdtype(){
+	dijit.byId('frm_clienttype').show();
+}
+</script>
