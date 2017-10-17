@@ -1,0 +1,153 @@
+<?php
+	$request=Zend_Controller_Front::getInstance()->getRequest();
+	$action = $request->getActionName();
+	$baseurl  = $this->baseUrl();
+		/*--------------------URLs link display--------------------------*/
+		  $tr=Application_Form_FrmLanguages::getCurrentlanguage();
+		$arr_param_menu=array( 
+			'home'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("HOME").'</a></li>',
+			),
+			'other'=>array(
+// 						'branch'=>'<li><a href="">'.$tr->translate("BRANCH_LIST").'</a></li>',
+// 						'province'=>'<li><a href="">'.$tr->translate("PROVINCE").'</a></li>',
+// 						'district'=>'<li><a href="">'.$tr->translate("DISTRICT").'</a></li>',
+// 						'commune'=>'<li><a href="">'.$tr->translate("COMMUNE").'</a></li>',
+// 						'village'=>'<li><a href="">'.$tr->translate("VILLAGE").'</a></li>',
+// 						'zone'=>'<li><a href="">'.$tr->translate("ZONE_AREA").'</a></li>',
+					    'service'=>'<li><a href="">'.$tr->translate("Manage Services").'</a></li>',
+					    'season'=>'<li><a href="">'.$tr->translate("Manage Seasonal Promotion").'</a></li>',
+'mediafile'=>'<li><a href="">'.$tr->translate("Media Files").'</a></li>',
+					    'otherinformation'=>'<li><a href="">'.$tr->translate("Other Information").'</a></li>',
+						'holiday'=>'<li><a href="">'.$tr->translate("Manage Holiday Setting").'</a></li>',
+					//	'loantype'=>'<li><a href="">'.$tr->translate("LOAN_TYPE").'</a></li>' ,
+                        'slideshow'=>'<li><a href="">'.$tr->translate("Manage Slide Show").'</a></li>',
+                        'photo'=>'<li><a href="">'.$tr->translate("Manage Photo Gallery").'</a></li>',
+                        'tax'=>'<li><a href="">'.$tr->translate("Manage Tax Setting").'</a></li>', 
+					    'day'=>'<li><a href="">'.$tr->translate("Manage Rank Day").'</a></li>',
+					    'job'=>'<li><a href="">'.$tr->translate("Job Announcement").'</a></li>',
+					    'instruction'=>'<li><a href="">'.$tr->translate("Instruction").'</a></li>',
+                                            'countries'=>'<li><a href="">'.$tr->translate("Countries").'</a></li>',
+					    'playerlist'=>'<li><a href="">'.$tr->translate("Prayer List").'</a></li>',
+					    'seo'=>'<li><a href="">'.$tr->translate("SEO").'</a></li>',
+					    'faq'=>'<li><a href="">'.$tr->translate("FAQS").'</a></li>',
+					    'help'=>'<li><a href="">'.$tr->translate("Terms and Conditions").'</a></li>',
+						'welcomenote'=>'<li><a href="">'.$tr->translate("Welcome Note").'</a></li>',
+					    'guestbook'=>'<li><a href="">'.$tr->translate("Testimonials").'</a></li>',
+						'about'=>'<li><a href="">'.$tr->translate("About Us").'</a></li>',
+						'contact'=>'<li><a href="">'.$tr->translate("Contact Us").'</a></li>',
+						'privacy'=>'<li><a href="">'.$tr->translate("Privacy").'</a></li>',
+					    'ownervehicle'=>'<li><a href="">'.$tr->translate("Owner Vehicle Registration").'</a></li>',
+					    'paramater'=>'<li><a href="">'.$tr->translate("Manage Paramater").'</a></li>',
+			),
+			'group'=>array(
+					    'index'=>'<li><a href="">'.$tr->translate("Customer Information").'</a></li>',
+						'vehicle'=>'<li><a href="">'.$tr->translate("Vehicle Rental Agreement").'</a></li>',
+						'citytour'=>'<li><a href="">'.$tr->translate("City Tour Rental Agreement").'</a></li>',
+						'stuffrental'=>'<li><a href="">'.$tr->translate("Equipment Rental Agreement").'</a></li>',
+				),
+			'stuff'=>array(
+						'index'=>'<li><a href="" title="">'.$tr->translate("Manage Product").'</a></li>',
+					    /*'service'=>'<li><a href="" title="">'.$tr->translate("Services").'</a></li>',
+						'groupdisburse'=>'<li><a href="" title="">'.$tr->translate("GROUP_DISBURS").'</a></li>',
+						'ilpayment'=>'<li><a href="" title="">'.$tr->translate("IL_PAYMENT").'</a></li>',
+						'ilquickpayment'=>'<li><a href="" title="">'.$tr->translate("QUICK_PAYMENT").'</a></li>',
+						'grouppayment'=>'<li><a href="" title="">'.$tr->translate("GROUP_PAYMENT").'</a></li>',*/
+				),
+			'callecterall'=>array(
+						'callecterall'=>'<li><a href="">'.$tr->translate("CALLECTERALL").'</a></li>',
+						'callecteralllist'=>'<li><a href="">'.$tr->translate("CALLECTERALLLIST").'</a></li>',
+						'chengcallecterall'=>'<li><a href="">'.$tr->translate("CHENGCALLECTERALL").'</a></li>',
+						'refundcallecterall'=>'<li><a href="">'.$tr->translate("REFUNDCALLECTERALL").'</a></li>',
+						'salecallecterall'=>'<li><a href="">'.$tr->translate("SALECALLECTERALL").'</a></li>',
+				),
+		   'booking'=>array(
+		   				/*'department'=>'<li><a href="">'.$tr->translate("DEPARTMENT").'</a></li>',
+						'position'=>'<li><a href="">'.$tr->translate("POSITION").'</a></li>',
+						'co'=>'<li><a href="">'.$tr->translate("STAFF").'</a></li>',
+						'permission'=>'<li><a href="">'.$tr->translate("PERMISSION").'</a></li>',
+		   				'salary'=>'<li><a href="">'.$tr->translate("SALARY").'</a></li>',
+		   				'setting'=>'<li><a href="">'.$tr->translate("SETTING").'</a></li>',*/
+		   		                'carrentalbooking'=>'<li><a href="">'.$tr->translate("Car Rental Booking").'</a></li>',
+		   				'productbooking'=>'<li><a href="">'.$tr->translate("Product Rental Booking").'</a></li>',
+		   				'guidebooking'=>'<li><a href="">'.$tr->translate("Tour Guide | Driver Rental Booking").'</a></li>',
+		   				'taxibooking'=>'<li><a href="">'.$tr->translate("Taxi Service Booking").'</a></li>',
+		   				'citytourbooking'=>'<li><a href="">'.$tr->translate("City Tour Service Booking").'</a></li>',
+				),
+			'location'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("Manage Province").'</a></li>',
+						'location'=>'<li><a href="">'.$tr->translate("Manage Location").'</a></li>',
+						'package'=>'<li><a href="">'.$tr->translate("Manage Package Location").'</a></li>',
+						//'manageprice'=>'<li><a href="">'.$tr->translate("manageprice").'</a></li>',
+						'locationtype'=>'<li><a href="">'.$tr->translate("Manage Location Type").'</a></li>',
+				),
+			'vehicle'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("Manage Vehicle").'</a></li>',
+						'vehicletype'=>'<li><a href="">'.$tr->translate("Manage Vehicle Group").'</a></li>',
+						'make'=>'<li><a href="">'.$tr->translate("Manage Make").'</a></li>',
+						'model'=>'<li><a href="">'.$tr->translate("Manage Model").'</a></li>',
+                        'submodel'=>'<li><a href="">'.$tr->translate("Manage Sub Model").'</a></li>',
+						'engine'=>'<li><a href="">'.$tr->translate("Manage Engine").'</a></li>',
+						'type'=>'<li><a href="">'.$tr->translate("Manage Vehicle Type").'</a></li>',
+						'transmission'=>'<li><a href="">'.$tr->translate("Manage Transmission").'</a></li>',
+						//'manageprice'=>'<li><a href="">'.$tr->translate("Manage Price").'</a></li>',	
+						//'manageseason'=>'<li><a href="">'.$tr->translate("Manage Price Season").'</a></li>',	   
+            ),
+			'driverguide'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("Manage Driver & Guide").'</a></li>',
+						'vehicleprice'=>'<li><a href="">'.$tr->translate("Manage Vehicle Rental Price").'</a></li>',
+						'taxiprice'=>'<li><a href="">'.$tr->translate("Manage Taxi Rental Price").'</a></li>',
+						'citytourprice'=>'<li><a href="">'.$tr->translate("Manage City Tour Rental Price").'</a></li>',
+					    'serviceprice'=>'<li><a href="">'.$tr->translate("Manage Service Price").'</a></li>',
+					    'carprice'=>'<li><a href="">'.$tr->translate("Manage Car Rental Pickup Price").'</a></li>',
+			),
+			'agreement'=>array(
+					   'index'=>'<li><a href="">'.$tr->translate("Vehicle Rental Agreement").'</a></li>',
+						'citytour'=>'<li><a href="">'.$tr->translate("City Tour Rental Agreement").'</a></li>',
+						'stuffrental'=>'<li><a href="">'.$tr->translate("Product Rental Agreement").'</a></li>',
+					    'driver'=>'<li><a href="">'.$tr->translate("Tour Guide | Driver Rental Agreement").'</a></li>',
+					    'taxi'=>'<li><a href="">'.$tr->translate("Taxi Service Agreement").'</a></li>',
+						'carsale'=>'<li><a href="">'.$tr->translate("Car Sale Form").'</a></li>',
+						'carsale/saleinvoice'=>'<li><a href="">'.$tr->translate("Car Sale Invoice").'</a></li>',
+						'carsale/salereciept'=>'<li><a href="">'.$tr->translate("Car Sale Receipt").'</a></li>',
+				),
+			'report'=>array(
+						'pricing'=>'<li><a href="" title="">'.$tr->translate("Pricing Reports").'</a></li>',
+'carsale'=>'<li><a href="" title="">'.$tr->translate("Vehicle Sale Report").'</a></li>',
+				),
+			'user'=>array(
+				'index'=>'<li><a href="">'.$tr->translate("USER").'</a></li>',
+			),	
+			'rsvacl'=>array(
+					 	'index'=>'<li><a href="">'.$tr->translate("USER").'</a></li>',
+					    'acl'=>'<li><a href="">'.$tr->translate("ACL").'</a></li>',
+						'user'=>'<li><a href="">'.$tr->translate('USER').'</a></li>',
+						'useraccess'=>'<li><a href="">'.$tr->translate("USER_ACCESS").'</a></li>',
+						'usertype'=>'<li><a href="">'.$tr->translate("USER_TYPE").'</a></li>',
+				),
+			'backup'=>array(
+						'index'=>'<li><a href="">'.$tr->translate("Backup List").'</a></li>',
+						'index'=>'<li><a href="">'.$tr->translate("Backup List").'</a></li>',
+				),	
+			'setting'=>array(
+						'label'=>'<li><a href="">'.$tr->translate("Label_SETTING").'</a></li>',
+						//'profile'=>'<li><a href="">'.$tr->translate("COM_PROFILE").'</a></li>',
+						'database'=>'<li><a href="">'.$tr->translate("DATA_BASE_SETTING").'</a></li>',
+						'setting'=>'<li><a href="">'.$tr->translate("System_SETTING").'</a></li>',
+					
+					)
+				);       
+	?>
+	<div id="header-left">
+	<ul>
+			<?php 
+				$dc=new Application_Model_Decorator();					
+				$class="current-left";					
+				$menu=$dc->getMenuLeft($arr_param_menu[$request->getModuleName()],$request->getControllerName(),$request->getModuleName());
+				if($menu) echo $menu;					
+			?>
+	</ul>																
+	</div>
+	<style>
+	.current-left{  background: none repeat scroll 0 0 #EDF7F8 !important;}
+	</style>
