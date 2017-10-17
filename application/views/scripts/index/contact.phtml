@@ -1,0 +1,117 @@
+<title>Contact Us</title>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
+<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
+<div class="message-shadow"></div>
+<div class="clearfix"></div>
+<section class="content">
+    <div class="container">
+      <h4 style="background:#e3c4d4;background: linear-gradient(to bottom, #ffffff 0%,#e3c4d4 100%);padding:10px;color:red; " class="margin-bottom-25 margin-top-none"><strong>CONTACT </strong><span style="text-transform: uppercase;">Us</span></h4>
+        <div class="inner-page" style="margin-bottom:0px !important; ">
+            <div class="col-md-12 padding-none">      
+            	<div class="row contacts margin-top-5 margin-bottom-25"> 
+            		<div class="col-md-6 left-information" style="border: 1px solid #ccc;padding:10px;border-radius: 10px;">
+            			<div class="contact_information information_head clearfix">
+		                <?php foreach ($this->showdata as $row){ ?>
+		                	<h3 class="margin-bottom-25 margin-top-none"> <?php echo $row['title']?></h3>
+		                	 <div class="row">
+		                	 	<?php echo $row['description']?> 
+		                	 </div>
+		                <?php }?>
+		               </div>
+	                </div>
+	                <!-- end left -->
+	                <div class="col-md-6 left-information" style="border: 1px solid #ccc;padding:10px;background:#705AFF;border-radius: 10px;border:2px solid #ccc;">
+                        <div class="contact_wrapper information_head">
+                            <h3 class="margin-bottom-25 margin-top-none" align="center" style="color:#fff !important;padding-top:25px;">CONTACT FORM</h3>
+                            <div class="form_contact ">
+                                <div id="result"></div>
+                                <fieldset id="contact_form" style="margin:15px;">
+                                    <input type="text" name="name" class="form-control margin-bottom-25" placeholder="Name  (Required)">
+                                    <input type="email" name="email" class="form-control margin-bottom-25" placeholder="E-mail  (Required)">
+                                    <textarea  name="msg" class="" placeholder="Your message" rows="100" style="height: 300px;"></textarea>
+                                    <div align="center"><input id="submit_btn" type="submit" value="Send Message" style="text-align: center; font-weight: bold;"></div>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end right -->
+                </div>
+				
+            </div>
+			<div><iframe style="height:580px;" src="https://www.google.com/maps/d/embed?mid=zQIOXjyi7dy8.k7zmT7BpTcfw" width="1200"></iframe></div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!--container ends--> 
+</section>
+<!--content ends-->
+<script type="text/javascript">
+submit_url ='<?php echo $this->url(array('module'=>'default','controller'=>"index",'action'=>'sendemail'),null,true); ?>';
+$(document).ready(function() {
+    $("#submit_btn").click(function() { 
+        //collect input field values
+        var user_name       = $("input[name='name']").val(); 
+        var user_email      = $("input[name='email']").val();
+        var user_message    = $("textarea[name='msg']").val();
+        
+        //simple validation at client's end
+        //we simply change border color to red if empty field using .css()
+        var proceed = true;
+        if(user_name==""){ 
+            $("input[name='name']").css("border", "1px solid red"); 
+            proceed = false;
+        } else {
+			$("input[name='name']").css("border", "none");
+		}
+        if(user_email==""){ 
+            $("input[name='email']").css("border", "1px solid red"); 
+            proceed = false;
+        } else {
+			$("input[name='email']").css("border", "none");
+		}
+        if(user_message=="") {  
+            $("textarea[name='msg']").css("border", "1px solid red"); 
+            proceed = false;
+        } else {
+			$("textarea[name='msg']").css("border", "none");
+		}
+        
+        if(proceed) {
+        		$.ajax({
+        	        url: submit_url,
+        	        type: "post",
+        	        data: {'userName':user_name, 'userEmail':user_email, 'userMessage':user_message},
+        	        success: function(data){
+            	        $("#result").hide().html('<div class="success">'+data+'</div>').slideDown();
+                        
+                        //reset values in all input fields
+                        $('#contact_form input[type="text"]').val('');
+        				$('#contact_form input[type="email"]').val(''); 
+                        $('#contact_form textarea').val(''); 
+        	        },
+        	        error:function(err){
+        	        	$("#result").hide().html('<div class="error">'+err.statusText+'</div>').slideDown();
+        	        }
+        	    });	
+                    
+        }
+    });
+    
+    //reset previously set border colors and hide all message on .keyup()
+    $("#contact_form input, #contact_form textarea").keyup(function() { 
+       $("#contact_form input, #contact_form textarea").css('border-color',''); 
+        $("#result").slideUp();
+    });
+    
+});
+</script> 
+<script>
+	CKEDITOR.replace( 'editor1', {
+		uiColor: 'eee',
+		toolbar: [
+				[ 'Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink' ],
+				[ 'FontSize', 'TextColor', 'BGColor' ]
+		]
+	});
+</script>

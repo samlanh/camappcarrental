@@ -1,0 +1,128 @@
+<title>Guestbook</title>
+<title>Contact Us</title>
+<style>
+legend {
+    display: block;
+    width: none !important;
+    padding: 0;
+    margin-bottom: 20px;
+    font-size: 21px;
+    line-height: inherit;
+    color: #333;
+    /* border: 0; */
+    /* border-bottom: 1px solid #e5e5e5; */
+}
+fieldset{ border: 1px solid #ccc; padding: 20px;}
+</style>
+<div class="message-shadow"></div>
+<div class="clearfix"></div>
+<section class="content">
+    <div class="container">
+        <div class="inner-page" style="margin-bottom:0px !important; ">
+            <div class="col-md-12 padding-none">      
+            	<div class="row contacts"> 
+            		<div class="col-md-5 left-information" >
+            		<div class="contact_wrapper information_head">
+                            <h3 class="margin-bottom-25 margin-top-none"></h3>
+                            <div class="form_contact margin-bottom-20" style="background: linear-gradient(to bottom, #FBBF03 35%,#B1912F 43%,#FFC000 100%);">
+                                <div id="result"></div>
+                                <form action="<?php echo $this->url(array("module"=>"default","controller"=>"index","action"=>"guestbook"))?>" method="post">
+	                                <fieldset id="contact_form"><legend style="color:#fff; font-size: 26px; padding: 10px;" align="center"><strong>ADD YOUR COMMENTS HERE</strong></legend >
+	                                    <input style="border:1px solid #1B1B1B;" type="text" required="1" name="name" class="form-control margin-bottom-25"  placeholder="Name  (Required)">
+	                                    <input style="border:1px solid #1B1B1B;" type="text" required="1" name="subject" class="form-control margin-bottom-25" placeholder="Subject  (Required)">
+	                                    <input style="border:1px solid #1B1B1B;" required="1" type="email" name="email" class="form-control margin-bottom-25" placeholder="Email  (Required)">
+	                                    <input style="border:1px solid #1B1B1B;" type="text" name="website" class="form-control margin-bottom-25" placeholder="Website">
+	                                    <textarea name='comments' required="1" class="form-control margin-bottom-25 contact_textarea" placeholder="Your message" rows="7"></textarea>
+	                                   <p align="center"><button id="submit_btn" type="submit">ADD COMMENTS</button></p>
+	                                </fieldset>
+                                </form>
+                            </div>
+                        </div>
+            			<div class="contact_information information_head clearfix">
+		                <?php //foreach ($this->showdata as $row){ ?>
+		                	<h3 class="margin-bottom-25 margin-top-none"> <?php //echo $row['title']?></h3>
+		                	 <div class="row">
+		                	 	<?php //echo $row['description']?> 
+		                	 </div>
+		                <?php //}?>
+		               </div>
+	                </div>
+	                <!-- end left -->
+	                <div class="col-md-7 ">
+                        <h4 class="margin-bottom-25 margin-top-none" style="color:red;"><strong>Guestbook </strong><span> information</span></h4>
+						<?php if(!empty($this->rows)) foreach($this->rows As $row){?>
+							<div style="border-radius: 10px;
+    background: rgba(238,238,238,0.8);padding:10px;border:1px solid #ccc;;margin-bottom: 20px;"><strong style="color:red;"><img src="<?php echo $this->baseUrl()."/images/no-profile.png"?>"/> <?php echo $row['name']; ?></strong> Said : <span style="color:blue; float: right;font-weight:600;">Date <?php echo date("d-M-Y",strtotime($row['date'])); ?></span><br /><?php echo $row['comment'];?></div>
+							
+						<?php }?>
+                    </div>
+                    <!-- end right -->
+                </div>
+            </div>
+			<div></div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!--container ends--> 
+</section>
+<!--content ends-->
+<script type="text/javascript">
+submit_url ='<?php echo $this->url(array('module'=>'default','controller'=>"index",'action'=>'sendemail'),null,true); ?>';
+$(document).ready(function() {
+    $("#submit_btn").click(function() { 
+        //collect input field values
+        var user_name       = $("input[name='name']").val(); 
+        var user_email      = $("input[name='email']").val();
+        var user_message    = $("textarea[name='msg']").val();
+        
+        //simple validation at client's end
+        //we simply change border color to red if empty field using .css()
+        var proceed = true;
+        if(user_name==""){ 
+            $("input[name='name']").css("border", "1px solid red"); 
+            proceed = false;
+        } else {
+			$("input[name='name']").css("border", "none");
+		}
+        if(user_email==""){ 
+            $("input[name='email']").css("border", "1px solid red"); 
+            proceed = false;
+        } else {
+			$("input[name='email']").css("border", "none");
+		}
+        if(user_message=="") {  
+            $("textarea[name='msg']").css("border", "1px solid red"); 
+            proceed = false;
+        } else {
+			$("textarea[name='msg']").css("border", "none");
+		}
+        
+        if(proceed) {
+        		$.ajax({
+        	        url: submit_url,
+        	        type: "post",
+        	        data: {'userName':user_name, 'userEmail':user_email, 'userMessage':user_message},
+        	        success: function(data){
+            	        $("#result").hide().html('<div class="success">'+data+'</div>').slideDown();
+                        
+                        //reset values in all input fields
+                        $('#contact_form input[type="text"]').val('');
+        				$('#contact_form input[type="email"]').val(''); 
+                        $('#contact_form textarea').val(''); 
+        	        },
+        	        error:function(err){
+        	        	$("#result").hide().html('<div class="error">'+err.statusText+'</div>').slideDown();
+        	        }
+        	    });	
+                    
+        }
+    });
+    
+    //reset previously set border colors and hide all message on .keyup()
+    $("#contact_form input, #contact_form textarea").keyup(function() { 
+       $("#contact_form input, #contact_form textarea").css('border-color',''); 
+        $("#result").slideUp();
+    });
+    
+});
+</script> 

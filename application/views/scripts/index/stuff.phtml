@@ -1,0 +1,68 @@
+<title>Product Rental List</title>
+<style>
+.inventory .title {
+    position: initial;}
+</style>
+<?php 
+	$db = new Application_Model_DbTable_DbGlobal();
+	$instruction = "productinstruction";
+	$rows = $db->getAllParameter($instruction);
+	
+?>
+<div class="clearfix"></div>
+<section class="content">
+    <div class="container">
+         <?php ///echo $rows;?> 
+    </div>
+</section>
+<section class="message-wrap">
+    <div class="container">
+        <div class="row">
+            <h2 class="col-lg-9 col-md-8 col-sm-12 col-xs-12 xs-padding-left-15" style="color:red;"><strong>Products</strong> Rental<span class="alternate-font"></span></h2>
+            <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 xs-padding-right-15"> <a href="<?php echo $this->url(array("module"=>"default","controller"=>"stuffbooking","action"=>"index"));?>" class="default-btn pull-right action_button lg-button">Book Now</a> </div>
+        </div>
+    </div>
+    <div class="message-shadow"></div>
+</section>
+<section class="content">
+    <div class="container">
+    	<div class="car_listings boxed boxed_left col-md-9 col-lg-push-3 col-md-push-3 margin-bottom-10">
+		    	<div class="pricing_wrapper layout-4 clearfix margin-top-10">
+		                <?php foreach ($this->stuffrow as $row){ ?>
+		                <div class="col-md-4 col-sm-6 col-xs-12 padding-right-5 padding-left-5" style="height:440px;">
+		                    <div class="pricing_table">
+		                        <div class="pricing-header" style="background: #FF0300">
+		                            <h4><?php echo $row['equipment_name'];?></h4>
+		                        </div>
+		                        <div class="main_pricing" style="background: #fff;">
+		                           <img style="border:none;padding-top:5px;" src="<?php echo $this->baseUrl()."/images/".$row['photo_front'];?>" alt="preview">
+		                        	<div style="clear:both;"></div>
+		                        </div>
+		                        <div style="clear:both;"></div>
+		                        <div class="category_pricing">
+		                            <ul>
+		                                <li>Rental Pricing</li>
+		                               <?php $rowprice = Application_Model_DbTable_Dbstuffrental::getProductRankingDayPrice($row['id']);?>
+		                               <?php if(!empty($rowprice)) foreach($rowprice AS $rowrank){?>
+		                               <li><?php echo $rowrank["package_name"].' : $'.$rowrank["price"]." /Day";?></li>
+		                               <?php }?>
+		                            </ul>
+		                        </div>
+		                        <div class="price-footer padding-vertical-15">
+		                            <form method="post" action="#">
+		                                <input  type="button"  value="Book Now" label="Book Now" onclick="window.location = '<?php echo $this->url(array('module'=>'default','controller'=>"stuffbooking",'action'=>'index'),null,true); ?>';"/>
+		                            </form>
+		                        </div>
+		                    </div>
+		                </div>
+		                <?php }?>
+		                <div style="clear: both;"></div>
+		            </div>
+            </div>
+            <div class="col-md-3 col-sm-12 col-lg-pull-9 col-md-pull-9 left-sidebar margin-top-10" style=" border:1px solid #ccc;padding:10px;">
+            	<?php echo $rows;?> 
+            </div>
+            
+            
+    </div>
+</section>

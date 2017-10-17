@@ -1,0 +1,124 @@
+<title>Car Sales</title>
+<style>
+.porche .car-detail .table>tbody>tr>td, .car-info .table>tbody>tr>td {
+    padding: 0px 7px !important;
+    line-height: 23px;
+}
+</style>
+<section class="content">
+    <div class="container">
+    <h4 style="background:#e3c4d4;background: linear-gradient(to bottom, #ffffff 0%,#e3c4d4 100%);padding:10px;color:red; " class="margin-bottom-25 margin-top-none"><strong>OUR </strong><span style="text-transform: uppercase;">Cars For Sale</span></h4>
+        <div class="inner-page inventory-2">
+            <div class="row">
+            	<?php if(!empty($this->rows))foreach($this->rows AS $rs){?>
+            	<div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="porche margin-bottom-25">
+                        <div class="porche-header padding-top-15 padding-bottom-10"> 
+                            <span><?php echo $rs["make"]." ".$rs["model"]." ".$rs["sub_model"]."(".$rs["reffer"].")"?></span> 
+                            <strong>SALE PRICE : $<?php echo $rs['sale_price']?></strong> 
+                        </div>
+                        <div class="porche-img padding-bottom-15"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_right'];?>" alt="" style="min-width:400px;max-width:560px;"></div>
+                        <div class="car-detail clearfix">
+                            <div class="table-responsive">
+                                <table class="table" style="font-size: 12px;">
+                                    <tbody>
+                                        <tr>
+                                            <td>Vehicle Ref :</td>
+                                            <td><?php echo $rs['reffer']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Year:</td>
+                                            <td><?php echo $rs['year']?></td>
+                                        </tr>
+                                         <tr>
+                                            <td>Make :</td>
+                                            <td><?php echo $rs['make']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Model:</td>
+                                            <td><?php echo $rs['model']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sub Model:</td>
+                                            <td><?php echo $rs['sub_model']?></td>
+                                        </tr>
+                                         <tr>
+                                            <td>Color :</td>
+                                            <td><?php echo $rs['color']?></td>
+                                        </tr>
+                                         <tr>
+                                            <td>Horse Power :</td>
+                                            <td><?php echo $rs['engine']?></td>
+                                        </tr>
+                                        
+                                       
+                                        <tr>
+                                            <td>No. of Seats :</td>
+                                            <td><?php echo $rs['seat_amount']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Transmission Type:</td>
+                                            <td><?php echo $rs['transmission']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vehicle Type:</td>
+                                            <td><?php echo $rs['car_type']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Type:</td>
+                                            <td><?php echo $rs['type']?></td>
+                                        </tr>
+                                        
+                                         
+                                         <tr>
+                                            <td>Maximum Weight :</td>
+                                            <td><?php echo $rs['max_weight']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Steering Wheel Type :</td>
+                                            <td><?php echo $rs['steering']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>No. of Axles :</td>
+                                            <td><?php echo $rs['of_axlex']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>No. of Cylinders :</td>
+                                            <td><?php echo $rs['of_cylinder']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cylinders Disp :</td>
+                                            <td><?php echo $rs['cylinders_dip']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Test Url:</td>
+                                            <td><a target="_blank" href="<?php echo $rs['test_url']?>">Click here to view</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Show Url:</td>
+                                            <td><a target="_blank" href="<?php echo $rs['show_url']?>">Click here to view</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>DESCRIPTION:</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="option-tick-list padding-horizontal-10 clearfix">
+                                <div class="row">
+                                  <?php echo $rs['description_sale'];?>
+                                </div>
+                            </div>
+                            <div class="porche-footer margin-top-25 padding-top-20 padding-bottom-15">
+                                <button onclick="window.location = '<?php echo $this->url(array('module'=>'default','controller'=>"index",'action'=>'vehicle','id'=>$rs['id']),null,true); ?>';"  type="button">Veiw Detail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <?php }?>
+            </div>
+        </div>
+    </div>
+    <!--container ends--> 
+</section>

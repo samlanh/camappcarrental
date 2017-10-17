@@ -1,0 +1,707 @@
+<style>
+.overlay {display: none;position: absolute;width: 100%;height: 100%;top: 0px;left: 0px;background: #FCFCFC;z-index: 1001;opacity: .95;}
+.overlay-load {width: 350px;height: 100px;margin: auto;top: 0px;bottom: 0px;position: absolute;left: 0px;right: 0px;
+           border: solid 1px #060522;text-align: center;
+           background: #fff url("<?php echo $this->baseUrl()?>/images/loading.gif") 50% 25%;
+           background-repeat: no-repeat;          
+}
+.overlay-msg{margin-bottom: 10px;bottom: 0px;position: absolute;font-style: italic;color: rgb(19, 19, 19);} 
+</style>
+<?php 
+if(isset($_POST['save_new']))
+{
+echo"<script type='text/javascript'>document.getElementsByClassName('overlay')[0].style.display='block';</script>";
+$photo=uploadimage(addslashes(trim("photo")));
+$remax_name=uploadimage(addslashes(trim("uploadremix")));
+$data = array(
+'full_name'=>$_POST['full_name'],
+'age'=>$_POST['age'],
+'address'=>$_POST['address'],
+'contact_no'=>$_POST['contact_no'],
+'date'=>$_POST['date'],
+'email'=>$_POST['email'],
+'gender'=>$_POST['gender'],
+'generation'=>$_POST['generation'],
+'club_playing'=>$_POST['club_playing'],
+'file_remix'=>$remax_name,
+'photo'=>$photo,
+);
+
+
+       $db_register=new Application_Model_DbTable_DbRegister();
+       $db_register->addRegister($data);
+
+echo"<script type='text/javascript'>document.getElementsByClassName('overlay')[0].style.display='none'</script>";
+       Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS","/register");
+    			
+}
+function uploadimage($control_name)
+{
+	$source = $_FILES["$control_name"]["tmp_name"];
+	$destination = PUBLIC_PATH."/images/mp3/".$_FILES["$control_name"]["name"];
+	move_uploaded_file($source, $destination);
+       return $_FILES["$control_name"]["name"];
+
+
+}
+?>
+<!doctype html>
+<html>
+<?php $base_url = Application_Form_FrmMessage::getUrl("/");?>
+        <link href="<?php //echo $base_url;?>css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="<?php echo $base_url;?>css/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $base_url;?>css/font-awesome.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $base_url;?>css/prettyPhoto.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $base_url;?>css/jquery.bxslider.css" rel="stylesheet" />
+		<link href="<?php echo $base_url;?>css/jquery.countdown.css" rel="stylesheet" type="text/css">
+		<link href="<?php echo $base_url;?>css/stylefront.css" rel="stylesheet" type="text/css" />
+		<link href="<?php echo $base_url;?>css/responsive.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="<?php echo $base_url;?>css/animate.css" />
+		<link href="<?php echo $base_url;?>css/owl.carousel.css" rel="stylesheet" type="text/css">
+		<link href="<?php echo $base_url;?>css/owl.transitions.css" rel="stylesheet" type="text/css">
+		<noscript><link rel="stylesheet" type="text/css" href="<?php echo $base_url;?>css/noJS.css"/></noscript>
+		
+<!-- Mirrored from layerstheme.com/portfolio/html/night-club/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 03 Dec 2015 03:48:13 GMT -->
+<head>
+<script type="text/javascript">
+function checkCookies() {
+  $('#submit_auto').click();
+}
+
+</script>
+<meta charset="utf-8">
+<title>Night Club</title>
+<link rel="shortcut icon" href="/djrock/public/images/logoss.ico" type="image/x-icon"/>
+<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<style>
+	#header.affix {
+	    background-color: rgba(0, 0, 0, 0.9);
+	    position: absolute !important;
+	    top: 0px;
+	    width: 100%;
+	    z-index: 10000;
+	    transition: all 0.9s ease 0s;
+	}
+      label{
+      	color:#fff;
+      	padding-left: 0px !important;
+      	border-radius: 6px;
+      }
+      .reservation-form input{
+      	border-radius: 5px;
+        height: 50px;
+        margin: 0px;
+        height: 35px;
+        background: #000;
+        border: 1px solid white;
+        background: #000 !important;
+      }
+      .btn{
+      	border-radius: 4px;
+        background: #F62091;
+        color:#000;
+        font-size: 18px;
+      }
+	#header img {
+	    width: 600px !important;
+	}
+	#blogs{
+		padding-top: 0px !important;
+	    padding-bottom: 40px !important;
+    }
+    #blogs h1{
+	    padding-bottom: 10px !important;
+        padding-top: 0px !important;
+    }
+	#blogs .blog-slider li {
+	    padding-bottom: 55px !important;
+	}
+	#banner {
+	    position: relative;
+	    background: #000 !important;
+	}
+	#header-slider .item {
+	    margin-top: 100px !important;
+	    min-height: 0px !important;
+	    background: black !important;
+	}
+	#services {
+	    padding: 0px !important;
+	    padding-top: 20px !important;
+	}
+	#services p {
+	    padding-bottom: 0px !important;
+	    color:#fff !important;
+	    font-size: 20px !important;
+	}
+	div.module.parallax-reservation {
+	  	padding-top: 0px !important;
+	    padding-bottom: 0px !important;
+	}
+	#events h1 {
+	    padding-top: 150px !important;
+	}
+	#club-profiles h1 {
+	    padding-bottom: 10px !important;
+	}
+	div.module.parallax-profiles {
+	    padding: 0px !important;
+	}
+	
+	div.module.parallax-footer {
+	    /*padding-top: 10px !important;
+	    padding-bottom: 10px !important;*/
+	}
+	#footer p.footer-text {
+	    margin-top: 0px !important;
+	}
+	#footer .social {
+	    margin-top: 0px !important;
+	    position: relative;
+	}
+	#events .bx-controls {
+	    padding-top: 0px !important;
+	}
+	div.module.parallax-events {
+	    padding-bottom: 0px !important;
+	    margin-top: 0px !important;
+	}
+	.navbar {
+	    min-height: 0px !important;
+     }
+.container{ width: 1170px !important;}
+</style>
+	<link rel="stylesheet" href="<?php echo $base_url?>codebase/BeatPicker.min.css"/>
+    <script src="<?php echo $base_url?>codebase/jquery-1.11.0.min.js"></script>
+    <script src="<?php echo $base_url?>codebase/BeatPicker.min.js"></script>
+</head>
+
+<body id="wrapper" data-spy="scroll" data-target="#bs-example-navbar-collapse-1" style="background:#000;color:#fff;" onload="checkCookies()">
+<div id="loader">
+    <div class="loader">        
+    </div>
+</div>
+<?php $dbslid = new Application_Model_DbTable_DbGlobal(); $row = $dbslid->sileShow();?>
+<!-- start banner -->
+<div id="banner" class="module parallax parallax-header" >
+    <div class="container">
+        <div class="row">
+            <div class="banner-inner">                
+                <div id="header-slider" class="owl-carousel">
+                <?php foreach ($row as $rows){?>              
+                    <div class="item col-xs-12">
+                        
+                            <span><img class="logo-img wow fadeIn" data-wow-duration="3s" src="images/<?php echo $rows['img']?>" alt="Night Club logo" /></span>
+                    </div>
+                    <?php }?>
+                </div>
+            </div>
+        </div>
+        <div class="row banner-bottom hidden-xs">
+            <div class="concert-info" style="width: 100% !important;background: none !important;background-color: none !important;">
+              <div class="col-md-10 col-sm-9 col-xs-12 header-right affix-header-right">
+            	<nav class="navbar navbar-default col-xs-12 text-center">
+<!--                     <div class="navbar-header"> -->
+<!--                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> -->
+<!--                             <span class="sr-only">Toggle navigation</span> -->
+<!--                             <span class="icon-bar"></span> -->
+<!--                             <span class="icon-bar"></span> -->
+<!--                             <span class="icon-bar"></span> -->
+<!--                         </button> -->
+<!--                     </div> -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                      
+                         <ul class="nav navbar-nav">
+                            <li class="hvr-underline-from-center active"><a href="#banner" class="icon1 scroll"></a><a href="#banner" class="scroll">  HOME </a></li>
+                            <li class="hvr-underline-from-center"><a href="#blogs" class="icon2 scroll"></a><a href="#blogs" class="scroll"> DJCOMPETITION  </a></li>
+                            <li class="hvr-underline-from-center"><a href="#events" class="icon3 scroll"></a><a href="#events" class="scroll"> PARTNERS</a></li>
+                            <li class="hvr-underline-from-center"><a href="#map" class="icon4 scroll"></a><a href="#map" class="scroll"> ABOUT&nbsp;US </a></li>
+                            <li class="hvr-underline-from-center active"><a href="#submit" class="icon5 scroll"></a><a href="#submit" class="scroll" id="submit_auto">SUBMIT  </a></li>
+<!--                             <li class="hvr-underline-from-center"><a href="#" class="icon1"></a><a href="#reservation" class="scroll"> CONTACT </a></li> -->
+                        </ul>
+                        
+                   </div>
+                </nav>
+               </div>        
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end banner -->
+
+<!-- start header -->
+<header id="header" data-spy="affix" data-offset-top="2" style="" >
+	<div class="container">
+    	<div class="row">
+        	<div class="col-md-12 col-sm-3 col-xs-12 text-center logo">
+            	<a href="#"><img class="logo-img wow fadeIn" data-wow-duration="3s" src="images/logos.jpg" alt="Night Club logo" /></a>
+            </div>
+            <div class="col-md-10 col-sm-9 col-xs-12 header-right affix-header-right">
+            	<nav class="navbar navbar-default col-xs-12 text-center">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                      
+                       <!--   <ul class="nav navbar-nav">
+                            <li class="hvr-underline-from-center active"><a href="#banner" class="scroll"> HOME </a></li>
+                            <li class="hvr-underline-from-center"><a href="#gallery" class="scroll"> GALLERY </a></li>
+                            <li class="hvr-underline-from-center"><a href="#events" class="scroll"> EVENTS </a></li>
+                            <li class="hvr-underline-from-center"><a href="#blogs" class="scroll"> BLOG &amp; NEWS </a></li>
+                            <li class="hvr-underline-from-center"><a href="#reservation" class="scroll"> CONTACT </a></li>
+                        </ul>
+                        -->
+                   </div>
+                </nav>
+               </div>
+        </div>
+    </div>
+</header>
+<!-- end header -->
+
+<!-- start services -->
+<div class="overlay">
+	<div class="overlay-load">
+		<div class="overlay-msg">
+	    </div>
+	</div>
+</div>
+<div id="services">
+	<div class="container">
+    	<div class="row">
+        	<h1 class="wow fadeInUp" data-wow-duration="2s">WELCOME CAMBODIANDJS.COM</h1>
+       
+        </div>
+    </div>
+    <!-- Make-Reservation -->
+<div id="reservation" class="module parallax parallax-reservation">
+    <div class="container">
+        <div class="row">
+<!--             <h1 class="wow fadeInUp" data-wow-duration="1s">Submit Your Profile</h1>  -->
+<!--             <p class="wow fadeIn" data-wow-duration="1s">Want to set up your profile</p> -->
+        
+            <div class="col-sm-12 reservation-form" id="submit" >
+               <form class="form-horizontal" action="<?php echo $base_url?>register/index"  method="post" enctype="multipart/form-data" style="border: 1px solid White ! important; padding-left: 50px; padding-right: 50px;"> 
+                     <div style="" class="col-sm-12">
+					      <div  class="col-sm-3">
+<!-- 											<label class="control-label col-md-2">Image <span class="required"> -->
+								 </span>
+							</label>
+								<div class="form-group last">
+									<div class="col-md-12">
+										<div class="fileinput fileinput-new" data-provides="fileinput">
+											<div class="fileinput-new thumbnail" style="width: 150px; height: 150px;">
+												<label id="display_titel" class="full-size">
+													<img src="<?php echo $this->baseUrl()?>/images/profileimg.png" alt="" style="padding:3px ;background:#7C9BAB none repeat scroll 3px;width: 150px;">
+												</label>
+											</div>
+											<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;">
+											
+											</div>
+											<div>
+												<dt id="photo-label">&nbsp;</dt>
+												<dd>
+<!-- 												<input name="MAX_FILE_SIZE" value="3145728" id="MAX_FILE_SIZE" type="hidden"> -->
+												<input name="photo" id="photo" type="file" required="required" style="position: absolute; top: 132px;left: -21px;border: 0px none !important;"></dd>
+												<a href="#" class="btn red fileinput-exists" data-dismiss="fileinput" style="position: absolute; top: 132px; left: 116px;" >
+												Remove </a>
+											</div>
+										</div>
+									</div>
+								</div>
+						 </div>   
+						 <div class="col-sm-6">
+	                        <h1 class="wow fadeInUp" data-wow-duration="1s">Submit Your Profile</h1> 
+                            <p class="wow fadeIn" data-wow-duration="1s">Want to set up your profile&nbsp;&nbsp;/&nbsp;<a href="<?php echo $this->baseUrl();?>/index">Learn more</a>&nbsp;&nbsp;&gt;</p>
+	                    </div>
+					 </div>
+	                 <div class="form-group">
+	                   <div class="col-sm-6">
+	                        <label class="col-sm-12 " for="fullname">Full Name</label> 
+	                   		<input  class="form-control" name="full_name" id="full_name" placeholder="Full Name" type="text" required="required">
+	                    </div>
+	                    <div class="col-sm-6">
+	                        <label class="col-sm-12 " for="Nationallity">Age:</label> 
+	                   		<input  class="form-control" name="age" id="age" placeholder="Age" type="text">
+	                    </div>
+	                 </div> 
+	                 <div class="form-group">
+	                   <div class="col-sm-6">
+	                        <label class="col-sm-12 " for="maritalstatus:">Gender:</label> 
+	                            <select ng-model='discussionsSelect' class='form-control' name="gender" id="gender">
+						            <option  value='1' style="background: #fff;">Male</option>
+						            <option value='2' style="background: #fff;">Female</option>
+						         </select>
+	                    </div>
+	                    <div class="col-sm-6">
+	                         <label class="col-sm-12" for="generation">Generation:</label> 
+	                 		 <input class="form-control" name="generation" id="generation" placeholder="Generation" type="text">  
+	                    </div>               
+	                 </div> 
+	                 <div class="form-group">
+	                   <div class="col-sm-6">
+	                        <label class="col-sm-12 " for="dateofbirth">Date</label> 
+	                   		<input class="col-sm-12 " value="yyyy-mm-dd" type="text" data-beatpicker="true" name="date"  id="date" style="background-image: none !important;"/>
+	                    </div>
+	                    <div class="col-sm-6">
+	                         <label class="col-sm-12" for="nric">Phone Number:</label> 
+	                 		 <input class="form-control" name="contact_no" id="contact_no" placeholder="Contact No" type="text">  
+	                    </div>
+	                 </div> 
+	                 <div class="form-group">
+	                   <div class="col-sm-6">
+	                         <label class="col-sm-12" for="email">Email: </label> 
+	                 		 <input class="form-control" name="email" id="email" placeholder="Email" type="email">  
+	                    </div>     
+	                    <div class="col-sm-6">
+	                         <label class="col-sm-12" for="address">Address</label> 
+	                 		 <input class="form-control" name="address" id="address" placeholder="Address" type="text">  
+	                    </div>              
+	                 </div> 
+<!-- 	                 <div class="form-group">  -->
+<!-- 	                     <label for="exampleInputPassword1">Password</label>  -->
+<!-- 	                     <input class="form-control" id="exampleInputPassword1" placeholder="Password" type="password">  -->
+<!-- 	                 </div>  -->
+	                 <div class="form-group">
+	                   <div class="col-sm-6">
+	                        <label class="col-sm-12" for="address">Club Playing:</label> 
+	                 		 <input class="form-control" name="club_playing" id="club_playing" placeholder="Club Playing" type="text">  
+	                    </div>     
+	                    <div class="col-sm-6">
+                             <label for="uploadremix">Upload your remix(mp3)</label>
+	                         <input id="uploadremix" name="uploadremix" type="file" required="required">  
+	                    </div>              
+	                 </div>
+	                      <p class="help-block"><button type="submit" class="btn btn-default" name="save_new" value="submit" >Submit</button> </p> 
+               </form>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- Make-Reservation -->
+</div>
+<div id="events" class="module parallax parallax-events">
+	<div class="container">
+    	<div class="row">
+        	<div class="event-inner col-sm-12 text-center">
+            	<h1 class="wow fadeInUp" data-wow-duration="1s"> Sponsor </h1>
+            	<h2 style="color:#fff;">   </h2>
+                    <ul class="bxslider one">
+                    <?php if(!empty($this->rows_par)) foreach ($this->rows_par As $rows_patner){?>
+                        <li>
+                            <div class="event-box" style="height:350px">
+                                <div class="event-box-left clearfix">
+                                    <h2> <br><?php echo $rows_patner['title']?></h2>
+                                    <p>
+                                        <?php //echo $rows_patner['caption']?>
+                                    </p>
+                                </div>
+                                <div class="event-box-right clearfix">
+                                    <img class="img-responsive" src="<?php echo $base_url;?>/images/<?php echo $rows_patner['img'];?>" alt="Night Club Event" />
+                                </div>
+                                <div class="event-box-bottom text-left clearfix">
+                                   
+                                </div>
+                            </div>
+                        </li>
+                     <?php }?>
+<!--                         <li> -->
+<!--                             <div class="event-box"> -->
+<!--                                 <div class="event-box-left clearfix"> -->
+<!--                                     <h2>07 <br><span class="month"> AUGUST</span></h2> -->
+<!--                                     <h3>12:20 AM</h3> -->
+<!--                                     <p><i class="fa fa-map-marker"></i><br> -->
+<!--                                         CITY PLAZA, <br>NEW YORK, AMERICA -->
+<!--                                     </p> -->
+<!--                                 </div> -->
+<!--                                 <div class="event-box-right clearfix"> -->
+<!--                                     <img class="img-responsive" src="images/event-img2.jpg" alt="Night Club Event" /> -->
+<!--                                 </div> -->
+<!--                                 <div class="event-box-bottom text-left clearfix"> -->
+<!--                                     <h2>Proudly Present owner theme event</h2> -->
+<!--                                 </div> -->
+<!--                           </div> -->
+<!--                       </li> -->
+<!--                        <li> -->
+<!--                             <div class="event-box"> -->
+<!--                                 <div class="event-box-left clearfix"> -->
+<!--                                     <h2>21 <br><span class="month"> October</span></h2> -->
+<!--                                     <h3>03:10 AM</h3> -->
+<!--                                     <p><i class="fa fa-map-marker"></i><br> -->
+<!--                                         CITY PLAZA, <br>NEW YORK, AMERICA -->
+<!--                                     </p> -->
+<!--                                 </div> -->
+<!--                                 <div class="event-box-right clearfix"> -->
+<!--                                     <img class="img-responsive" src="images/event-img3.jpg" alt="Night Club Event" /> -->
+<!--                                 </div> -->
+<!--                                 <div class="event-box-bottom text-left clearfix"> -->
+<!--                                     <h2>Proudly Present owner theme event</h2> -->
+<!--                                 </div> -->
+<!--                           </div> -->
+<!--                       </li> -->
+                 </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- start blogs -->
+<div id="blogs">
+	<div class="container">
+    	<div class="row">
+        	<h1 class="wow fadeInUp" data-wow-delay="0.5s" data-wow-duration="1s">DJ&nbsp;COMPITTION&nbsp;ROUND</h1>
+            <div class="blog-slider col-md-7 col-xs-12">
+                <ul class="nav nav-tabs bxslider two">
+                <?php if(!empty($this->row_round)) foreach($this->row_round As $row_round){?>
+                    <li class="clearfix active">
+                    	<div class="borderLeft"></div>
+                        <div class="event-time clearfix">
+                            <p><?php echo date("d-m-Y",strtotime($row_round['date']));?></p>
+                            <h2><?php echo date("D",strtotime($row_round['date']));?></h2>
+                            <i class="fa fa-microphone"></i>
+                        </div>
+                        <div class="event-detail clearfix">
+                        	<i class="fa fa-caret-left fa-4x"></i>
+                        	<div class="event-detail-img">
+                              <img src="<?php echo $this->baseUrl()."/images/".$row_round['img'];?>" alt="Cambodian Dj" />
+                            </div>
+                            <div class="event-detail-inner">
+                                <h2><a href="#blog1" data-toggle="tab"><?php echo $row_round['title'];?></a></h2>
+                                <p><?php echo $row_round['description'];?></p>
+                                <i class="fa fa-long-arrow-right"></i>
+                            </div>
+                        </div>
+                    </li>
+                  <?php }?>
+<!--                     <li class="clearfix"> -->
+<!--                     	<div class="borderLeft"></div> -->
+<!--                         <div class="event-time clearfix"> -->
+<!--                             <p>25-09-2012</p> -->
+<!--                             <h2>monday</h2> -->
+<!--                             <i class="fa fa-play"></i> -->
+<!--                         </div> -->
+<!--                         <div class="event-detail clearfix"> -->
+<!--                         	<i class="fa fa-caret-left fa-4x"></i> -->
+<!--                             <div class="event-detail-img"> -->
+<!--                             	<img src="images/blog-small-img2.jpg" alt="Night Club Blog" /> -->
+<!--                             </div> -->
+<!--                             <div class="event-detail-inner"> -->
+<!--                                 <h2><a href="#blog2" data-toggle="tab">More then 100 year of night club</a></h2> -->
+<!--                                 <p>Nulla or narm mus vel ultricies. Quisque ve odio nibh. Fusce vel dignissim orem</p> -->
+<!--                                 <i class="fa fa-long-arrow-right"></i> -->
+<!--                             </div> -->
+<!--                         </div> -->
+<!--                     </li> -->
+<!--                     <li class="clearfix"> -->
+<!--                     	<div class="borderLeft"></div> -->
+<!--                         <div class="event-time clearfix"> -->
+<!--                             <p>22-12-2013</p> -->
+<!--                             <h2>sunday</h2> -->
+<!--                             <i class="fa fa-camera"></i> -->
+<!--                         </div> -->
+<!--                         <div class="event-detail clearfix"> -->
+<!--                         	<i class="fa fa-caret-left fa-4x"></i> -->
+<!--                             <div class="event-detail-img"> -->
+<!--                             	<img src="images/blog-small-img3.jpg" alt="Night Club Blog" /> -->
+<!--                             </div> -->
+<!--                             <div class="event-detail-inner"> -->
+<!--                                 <h2><a href="#blog3" data-toggle="tab">Tattoo convention club</a></h2> -->
+<!--                                 <p>Nulla or narm mus vel ultricies. Quisque ve odio nibh. Fusce vel dignissim orem.</p> -->
+<!--                                 <i class="fa fa-long-arrow-right"></i> -->
+<!--                             </div> -->
+<!--                         </div> -->
+<!--                     </li> -->
+                </ul>
+                <div class="control">
+		            <span id="slider-prev">
+		                
+		            </span>
+		            <span id="slider-next">
+		                
+		            </span>
+		        </div>
+            </div>
+            <div id="myTabContent" class="col-md-5 col-xs-12 tab-content wow fadeIn" data-wow-duration="1s">
+            	<div class="tab-pane active" id="blog1">
+            	<?php if(!empty($this->rows_ourcon)) foreach($this->rows_ourcon As $row_ourcon){?>
+              		<h2><?php echo $row_ourcon['title']?></h2>
+                	<i class="fa fa-user"><span class="admin">by admin</span></i>
+                    <i class="fa fa-tag"><span class="tag">event, tattoos, convetions</span></i>
+                    <img class="wow fadeIn" data-wow-duration="1s" src="images/blog-img1.jpg" alt="Night Club Event" />
+                    <div class="overlay clearfix">
+                    	<div class="overlay-inner">
+                            <h3><span class="bold">Beautiful tattoos</span> - source: Image Bigshok</h3>
+                      </div>
+                    </div>
+                    <h3><?php echo $row_ourcon['title']?></h3>
+                    <p class="wow fadeIn" data-wow-duration="1s"><?php echo $row_ourcon['description']?></p>
+                    <div class="share">
+                    	<h4>Share this article:</h4>
+                        <p class="clearfix">
+                            <a href="http://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+                            <a href="http://www.google.com/"><i class="fa fa-google"></i></a>
+                            <a href="http://www.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+                            <a href="http://www.twitter.com/"><i class="fa fa-twitter"></i></a>
+                            <a href="http://www.rss.com/"><i class="fa fa-rss"></i></a>
+                        </p>
+                    </div>
+                    <?php }?>
+              </div>
+              <div class="tab-pane" id="blog2">
+                  <h2>More then 100 year of night club</h2>
+                  <i class="fa fa-user"><span class="admin">by admin</span></i>
+                    <i class="fa fa-tag"><span class="tag">event, tattoos, convetions</span></i>
+                    <img src="images/blog-img2.jpg" alt="Night Club Event" />
+                    <div class="overlay clearfix">
+                      <div class="overlay-inner">
+                            <h3><span class="bold">Beautiful tattoos</span> - source: Image Bigshok</h3>
+                      </div>
+                    </div>
+                    <h3>We are the champion of this field</h3>
+                    <p>Nulla or narm mus vel ultricies. Quisque ve odio nibh. Fusce vel dignissim orem, ac malesuada massa. Manas malesuada.Nulla or narm mus vel ultricies. Quisque ve odio nibh. Fusce vel dignissim orem, ac malesuada massa Nulla or narm mus vel ultricies. Quisque ve odio nibh. Fusce vel dignissim orem, ac malesuada massa. Manas malesuada.Nulla or narm mus vel ultricies Nulla or narm Nulla or narm mus vel ultricies.</p>
+                    <div class="share">
+                      <h4>Share this article:</h4>
+                        <p class="clearfix">
+                            <a href="http://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+                            <a href="http://www.google.com/"><i class="fa fa-google"></i></a>
+                            <a href="http://www.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+                            <a href="http://www.twitter.com/"><i class="fa fa-twitter"></i></a>
+                            <a href="http://www.rss.com/"><i class="fa fa-rss"></i></a>
+                        </p>
+                    </div>
+              </div>
+              <div class="tab-pane" id="blog3">
+                  <h2>Tattoo convention club</h2>
+                  <i class="fa fa-user"><span class="admin">by admin</span></i>
+                    <i class="fa fa-tag"><span class="tag">event, tattoos, convetions</span></i>
+                    <img src="images/blog-img3.jpg" alt="Night Club Event" />
+                    <div class="overlay clearfix">
+                      <div class="overlay-inner">
+                            <h3><span class="bold">Beautiful tattoos</span> - source: Image Bigshok</h3>
+                      </div>
+                    </div>
+                    <h3>We introduce many new Trends</h3>
+                    <p>Nulla or narm mus vel ultricies. Quisque ve odio nibh. Fusce vel dignissim orem, ac malesuada massa. Manas malesuada.Nulla or narm mus vel ultricies. Quisque ve odio nibh. Fusce vel dignissim orem, ac malesuada massa Nulla or narm mus vel ultricies. Quisque ve odio nibh. Fusce vel dignissim orem, ac malesuada massa. Manas malesuada.Nulla or narm mus vel ultricies.</p>
+                    <div class="share">
+                      <h4>Share this article:</h4>
+                        <p class="clearfix">
+                            <a href="http://www.facebook.com/"><i class="fa fa-facebook"></i></a>
+                            <a href="http://www.google.com/"><i class="fa fa-google"></i></a>
+                            <a href="http://www.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+                            <a href="http://www.twitter.com/"><i class="fa fa-twitter"></i></a>
+                            <a href="http://www.rss.com/"><i class="fa fa-rss"></i></a>
+                        </p>
+                    </div>
+              </div>
+           </div>
+        </div>
+    </div>
+</div>
+<!-- end blogs -->
+    <!-- Map -->
+    <div class="container-fluid margin-top" id="map">
+    <?php echo Application_Model_DbTable_DbGlobal::getContactByType(3);?>
+<!--         <div class="row map wow fadeIn" data-wow-delay="1s" data-wow-duration="2s" data-wow-offset="200"> -->
+<!--              <div id="map-canvas"> -->
+<!--                <h1 class="sr-only">Map</h1> -->
+<!--              </div> -->
+<!--         </div> -->
+    </div>
+        <!-- Map -->
+
+
+<!-- footer -->
+<div id="footer" class="module parallax parallax-footer">    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-12 text-center footer-info wow fadeInUp" data-wow-duration="1s">
+                <img src="images/logos.png" alt="Logo" style="width: 250px;">
+            </div>
+            <div class="col-md-3 col-sm-4 text-center footer-info wow fadeIn" data-wow-duration="2s" data-wow-delay="1s">
+                <p><i class="fa fa-map-marker fa-3x"></i></p>
+                <p class="footer-text"><?php echo Application_Model_DbTable_DbGlobal::getParamateByName('address');?>.</p>
+            </div>
+            <div class="col-md-3 col-sm-4 text-center footer-info wow fadeIn" data-wow-duration="2s" data-wow-delay="1s">
+                <p><i class="fa fa-envelope fa-3x"></i></p>
+                <p class="footer-text">
+                    <a target="_blank" href="<?php echo Application_Model_DbTable_DbGlobal::getParamateByName('email1');?>"><?php echo Application_Model_DbTable_DbGlobal::getParamateByName('email1');?>.</a>
+                    <a target="_blank" href="<?php echo Application_Model_DbTable_DbGlobal::getParamateByName('email2');?>"><?php echo Application_Model_DbTable_DbGlobal::getParamateByName('email2');?>.</a>
+                </p> 
+            </div>
+            <div class="col-md-3 col-sm-4 text-center footer-info wow fadeIn" data-wow-duration="2s" data-wow-delay="1s">
+                <p><i class="fa fa-phone fa-3x"></i></p>
+                <p class="footer-text">
+                    <?php echo Application_Model_DbTable_DbGlobal::getParamateByName('phone1');?>
+                    <br>
+                    <?php echo Application_Model_DbTable_DbGlobal::getParamateByName('phone2');?>
+                </p>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="social affix-social">
+                <a target="_blank" href="<?php echo Application_Model_DbTable_DbGlobal::getParamateByName('youtube');?>"><i class="fa fa-youtube-square fa-3x"></i></a>&nbsp;&nbsp;
+                <a target="_blank" href="<?php echo Application_Model_DbTable_DbGlobal::getParamateByName('facebook');?>"><i class="fa fa-facebook-square fa-3x"></i></a>&nbsp;&nbsp;
+                <a target="_blank" href="<?php echo Application_Model_DbTable_DbGlobal::getParamateByName('google');?>"><i class="fa fa-google-plus-square  fa-3x"></i></a>&nbsp;&nbsp;
+                <a target="_blank" href="<?php echo Application_Model_DbTable_DbGlobal::getParamateByName('twitter');?>"><i class="fa fa-tumblr-square fa-3x"></i></a>
+<!--                 <a href="http://www.pinterest.com/"><i class="fa fa-pinterest fa-2x"></i></a> -->
+<!--                 <a href="http://www.twitter.com/"><i class="fa fa-twitter fa-2x"></i></a> -->
+<!--                 <a href="http://www.rss.com/"><i class="fa fa-rss fa-2x"></i></a> -->
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- footer -->
+
+<div id="copy-right">
+    <div class="container">
+        <div class="row text-center">
+            <p>CopyRight &copy; 2015 DJ Rock, Design and Develop by <a target="_blank" href="http://cam-app.com/en/"> cam-app.com</a>, Powered by Cam App Technology Development Team 2014-2015 </p>
+        </div>
+    </div>
+</div>
+        <script src="<?php echo $base_url;?>scripts/wow.min.js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/jquery.js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/bootstrap.min.js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/jquery.smoothwheel.js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/respond.js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/jquery-migrate.min.js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/jquery.prettyPhoto.js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/jquery.bxslider.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/jquery.mixitup.js"></script>
+		
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/owl.carousel.js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/jquery.plugin.js" ></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/jquery.countdown.min.js" ></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/modernizr.custom.97074.js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/jquery.hoverdir.js"></script>
+		<script type="text/javascript" src="<?php echo $base_url;?>scripts/script.js"></script>
+
+    
+
+ <script type="text/javascript">
+	jQuery(function() {
+			$('form.night_club').on('submit', function(){
+				var curForm = jQuery(this);
+				$.ajax({
+					url: 'mail.php',
+					type: 'POST',
+					data: jQuery(curForm).serialize(),
+					success: function(data) {
+						jQuery(curForm).children('.expMessage').html(data);
+					}
+				});
+				return false;
+			});	
+	});
+	</script>
+	<script type="text/javascript" src="<?php echo $base_url;?>/js/bootstrap-fileinput.js"></script>
+</body>
+
+<!-- Mirrored from layerstheme.com/portfolio/html/night-club/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 03 Dec 2015 03:52:04 GMT -->
+</html>

@@ -1,0 +1,42 @@
+<title>Our Promotion</title>
+<section class="content">
+    <div class="container">
+    <h4 style="background:#e3c4d4;background: linear-gradient(to bottom, #ffffff 0%,#e3c4d4 100%);padding:10px;color:red; " class="margin-bottom-25 margin-top-none"><strong>OUR </strong><span style="text-transform: uppercase;">Promotion</span></h4>
+        <div class="inner-page blog-container row">
+            <div class="col-lg-9 col-md-7 col-sm-7 col-xs-12 padding-left-none padding-right-15">
+                <?php if(!empty($this->promorows))foreach($this->promorows As $row){?>
+                <div class="blog-content margin-bottom-40">
+                    <div class="blog-title">
+                        <h3 style="color:red;"><?php echo $row['season_title'];?></h3>
+                    </div>
+                    <div class="post-entry clearfix"><img style="width:350px;" src="<?php echo $this->baseUrl()."/images/".$row['photo_name'];?>" alt="" class="alignleft">
+                        <p align="justify"><?php echo $row['note'];?></p>
+                        <div class="blog-end margin-top-20">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right post-tags"><span class="fa fa-tags tags"><a href="#" style="color:red;">Spacial offer</a></span></div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <?php }?>
+            </div>
+            <div class="col-lg-3 col-md-5 col-sm-5 col-xs-12 xs-padding-top-20 padding-right-none padding-left-15">
+                <div class="side-widget padding-bottom-30">
+                    <div class="side-content">
+                        <div class="list col-xs-12 padding-bottom-50 xs-padding-top-40">
+                        	<h3 class="recent_posts margin-bottom-25">Previous Promotion</h3>
+                            <?php if($this->prepromorows)foreach ($this->prepromorows as $row){?>
+                            <div class="side-blog">
+                                <img style="width:60px;" src="<?php echo $this->baseUrl()."/images/".$row['photo_name'];?>" alt="" class="alignleft"> 
+                                <strong><?php echo$row['season_title'];?></strong>
+                               <p><?php echo substr($row['note'],0,30);?></p>
+                            </div>
+                            <?php }?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!--container ends--> 
+</section>

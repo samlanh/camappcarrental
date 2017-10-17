@@ -1,0 +1,39 @@
+<title>Privacy Policy</title>
+<section class="content">
+	<div class="container">
+		<div class="inner-page row">
+			<div class="row">
+				<div class="car_listings boxed boxed_left col-md-9 col-lg-push-3 col-md-push-3"><!-- start right -->
+					<div class="blog-content">
+                    <div class="post-entry clearfix">
+					<div class="col-lg-12">
+					   <?php if(!empty($this->rows)) foreach($this->rows as $rows){?>    
+					        <blockquote><?php echo $rows['title'];?></blockquote>
+					        <p><?php echo $rows['description'];?></p>        
+					   <?php }?>
+					</div>
+				   </div>
+				   </div>
+					<div class="clearfix"></div>
+				</div>
+				<div class=" col-md-3 col-sm-12 col-lg-pull-9 col-md-pull-9 left-sidebar">
+			         <div class="left_inventory">
+				               <div class="side-content row">
+		                            <div class="list col-md-12 col-sm-3 padding-bottom-50">
+		                                <ul>
+						                    <li id="home-active" class="active"><a href="<?php echo $this->baseUrl();?>">HOME</a></li>
+					                            <li style="font-size: 14px; font-weight: 600; color: #c7081b;"><a href="<?php echo $this->baseUrl()?>/index/about">ABOUT US</a></li>
+					                            <li style="font-size: 14px; font-weight: 600; color: #c7081b;"><a href="<?php echo $this->baseUrl()?>/index/job">JOB VACANY</a>
+					                            <li style="font-size: 14px; font-weight: 600; color: #c7081b;"><a href="<?php echo $this->baseUrl()?>/index/contact">CONTACT Us</a></li>
+					                            <li style="font-size: 14px; font-weight: 600; color: #c7081b;"><a href="<?php echo $this->baseUrl()?>/index/fqa">FAQs</a></li>
+					                            <li style="font-size: 14px; font-weight: 600; color: #c7081b;"><a href="<?php echo $this->baseUrl()?>/index/termcondition">TERMS & CONDITIONS</a></li>
+					                            <li style="list-style: square;"><a href="<?php echo $this->baseUrl()?>/index/policy">PRIVACY POLICY</a></li>
+						                </ul>
+		                            </div>
+	                        	</div>
+			         </div>
+			    </div>
+			 </div>
+		</div>
+	</div>
+</section>

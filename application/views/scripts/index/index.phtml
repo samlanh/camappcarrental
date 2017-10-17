@@ -1,0 +1,436 @@
+<style>
+.item-clock{ width:50%;float: left; border:1px solid #ccc; padding:3px; border-right: 0; border-bottom: 0;}
+.item-borderright{ border-right: 1px solid #ccc !important;}
+.item-bottom{ border-bottom: 1px solid #ccc !important;}
+
+</style>
+<?php 
+$tr=Application_Form_FrmLanguages::getCurrentlanguage(); 
+$form= $this->frmbooking;	  
+?>
+<title>Home-welcome to vrentacar.com</title>
+<style>
+	dt{ display: none;}
+</style>
+<style>
+		#calendar,
+		#calendar2,
+		#calendar3 {
+			border: 1px solid #DDD;
+			font-family: Tahoma;
+			font-size: 12px;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			border-radius: 5px;
+		}
+		.my-dropdown input{ 
+		padding: 5px;
+	-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+border-radius: 5px;
+}
+</style>
+<script>
+	var myCalendar;
+	function doOnLoad() {
+		myCalendar = new dhtmlXCalendarObject(["calendar","calendar2","calendar3",]);
+	}
+</script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/codebase/dhtmlxcalendar.css"/>
+<script src="<?php echo $this->baseUrl()?>/codebase/dhtmlxcalendar.js"></script>
+<!-- <section class="message-wrap"> -->
+<!--     <div class="container"> -->
+<!--         <div class="row"> -->
+<!--             <h2 class="col-lg-9 col-md-8 col-sm-12 col-xs-12 xs-padding-left-15">Discover a website for car dealers that converts visitors to <span class="alternate-font">customers</span></h2> -->
+<!--             <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12 xs-padding-right-15"> <a href="#" class="default-btn pull-right action_button lg-button">Schedule a Test Drive</a> </div> -->
+<!--         </div> -->
+<!--     </div> -->
+    <div class="message-shadow"></div>
+<!-- </section> -->
+<!--message-wrap ends-->
+<section class="content">
+    <div class="container">
+        <div class="homepage margin-bottom-none">
+        <section class="welcome-wrap sm-horizontal-15">
+<div class="row">
+
+    <?php $db = new Application_Model_DbTable_DbGlobal();
+	$marquee="marqueeshow";
+	$marqee_show = $db->getAllParameter($marquee);
+?>
+
+<marquee onmouseover="this.stop();" onmouseout="this.start();" style='margin-top: -43px;margin-bottom: -28px;'><h4 style="font-size: 15px;" class="margin-bottom-25 margin-top-none"><strong><?php echo $marqee_show;?><strong></h4></marquee>
+                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 welcome padding-left-none scroll_effect fadeInUp">
+     <h4 class="margin-bottom-25 margin-top-none"><strong>SEARCH</strong> FOR VEHICLE RENTAL</h4>
+<div class="search-form margin-bottom-20 padding-vertical-20">
+                            <form method="post" action="<?php echo $this->url(array('module'=>'default','controller'=>"carbooking",'action'=>'checkvaliabltime'),null,true); ?>">
+                              	<div class="select-wrapper clearfix">
+                                    <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        Pickup Date :
+                                        	<?php echo $this->frmbooking->getElement('pickup_date');?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    Pickup Time<br />
+                                        <div class="my-dropdown make-dropdown" style="width:45%;float:left;">
+                                            <?php echo $form->getElement('pickup_time');?>
+                                        </div>
+                                        <div style="width:9%; float:left;padding-left: 14px;"><span>:</span></div>
+                                        <div class="my-dropdown make-dropdown" style="width:45%">
+                                            <?php echo $form->getElement('pickup_minute');?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="select-wrapper clearfix">
+                                     <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        Return Date
+                                        <?php echo $form->getElement('return_date');?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                    	Return Time<br />
+                                         <div class="my-dropdown make-dropdown" style="width:45%;float:left">
+                                            <?php echo $form->getElement('return_time');?> 
+                                        </div>
+                                        <div style="width:9%; float:left;padding-left: 14px;"><span>:</span></div>
+                                        <div class="my-dropdown make-dropdown" style="width:45%">
+                                            <?php echo $form->getElement('return_minute');?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="select-wrapper clearfix">
+                                     <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                       	Pick-up Location
+                                        	<?php echo $form->getElement('pickup_location');?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                         <div class="my-dropdown make-dropdown">
+                                        Return Location
+                                        	<?php echo $form->getElement('return_location');?>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="select-wrapper clearfix">
+                                     <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                         <div class="my-dropdown make-dropdown">
+                                         <div class="form-element" style="float:right;">
+	                                        <input type="submit" name="search_vehicle" value="Find Vehicle Now" class="find_new_vehicle pull-right md-button">
+	                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </form>
+                        </div>
+                        <h4 class="margin-bottom-25 margin-top-none"><strong>WELCOME TO </strong><span style="text-transform: uppercase;"><?php echo $this->welcome['title'];?></span></h4>
+                        <?php echo $this->welcome['description'];?>
+                    </div>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 welcome padding-left-none scroll_effect fadeInUp">
+                    	<div class="arrow3 clearfix" id="slideControls6" style="position:relative; margin-bottom: -13px;">
+                        	<span class="prev-btn1"></span>
+                        	<span class="next-btn1"></span> 
+                    	<div class="pricing_wrapper layout-4 clearfix" style="border:1px solid #ccc;">
+                        <div class="carasouel-slider6" style="position:relative; ">
+                       <?php if(!empty($this->vehicle ))foreach($this->vehicle as $row){?>
+                           <div class="col-md-12 col-sm-12 col-xs-12 padding-right-5 padding-left-5" style="height:350px;">
+			                    <div class="pricing_table" >
+			                        <div class="pricing-header" style="background: #FF0300">
+			                            <a style="color:#fff;background:none !important;text-indent: 0px;display: inline;"  target="_blank" href="<?php echo $this->baseUrl()."/index/vehicle/id/".$row['id'];?>"><?php //echo $row["make"]." ".$row["model"]." ".$row["sub_model"];?><h6 style=""><strong>CAR FOR</strong> RENT!</h6></a>
+			                        </div>
+			                        <div class="main_pricing" style="background: #fff;">
+			                        	<img style="border:none;padding-top:5px;" src="<?php echo $this->baseUrl()."/images/vehicle/".$row['img_front_right'];?>" alt="preview" />
+			                        	<div style="clear:both;"></div>
+			                        </div>
+			                        <div style="clear:both;"></div>
+			                        <div class="category_pricing">
+			                        	<strong style="color:red; color: black;
+   -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+   -webkit-text-stroke-width: 2px;
+   -webkit-text-stroke-color: #FF24C0; font-size: 18px;"><?php echo $row["discount"]?>% OFF!</strong>
+			                         		<ul>
+			                                	<li style="color:#FF24C0;font-weight: bold;">From <?php echo date("d M",strtotime($row['discount_fromdate']))." - ".date("d M Y",strtotime($row['discount_todate']));?></li>
+			                                	<li>Ref:	<?php echo $row['reffer'];?></li>
+			                                	<?php $rowprice = Application_Model_DbTable_DbGlobal::getVehiceRankingDay($row["id"]);
+			                                	if(!empty($rowprice)) foreach($rowprice As $pric){?>
+		                                			<!--<li><?php //echo $pric["package_name"];?>: $ <?php echo number_format($pric["price"],2);?> / Day</li>-->
+		                                    	<?php }?>
+		                                </ul>
+			                        </div>
+			                        <div class="price-footer padding-vertical-15">
+			                            <form method="post" action="#">
+			                                <input  type="button"  value="Book Now" label="Book Now" onclick="window.location = '<?php echo $this->url(array('module'=>'default','controller'=>"index",'action'=>'booking'),null,true); ?>';"/>
+<input  type="button"  value="View Detail" label="View Detail" onclick="window.location = '<?php echo $this->baseUrl()."/index/vehicle/id/".$row['id'];?>';"/>
+			                            </form>
+			                        </div>
+			                    </div>
+			                </div>
+                            <?php }?>
+                        </div>
+                        </div>
+                        </div>
+                        
+                        
+                        <div class="box-clock" >
+                        <div style="background:red; clear: both; color: #fff; margin-top:10px; text-align: center; ">Time Clock</div>
+							<div class="item-clock">
+								<script src="http://24timezones.com/js/swfobject.js" language="javascript"></script>
+								<script src="http://24timezones.com/timescript/maindata.js.php?city=1840150" language="javascript"></script>
+								<table>
+									<tbody>
+									<tr>
+									<td>
+										<div id="flash_container_tt54115c176b491"><embed type="application/x-shockwave-flash" src="http://24timezones.com/timescript/clock_final.swf" width="125" height="125" style="undefined" id="main" name="main_0.13697020197287202" bgcolor="#FFFFFF" quality="high" movie="http://24timezones.com/timescript/clock_final.swf" wmode="transparent" flashvars="color=FFFFFF&amp;logo=1&amp;city=1840150" allowscriptaccess="always" title="Adobe Flash Player"></div><script type="text/javascript">
+									var flashMap = new SWFObject("http://24timezones.com/timescript/clock_final.swf", "main", "125", "125", "7.0.22", "#FFFFFF", true)
+									flashMap.addParam("movie",      "http://24timezones.com/timescript/clock_final.swf");
+									flashMap.addParam("quality",    "high");
+									flashMap.addParam("wmode",    "transparent");
+									flashMap.addParam("flashvars",  "color=FFFFFF&logo=1&city=1840150");
+									flashMap.write("flash_container_tt54115c176b491");
+								</script></td></tr><tr><td style="text-align: center; font-weight: bold"><a href="http://24timezones.com/world_directory/time_in_tokyo.php" target="_blank" style="text-decoration: none" title="local time Tokyo">Tokyo</a></td></tr></tbody></table>
+							</div>
+							<div class="item-clock item-borderright">
+								<script src="http://24timezones.com/js/swfobject.js" language="javascript"></script>
+								<script src="http://24timezones.com/timescript/maindata.js.php?city=1840164" language="javascript"></script>
+								<table><tbody><tr><td><div id="flash_container_tt5411624db66a3"><embed type="application/x-shockwave-flash" src="http://24timezones.com/timescript/clock_final.swf" width="125" height="125" style="undefined" id="main" name="main_0.5782235735096037" bgcolor="#FFFFFF" quality="high" movie="http://24timezones.com/timescript/clock_final.swf" wmode="transparent" flashvars="color=FFFFFF&amp;logo=1&amp;city=1840164" allowscriptaccess="always" title="Adobe Flash Player"></div><script type="text/javascript">
+									var flashMap = new SWFObject("http://24timezones.com/timescript/clock_final.swf", "main", "125", "125", "7.0.22", "#FFFFFF", true)
+									flashMap.addParam("movie",      "http://24timezones.com/timescript/clock_final.swf");
+									flashMap.addParam("quality",    "high");
+									flashMap.addParam("wmode",    "transparent");
+									flashMap.addParam("flashvars",  "color=FFFFFF&logo=1&city=1840164");
+									flashMap.write("flash_container_tt5411624db66a3");
+								</script></td></tr><tr><td style="text-align: center; font-weight: bold"><a href="http://24timezones.com/world_directory/time_in_moscow.php" target="_blank" style="text-decoration: none" title="local time Moscow">Moscow</a></td></tr></tbody></table>
+							</div>
+					        <div class="item-clock">
+								<script src="http://24timezones.com/js/swfobject.js" language="javascript"></script>
+					            <script src="http://24timezones.com/timescript/maindata.js.php?city=1840171" language="javascript"></script>
+					            <table><tbody><tr><td><div id="flash_container_tt541163dd538c0"><embed type="application/x-shockwave-flash" src="http://24timezones.com/timescript/clock_final.swf" width="125" height="125" style="undefined" id="main" name="main_0.2821229128167033" bgcolor="#FFFFFF" quality="high" movie="http://24timezones.com/timescript/clock_final.swf" wmode="transparent" flashvars="color=FFFFFF&amp;logo=1&amp;city=1840171" allowscriptaccess="always" title="Adobe Flash Player"></div><script type="text/javascript">
+					                var flashMap = new SWFObject("http://24timezones.com/timescript/clock_final.swf", "main", "125", "125", "7.0.22", "#FFFFFF", true)
+					                flashMap.addParam("movie",      "http://24timezones.com/timescript/clock_final.swf");
+					                flashMap.addParam("quality",    "high");
+					                flashMap.addParam("wmode",    "transparent");
+					                flashMap.addParam("flashvars",  "color=FFFFFF&logo=1&city=1840171");
+					                flashMap.write("flash_container_tt541163dd538c0");
+					            </script></td></tr><tr><td style="text-align: center; font-weight: bold"><a href="http://24timezones.com/world_directory/time_in_new_york.php" target="_blank" style="text-decoration: none" title="local time New York">New York</a></td></tr></tbody></table>            
+					        </div>
+					        <div class="item-clock item-borderright">
+					        	<script src="http://24timezones.com/js/swfobject.js" language="javascript"></script>
+								<script src="http://24timezones.com/timescript/maindata.js.php?city=1840172" language="javascript"></script>
+					            <table><tbody><tr><td><div id="flash_container_tt54116466e5ee2"><embed type="application/x-shockwave-flash" src="http://24timezones.com/timescript/clock_final.swf" width="125" height="125" style="undefined" id="main" name="main_0.778194687794894" bgcolor="#FFFFFF" quality="high" movie="http://24timezones.com/timescript/clock_final.swf" wmode="transparent" flashvars="color=FFFFFF&amp;logo=1&amp;city=1840172" allowscriptaccess="always" title="Adobe Flash Player"></div><script type="text/javascript">
+					                var flashMap = new SWFObject("http://24timezones.com/timescript/clock_final.swf", "main", "125", "125", "7.0.22", "#FFFFFF", true)
+					                flashMap.addParam("movie",      "http://24timezones.com/timescript/clock_final.swf");
+					                flashMap.addParam("quality",    "high");
+					                flashMap.addParam("wmode",    "transparent");
+					                flashMap.addParam("flashvars",  "color=FFFFFF&logo=1&city=1840172");
+					                flashMap.write("flash_container_tt54116466e5ee2");
+					            </script></td></tr><tr><td style="text-align: center; font-weight: bold"><a href="http://24timezones.com/world_directory/time_in_paris.php" target="_blank" style="text-decoration: none" title="local time Paris">Paris</a></td></tr></tbody></table>                   
+					        </div>
+					        <div class="item-clock item-bottom">
+								<script src="http://24timezones.com/js/swfobject.js" language="javascript"></script>
+					            <script src="http://24timezones.com/timescript/maindata.js.php?city=1840173" language="javascript"></script>
+					            <table><tbody><tr><td><div id="flash_container_tt541164ba14eb5"><embed type="application/x-shockwave-flash" src="http://24timezones.com/timescript/clock_final.swf" width="125" height="125" style="undefined" id="main" name="main_0.716805009637028" bgcolor="#FFFFFF" quality="high" movie="http://24timezones.com/timescript/clock_final.swf" wmode="transparent" flashvars="color=FFFFFF&amp;logo=1&amp;city=1840173" allowscriptaccess="always" title="Adobe Flash Player"></div><script type="text/javascript">
+					                var flashMap = new SWFObject("http://24timezones.com/timescript/clock_final.swf", "main", "125", "125", "7.0.22", "#FFFFFF", true)
+					                flashMap.addParam("movie",      "http://24timezones.com/timescript/clock_final.swf");
+					                flashMap.addParam("quality",    "high");
+					                flashMap.addParam("wmode",    "transparent");
+					                flashMap.addParam("flashvars",  "color=FFFFFF&logo=1&city=1840173");
+					                flashMap.write("flash_container_tt541164ba14eb5");
+					            </script></td></tr><tr><td style="text-align: center; font-weight: bold"><a href="http://24timezones.com/world_directory/time_in_london.php" target="_blank" style="text-decoration: none" title="local time London">London</a></td></tr></tbody></table>                   
+					        </div>
+					        <div class="item-clock item-borderright item-bottom">
+								<script src="http://24timezones.com/js/swfobject.js" language="javascript"></script>
+					            <script src="http://24timezones.com/timescript/maindata.js.php?city=1840174" language="javascript"></script>
+					            <table><tbody><tr><td><div id="flash_container_tt5411651d0fe15"><embed type="application/x-shockwave-flash" src="http://24timezones.com/timescript/clock_final.swf" width="125" height="125" style="undefined" id="main" name="main_0.06173758557997644" bgcolor="#FFFFFF" quality="high" movie="http://24timezones.com/timescript/clock_final.swf" wmode="transparent" flashvars="color=FFFFFF&amp;logo=1&amp;city=1840174" allowscriptaccess="always" title="Adobe Flash Player"></div><script type="text/javascript">
+					                var flashMap = new SWFObject("http://24timezones.com/timescript/clock_final.swf", "main", "125", "125", "7.0.22", "#FFFFFF", true)
+					                flashMap.addParam("movie",      "http://24timezones.com/timescript/clock_final.swf");
+					                flashMap.addParam("quality",    "high");
+					                flashMap.addParam("wmode",    "transparent");
+					                flashMap.addParam("flashvars",  "color=FFFFFF&logo=1&city=1840174");
+					                flashMap.write("flash_container_tt5411651d0fe15");
+					            </script></td></tr><tr><td style="text-align: center; font-weight: bold"><a href="http://24timezones.com/world_directory/time_in_sydney.php" target="_blank" style="text-decoration: none" title="local time Sydney">Sydney</a></td></tr></tbody></table>                    
+					        </div>
+					        
+					        <div style="background:red; clear: both; color: #fff; margin-top:10px; text-align: center; ">Driver's Client Activities</div>
+					       	<a href="<?php echo $this->baseUrl()."/index/portfolio"?>"><img src="<?php echo $this->baseUrl()."/images/driver.jpg";?>" /></a>
+						</div>
+                        
+                    	</div>
+                    <!--welcome ends-->
+                    <!--invetory ends--> 
+                </div>
+</section>
+            <section class="car-block-wrap">
+                <div class="container">
+                <div class="row">
+                        <div class="arrow3 clearfix" id="slideControls3" style="margin-top: -55px;">
+                        	<span class="prev-btn" style="position: absolute; left: 71px ! important;"></span>
+<span class="next-btn"></span>
+                        </div>
+                    	<div class="pricing_wrapper layout-4 clearfix" style="border:1px solid #ccc;">
+                    	<h5 class="margin-top-none" style="background:red; padding: 5px; text-align: center; color: #fff; margin-bottom: 15px;">Vehicle Rental</h5>
+                        <div class="carasouel-slider4">
+                          <?php if(!empty($this->vehiclerows ))foreach($this->vehiclerows as $row){?>
+                           <div class="col-md-3 col-sm-6 col-xs-12 padding-right-5 padding-left-5" style="height:450px;">
+			                    <div class="pricing_table" >
+			                        <div class="pricing-header" style="background: #FF0300">
+			                            <a style="color:#fff;"  target="_blank" href="<?php echo $this->baseUrl()."/index/vehicle/id/".$row['id'];?>"><?php echo $row["make"]." ".$row["model"]." ".$row["sub_model"];?></a>
+			                        </div>
+			                        <div class="main_pricing" style="background: #fff;">
+			                        	<img style="border:none;padding-top:5px;" src="<?php echo $this->baseUrl()."/images/vehicle/".$row['img_front_right'];?>" alt="preview" />
+			                        	<div style="clear:both;"></div>
+			                        </div>
+			                        <div style="clear:both;"></div>
+			                        <div class="category_pricing">
+			                         		<ul>
+			                                	<li>Ref:	<?php echo $row['reffer'];?></li>
+			                                	<?php $rowprice = Application_Model_DbTable_DbGlobal::getVehiceRankingDay($row["id"]);
+			                                	if(!empty($rowprice)) foreach($rowprice As $pric){?>
+		                                			<li><?php echo $pric["package_name"];?>: $ <?php echo number_format($pric["price"],2);?> /Day</li>
+		                                    	<?php }?>
+		                                </ul>
+			                        </div>
+			                        <div class="price-footer padding-vertical-15">
+			                            <form method="post" action="#">
+			                                <input  type="button"  value="Book Now" label="Book Now" onclick="window.location = '<?php echo $this->url(array('module'=>'default','controller'=>"index",'action'=>'booking'),null,true); ?>';"/>
+			                            </form>
+			                        </div>
+			                    </div>
+			                </div>
+                            <?php }?>
+                            </div>
+                        </div>
+                </div>
+                 <div class="row">
+                 <div class="arrow3 clearfix" id="slideControls5" style="margin-top: -35px;position:relative; margin-bottom: -13px;">
+                        	<span class="prev-btn1"></span>
+                        	<span class="next-btn1"></span>
+                    <div class="pricing_wrapper layout-4 clearfix" style="border:1px solid #ccc;">
+                    	<h5 class="margin-top-none" style="background:red; padding: 5px; text-align: center; color: #fff; margin-bottom: 15px;">Product Rental</h5>
+                        <div class="carasouel-slider5" style="position:relative; ">
+                        <?php if($this->stuffrow)foreach ($this->stuffrow AS $row){?>
+	                        <div class="col-md-3 col-sm-6 col-xs-12 padding-right-5 padding-left-5" style="height:388px;">
+			                    <div class="pricing_table" >
+			                        <div class="pricing-header" style="background: #FF0300">
+			                            <h4><?php echo $row['equipment_name'];?></h4>
+			                        </div>
+			                        <div class="main_pricing" style="background: #fff;">
+			                           <img style="border:none;padding-top:5px;" src="<?php echo $this->baseUrl()."/images/".$row['photo_front'];?>" alt="preview">
+			                        	<div style="clear:both;"></div>
+			                        </div>
+			                        <div style="clear:both;"></div>
+			                        <div class="category_pricing">
+			                            <ul>
+			                                <li>Rental Pricing</li>
+			                               <?php $rowprice = Application_Model_DbTable_Dbstuffrental::getProductRankingDayPrice($row['id']);?>
+			                               <?php if(!empty($rowprice)) foreach($rowprice AS $rowrank){?>
+			                               <li><?php echo $rowrank["package_name"].' : $'.$rowrank["price"]." /Day";?></li>
+			                               <?php }?>
+			                            </ul>
+			                        </div>
+			                        <div class="price-footer padding-vertical-15">
+			                            <form method="post" action="#">
+			                                <input  type="button"  value="Book Now" label="Book Now" onclick="window.location = '<?php echo $this->url(array('module'=>'default','controller'=>"stuffbooking",'action'=>'index'),null,true); ?>';"/>
+			                            </form>
+			                        </div>
+			                    </div>
+			                </div>
+	                            
+                        <?php }?>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!--car-block-wrap ends-->
+            <!--car-info-wrap ends-->
+            <!--welcome-wrap ends-->
+            
+            <div class="row parallax_parent margin-top-30">
+                <div class="parallax_scroll clearfix" data-velocity="-.5" data-offset="-300" data-no-repeat="true" data-image="http://demo.themesuite.com/automotive/images/parallax2.jpg">
+                    <div class="overlay">
+                        <div class="container">
+                            
+                            <div class="row">
+                                
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-left-none margin-vertical-60">
+                                    <i class="fa fa-car"></i>
+                                    
+                                    <span class="animate_number margin-vertical-15">
+                                        <span class="number">2,000</span>
+                                    </span>
+                                    
+                                    Cars Sold
+                                </div>
+                                
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 margin-vertical-60">
+                                    <i class="fa fa-money"></i>
+                                    
+                                    <span class="animate_number margin-vertical-15">
+                                        $<span class="number">750,000</span>
+                                    </span>
+                                    
+                                    Amount Sold
+                                </div>
+                                
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 margin-vertical-60">
+                                    <i class="fa fa-users"></i>
+                                    <span class="animate_number margin-vertical-15">
+                                        <span class="number">100</span>%
+                                    </span>
+                                    Customer Satisfaction
+                                </div>
+                                
+                                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 padding-right-none margin-vertical-60">
+                                    <i class="fa fa-tint"></i>
+                                    
+                                    <span class="animate_number margin-vertical-15">
+                                        <span class="number">3,600</span>
+                                    </span>
+                                    
+                                    Oil Changes
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 
+<script src="<?php echo $this->baseUrl();?>/js/form-validate/scale.fix.js"></script>
+  <script src="<?php echo $this->baseUrl();?>/js/form-validate/jquery.formance.min.js" /></script>
+  <script src="<?php echo $this->baseUrl();?>/js/form-validate/awesome_form.js"></script>
+  <link rel="stylesheet" href="<?php echo $this->baseUrl();?>/js/js-ui/jquery-ui.css">
+  <script src="<?php echo $this->baseUrl();?>/js/js-ui/jquery-ui.js"></script>
+ <script type="text/javascript">
+  $(function() {
+	    $( "#datepicker" ).datepicker({ changeMonth: true,changeYear: true});
+	    $( "#datepicker" ).change(function() {
+	      $( "#datepicker" ).datepicker( "option","dateFormat", "dd-mm-yy" );
+	    });
+
+	    $( "#pick_date" ).datepicker({ changeMonth: true,changeYear: true});
+	    $( "#pick_date" ).change(function() {
+	      $( "#pick_date" ).datepicker( "option","dateFormat", "dd-mm-yy" );
+	    });
+		
+		$( "#fly_date" ).datepicker({ changeMonth: true,changeYear: true});
+	    $( "#fly_date" ).change(function() {
+	      $( "#fly_date" ).datepicker( "option","dateFormat", "dd-mm-yy" );
+	    });
+	$( "#dob" ).datepicker({ changeMonth: true,changeYear: true});
+	    $( "#dob" ).change(function() {
+	      $( "#dob" ).datepicker( "option","dateFormat", "dd-mm-yy" );
+	    });
+	    //checkSite();
+	  });
+</script>                         

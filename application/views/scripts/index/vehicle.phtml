@@ -1,0 +1,412 @@
+<?php $rs = $this->showdata;?>
+<title>Vehicle Detail</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <style>
+    
+    label, input { display:block; }
+    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    fieldset { padding:0; border:0; margin-top:25px; }
+    h1 { font-size: 1.2em; margin: .6em 0; }
+    div#users-contain { width: 350px; margin: 20px 0; }
+    div#users-contain table { margin: 1em 0; border-collapse: collapse; width: 100%; }
+    div#users-contain table td, div#users-contain table th { border: 1px solid #eee; padding: .6em 10px; text-align: left; }
+    .ui-dialog .ui-state-error { padding: .3em; }
+    .validateTips { border: 1px solid transparent; padding: 0.3em; }
+   .ui-button .ui-button-text{font-size:15px;}
+  </style>
+  <script>
+var urls      = window.location.href;
+$( document ).ready(function() {
+	document.getElementById('url').innerHTML=urls;
+	$('#txt_url').val(urls);
+});
+	
+</script>
+  <script>
+  $(function() {
+    var dialog, form,
+ 
+      // From http://www.whatwg.org/specs/web-apps/current-work/multipage/states-of-the-type-attribute.html#e-mail-state-%28type=email%29
+      emailRegex = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+      first_name = $( "#first_name" ),
+      last_name = $("#last_name"),
+      your_email = $( "#your_email" ),
+      friend_email = $("#friend_email"),
+      comment = $( "#comment" );
+      allFields = $( [] ).add( first_name ).add( last_name ).add( your_email ).add( friend_email ).add( comment ),
+      tips = $( ".validateTips" );
+ 
+    function updateTips( t ) {
+      tips
+        .text( t )
+        .addClass( "ui-state-highlight" );
+      setTimeout(function() {
+        tips.removeClass( "ui-state-highlight", 1500 );
+      }, 500 );
+    }
+ 
+    function checkLength( o, n, min, max ) {
+      if ( o.val().length > max || o.val().length < min ) {
+        o.addClass( "ui-state-error" );
+        updateTips( "Length of " + n + " must be between " +
+          min + " and " + max + "." );
+        return false;
+      } else {
+        return true;
+      }
+    }
+ 
+    function checkRegexp( o, regexp, n ) {
+      if ( !( regexp.test( o.val() ) ) ) {
+        o.addClass( "ui-state-error" );
+        updateTips( n );
+        return false;
+      } else {
+        return true;
+      }
+    }
+ url_submit = "<?php echo $this->url(array('module'=>'','controller'=>'forward','action'=>'forward'));?>";
+    function addUser() {
+      var valid = true;
+      allFields.removeClass( "ui-state-error" );
+ 
+      valid = valid && checkLength( first_name, "First Name", 3, 16 );
+      valid = valid && checkLength( last_name, "Last Name", 3, 16 );
+      valid = valid && checkLength( your_email, "Your Email", 6, 80 );
+      valid = valid && checkLength( friend_email, "Friend Email", 6, 80 );
+      //valid = valid && checkLength( comment, "Comment", 5, 500 );
+ 
+      valid = valid && checkRegexp( first_name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+      valid = valid && checkRegexp( last_name, /^[a-z]([0-9a-z_\s])+$/i, "Username may consist of a-z, 0-9, underscores, spaces and must begin with a letter." );
+      valid = valid && checkRegexp( your_email, emailRegex, "eg. jonh@xxx.com" );
+      valid = valid && checkRegexp( friend_email, emailRegex, "eg. jonh@xxx.com" );
+      //valid = valid && checkRegexp( password, /^([0-9a-zA-Z])+$/, "Password field only allow : a-z 0-9" );
+ 
+      if ( valid ) {
+          loading();
+    	  $.ajax({
+              type: "POST",
+              url: url_submit,
+              data: $("#forward").serialize(), // serializes the form's elements.
+              success: function(data)
+              {
+                   document.getElementsByClassName("overlay")[0].style.display="none";
+            	  val = $.parseJSON(data);
+                  alert(val); // show response from the php script.
+              },
+              error:function(e){
+                  alert(e);
+              }
+            });
+
+       //e.preventDefault();
+        dialog.dialog( "close" );
+      }
+      return valid;
+    }
+ 
+    dialog = $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 450,
+      width: 450,
+      modal: true,
+      buttons: {
+        "Send": addUser,
+        Cancel: function() {
+          dialog.dialog( "close" );
+        }
+      },
+      close: function() {
+        form[ 0 ].reset();
+        allFields.removeClass( "ui-state-error" );
+      }
+    });
+ 
+    form = dialog.find( "form" ).on( "submit", function( event ) {
+      event.preventDefault();
+      addUser();
+    });
+ 
+    $( "#create-user" ).button().on( "click", function() {
+      dialog.dialog( "open" );
+    });
+  });
+function loading(){
+	    document.getElementsByClassName("overlay")[0].style.display="block";
+	}
+  </script>
+<style>
+.flex-next, .flex-prev{ background: red !important;}
+</style>
+<div id="dialog-form" title="Create new user">
+  <p class="validateTips">All form fields are required.</p>
+ 
+  <form action="" id="forward">
+    <fieldset>
+    	<table width="100%">
+		<tr>
+			<td colspan="2">Do you want to forward this URL to your Friend</td>
+		</tr>
+		<tr>
+			<td colspan="2"><input type="hidden" name="txt_url" id="txt_url"><p id="url"></p></td>
+		</tr>
+		<tr>
+			<td>Fisrt Name :</td>
+			<td><input type="text" style="width: 100%" name="first_name" id="first_name" class="text ui-widget-content ui-corner-all"></td>
+		</tr>
+		<tr>
+			<td>Last Name :</td>
+			<td><input type="text" style="width: 100%" name="last_name" id="last_name" class="text ui-widget-content ui-corner-all"></td>
+		</tr>
+		<tr>
+			<td>Your Email :</td>
+			<td><input type="text" style="width: 100%" name="your_email" id="your_email" class="text ui-widget-content ui-corner-all"></td>
+		</tr>
+		<tr>
+			<td>Friend Email :</td>
+			<td><input type="text" style="width: 100%" style="width: 100%" name="friend_email" id="friend_email" class="text ui-widget-content ui-corner-all"></td>
+		</tr>
+		<tr>
+			<td>Comment :</td>
+			<td><textarea name="comment" id="comment" style="width: 100%;height: 80px;" class="text ui-widget-content ui-corner-all"></textarea></td>
+		</tr>
+	</table>
+      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+    </fieldset>
+  </form>
+</div>
+<div class="overlay">
+	<div class="overlay-load">
+		<div class="overlay-msg">
+	    </div>
+	</div>
+</div>	
+<div class="clearfix"></div>
+<section class="content">
+    <div class="container">
+        <div class="inner-page inventory-listing">
+            <div class="inventory-heading margin-bottom-10 clearfix">
+                <div class="row" style="margin-bottom: 18px;">
+                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-12">
+                        <h2><?php echo $rs["make"]." ".$rs["model"]." ".$rs["sub_model"];?></h2>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 pull-right" style="text-align: right;font-size:15px !important;">
+                        <button id="create-user" style="font-size:15px !important; background: rgb(243, 180, 0) none repeat scroll 0% 0%;color: white;font-weight: 800;">E-mail to Friend</button>
+                    </div>
+            	</div>
+            	<div class="clearfix"></div>
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 left-content padding-left-none"> 
+                    <!--OPEN OF SLIDER-->
+                    <div class="listing-slider">
+                        <section class="slider home-banner" style="height:450px;">
+                            <div class="flexslider" id="home-slider-canvas">
+                                <ul class="slides">
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_right'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_right'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_right'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_sr'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_sr'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_sr'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear_right'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear_right'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear_right'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear_left'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear_left'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear_left'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_sl'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_sl'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_sl'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_left'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_left'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_left'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_seat'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_seat'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_seat'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_passenger'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_passenger'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_passenger'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_trunk'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_trunk'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_trunk'];?>" /> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_luggage'];?>"> <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_luggage'];?>" alt="" data-full-image="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_luggage'];?>" /> </li>
+                                    <!-- full -->
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="home-slider-thumbs">
+                            <div class="flexslider" id="home-slider-thumbs">
+                                <ul class="slides">
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_right'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_right'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_sr'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_sr'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear_right'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear_right'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear_left'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_rear_left'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_sl'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_sl'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_left'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_left'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_seat'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_seat'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_passenger'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_passenger'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_trunk'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_trunk'];?>" alt="" /></a> </li>
+                                    <li data-thumb="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_luggage'];?>"> <a href="#"><img style="border:1px solid #ccc;" src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_luggage'];?>" alt="" /></a> </li>
+                                </ul>
+                            </div>
+                        </section>
+                    </div>
+                    <!--CLOSE OF SLIDER--> 
+                    <!--Slider End-->
+                    <div class="clearfix"></div>
+                    <div class="bs-example bs-example-tabs example-tabs margin-top-20">
+                        <ul id="myTab" class="nav nav-tabs">
+                            <li class="active"><a href="#vehicle" data-toggle="tab">Vehicle Overview</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content margin-top-15 margin-bottom-20">
+                            <div class="tab-pane fade in active" id="vehicle">
+                                <p><?php echo $rs['description']?></p>
+                            </div>
+ <div style="clear:both;">
+                            	<div class="fb-comments" data-href="<?php echo "http://$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI]";?>" data-width="700" data-numposts="5"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 right-content padding-right-none">
+                    <div class="side-content">
+                        <div class="car-info margin-bottom-50">
+                            <div class="table-responsive" style="text-transform: capitalize !important;">
+                                <table class="table" style=" font-size:13px; text-transform: capitalize !important;">
+                                    <tbody>
+                                        <tr>
+                                            <td>Vehicle Ref.No.:</td>
+                                            <td><?php echo $rs['reffer']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Year:</td>
+                                            <td><?php echo $rs['year']?></td>
+                                        </tr>
+                                         <tr>
+                                            <td>Make :</td>
+                                            <td><?php echo $rs['make']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Model:</td>
+                                            <td><?php echo $rs['model']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sub Model:</td>
+                                            <td><?php echo $rs['sub_model']?></td>
+                                        </tr>
+                                         <tr>
+                                            <td>Color :</td>
+                                            <td><?php echo $rs['color']?></td>
+                                        </tr>
+                                         <tr>
+                                            <td>Horse Power:</td>
+                                            <td><?php echo $rs['engine']?></td>
+                                        </tr>
+<!--                                          <tr> -->
+<!--                                             <td>Engine No.:</td> 
+                                            <td><?php //echo $rs['engine_number']?></td>
+<!--                                         </tr> -->
+<!--                                         <tr> -->
+<!--                                             <td>Chassis No:</td> 
+                                            <td><?php //echo $rs['chassis_no']?></td>
+<!--                                         </tr> -->
+                                        <tr>
+                                            <td>No. of Seats :</td>
+                                            <td><?php echo $rs['seat_amount']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Transmission Type:</td>
+                                            <td><?php echo $rs['transmission']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vehicle Type:</td>
+                                            <td><?php echo $rs['car_type']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Type:</td>
+                                            <td><?php echo $rs['type']?></td>
+                                        </tr>
+<!--                                         <tr> -->
+<!--                                             <td>Frame No :</td> 
+                                            <td><?php //echo $rs['frame_no']?></td>
+<!--                                         </tr> 
+                                         <tr>
+                                            <td>Licence Plate No :</td>
+                                            <td><?php //echo $rs['licence_plate']?></td>
+                                        </tr>-->
+                                         <tr>
+                                            <td>Maximum Weight :</td>
+                                            <td><?php echo $rs['max_weight']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Steering Wheel Type :</td>
+                                            <td><?php echo $rs['steering']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>No. of Axles :</td>
+                                            <td><?php echo $rs['of_axlex']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>No. of Cylinders :</td>
+                                            <td><?php echo $rs['of_cylinder']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cylinders Disp :</td>
+                                            <td><?php echo $rs['cylinders_dip']?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Test Drive Url:</td>
+                                            <td><a target="_blank" href="<?php echo $rs['test_url']?>">Click here to view</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Show Url:</td>
+                                            <td><a target="_blank" href="<?php echo $rs['show_url']?>">Click here to view</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Note:</td>
+                                            <td><p style="line-height: 20px;"><?php echo $rs['description']?></p></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <ul class="social-likes pull-right" data-url="https://www.facebook.com/Lyna-CarRentalCom-705428602878507/" data-title="Blog Post">
+                            <li class="facebook" title="Share link on Facebook"><img src="<?php echo $this->baseUrl()."/images/fbshare.png";?>" /></li>
+                            <li class="plusone" title="Share link on Google+" data-counter="includes/googleplusonecount.php?url=http://google.com&amp;callback=?"></li>
+                            <li class="pinterest" title="Share image on Pinterest" data-media=""></li>
+                            <li class="twitter" title="Share link on Twitter"></li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="recent-vehicles-wrap">
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-4 col-xs-12 recent-vehicles padding-left-none xs-padding-bottom-20">
+                        <h5 class="margin-top-none">Similar Vehicles</h5>
+                        <p></p>
+                        <div class="arrow3 clearfix" id="slideControls3"><span class="prev-btn"></span><span class="next-btn"></span></div>
+                    </div>
+                    <div class="col-md-10 col-sm-8 padding-right-none sm-padding-left-none xs-padding-left-none">
+                        <div class="carasouel-slider3">
+                          <?php if(!empty($this->rows)) foreach($this->rows AS $row){?>
+                            <div class="slide">
+                                <div class="car-block">
+                                    <div class="img-flex"> <a href="<?php echo $this->url(array("module"=>"default","controller"=>"index","action"=>"vehicle","id"=>$row['id']));?>"><span class="align-center"><i class="fa fa-3x fa-plus-square-o"></i></span></a> 
+                                    	<img src="<?php echo $this->baseUrl()."/images/vehicle/".$row['img_front_right'];?>" alt="" class="img-responsive"> </div>
+	                                    <div class="car-block-bottom">
+	                                        <h6><strong><?php echo $row["make"]." ".$row["model"]." ".$row["sub_model"];?></strong></h6>
+	                                        <h6></h6>
+	                                        <h5></h5>
+	                                    </div>
+                                </div>
+                            </div>
+                            <?php }?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!--container ends--> 
+</section>
+<style>
+.overlay {display: none;position: absolute;width: 100%;height: 100%;top: 0px;left: 0px;background: #FCFCFC;z-index: 1001;opacity: .95;}
+.overlay-load {width: 350px;height: 100px;margin: auto;top: 0px;bottom: 0px;position: absolute;left: 0px;right: 0px;
+           border: solid 1px #060522;text-align: center;
+           background: #fff url("<?php echo $this->baseUrl()?>/images/loading.gif") 50% 25%;
+           background-repeat: no-repeat;          
+}
+.overlay-msg{margin-bottom: 10px;bottom: 0px;position: absolute;font-style: italic;color: rgb(19, 19, 19);} 
+</style>

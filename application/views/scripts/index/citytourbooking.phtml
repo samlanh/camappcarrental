@@ -1,0 +1,1087 @@
+<?php 
+	$vehicle = $this->pickup_info->vehiclevaliable;
+	$form = $this->frmbooking;
+	$user_session = $this->user_session;
+	$user_info = $this->user_info;
+?>
+<title>City Tour Booking</title>
+<style>
+	dt{ display: none;}
+	table tr .totalbr{
+			border: 1px solid #000;
+		}
+</style>
+<style>
+		#calendar,
+		#calendar2,
+		#calendar3 {
+			border: 1px solid #DDD;
+			font-family: Tahoma;
+			font-size: 12px;
+		}
+		.my-dropdown input{ 
+		padding: 5px;
+}
+
+.note{margin-top:20px;}
+		.note p{line-height: 15px !important;    font-size: 12px;}
+		.note p+p{margin:6px !important;    font-size: -8px;}
+		.note ol{margin-top: -8px;}
+		.note li{font-size: 12px;line-height: 15px;}
+.pagenation a.gray_inactive.active {
+    border-bottom: 4px solid #d4002a;
+    color: #d4002a;
+    cursor: text;
+}
+.pagenation a.gray_inactive:first-child {
+    margin-left: 0;
+    width: 190px;
+}
+.pagenation a.gray_inactive.active {
+    border-bottom: 4px solid #d4002a;
+    color: #d4002a;
+    cursor: text;
+}
+.pagenation a.gray_inactive:first-child {
+    margin-left: 0;
+    width: 190px;
+}
+.pagenation a.gray_inactive.active {
+    border-bottom: 4px solid #d4002a;
+    color: #d4002a;
+    cursor: text;
+}
+.pagenation a.gray_inactive:first-child {
+    margin-left: 0;
+    width: 190px;
+}
+.pagenation a.gray_inactive {
+    border-bottom: 4px solid #d5d5d5;
+    color: #d5d5d5;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 20px;
+    margin-left: 6px;
+    text-decoration: none;
+    cursor: text;
+    width: 190px;
+    float: left;
+    overflow: hidden;
+}
+.pagenation a.gray_inactive {
+    border-bottom: 4px solid #d5d5d5;
+    color: #d5d5d5;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 20px;
+    margin-left: 6px;
+    text-decoration: none;
+    cursor: text;
+    width: 190px;
+    float: left;
+    overflow: hidden;
+}
+.pagenation a.gray_inactive {
+    border-bottom: 4px solid #d5d5d5;
+    color: #d5d5d5;
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 20px;
+    margin-left: 6px;
+    text-decoration: none;
+    cursor: text;
+    width: 190px;
+    float: left;
+}
+</style>
+<script>
+// 	var myCalendar;
+// 	function doOnLoad() {
+// 		myCalendar = new dhtmlXCalendarObject(["pickup_date","return_date","card_issue_date","card_exp_date","pass_issue_date","pass_exp_date"]);
+// 	}
+</script>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl()?>/codebase/dhtmlxcalendar.css"/>
+<script src="<?php echo $this->baseUrl()?>/codebase/dhtmlxcalendar.js"></script>
+<!--secondary-banner ends-->
+<section class="content" style="margin-top: 20px;">
+    <div class="container">
+        <div class="inner-page inventory-listing">
+            <div class="row"> 
+            <div class="clearfix"></div>
+            	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 left-content padding-left-none">
+                    <div class="bs-example bs-example-tabs example-tabs">
+                        <ul id="myTab" class="nav nav-tabs">
+                            <li <?php if($this->pickup_info->point_step ==1 )echo'class="active"';?>><a href="#step1" data-toggle="tab">Select Date</a></li>
+                            <li <?php if($this->pickup_info->point_step ==2 )echo'class="active"';?>><a href="#step2" data-toggle="tab">Select a Car</a></li>
+                            <li <?php if($this->pickup_info->point_step ==3 )echo'class="active"';?>><a href="#step3" data-toggle="tab">Select Guide</a></li>
+                            <li <?php if($this->pickup_info->point_step ==4 )echo'class="active"';?>><a href="#step4" data-toggle="tab">Personal Info</a></li>
+                            <li <?php if($this->pickup_info->point_step ==5 )echo'class="active"';?>><a href="#step5" data-toggle="tab">Confirm Booking</a></li>
+                            <li <?php if($this->pickup_info->point_step ==6 )echo'class="active"';?>><a href="#step6" data-toggle="tab">Payment</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content margin-top-15 margin-bottom-20">
+                            <div class="tab-pane fade <?php if($this->pickup_info->point_step ==1 )echo"in active";?>" id="step1">
+                                <h4 class="margin-bottom-25 margin-top-none"><strong>SEARCH</strong> CAR FOR CITY TOUR</h4>
+                        	<div class="search-form margin-top-20 padding-vertical-20">
+                            <form method="post" action="<?php echo $this->url(array('module'=>'default','controller'=>"index",'action'=>'getvehicle'),null,true); ?>">
+                                <div class="select-wrapper clearfix">
+                                    <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                           <strong>Pickup Date</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="min-price select-dropdown">
+                                             <div class="my-dropdown min-price-dropdown min-dropdown">
+	                                              <strong>Hour</strong>
+	                                          </div>
+                                            <span class="my-dropdown"></span>
+                                            <div class="my-dropdown max-price-dropdown min-dropdown">
+                                             <strong>Min</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="select-wrapper clearfix">
+                                    <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        	<?php echo $form->getElement('pickup_date');?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                         <div class="min-price select-dropdown">
+	                                            <div class="my-dropdown min-price-dropdown min-dropdown">
+	                                                <select name="pickup_time" tabindex="1" class="control_style" >
+	                                                    <?php for($i=1;$i<12;$i++){?>
+	                                                    	<option value="<?php echo $i+6; ?>"><?php echo $i+6;if($i+6<=12){echo " AM";}else{ echo " PM";} ?></option>
+	                                                    <?php }?>
+	                                                </select>
+	                                            </div>
+	                                            <span class="my-dropdown"></span>
+	                                            <div class="my-dropdown max-price-dropdown min-dropdown">
+	                                                <select name="pickup_mins" class="control_style" tabindex="1" >
+	                                                        <option value="00">00</option>
+	                                                    <?php $sum = 0;for($i=1;$i<=3;$i++){?>
+	                                                    	<option value="<?php echo $sum+15; ?>"><?php echo $sum=$sum+15; ?></option>
+	                                                    <?php }?>
+	                                                </select>
+	                                            </div>
+	                                      </div>
+                                    </div>
+                                </div>
+                                <div class="select-wrapper clearfix">
+                                    <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                           <strong>Max Visit Hour</strong>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="min-price select-dropdown">
+                                             <div class="my-dropdown min-price-dropdown min-dropdown">
+	                                              <strong>Hour</strong>
+	                                          </div>
+                                            <span class="my-dropdown"></span>
+                                            <div class="my-dropdown max-price-dropdown min-dropdown">
+                                             <strong>Min</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="select-wrapper clearfix">
+                                     <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        	<input style="width:100%" class="control_style" readonly="readonly" value="<?php echo $this->pickup_info->max_hour;?>" onchange="alert(22);" type="text" name="max_visit">
+                                        <?php //echo $form->getElement('return_date');?>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+	                                        <div class="min-price select-dropdown">
+	                                            <div class="my-dropdown min-price-dropdown min-dropdown">
+	                                                <select name="return_time" class="control_style" tabindex="1" >
+	                                                    <?php for($i=1;$i<12;$i++){?>
+	                                                    	<option value="<?php echo $i+6; ?>"><?php echo $i+6;if($i+6<=12){echo " AM";}else{ echo " PM";} ?></option>
+	                                                    <?php }?>
+	                                                </select>
+	                                            </div>
+	                                            <span class="my-dropdown">:</span>
+	                                            <div class="my-dropdown max-price-dropdown min-dropdown">
+	                                                <select name="return_mins" class="control_style" tabindex="1" >
+	                                                    <option>00</option>
+	                                                    <?php $sum = 0;for($i=1;$i<=3;$i++){?>
+	                                                    	<option value="<?php echo $sum+15; ?>"><?php echo $sum=$sum+15; ?></option>
+	                                                    <?php }?>
+	                                                </select>
+	                                            </div>
+	                                        </div>
+                                    </div>
+                                </div>
+<!--                                 <div class="select-wrapper clearfix"> -->
+<!--                                      <div class="col-md-6"> -->
+<!--                                         <div class="my-dropdown make-dropdown"> -->
+<!--                                        	Pick-up Location -->
+                                        	<?php //echo $form->getElement('pickup_location');?>
+<!--                                         </div> -->
+<!--                                     </div> -->
+<!--                                     <div class="col-md-6"> -->
+<!--                                          <div class="my-dropdown make-dropdown"> -->
+<!--                                         Return Location -->
+                                        	<?php //echo $form->getElement('return_location');?>
+<!--                                         </div> -->
+<!--                                     </div> -->
+<!--                                 </div> -->
+                                 <div class="select-wrapper clearfix">
+                                     <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                         <div class="my-dropdown make-dropdown">
+                                         <div class="form-element" style="float:right;">
+	                                        <input type="submit" name="search_vehicle" value="Find Vehicle Now" class="find_new_vehicle pull-right md-button">
+	                                    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clear"></div>
+                            </form>
+                        </div>
+                            </div>
+                            <div class="tab-pane <?php if($this->pickup_info->point_step ==2 )echo"in active";?>" id="step2" >
+                             <?php if(!empty($vehicle)){ foreach ($vehicle as $rs){?>
+                                <div class="inventory margin-bottom-20 clearfix">
+                                <div class="title"><?php echo $rs["make"]." ".$rs["model"]." ".$rs["sub_model"]."(".$rs["reffer"].")"?></div>
+                                <?php empty($rs['img_front_right'])?'no-img.jpg':$rs['img_front_right']?>
+                                <img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_right'];?>" class="preview" alt="preview">
+                                <table class="options-primary">
+                                     <tr>
+                                        <td class="option primary">Ref. No. :</td>
+                                        <td class="spec"><?php echo $rs["reffer"];?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="option primary">Year : </td>
+                                        <td class="spec"><?php echo $rs["year"];?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="option primary">Color : </td>
+                                        <td class="spec"><?php echo $rs["color"];?></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="option primary">No. of Seats :</td>
+                                        <td class="spec"><?php echo $rs["seat_amount"];?></td>
+                                    </tr>
+                                    <tr>
+                                         <td class="option primary">Transmission Type:</td>
+                                         <td class="spec"><?php echo $rs['transmission']?></td>
+                                    </tr>
+                                    <tr>
+                                            <td class="option primary">Vehecle Type:</td>
+                                            <td class="spec"><?php echo $rs['type']?></td>
+                                     </tr>
+                                </table>
+                                <a href="<?php echo $this->baseUrl();?>/index/vehicle/id/<?php echo $rs["id"];?>" target="_blank"><div class="view-details gradient_button"><i class='fa fa-plus-circle'></i> View Details </div></a>
+                                <a href="<?php echo $this->baseUrl();?>/index/getvehiclecitytour/id/<?php echo $rs["id"];?>"><div class="select gradient_button"><i class='fa fa-plus-circle'></i> Select </div></a>
+                                <a href="<?php echo $rs["show_url"];?>" target="_blank"><div class="view_video gradient_button"><i class="fa fa-video-camera"></i> View Video</div></a>
+                               
+                            </div>
+                             <?php }}else echo "No Vehicle available!";?>
+                            </div>
+                            <div class="tab-pane fade <?php if($this->pickup_info->point_step ==3 )echo"in active";?>" id="step3">
+                                <input type="radio" name="guide" id="self_drive" style="left: 165px; float: left;" onClick="activeSelfDrive();" checked="checked"/><p style="">No Guide
+                                <input  type="button" value="Next" label="Next" style="float:right;" onclick="window.location = '<?php echo $this->url(array('module'=>'default','controller'=>"index",'action'=>'selectguide','id'=>0),null,true); ?>';"/>
+                            	<p style="margin-top: -15px;"><input type="radio" name="guide" id="chauffeur" style="left: 165px; float: left;" onClick="activeChauffeur();" />Guide Rental</p>
+                            	<div id="drive_select">
+			                         		<?php if(!empty($this->pickup_info->guideavaliable)){ $i =0; foreach ($this->pickup_info->guideavaliable as $rs){ $i++;?>
+			                         			<div class="content-wrap car_listings">
+				                                <div class="inventory margin-bottom-20 clearfix" style="padding-bottom: 20px;">
+				                                <input type="hidden" name="driver_<?php //echo $i?>" class="checkbox input-checkbox" id="driver_<?php //echo $i;?>" onClick="addDriver(<?php //echo $i?>)" value="<?php //echo $rs["id"];?>" style="rigth: 0 !important;"/><p>&nbsp;</p>
+				                                <div class="title" style="position: absolute;top: 0px;"><?php echo $rs["name"];?></div>
+				                                <?php empty($rs["photo"])?$rs['photo']='no-profile-img.gif':$rs["photo"]?>
+				                                <img src="<?php echo $this->baseUrl();?>/images/driverphoto/<?php echo $rs["photo"];?>" style="max-width: 120px;" class="preview" alt="preview">
+				                                <table class="options-primary">
+				                                    <tr>
+				                                        <td class="option primary">Driver ID:</td>
+				                                        <td class="spec"><?php echo $rs["driver_id"];?></td>
+				                                    </tr>
+				                                     <tr>
+				                                        <td class="option primary">Nationality:</td>
+				                                        <td class="spec"><?php echo $rs["nationality"]?></td>
+				                                    </tr>
+				                                    <tr>
+				                                        <td class="option primary">Experience:</td>
+				                                        <td class="spec"><?php echo $rs["experience_desc"]?></td>
+				                                    </tr>
+				                                    <tr>
+				                                        <td class="option primary">Language:</td>
+				                                        <td class="spec"><?php echo $rs["lang_note"];?></td>
+				                                    </tr>
+				                                    <!--<tr>
+				                                        <td class="option primary">Tel:</td>
+				                                        <td class="spec"><?php //echo $rs["tel"]?></td>
+				                                    </tr>
+				                                    <tr>
+				                                        <td class="option primary">Email:</td>
+				                                        <td class="spec"><?php //echo $rs["email"]?></td>
+				                                    </tr>-->
+				                                </table>
+				                                <table class="options-secondary" style="width:300px">
+				                                    <tr>
+				                                        <td class="option secondary" style="width:150px">City Nomal Price:</td>
+				                                        <td class="spec"><?php echo $rs["c_normalprice"]?>/day</td>
+				                                    </tr>
+				                                    <tr>
+				                                        <td class="option secondary">City Holiday Price:</td>
+				                                        <td class="spec"><?php echo $rs["c_holidayprice"]?>/day</td>
+				                                    </tr>
+				                                    <tr>
+				                                        <td class="option secondary">City Weeken Price:</td>
+				                                        <td class="spec"><?php echo $rs["c_weekendprice"]?>/day</td>
+				                                    </tr>
+				                                    <tr>
+				                                        <td class="option secondary">City OT Price:</td>
+				                                        <td class="spec"><?php echo $rs["c_otprice"]?>/day</td>
+				                                    </tr>
+				                                    <tr>
+				                                        <td class="option secondary">Province Nomal Price:</td>
+				                                        <td class="spec"><?php echo $rs["p_normalprice"];?>/day</td>
+				                                    </tr>
+				                                    <tr>
+				                                        <td class="option secondary">Province Holiday Price:</td>
+				                                        <td class="spec"><?php echo $rs["p_holidayprice"];?>/day</td>
+				                                    </tr>
+				                                    <tr>
+				                                        <td class="option secondary">Province Weeken Price:</td>
+				                                        <td class="spec"><?php echo $rs["p_weekendprice"];?>/day</td>
+				                                    </tr>
+				                                    <tr>
+				                                        <td class="option secondary">Province OT Price:</td>
+				                                        <td class="spec"><?php echo $rs["p_otprice"];?>/day</td>
+				                                    </tr>
+				                                </table>
+				                                <a href="<?php echo $this->baseUrl();?>/index/guide/id/<?php echo $rs["id"];?>" target="_blank"><div class="view-details gradient_button"><i class='fa fa-plus-circle'></i> View Details </div></a>
+				                                <a href="<?php echo $this->baseUrl();?>/index/selectguide/id/<?php echo $rs["id"];?>"><div class="select gradient_button"><i class='fa fa-plus-circle'></i> Select </div></a>
+				                               
+				                            </div>
+				                            </div>
+				                           <?php }}else echo "No Driver Available!";?>
+				                           <input type="hidden" name="identity_driver" id="identity_driver"/> 
+				                           </div>
+                            </div>
+                            <div class="tab-pane fade <?php if($this->pickup_info->point_step ==4 )echo"in active";?>" id="step4">
+                            	<div class="clearfix"></div>
+                            	<?php if($user_session==1){?>
+                            	<div id="user-panel">
+                            		 <div class="select-wrapper clearfix">
+		                                 <div class="col-md-2">
+		                                     <div class="my-dropdown make-dropdown">
+		                                       User Name :
+		                                     </div>
+		                                 </div>
+		                                 <div class="col-md-4">
+		                                     <div class="my-dropdown make-dropdown">
+		                                       <?php echo $user_info['first_name']." ".$user_info["last_name"]?>
+		                                     </div>
+		                                 </div>
+		                             </div>
+		                             <div class="select-wrapper clearfix">
+		                                 <div class="col-md-2">
+		                                     <div class="my-dropdown make-dropdown">
+		                                       E-mail :
+		                                     </div>
+		                                 </div>
+		                                 <div class="col-md-4">
+		                                     <div class="my-dropdown make-dropdown">
+		                                       <?php echo $user_info['email']?>
+		                                     </div>
+		                                 </div>
+		                             </div>
+		                             <div class="select-wrapper clearfix">
+		                                 <div class="col-md-2">
+		                                     <div class="my-dropdown make-dropdown">
+		                                       Phone :
+		                                     </div>
+		                                 </div>
+		                                 <div class="col-md-4">
+		                                     <div class="my-dropdown make-dropdown">
+		                                       <?php echo $user_info['phone']?>
+		                                     </div>
+		                                 </div>
+		                             </div>
+<div class="select-wrapper clearfix note">
+                                       <div class="col-md-12">
+                                          <div class="my-dropdown make-dropdown">
+	                                           <h5 style="font-size: 15px;margin-bottom: 1px;"><b>TERMS & CONDITIONS</b></h5><br />
+	                                         <?php echo $this->citytourtermcodiction;?>
+                                       	  </div>
+                                       <form action="" method="post">
+                                       	   <div class="col-md-6 note">
+		                                       <div class="my-dropdown make-dropdown">
+		                                         	<input type="checkbox" id="agree" onClick="checkAgree();" name="agree_term" style="margin-top: 6px;"> <span style="padding-left: 40px; font-size:12px;"><a href="<?php echo $this->baseUrl();?>/index/termcondition"> I agree to the Terms & Conditions</a></span>  
+		                                         	
+		                                       </div>
+	                                       </div>
+	                                       <div class="col-md-6 note" style="text-align: right">
+		                                       <div class="my-dropdown make-dropdown">
+		                                         	<button type="submit" id="c_agree" name="term_condiction" >Continue</button>
+		                                       </div>
+	                                       </div>
+                                       </form>
+                                  </div>
+                            </div>
+                            	</div>
+                            	<?php }else{ ?>
+			                    <div id="login_section" style="background: #E09206;padding: 10px 15px 10px 0px;border-radius:5px;color: white;font-weight: 600;">
+			                    	<form action="<?php echo $this->baseUrl();?>/customer/customerlogin/id/3" method="post">
+			                    		 <div class="select-wrapper clearfix">
+		                                     <div class="col-md-2">
+		                                        <div class="my-dropdown make-dropdown">
+		                                        User Name :
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-5">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                        <?php echo $form->getElement('user_name');?>
+		                                        </div>
+		                                    </div>
+		                                    <div class="clearfix"></div>
+		                                    <div class="col-md-2">
+		                                        <div class="my-dropdown make-dropdown">
+		                                        Password :
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-5">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                        <?php echo $form->getElement('password');?>
+		                                        </div>
+		                                    </div>
+		                                    <div class="clearfix"></div>
+		                                    <div class="col-md-5">
+		                                    	<div class="my-dropdown make-dropdown" style="text-align:right">
+		                                        	<button type="reset" name="reset">Reset</button>
+		                                        	<button type="submit" name="login">Login</button>
+		                                         </div>
+		                                    </div>
+		                                     <div class="clearfix"></div>
+		                                     <div class="col-md-8" style="margin-top: 10px;">
+		                                    	 <div class="my-dropdown make-dropdown" style="text-align:center">
+		                                        	<span id="signup" style="cursor: pointer;font-weight:bold;" onClick="signUp();" >| Create Account</span>
+<span id="signup" style="cursor: pointer;font-weight:bold;" onClick="signUp();" > | <a href="<?php echo $this->baseUrl();?>/customer/forgetpass">Forget Password</a> |</span>
+		                                         </div>
+		                                    </div>
+		                                </div>
+			                    	</form>
+			                    </div>
+			                    <div class="clearfix"></div>
+			                    <div id="signup_section" style="display: none;background: #E09206;padding: 10px 15px 10px 0px;border-radius:5px;color: white;font-weight: 600;" >
+			                    	<form action="<?php echo $this->baseUrl();?>/customer/signup/id/3" method="post">
+			                    		<div class="select-wrapper clearfix">
+                                       <div class="col-md-6">
+                                          <div class="my-dropdown make-dropdown">
+                                          User Name :
+                                          <?php echo $form->getElement('s_user_name');?>
+                                          <div id='username_availability_result' style="position: absolute;right: 0px;"></div>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        Password : 
+                                           <?php echo $form->getElement('s_password');?>
+                                          </div>
+                                        </div>
+                                  </div>
+                         		  <div class="select-wrapper clearfix">
+                                       <div class="col-md-6">
+                                          <div class="my-dropdown make-dropdown">
+                                          First Name :
+                                          <?php echo $form->getElement('first_name');?>
+                                          </div>
+                                       </div>
+                                       <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        Last Name : 
+                                           <?php echo $form->getElement('last_name');?>
+                                          </div>
+                                        </div>
+                                  </div>
+                                  <div class="select-wrapper clearfix">
+                                   <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        Email : 
+                                           <?php echo $form->getElement('email');?>
+            								 <div id='email_availability_result' style="position: absolute;right: 0px;"></div>
+                                          </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="my-dropdown make-dropdown">
+                                        Phone : 
+                                           <?php echo $form->getElement('phone');?>
+                                          </div>
+                                      </div>
+                                  </div>
+		                                <div class="select-wrapper clearfix">
+		                                	<div class="col-md-6">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                    	 Date of Birth : 
+		                                        	<?php echo $form->getElement('dob');?>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                    	 Gender : 
+		                                        	<?php echo $form->getElement('gender');?>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                                
+		                                
+		                                <div class="select-wrapper clearfix">
+		                                	<div class="col-md-2">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-md-8" style="text-align: center;">
+		                                    	<div class="my-dropdown make-dropdown">
+		                                    	 	<button type="reset" name="reset">Reset</button>
+		                                        	<button type="submit" onClick="formValidate();" name="signup">Sign Up</button>
+		                                        	<span style="cursor: pointer; padding-left: 20px;color: rgb(195, 12, 148);" onClick="logIn();">Have account!</span>
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-2">
+		                                    	 
+		                                    </div>
+		                                </div>
+			                    	</form>
+			                    </div>
+			                    <?php }?>
+			                    
+                            </div>
+                            <div class="tab-pane <?php if($this->pickup_info->point_step ==5 )echo"active";?>" id="step5">
+                            	<form action="" method="post">
+                            	<button type="submit" class="pull-right" name="confirm_book">Confirm</button>
+                            	</form>
+                            	<table id="exportExcel" style="border-collapse:collapse;font-size: 12px;" width="100%">
+									<tr>
+										<th>
+											<table style="border-collapse:collapse;font-size: 12px; width:100% ;text-align: left; padding:5px; line-height: 14px;" cellpadding="5 ">
+												<tr style="line-height: 17px;"><td colspan="4" style="border-bottom:1px solid #ccc;text-align: left;background-color:  rgb(27, 86, 227);color:rgb(254, 250, 250);"><strong>&nbsp;Booking Info</strong></td></tr>
+										        <tr>
+										        	<td >&nbsp;For :</td>
+										        	<td><?php echo $this->user_name?></td>
+										        	<td >&nbsp;Package Name :</td>
+										        	<td><?php echo $this->pickup_info->package_name;?></td>
+										        </tr>
+										        <tr>
+										        	<td >&nbsp;Pickup Date Time : </td>
+										        	<td><?php echo date("d/m/Y",strtotime($this->pickup_info->pickup_date)),'-'.$this->pickup_info->pickup_time.":".$this->pickup_info->pickup_mins;?></td> 
+										        	<td>&nbsp;Max Hour :</td>
+										        	<td><?php echo $this->pickup_info->max_hour;?> Hour</td>
+										        </tr>
+								       	 	</table>
+								        </th>
+									</tr>
+								    <tr >
+								    </tr>
+								</table>
+								<?php 
+								  		$vehicle_price = $this->pickup_info->price;
+								  		$guide_price = $this->pickup_info->guideprice;
+										$vehicle_diposite = $vehicle_price*(30/100);
+										$guide_deposit = $guide_price*(30/100);								  
+								  ?>
+				                <table style="border-collapse:collapse;font-size: 12px;margin-top:10px;float: left;" width="100%">
+								 <tr><td colspan="8" style="border-bottom:1px solid #ccc;text-align: left;background-color:  rgb(27, 86, 227);color:rgb(254, 250, 250);"><strong>&nbsp;Item Info</strong></td></tr>
+								  <tr>
+								     <th class="totalbr text-center">No</th>
+								     <th class="totalbr text-center" >Items Description</th> 
+								     <th class="totalbr text-center" >QTY</th> 
+								     <th class="totalbr text-center">Price In US$</th>
+								  </tr>
+								  <tr>
+								     <td class="totalbr text-center">&nbsp;<?php $i=1; echo $i;?></td>
+								     <td class="totalbr">&nbsp;<?php echo $this->pickup_info->vehicle_name; ?></td>
+								     <td class="totalbr text-center">&nbsp;1</td>
+								     <td style="color:red" class="totalbr text-center">&nbsp;<?php echo number_format($this->pickup_info->price,2)?> $</td>
+								  </tr>
+								  <?php if($this->pickup_info->guideid != "None"){?>
+								  <tr>
+								     <td class="totalbr text-center">&nbsp;<?php echo $i+1;?></td>
+								     <td class="totalbr">&nbsp;Guide(<?php echo $this->pickup_info->guidename; ?>)</td>
+								     <td class="totalbr text-center">&nbsp;1</td>
+								     <td style="color:red" class="totalbr text-center">&nbsp;<?php echo number_format($this->pickup_info->guideprice,2)?> $</td>
+								  </tr>
+								  <?php }?>
+								  <tr>
+									  <td></td>
+									  <td></td>
+									  <td class="totalbr">&nbsp;1. NET TOTAL:</td>
+									  <td style="font-weight: 800" class="totalbr text-center" colspan="2">&nbsp;$<?php echo number_format($vehicle_price+$guide_price,2)?> </td>
+								  </tr>
+								   <tr>
+									  <td></td>
+									  <td></td>
+									  <td class="totalbr">&nbsp;2. AMOUNT PAID:</td>
+									  <td style="font-weight: 800" class="totalbr text-center" colspan="2">&nbsp;$<?php echo number_format($vehicle_price+$guide_price,2)?> </td>
+								  </tr>
+								  <tr>
+									  <td></td>
+									  <td></td>
+									  <td class="totalbr">&nbsp;3. DUE AMOUNT:</td>
+									  <td style="font-weight: 800" class="totalbr text-center" colspan="2">&nbsp;$<?php echo number_format(0,2)?></td>
+								  </tr>
+							   </table>
+							   
+							   <div class="select-wrapper clearfix note">
+							   		<p style="color: red; font-weight: 800;margin-bottom: 5px;">Notes:</p>
+							   		<p>1. Pay and Go!.</p>
+							   		<p>2. You are requested to come over to our office for advance payment in the full amount as stated in the "<span style="font-weight: 800">City Tour Service Price</span>".</p>
+							   		<p>3. Another way, you could also pay all fee via any options as provided on the page, such as:
+							   			<ol style="list-style-type: none">
+							   				<li>3.1. VISA Card</li>
+							   				<li>3.2. WESTERN UNION.</li>
+							   				<li>3.3. ACLEDA UNITY.</li>
+							   			</ol>
+							   		</p>
+							   		<p>4. More than limited times or hours subject to extra charge $5.00 per hour.</p>
+							   		<p>5. After the full amount of payment is well received, a <u>service</u> will be assigned to you within the time frame manner.</p>
+							   </div>
+                             </div>
+                        	<div class="tab-pane <?php if($this->pickup_info->point_step ==6 )echo"active";?>" id="step6">
+                                <form action="<?php echo $this->baseUrl();?>/customer/payment/id/2" method="post" id="payment">
+                                	<div class="select-wrapper clearfix">
+                                		<div class="col-md-4" style="text-align: center;">
+                                			<input id="visa_type" onChange="paymentType(1);" type="radio" name="payment_type" checked="checked" value="1" style="margin-top: 11px;">
+		                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/visa.jpg" style="margin-left: 30px;">  
+		                            	</div>
+		                            	<div class="col-md-4" style="text-align: center;">
+		                            		<input id="ws_type" onChange="paymentType(2);" type="radio" name="payment_type" value="2" style="margin-top: 11px;">
+		                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/western-union-small.jpg" style="margin-left: 30px;"> 
+		                            	</div>
+		                            	<div class="col-md-4" style="text-align: left;">
+		                            		<input id="wing_type" onChange="paymentType(3);" type="radio" name="payment_type" value="3" style="margin-top: 11px;">
+		                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/acleda.jpg" style="margin-left: 30px;"> 
+		                            	</div>
+		                            </div>
+		                            <div class="clearfix" style="height: 20px;"></div>
+                                	<div class="select-wrapper clearfix" id="visa" style="background: #FFC100;padding: 10px 14px 16px 0px;border-radius: 5px;">
+                                		<div class="select-wrapper clearfix">
+                                			<div class="col-md-6">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                    	 Card Name : 
+		                                        	<?php echo $form->getElement('card_name');?>
+		                                        </div>
+		                                    </div>
+		                                	<div class="col-md-6">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                    	 	 Card Number :
+		                                    	 	 	<input name="card_id" type="text" style="width: 100%; padding:1px" class="credit_card_number" pattern="\d*" x-autocompletetype="cc-number" placeholder="Credit Card Number" required> </p>
+		                                        </div>
+		                                    </div>
+		                                 </div>
+		                                 <div class="select-wrapper clearfix">
+		                                    <div class="col-md-6">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                    	 Security Code/CVV : 
+		                                    	 	<input style="width: 100%; padding:1px" name="secu_code" id=secu_code" type="text" class="credit_card_cvc" pattern="\d*" x-autocompletetype="cc-csc" placeholder="Security Code/CVV" required  autocomplete="off">
+		                                        </div>
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                    	 Expiration : 
+		                                    	 	<input type="text" style="width: 100%" name="card_exp_date" class="credit_card_expiry" pattern="\d*" x-autocompletetype="cc-exp" placeholder="Expires MM / YY" required maxlength="9"> </p>
+		                                        </div>
+		                                    </div>
+		                                 </div>
+		                                </div>
+		                                <div class="select-wrapper clearfix" id="ws_union" style="display: none;background: #FFC100;padding: 10px 14px 16px 0px;border-radius: 5px;">
+		                                	<div class="col-md-6">
+		                                    	 <div class="my-dropdown make-dropdown">
+		                                    	 	 MTCN Code No.:
+		                                    	 	 <input class="number" name="code_num" style="width: 100%; padding:1px;" type="text" placeholder="10-Digit MTCN No." data-formance_length="10">
+		                                        		<?php //echo $form->getElement('card_id');?>
+		                                        </div>
+		                                    </div>
+		                                    
+		                                </div>
+		                                
+		                                <div class="select-wrapper clearfix" id="wing" style="display: none">
+		                                	<div class="col-md-12">
+		                                    	 <div class="my-dropdown make-dropdown" style="text-align: center;">
+		                                    	 	<img alt="" src="<?php echo $this->baseUrl();?>/images/acleda-to.jpg"> 
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                                 <div class="select-wrapper clearfix" style="margin-top: 10px;">
+		                                	<div class="col-md-6">
+		                                    	 
+		                                    </div>
+		                                    <div class="col-md-6">
+		                                    	 <div class="my-dropdown make-dropdown" style="text-align: center;">
+		                                    	 	 <button type="button" class="pull-right" onClick="paymentValidate();">Pay and Finish</button>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                               
+		                                <div class="select-wrapper clearfix" style="">
+	                                		<div class="col-md-4">
+			                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/payment_card_256.png">  
+			                            	</div>
+			                            	<div class="col-md-4">
+			                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/western-union-mb-eng.png"> 
+			                            	</div>
+			                            	<div class="col-md-4">
+			                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/acleda_unity.jpg"> 
+			                            	</div>
+		                            </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 right-content padding-right-none">
+                	<div class="financing_calculator margin-top-10" style="border:1px solid #ccc; border-radius:5px; ">
+                            <h6 style="background: #ccc;margin-top: 0px; padding: 10px;">City Tour Service Price</h6>
+                            <div class="table-responsive" style="padding:10px;">
+                                <table class="table no-border no-margin">
+                                    <tbody>
+                                    	<tr>
+                                        	<td><b>Vehicle Name:</b></td>
+                                        	<td><b><a style="font-size: 12px;" target="_blank" href="<?php echo $this->baseUrl()."/index/vehicle/id/".$this->pickup_info->vehicle_id;?>"><?php  echo $this->pickup_info->vehicle_name; ?></a></b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Price : </td>
+                                            <td>US$ <?php echo number_format($this->pickup_info->price,2)?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                     </div>
+                     
+                     <div class="financing_calculator margin-top-10" style="border:1px solid #ccc; border-radius:5px; ">
+                            <h6 style="background: #ccc;margin-top: 0px; padding: 10px;">Reservation Information</h6>
+                            <div class="table-responsive" style="padding:10px;">
+                                <table class="table no-border no-margin">
+                                    <tbody>
+                                    	<tr>
+                                        	<td colspan="2"><b>Pickup</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date and Time : </td>
+                                            <td><?php echo date("d/m/Y",strtotime($this->pickup_info->pickup_date)),'-'.$this->pickup_info->pickup_time.":".$this->pickup_info->pickup_mins;?></td>
+                                        </tr>
+                                        <tr>
+                                        	<td colspan="2"><b>Return</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Return Time :</td>
+                                            <td><?php echo date("d/m/Y",strtotime($this->pickup_info->return_date)),'-'.$this->pickup_info->return_time.":".$this->pickup_info->return_mins;?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Guide Name:</td>
+                                            <td><?php echo $this->pickup_info->guidename;?></td>
+                                        </tr>
+                                        <tr>
+                                        	<td><b>Guide Price</b></td>
+                                        	<td><b>US$<?php echo number_format($this->pickup_info->guideprice,2);?></b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                     </div>
+                     <div class="financing_calculator margin-top-10" style="border:1px solid #ccc; border-radius:5px; ">
+                            <h6 style="background: #ccc;margin-top: 0px; padding: 10px;">City Tour Package Infomation</h6>
+                            <div class="table-responsive" style="padding:10px;">
+                                <table class="table no-border no-margin">
+                                    <tbody>
+                                    	<tr>
+                                        	<td><b>Package Name : <a target="_blink" title="Click here to detail" href="<?php echo $this->baseUrl()?>/citytourdetail/id/<?php echo $this->pickup_info->package_id;?> "><?php echo $this->pickup_info->package_name;?></a></b></td>
+                                        	<td></td>
+                                        </tr>
+                                        <tr>
+                                        	<td><b>Max Visit Hour :<?php echo $this->pickup_info->max_hour;?> Hour</b></td>
+                                        	<td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                     </div>
+                </div>
+                    <div class="clearfix"></div>
+                <!--MAP-->
+               
+                <!--MAP--> 
+                <!--CONTACT INFORMATION-->
+                
+                <!---CONTACT INFORMATION--> 
+                
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!--container ends--> 
+</section>
+<!--content ends-->
+<script src="<?php echo $this->baseUrl();?>/js/form-validate/scale.fix.js"></script>
+<script src="<?php echo $this->baseUrl();?>/js/form-validate/jquery.formance.min.js" /></script>
+<script src="<?php echo $this->baseUrl();?>/js/form-validate/awesome_form.js"></script>
+<script>
+$( document ).ready(function() {
+	  $( "#job-active" ).removeClass( "active" );
+$( "#home-active" ).removeClass( "active" );
+$( "#about-active" ).removeClass( "active" );
+$( "#contact-active" ).removeClass( "active" );
+$( "#service-active" ).removeClass( "active" );
+$( "#promo-active" ).removeClass( "active" );
+$( "#pralist-active" ).removeClass( "active" );
+$( "#booking-active" ).addClass( "active" );
+});
+$('#drive_select').css("display", "none");
+function activeSelfDrive(){
+	var self_drive = $('#self_drive').val();
+		 if(self_drive=="on") {
+		      $('#drive_select').css("display", "none");
+		   }
+}
+function activeChauffeur(){
+	var Chauffeur = $('#chauffeur').val();
+		 if(Chauffeur=="on") {
+		      $('#drive_select').css("display", "block");
+		   }
+}
+
+function signUp(){
+	$('#signup_section').css("display", "block");
+	$('#login_section').css("display", "none");
+}
+function logIn(){
+	$('#signup_section').css("display", "none");
+	$('#login_section').css("display", "block");
+}
+function addDriver(index){
+	var ids=$('#identity_driver').val();
+	var arrays = ids.split(',');
+	for(var i=0;i<arrays.length;i++) {//calculate record row
+		if(arrays[i] == index) arrays.splice(i,1);
+		if(document.getElementById('driver_'+index).checked){
+			if(($("#identity_driver").val())!="") {
+				$("#identity_driver").val(ids+','+index);
+			}else { 
+				$("#identity_driver").val(index);
+			}
+		 }else{
+			 //alert(index);
+			var strings = arrays.join(',');
+			$('#identity_driver').val(strings);
+		}
+	}
+}
+$(function() {
+    $( "#datepicker" ).datepicker({ changeMonth: true,changeYear: true});
+    $( "#datepicker" ).change(function() {
+      $( "#datepicker" ).datepicker( "option","dateFormat", "dd-mm-yy" );
+    });
+
+    $( "#pick_date" ).datepicker({ changeMonth: true,changeYear: true});
+    $( "#pick_date" ).change(function() {
+      $( "#pick_date" ).datepicker( "option","dateFormat", "dd-mm-yy" );
+    });
+$( "#dob" ).datepicker({ changeMonth: true,changeYear: true});
+    $( "#dob" ).change(function() {
+      $( "#dob" ).datepicker( "option","dateFormat", "dd-mm-yy" );
+    });
+  });
+
+function loginValidate(){
+	user_name =  $("#user_name").val();
+	password = $("#password").val();
+	if(user_name==""){ 
+        $("#user_name").css("border", "1px solid red"); 
+        validate=1;
+    } else {
+		$("#user_name").css("border", "1px solid #E4E4E4");
+		validate=0;
+	}
+	if(password=="") {  
+        $("#password").css("border", "1px solid red"); 
+        validate=1;
+    } else {
+		$("#password").css("border", "1px solid #E4E4E4");
+		validate=0;
+	}
+
+	if(validate == 1){
+		return false;
+	}else{
+		//alert(1);
+		//$('#signup').submit();
+		document.getElementById("login").submit();
+	}
+}
+
+function paymentValidate(){
+	user_name =  $("#card_name").val();
+	var payment_type = document.getElementsByName('payment_type');
+	var rate_value;
+	for(var i = 0; i < payment_type.length; i++){
+	    if(payment_type[i].checked){
+	        rate_value = payment_type[i].value;
+	    }
+	}
+	lb_validate_credit_card_number = $("#lb_validate_credit_card_number").text();
+	lb_validate_credit_card_expiry = $("#lb_validate_credit_card_expiry").text();
+	lb_validate_credit_card_cvc = $("#lb_validate_credit_card_cvc").text();
+	lb_validate_number = $("#lb_validate_number").text();
+	if(rate_value==1){
+		if(user_name=="" || lb_validate_credit_card_number=="Invalid" || lb_validate_credit_card_expiry=="Invalid" || lb_validate_credit_card_cvc=="Invalid"){
+			validate=1;
+		}else{
+			validate=0;
+		}
+	}else if(rate_value==2){
+		if(lb_validate_number=="Invalid"){
+			validate=1;
+		}else{
+			validate=0;
+		}
+	}else{
+		validate=0;
+	}
+	if(validate == 1){
+		return false;
+	}else{
+		//$('#signup').submit();
+		document.getElementById("payment").submit();
+	}
+}
+function formValidate(){
+	user_name =  $("#s_user_name").val();
+	email =  $("#email").val();
+	password = $("#s_password").val();
+	first_name = $("#first_name").val();
+	last_name= $("#last_name").val();
+	phone = $("#phone").val();
+	if(user_name==""){ 
+        $("#s_user_name").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#s_user_name").css("border", "1px solid #E4E4E4");
+	}
+    if(email==""){ 
+        $("#email").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#email").css("border", "1px solid #E4E4E4");
+	}
+    if(password=="") {  
+        $("#s_password").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#s_password").css("border", "1px solid #E4E4E4");
+	}
+    if(first_name=="") {  
+        $("#first_name").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#first_name").css("border", "1px solid #E4E4E4");
+	}
+    if(last_name=="") {  
+        $("#last_name").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#last_name").css("border", "1px solid #E4E4E4");
+	}
+    if(phone=="") {  
+        $("#phone").css("border", "1px solid red"); 
+        form_valid=1;
+    } else {
+		$("#phone").css("border", "1px solid #E4E4E4");
+	}
+	if(form_valid==1){
+		return false;
+	}else{
+		//alert(1);
+		//$('#signup').submit();
+		document.getElementById("signups").submit();
+	}
+}
+
+function paymentType(type){
+	if(type==1){
+		$('#visa').css("display","block");
+		$('#ws_union').css("display","none");
+		$('#wing').css("display","none");
+	}else if(type==2){
+		$('#ws_union').css("display","block");
+		$('#visa').css("display","none");
+		$('#wing').css("display","none");
+	}else{
+		$('#ws_union').css("display","none");
+		$('#visa').css("display","none");
+		$('#wing').css("display","block");
+	}
+}
+
+function checkAgree(){
+	var agree = $('#agree').val();
+	if(agree=="on"){
+		
+		$('#c_agree').css("disabled","");
+	}else{
+		alert(2);
+		$('#c_agree').css("disabled","disabled");
+	}
+}
+function checkUserName(type){
+	var checking_html = '<img src="<?php echo $this->baseUrl();?>/images/checkloading.gif" />';
+	var available = '<img  src="<?php echo $this->baseUrl();?>/images/apply2.png" />';
+	var unavailable = '<img title="User Name not available!" style="cursor:pointer" src="<?php echo $this->baseUrl();?>/images/cross.png" />';
+	var emilunavailable = '<img title="Email not available!" style="cursor:pointer" src="<?php echo $this->baseUrl();?>/images/cross.png" />';
+	var not_valid = '<img alt="Email not Valid!" title="Email not valid!" style="cursor:pointer" src="<?php echo $this->baseUrl();?>/images/none.png" />';
+	var url = "<?php echo $this->url(array('module'=>'','controller'=>'index','action'=>'check-username-available'));?>";
+	if(type==1){
+		var user_name = $('#s_user_name').val();
+		$('#username_availability_result').html(checking_html);
+	}else{
+		var user_name = $('#email').val();
+		$('#email_availability_result').html(checking_html);
+	}
+	$.ajax({
+        url: url,
+        type: "post",
+        data: {'user_name':user_name,'type':type},
+        success: function(data){
+            val = $.parseJSON(data);
+			if(val==1){
+				if(type==1){
+					$('#username_availability_result').html(unavailable);
+				}else{
+					$('#email_availability_result').html(emilunavailable);
+					$("#email").css("border", "1px solid red"); 
+				}
+				form_valid=1;
+			}else{
+				if(type==1){
+					$('#username_availability_result').html(available);
+				}else{
+					var re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+					email_validate = re.test(user_name);
+					if(email_validate==true){
+						$('#email_availability_result').html(available);
+						form_valid=0;
+					}else{
+						$('#email_availability_result').html(not_valid);
+						$("#email").css("border", "1px solid red"); 
+						form_valid=1;
+					}
+					
+				}
+			}
+        },
+        error:function(e){
+            alert(e);
+        }
+    });
+}
+</script>
+ <link rel="stylesheet" href="<?php echo $this->baseUrl();?>/js/js-ui/jquery-ui.css">
+<!--   <script src="//code.jquery.com/jquery-1.10.2.js"></script> -->
+  <script src="<?php echo $this->baseUrl();?>/js/js-ui/jquery-ui.js"></script>
