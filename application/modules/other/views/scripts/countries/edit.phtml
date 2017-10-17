@@ -1,0 +1,53 @@
+<title>Edit Countries</title>
+<?php 
+    $row=$this->row_pllist;
+?>
+<form id="add_location" action="<?php echo $this->url(array('module'=>'other','controller'=>'countries','action'=>'edit')); ?>" dojoType="dijit.form.Form" method="post" enctype="multipart/form-data">
+	 <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				 if(dijit.byId('record_row').get('value')==''){
+                    alert('Can not submit without record !');
+                    return false;
+                 }
+				return true;
+			} else {
+				return false;
+			}
+	</script>
+	<table cellspacing="10" style="margin: 0 auto; width: 100%">
+		<tr>
+			<td>
+				<fieldset>
+					<legend align="center"><strong>Edit Country</strong></legend>
+					<table  width="100%" >
+						<tr>
+							<td align="center" valign="top">
+								<table style="margin: 0 auto; width:100%;" cellspacing="10">
+									<tr>
+										<td>Title<input type="hidden" name="id" id="id" value="<?php echo $this->country['id'];?>"/></td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" required="true" id="title" name="title" value="<?php echo $this->country['country_name'];?>" type="text"></td>
+										<td></td>
+										<td></td>
+										<td>Status</td>
+										<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside">
+											    <option value="1" label="Active">Active</option>
+											    <option value="0" label="Deactive">Deactive</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="6" align="center"> 
+											<input type="submit" value="save_close" name="save_close" label="Save&Close" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+										</td>
+									</tr>					
+								</table>
+							</td>							
+						</tr>
+					</table>	
+				</fieldset>
+			</td>			
+		</tr>
+		
+	</table>	
+</form>

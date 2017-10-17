@@ -1,0 +1,57 @@
+<title>Add Owner</title>
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+?>	
+<form action="<?php echo $this->url(array('module'=>'other','controller'=>'ownervehicle','action'=>'add')); ?>" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+ <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<table cellspacing="10" width="60%" style="margin: 0 auto;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend align="center" ><strong><?php echo $tr->translate("Add Owner");?></strong></legend>
+					
+					<table style="margin: 0 auto; width: 100%;" cellspacing="10">
+					   <tr>
+							<td>Name</td>
+							<td>
+								<input dojoType="dijit.form.ValidationTextBox"  type="text" class="fullside" id="owner_name" name="owner_name" required="required">
+							</td>
+							<td>Postition</td>
+							<td><input dojoType="dijit.form.ValidationTextBox" required="required" type="text" name="position" id="position" class="fullside" /></td>
+							
+						</tr>
+						<tr>
+						    <td>ID Card</td>
+							<td>
+                                <input dojoType="dijit.form.ValidationTextBox" required="required" type="text" class="fullside" id="id_card" name="id_card">							
+							</td>
+							<td>Phone Number</td>
+							<td><input dojoType="dijit.form.ValidationTextBox"  type="text" class="fullside" id="hand_phone" name="hand_phone"></td>
+						</tr>
+						<tr>
+							<td>E-mail</td>
+							<td><input dojoType="dijit.form.ValidationTextBox"  type="text" name="email" id="email" class="fullside" /></td>
+							<td>Insurance Hotline</td>
+							<td><input dojoType="dijit.form.ValidationTextBox"  type="text" class="fullside" id="hotline" name="hotline"></td>
+						</tr>
+					<tr>
+						<td colspan="6" align="center" >
+									<input type="reset" value="សំអាត" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
+									<input type="submit" value="save_close" name="save_close" label="<?php echo $tr->translate('SAVECLOSE');?>" dojoType="dijit.form.Button" 
+										iconClass="dijitEditorIcon dijitEditorIconSave" />
+									<input type="submit" value="save_new" name="save_new" label="<?php echo $tr->translate('SAVENEW');?>" dojoType="dijit.form.Button" 
+										iconClass="dijitEditorIcon dijitEditorIconSave" />
+					   </td>
+					</tr>
+			</table>	
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>

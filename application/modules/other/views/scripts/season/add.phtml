@@ -1,0 +1,63 @@
+<title>Add Season</title>
+<form id='add_season'  action="<?php echo $this->url(array('module'=>'other','controller'=>'season','action'=>'add')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<table  width="100%" style="margin-top:5px;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend ><strong>Add Season</strong></legend>
+					<table style="margin: 0 auto; width:100%;" cellspacing="10">
+						<tr>
+							<td>Season Title</td>
+							<td><input dojoType="dijit.form.ValidationTextBox" required="true" type="text" class="fullside" id="season_title" name="season_title"></td>
+							<td>In-/Decrease Price(%)</td>
+							<td><input dojoType="dijit.form.NumberTextBox" required="true" type="text" class="fullside" name="value" id="value"  /></td>
+							<td>Season Type</td>
+							<td><select name="season_type" id="season_type" dojoType="dijit.form.FilteringSelect" class="fullside">
+								    <option value="1">Hight Season</option>
+								    <option value="2">Low Season</option>
+								</select></td>
+						</tr>
+						<tr>
+							<td>Start Date</td>
+							<td><input dojoType="dijit.form.DateTextBox" required="true" type="text" class="fullside" id="start_date" name="start_date"></td>
+							<td>End Date</td>
+							<td><input dojoType="dijit.form.DateTextBox" required="true" type="text" name="end_date" id="end_date" class="fullside"  /></td>
+							<td>Photo Name</td>
+							<td><input type="file" name="photo" /></td>
+						</tr>
+						<tr>
+							<td>Note</td>
+							<td colspan="3"><textarea name="note" style="width:100%; height:70px;"></textarea></td>
+							<td valign="top">Status</td>
+							<td valign="top"><select name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
+								    <option value="1">Active</option>
+								    <option value="2">Deactive</option>
+								</select></td>
+						</tr>
+						<tr>
+							<td colspan="6" align="center">
+							<input type="reset" label="Clear" dojoType="dijit.form.Button" 
+								 iconClass="dijitIconClear" /> 
+							 <input type="submit" value="SAVE_CLOSE" label="Save&Close" id="save_close" dojoType="dijit.form.Button" name="save_close"
+								 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+							<input type="submit" value="SAVE_NEW" label="Save&New" id="save_new" dojoType="dijit.form.Button" name="save_new"
+								 iconClass="dijitEditorIcon dijitEditorIconSave"/> 
+							</td>
+						</tr>
+					</table>	
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>
+<script>
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.DateTextBox");
+</script>
