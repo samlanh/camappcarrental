@@ -1,0 +1,218 @@
+<?php 
+  $status_view=$this->status_view;
+  $url_save = $this->url(array('module'=>'vehicle','controller'=>'submodel','action'=>'add'));
+?>
+<?php $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+ echo '<title>'. $this->tr->translate("SUB_MODEL").'</title>';
+?>
+<script>
+dojo.ready(function(){
+	new dijit.form.FilteringSelect({
+	    store: make_store,
+	    autoComplete: true,                        
+	    required: true,
+	    id: "makename",
+	    name: "makename",           
+	    class: 'fullside',            
+	    missingMessage:"អ្នក​ភ្លេច​បំពេញ​ ឈ្មោះ​អ្នក​ផ្ញើរ!",            
+	    onChange: function() {  
+	    	make_id = dijit.byId('makename').get('value');
+	    	if(make_id==-1){
+				dijit.byId('pop_make').show();
+		     }else{
+		    	 getallModel(make_id);
+		     }        
+	    }
+	}, "makename");
+	new dijit.form.FilteringSelect({
+	    store: model_store,
+	    autoComplete: true,                        
+	    required: true,
+	    id: "modelid",
+	    name: "modelid",           
+	    class: 'fullside',            
+	    missingMessage:"អ្នក​ភ្លេច​បំពេញ​ ឈ្មោះ​អ្នក​ផ្ញើរ!",            
+	    onChange: function() {  
+	    	make_id = dijit.byId('modelid').get('value');
+	    	if(make_id==-1){
+		    	makeid = dijit.byId('makename').get('value');
+		    	dijit.byId('txt_makeid').attr('value',makeid);
+				dijit.byId('pop_model').show();
+				dijit.byId('modelid').attr('value','');
+		     }          
+	    }
+	}, "modelid");
+});
+</script>
+<form  id='add_techer' action="<?php echo $url_save;?>" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+ <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				if(dijit.byId('province_name').get('value')==''){
+				 alert('Please Select Province');
+                 return false;
+                }
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<table cellspacing="10" width="45%" style="margin: 0 auto;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend align="center" ><strong>Sub Model</strong></legend>
+					<table style="margin: 0 auto; width: 95%;" cellspacing="10">
+						<tr>
+							<td>Sub Model</td>
+							<td><input dojoType="dijit.form.ValidationTextBox" required="true"  class="fullside" id="model" name="model" value="" type="text"></td>
+						</tr>
+						<tr>
+							<td>Make Name</td>
+							<td><input id="makename" /></td>
+						</tr>
+						<tr>
+							<td>Model Name</td>
+							<td><input id="modelid" /></td>
+						</tr>
+						<tr>
+							<td>Status</td>
+							<td>
+								<select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true" class="fullside">
+								    <?php foreach($status_view as $rs){?>
+								    <option value="<?php echo $rs['key_code'];?>" label="Active"><?php echo $rs['name_en'];?></option>
+								    <?php }?>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+											<input type="reset" iconClass="dijitIconClear" label="Clear"dojoType="dijit.form.Button"/>
+											<input type="submit" value="save_close" name="save_close" label="Save&Close" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+											<input type="submit" value="save_new" name="save_new" label="Save&New" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+							</td>
+						</tr>
+					</table>	
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_make" >
+		<form id='frm_make' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td>Make Title</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_make" name="txt_make" value="" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="រក្សាទុក" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addMake();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_model" >
+		<form id='frm_model' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td>Model Title</td>
+				<td>
+				<input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_model" name="txt_model" value="" type="text">
+				<input dojoType="dijit.form.TextBox" id="txt_makeid" name="txt_makeid" type="hidden"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="រក្សាទុក" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addModel();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+var url_make = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'model','action'=>'add-make')); ?>';
+function addMake(){
+	if(dijit.byId('frm_make').validate()){
+		dojo.xhrPost({
+			url:url_make,
+			form: dojo.byId("frm_make"),
+			handleAs:"json",
+			load: function(data) {
+				//alert(data);
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('txt_make').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('makename'), make_store, Itemmake, data);
+				dijit.byId('frm_make').reset();
+				dijit.byId("pop_make").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+var url_model = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'model','action'=>'add-model')); ?>';
+function addModel(){
+	if(dijit.byId('frm_model').validate()){
+		dojo.xhrPost({
+			url:url_model,
+			form: dojo.byId("frm_model"),
+			handleAs:"json",
+			load: function(data) {
+				//alert(data);
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('txt_model').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('modelid'), model_store, Itemmake, data);
+				dijit.byId('frm_model').reset();
+				dijit.byId("pop_model").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+</script>
+<script type="text/javascript">
+dojo.require("dijit/Dialog");
+dojo.require("dojo.data.ItemFileWriteStore"); 
+var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->allmake));?> );
+var model_store  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
+var url_getmake = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'submodel','action'=>'get-model')); ?>';
+function getallModel(make_id){
+		dojo.xhrPost({
+			url:url_getmake,
+			content:{
+				'make_id':make_id
+				},
+			handleAs:"json",
+			load: function(data) {
+				model_store  = getDataStorefromJSON('id','name', data);
+			    dijit.byId('modelid').set('store',model_store);   
+//			     var schoolItem = {     
+//			       id: -1,
+//			       province_id: dijit.byId('school_location').get('value'),
+//			          name: 'បន្ថែម​អ្នក​ទទួល​ថ្មី'
+//			     };
+//			     addDataToSelectbox(dijit.byId('from_school'), highschool_store, schoolItem, -1);
+			    
+//			     dijit.byId('from_school').query.province_id =dijit.byId('school_location').get('value');
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+}
+</script>

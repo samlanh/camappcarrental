@@ -1,0 +1,66 @@
+<?php 
+     $url_save = $this->url(array('module'=>'vehicle','controller'=>'engine','action'=>'edit'));
+     $status_view=$this->status_view;
+     //print_r($status_view);exit();
+     $row=$this->row;
+   // print_r($row);exit();
+?>
+<?php $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+ echo '<title>'. $this->tr->translate("ENGINCE").'</title>';
+?>
+<script type="text/javascript">
+dojo.require("dojo.data.ObjectStore");
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dojo.store.Memory");
+dojo.require("dojo.data.ObjectStore");
+dojo.ready(function(){
+    digit.byId('status').attr('value','<?php echo $row['status'];?>')
+}); 
+</script>
+<form id="add_province" action="<?php echo $url_save;?>" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+	 <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+	</script>
+	<table cellspacing="20" style="margin: 0 auto; width: 600px">
+		<tr>
+			<td>
+				<fieldset>
+					<legend align="center"><strong>Add Engine Capacity</strong></legend>
+					<table cellspacing="20" width="100%" >
+						<tr>
+							<td align="center" valign="top">
+								<table style="margin: 0 auto; width:100%;" cellspacing="10">
+									<tr>
+										<td>Capacity </td>
+										<td> <input type="hidden" name="id" value="<?php echo $row['id'];?>"/>
+										<input dojoType="dijit.form.ValidationTextBox" class="fullside" id="capacity" name="capacity" value="<?php echo $row['capacity'];?>" type="text" required="required"></td>
+									</tr>
+									<tr>
+										<td>Status</td>
+										<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true" missingMessage="Invalid Module!" class="fullside">
+											    <?php foreach($status_view as $rs){?>
+											    <option value="<?php echo $rs['key_code'];?>" label="Active"><?php echo $rs['name_en'];?></option>
+											    <?php }?>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2" align="center">
+											<input type="submit" value="save_close" name="save_close" label="Save&Close" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+										</td>
+									</tr>					
+								</table>
+							</td>							
+						</tr>
+					</table>	
+				</fieldset>
+			</td>			
+		</tr>
+		
+	</table>	
+</form> 

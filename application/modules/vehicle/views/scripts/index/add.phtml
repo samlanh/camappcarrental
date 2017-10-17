@@ -1,0 +1,645 @@
+<?php 
+	  $url_save = $this->url(array('module'=>'vehicle','controller'=>'index','action'=>'add'));
+	  $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+      $rows_engine=$this->rows_engine;
+      $rows_type=$this->rows_type;
+      $rows_tran=$this->rows_tran;
+      $rows_veh_typ=$this->rows_veh_typ;
+?>
+<?php $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+ echo '<title>'. $this->tr->translate("Vehicle").'</title>';
+?>
+<style>
+   input[type="file"]{
+	width: 90px;
+   	height:20px;
+}
+.bg{ background:#eeeeee; border:1px solid #000;}
+</style>
+<script type="dojo/method" event="onSubmit">			
+	if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<script type="text/javascript">
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.DateTextBox");
+require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
+var make_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->all_make));?> );
+dojo.ready(function(){
+new dijit.form.FilteringSelect({
+    store: make_store,
+    autoComplete: true,                        
+    required: true,
+    id: "make",
+    name: "make",           
+    class: 'fullside',            
+    onChange: function() {  
+    	make_id = dijit.byId('make').get('value');
+    	if(make_id==-1){
+			dijit.byId('pop_make').show();
+	     }
+    	else {
+    		dijit.byId('model').attr('value','');
+    		getallModel(make_id);
+    	}           
+    }
+}, "make");
+});
+//model controll
+dojo.ready(function(){
+	new dijit.form.FilteringSelect({
+	   // store: make_store,
+	    autoComplete: true,                        
+	    required: true,
+	    id: "model",
+	    name: "model",           
+	    class: 'fullside',            
+	    onChange: function() {  
+	    	model_id = dijit.byId('model').get('value');
+	    	if(model_id==-1){
+		    	make_id=dijit.byId('make').get('value');
+		    	dijit.byId('txt_makeid').attr('value',make_id);
+				dijit.byId('pop_model').show();
+				//dijit.byId('model').attr('value','');
+		     }else{
+		    	// alert(model_id);
+		    	   getallSubModel(model_id);
+		    	   dijit.byId('submodel').attr('value','');
+		     }
+	    }
+	}, "model");
+	}); 
+//submodel controll
+dojo.ready(function(){
+	new dijit.form.FilteringSelect({
+	   // store: make_store,
+	    autoComplete: true,                        
+	    required: true,
+	    id: "submodel",
+	    name: "submodel",           
+	    class: 'fullside',            
+	    onChange: function() {  
+	    	make_id = dijit.byId('submodel').get('value');
+	    	if(make_id==-1){
+		    	model_id=dijit.byId('model').get('value');
+		    	dijit.byId('txt_model_id').attr('value',model_id);
+		    	//make setvalue hiden
+		    	txt_make_id=dijit.byId('make').get('value');
+		    	dijit.byId('txt_make_id').attr('value',txt_make_id);
+				dijit.byId('pop_submodel').show();
+				//dijit.byId('model').attr('value','');
+		     }
+	    }
+	}, "submodel");
+	}); 
+var model_store  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
+var url_getmake = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'submodel','action'=>'get-model')); ?>';
+function getallModel(make_id){
+		dojo.xhrPost({
+			url:url_getmake,
+			content:{
+				'make_id':make_id
+				},
+			handleAs:"json",
+			load: function(data) {
+				model_store  = getDataStorefromJSON('id','name', data);
+			    dijit.byId('model').set('store',model_store);   
+
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+}
+var submodel_store  = getDataStorefromJSON('id','name', <?php print_r(array())?> );
+var url_getsubmodel = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'index','action'=>'get-sub-model')); ?>';
+function getallSubModel(model_id){
+	if(model_id==''){
+      return false;
+	}
+		dojo.xhrPost({
+			url:url_getsubmodel,
+			content:{
+				'model_id':model_id
+				},
+			handleAs:"json",
+			load: function(data) {
+				submodel_store  = getDataStorefromJSON('id','name', data);
+			    dijit.byId('submodel').set('store',submodel_store);   
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+}
+</script>
+<form id='add_client' action="<?php echo $url_save; ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<table  width="100%" style="margin-top:-5px;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend ><strong>Add Vehicle</strong></legend>
+					<div id="mainTabContainer" style="max-width:1110px; height: 540px;" dojoType="dijit.layout.TabContainer" region="center"  >
+						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Vehicle Infomation" selected="true">
+							<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" cellspacing="5">
+							    <tr>
+									<td>Vehicle Ref.No.</td>
+									<td><input tabindex="1" dojoType="dijit.form.ValidationTextBox" class="fullside" id="vehicle_ref_no" name="vehicle_ref_no" value="" type="text" required="true"></td>
+									<td>Frame No</td>
+									<td><input tabindex="14"dojoType="dijit.form.ValidationTextBox" class="fullside" id="frame_no" name="frame_no" value="" type="text" required="true"></td>	
+								</tr>
+								<tr>
+									<td>Year</td>
+									<td><select tabindex="2" name="year" id="year" dojoType="dijit.form.FilteringSelect" class="fullside">
+									<?php 
+									      $year=1995;
+									      $i=1;
+									      for($i;$i < 25;$i++){
+									      	$year=$year+1;
+								     ?>
+									 <option  value="<?php echo $year;?>"><?php echo $year;?></option>
+									 <?php }?>
+									</select>
+									</td>
+									<td>Licence Plate No</td>
+									<td><input tabindex="15" dojoType="dijit.form.TextBox" class="fullside" id="licence_piate_no" name="licence_piate_no" value="" type="text"></td>	
+								
+								</tr>
+								<tr>
+									<td>Make</td>
+									<td><input id="make" /></td>
+									<td>Maximum Weight</td>
+									<td><input tabindex="16" dojoType="dijit.form.TextBox" class="fullside" id="maximum_weight" name="maximum_weight" value="" type="text"></td>
+								</tr>
+								<tr>
+									<td>Model</td>
+									<td><input id="model" /></td>
+									<td>No. of Seats</td>
+									<td><input tabindex="17" dojoType="dijit.form.NumberTextBox" class="fullside" id="no_of_seats" name="no_of_seats" value="" type="text"></td>
+								</tr>
+								<tr>
+									<td>Sub Model</td>
+								    <td><input id="submodel" /></td>
+									<td>Transmission Type</td>
+									<td><select tabindex="18" name="transmission" id="transmission" dojoType="dijit.form.FilteringSelect" class="fullside" >
+										     <?php foreach ($rows_tran as $rs){?>
+										     <option value="<?php echo $rs['id'];?>"><?php echo $rs['tran_name'];?></option>
+										     <?php }?>
+										</select>
+									</td>
+							  </tr>
+								<tr>
+									<td>Vehicle Type</td>
+									<td><select tabindex="6" name="vehicle_type" id="vehicle_type" dojoType="dijit.form.FilteringSelect" class="fullside">
+										<?php foreach ($rows_veh_typ as $rs){?>
+										<option value="<?php echo $rs['id'];?>" ><?php echo $rs['title'];?></option>
+										<?php }?>
+										</select>
+									</td>
+									<td>Original Cost</td>
+									<td><input tabindex="19" dojoType="dijit.form.NumberTextBox" class="fullside" id="original" name="original" value="" type="text"></td>	
+									
+							   </tr>
+								<tr>
+									<td>Color</td>
+									<td><input tabindex="7" dojoType="dijit.form.TextBox" class="fullside" id="color" name="color" value="" type="text"></td>
+									<td>Date Buy</td>
+									<td><input tabindex="20"  name="date_buy" id="date_buy" dojoType="dijit.form.DateTextBox"  class="fullside" value="now" type="text"/></td>
+							    </tr>
+								<tr>
+									<td>Horse Power</td>
+									<td><select tabindex="8" name="engine" id="engine" dojoType="dijit.form.FilteringSelect" class="fullside" onchange="getGroupCode();">
+									         <?php foreach ($rows_engine as $rs){?>
+									         <option value="<?php echo $rs['id'];?>" ><?php echo $rs['capacity'];?></option>
+									         <?php }?>
+									</select></td>
+									<td valign="top">Note</td>
+									<td valign="top">
+										<textarea tabindex="21" dojoType="dijit.form.TextBox" class="fullside" id="note" name="note"></textarea>
+									</td>
+								</tr>
+								<tr>
+									<td>Engine Number</td>
+									<td><input tabindex="9" dojoType="dijit.form.TextBox" class="fullside" id="engine_number" name="engine_number" value="" type="text"></td>
+									<td>Type</td>
+									<td><select tabindex="22" name="type" id="type" dojoType="dijit.form.FilteringSelect" class="fullside">
+									         <?php foreach ($rows_type as $rs){?>
+									         <option value="<?php echo $rs['id'];?>" ><?php echo $rs['type'];?> </option>
+									         <?php }?>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td>Chasis No</td>
+									<td><input tabindex="10"dojoType="dijit.form.TextBox" class="fullside" id="chassis_no" name="chassis_no" value="" type="text"></td>	
+								    <td>Steering Wheel</td>
+									<td><input tabindex="23" dojoType="dijit.form.TextBox" class="fullside" id="steering" name="steering" value="" type="text"></td>
+								</tr>
+								<tr>
+									<td>No. Of Axles</td>
+									<td>
+									    <input tabindex="11" dojoType="dijit.form.TextBox" class="fullside" id="of_axlex" name="of_axlex" value="" type="text">
+									</td>
+									<td>Test Drive URL</td>
+									<td>
+									    <input tabindex="11" dojoType="dijit.form.TextBox" class="fullside" id="test_url" name="test_url" value="" type="text">
+									</td>
+									</tr>
+								<tr>
+									<td>No. Of Cylinders</td>
+	                                <td><input tabindex="13" dojoType="dijit.form.TextBox" class="fullside" id="of_cylinder" name="of_cylinder" value="" type="text"></td>							
+									<td>Show URL</td>
+									<td><input tabindex="13" dojoType="dijit.form.TextBox" class="fullside" id="show_url" name="show_url" value="" type="text"></td>
+								</tr>
+								<tr>
+									<td>Cylinders Disp</td>
+									<td>
+									    <input tabindex="11" dojoType="dijit.form.TextBox" class="fullside" id="cylinders_dip" name="cylinders_dip" value="" type="text">
+									</td>
+									<td>Status</td>
+									<td>
+									    <select tabindex="24" name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
+										    <option value="1" label="Active">Active</option>
+										    <option value="0" label="Deactive">Deactive</option>
+										</select>
+									</td>
+									</tr>
+								<tr>
+									<td colspan="6" align="center">
+									<input type="reset" label="Clear" dojoType="dijit.form.Button" 
+										 iconClass="dijitIconClear" /> 
+								    <input type="submit" value="SAVE_CLOSE" label="Save&Close" id="save_close" dojoType="dijit.form.Button" name="save_close"
+										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+									<input type="submit" value="SAVE_NEW" label="Save&New" id="save_new" dojoType="dijit.form.Button" name="save_new"
+										 iconClass="dijitEditorIcon dijitEditorIconSave"/>
+									</td>
+								</tr>
+								</table>
+						</div>
+						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Price And Photo" selected="true" >
+							<table style="margin: 0 auto; max-width:100%;font-size:13px; white-space: nowrap;" cellpadding="5" >
+								<tr class="bg">
+									<td>1.Front</td>
+									<td valign="middle"><input type="file" name="front" id="front" required="required" class="fullside"/></td>
+									<td>5.Rear</td>
+									<td><input type="file" name="img_rear" id="img_rear" required="required" /></td>
+									<td>9.Driver Seat</td>
+									<td><input type="file" name="seat" id="seat" required="required" /></td>
+									
+								</tr>
+								<tr>
+									<td>2.Front Right</td>
+									<td><input type="file" name="front_right" id="front_right" required="required" class="fullside"/></td>
+									<td>6.Rear Left</td>
+									<td><input type="file" name="rear_left" id="rear_left" required="required"/></td>
+									<td>10.Passenger</td>
+									<td><input type="file" name="passenger" id="passenger" required="required" /></td>
+								</tr>
+								<tr class="bg">
+									<td>3.Side Right</td>
+									<td><input type="file" name="side_right" id="side_right" required="required"/></td>
+									<td>7.Side Left</td>
+									<td><input type="file" name="side_left" id="side_left" required="required"/></td>
+									<td>11.Stereo System</td>
+									<td><input type="file" name="trunk" id="trunk" required="required" /></td>
+								</tr>
+								<tr>
+									<td>4.Rear Right</td>
+									<td><input type="file" name="rear_right" id="rear_right" required="required"/></td>
+								   <td>8.Front Left</td>
+									<td><input type="file" name="front_left" id="front_left" required="required"/></td>
+									<td>12.Luggage</td>
+									<td><input type="file" name="luggage" id="luggage" required="required" /></td>
+								</tr>
+								<tr class="bg">
+									<td>Deposit</td>
+									<td><input dojoType="dijit.form.TextBox" class="fullside" id="deposit" name="deposit" value="" type="text"></td>
+									<td>Road Side Assistance</td>
+									<td><input dojoType="dijit.form.NumberTextBox" class="fullside" id="root_side_ass" name="root_side_ass" value="" type="text"></td>
+									<td colspan="2"></td>
+								</tr>
+								<tr>
+									<td>Discount&nbsp;&nbsp;</td>
+									<td><input dojoType="dijit.form.CheckBox" class="fullside" id="discount" name="discount" value="" type="checkbox"></td>
+									<td>Discount Value(%)</td>
+									<td><input dojoType="dijit.form.TextBox" class="fullside" id="discount_value" name="discount_value" value="" type="text"></td>
+									<td>From<input dojoType="dijit.form.DateTextBox"  id="discount_fromdate" name="discount_fromdate" value="" type="text"></td>
+									<td>To<input dojoType="dijit.form.DateTextBox" id="discount_todate" name="discount_todate" value="" type="text"></td>
+								
+								</tr>
+								<tr class="bg">
+									<td>Vehicle for Sale&nbsp;&nbsp;</td>
+									<td><input dojoType="dijit.form.CheckBox" class="fullside" id="is_sale" name="is_sale" value="" type="checkbox">
+										<input dojoType="dijit.form.TextBox" class="fullside" id="sale_price" name="sale_price" value="" type="text" style="width:210px;">
+									</td>
+									<td>Description Car Sales</td>
+									<td><input dojoType="dijit.form.TextBox" class="fullside" id="desc_sale" name="desc_sale" value="" type="text" style="height:60px;"></td>
+									<td colspan="2"></td>
+								</tr>
+								<tr>
+									<td colspan="6" align="center">
+									<input type="reset" label="Clear" dojoType="dijit.form.Button" 
+										 iconClass="dijitIconClear" /> 
+								    <input type="submit" value="SAVE_CLOSE" label="Save&Close" dojoType="dijit.form.Button" name="save_close"
+										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+									<input type="submit" value="SAVE_NEW" label="Save&New"  dojoType="dijit.form.Button" name="save_new"
+										 iconClass="dijitEditorIcon dijitEditorIconSave"/>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>	
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>
+<div class="dijitHidden">
+				<div data-dojo-type="dijit.Dialog"  id="frm_district" >
+				<form id="form_district" ><table style="margin: 0 auto; width: 100%;" cellspacing="7">
+					<tr>
+						<td>District Name English</td>
+						<td>
+<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="pop_district_name" name="pop_district_name" value="" type="text"></td>
+					</tr>
+								<tr>
+						<td>Province Name English</td>
+						<td>
+<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="pop_district_namekh" name="pop_district_namekh" value="" type="text"></td>
+					</tr>
+					<tr>
+						<td>District Name Khmer</td>
+						<td>
+							<select name="province_names" id="province_names" dojoType="dijit.form.FilteringSelect" class="fullside" onchange="filterDistrict();">
+							    <option value="" label="-----Select Province-----">-----Select Province-----</option>
+							    <option value="1" label="Phnom Penh-ភ្នំពេញ">Phnom Penh-ភ្នំពេញ</option>
+							</select>
+						</td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" align="center">
+						<input type="button" value="Save" label="Save" dojoType="dijit.form.Button"
+						iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addNewDistrict();"/>
+						</td>
+				    </tr>
+				</table></form></div>
+		</div><div class="dijitHidden">
+				<div data-dojo-type="dijit.Dialog"  id="frm_village" >
+					<form id="form_village" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		 <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+        </script>
+		<table style="margin: 0 auto; width: 95%;" cellspacing="10">
+					    <tr>
+							<td>Village KH</td>
+							<td>
+							   <input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="village_namekh" name="village_namekh" value="" type="text"></td>
+						</tr>
+						<tr>
+							<td>Village Name EN</td>
+							<td>
+								<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="village_name" name="village_name" value="" type="text"></td>
+						</tr>
+						<tr>
+							<td>Display By</td>
+							<td>
+								<select name="display" id="display" dojoType="dijit.form.FilteringSelect" class="fullside">
+								    <option value="1" label="Name KH">Name KH</option>
+								    <option value="2" label="Name(Last,First) In English">Name(Last,First) In English</option>
+								</select></td>
+						</tr>
+						<tr>
+							<td>Province Name</td>
+							<td>
+								<select name="province_name" id="province_name" dojoType="dijit.form.FilteringSelect" required="true" class="fullside" onchange="filterDistrict();" invalidMessage="">
+								    <option value="0" label="-----Select Province-----">-----Select Province-----</option>
+								    <option value="1" label="Phnom Penh-ភ្នំពេញ">Phnom Penh-ភ្នំពេញ</option>
+								  
+								</select></td>
+						</tr>
+						<tr>
+							<td>District Name</td>
+							<td>
+								<select name="district_name" id="district_name" dojoType="dijit.form.FilteringSelect" class="fullside" required="true">
+								    <option value="0" label="-----Select District-----">-----Select District-----</option>
+								    <option value="1" label="ចំការមន-Chamkarmon">ចំការមន-Chamkarmon</option>
+								   
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Commune Name</td>
+							<td>
+								<select name="commune_name" id="commune_name" dojoType="dijit.form.FilteringSelect" class="fullside" required="true">
+								    <option value="1" label="Tonle Bassak">Tonle Bassak</option>
+								    <option value="2" label="Boeng Keng Kang I">Boeng Keng Kang I</option>
+								    <option value="3" label="Boeng Keng Kang II">Boeng Keng Kang II</option>
+								   
+								</select>
+						  </td>
+						</tr>
+						<tr>
+							<td>Status</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+											<input type="reset" value="សំអាត" label=Clear dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
+											<input type="button" value="save_close" name="save_close" label="Save" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" Onclick="addVillage();"  />
+							</td>
+						</tr>
+					</table></form></div>
+		</div><div class="dijitHidden">
+				<div data-dojo-type="dijit.Dialog"  id="frm_commune" >
+					<form id="form_commune" ><table style="margin: 0 auto; width: 100%;" cellspacing="7">
+					<tr>
+						<td>Commune Name EN</td>
+						<td>
+							<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="commune_nameen" name="commune_nameen" value="" type="text"></td>
+					</tr>
+					<tr>
+						<td>Commune KH</td>
+						<td>
+							<input dojoType="dijit.form.ValidationTextBox" required="true" missingMessage="Invalid Module!" class="fullside" id="commune_namekh" name="commune_namekh" value="" type="text"></td>
+					</tr>
+					<tr>
+						<td>District Name</td>
+						<td>
+							<select name="district_nameen" id="district_nameen" dojoType="dijit.form.FilteringSelect" class="fullside">
+							    <option value="1" label="ចំការមន-Chamkarmon">ចំការមន-Chamkarmon</option>
+							    <option value="2" label="ដូនពេញ-Daun Penh">ដូនពេញ-Daun Penh</option>
+							  
+							</select></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center">
+						<input type="button" value="Save" label="Save" dojoType="dijit.form.Button"
+						iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addNewCommune();"/>
+						</td>
+					</tr>
+				</table></form></div>
+			</div><div class="dijitHidden">
+				<div data-dojo-type="dijit.Dialog"  id="frm_clienttype" >
+					<form id="form_clienttype" ><table style="margin: 0 auto; width: 100%;" cellspacing="7">
+					<tr>
+						<td>Document Type EN</td>
+						<td>
+							<input dojoType="dijit.form.TextBox" class="fullside" id="clienttype_nameen" name="clienttype_nameen" value="" type="text"></td>
+					</tr>
+					<tr>
+						<td>Document Type KH</td>
+						<td>
+						<input dojoType="dijit.form.TextBox" class="fullside" id="clienttype_namekh" name="clienttype_namekh" value="" type="text"></td>
+					</tr>
+					
+					<tr>
+						<td colspan="2" align="center">
+						<input type="button" value="Save" label="Save" dojoType="dijit.form.Button"
+						iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addNewDocumentType();"/>
+						</td>
+					</tr>
+				</table>
+</form>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_make" >
+		<form id='frm_make' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td>Make Title</td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_make" name="txt_make" value="" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="រក្សាទុក" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addMake();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_model" >
+		<form id='frm_model' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td>Model Title</td>
+				<td>
+				<input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_model" name="txt_model" value="" type="text">
+				<input dojoType="dijit.form.TextBox" id="txt_makeid" name="txt_makeid" type="hidden"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="រក្សាទុក" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addModel();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_submodel" >
+		<form id='frm_sub_model' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td>Sub Model</td>
+				<td>
+					<input dojoType="dijit.form.ValidationTextBox" required="true" id="txt_submodel" name="txt_submodel" value="" type="text">
+					<input dojoType="dijit.form.TextBox" id="txt_model_id" name="txt_model_id" type="hidden">
+					<input dojoType="dijit.form.TextBox" id="txt_make_id" name="txt_make_id" type="hidden">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="រក្សាទុក" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addSubModel();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+dojo.require("dijit.form.Textarea"); 
+</script>
+<script type="text/javascript">
+var url_make = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'model','action'=>'add-make')); ?>';
+function addMake(){
+	if(dijit.byId('frm_make').validate()){
+		dojo.xhrPost({
+			url:url_make,
+			form: dojo.byId("frm_make"),
+			handleAs:"json",
+			load: function(data) {
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('txt_make').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('make'), model_store, Itemmake, data);
+				dijit.byId('frm_make').reset();
+				dijit.byId("pop_make").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+var url_model = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'model','action'=>'add-model')); ?>';
+function addModel(){
+	if(dijit.byId('frm_model').validate()){
+		dojo.xhrPost({
+			url:url_model,
+			form: dojo.byId("frm_model"),
+			handleAs:"json",
+			load: function(data) {
+				//alert(data);
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('txt_model').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('model'), model_store, Itemmake, data);
+				dijit.byId('frm_model').reset();
+				dijit.byId("pop_model").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+var url_sub_model = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'index','action'=>'add-sub-model')); ?>';
+function addSubModel(){
+	if(dijit.byId('frm_sub_model').validate()){
+		dojo.xhrPost({
+			url:url_sub_model,
+			form: dojo.byId("frm_sub_model"),
+			handleAs:"json",
+			load: function(data) {
+				//alert(data);
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('txt_submodel').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('submodel'), model_store, Itemmake, data);
+				dijit.byId('frm_sub_model').reset();
+				dijit.byId("pop_submodel").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+</script>
