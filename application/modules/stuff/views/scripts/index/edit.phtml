@@ -1,0 +1,236 @@
+<?php 
+  $row_stuff=$this->row_stuff;
+  $rows_detail=$this->rows_detail;
+  //print_r($rows_detail);exit();
+?>
+<?php $this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
+ echo '<title>'. $this->tr->translate("STUFF").'</title>';
+?>
+<form id="add_location" action="<?php echo $this->url(array('module'=>'stuff','controller'=>'index','action'=>'edit')); ?>" dojoType="dijit.form.Form" method="post" enctype="multipart/form-data">
+	 <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				 if(dijit.byId('record_row').get('value')==''){
+                    alert('Can not submit without record !');
+                    return false;
+                 }
+				return true;
+			} else {
+				return false;
+			}
+	</script>
+	<table style="margin: 0 auto; width: 100%">
+		<tr>
+			<td>
+				<fieldset>
+					<legend align="center"><strong>Edit New Stuff</strong></legend>
+					<table  width="100%" >
+						<tr>
+							<td  valign="top">
+								<table style="margin: 0 auto; width:100%;" cellspacing="6">
+									<tr>
+										<td>Equipment Name <input type="hidden" name="id" value="<?php echo $row_stuff['id']?>"/></td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" required="true" id="Eq_name" name="Eq_name" value="<?php echo $row_stuff['equipment_name']?>" type="text"></td>
+										<td>Reference No</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="Referent" name="Referent" value="<?php echo $row_stuff['reference_no']?>" type="text"></td>
+										<td>Year</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="year" name="year" value="<?php echo $row_stuff['year']?>" type="text"></td>
+									</tr>
+									<tr>
+										<td>Color</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside"  id="color" name="color" value="<?php echo $row_stuff['color']?>" type="text"></td>
+										<td>Make/Model</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="model" name="model" value="<?php echo $row_stuff['model']?>" type="text"></td>
+										<td>Size</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="size" name="size" value="<?php echo $row_stuff['size']?>" type="text"></td>
+									</tr>
+									<tr>
+										<td>Serial No</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside"  id="serial_no" name="serial_no" value="<?php echo $row_stuff['serial_no']?>" type="text"></td>
+										<td>Other(specify)</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="other" name="other" value="<?php echo $row_stuff['other']?>" type="text"></td>
+										<td>Telephone Number</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="telephone_num" name="telephone_num" value="<?php echo $row_stuff['telephone_num']?>" type="text"></td>
+									</tr>
+									<tr>
+										<td>Cell Phone Serial No.</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside"  id="cell_phone" name="cell_phone" value="<?php echo $row_stuff['cell_phone']?>" type="text"></td>
+										<td>Url</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="Url" name="Url" value="<?php echo $row_stuff['url']?>" type="text"></td>
+										<td>Type</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="type" name="type" value="<?php echo $row_stuff['type']?>" type="text"></td>
+									</tr>
+									<tr>
+										<td>Sim Card Serial No.</td>
+										<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="sim_card" name="sim_card" value="<?php echo $row_stuff['sim_card']?>" type="text"></td>
+										<td>Status</td>
+										<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside">
+											    <option value="1" label="Active">Active</option>
+											    <option value="0" label="Deactive">Deactive</option>
+											</select>
+										</td>	
+										<td>Front Veiw</td>
+										<td><input id="front_Veiw" name="front_Veiw" type="file">
+										    <input name="old_front_Veiw" value="<?php echo $row_stuff['photo_front']?>" type="hidden">
+											<img src="<?php echo $this->baseUrl()."/images/".$row_stuff['photo_front'];?>" height="30px"/>
+										</td>
+									</tr>
+									<tr>
+										<td>Front Right Veiw</td>
+										<td><input id="Front_Right" name="Front_Right"  type="file">
+										    <input name="old_Front_Right" value="<?php echo $row_stuff['photo_front_right']?>" type="hidden">
+											<img src="<?php echo $this->baseUrl()."/images/".$row_stuff['photo_front_right'];?>" height="30px"/>
+										</td>
+										<td>Front Left Veiw</td>
+										<td><input id="front_left" name="front_left" type="file">
+										    <input name="old_front_left" value="<?php echo $row_stuff['photo_front_left']?>" type="hidden">
+										<img src="<?php echo $this->baseUrl()."/images/".$row_stuff['photo_front_left'];?>" height="30px"/>
+										</td>
+										<td>Rear Left Veiw</td>
+										<td><input id="rear_left" name="rear_left" type="file">
+										    <input name="old_rear_left" value="<?php echo $row_stuff['photo_rear_left']?>" type="hidden">
+										    <img src="<?php echo $this->baseUrl()."/images/".$row_stuff['photo_rear_left'];?>" height="30px"/>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="8" align="center">
+											<div style="clear: both;"></div>
+											<input type="hidden" dojoType="dijit.form.TextBox" id="record_row" name="record_row" />
+											<div  id="store_record"></div>
+											<input iconClass="dijitIconClear" type="button" onClick="addPockage();" label="Add Record Photo" dojoType="dijit.form.Button"/>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="6" align="center">
+											<input type="submit" value="save_close" name="save_close" label="Save&Close" dojoType="dijit.form.Button" 
+												iconClass="dijitEditorIcon dijitEditorIconSave" />
+										</td>
+									</tr>					
+								</table>
+							</td>							
+						</tr>
+					</table>	
+				</fieldset>
+			</td>			
+		</tr>
+		
+	</table>	
+</form>
+<script type="text/javascript">
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dojo.NodeList-manipulate");
+
+dojo.require("dojo.html");
+require(["dojo/ready"], function(ready){
+	ready(function(){
+		addNewRecord();
+		//initList();
+	});
+});
+province_option = '<?php echo $this->pro_option;?>';
+function addNewRecord(){
+	dojo.query("#store_record").append('');
+	tmp='<table id="t_amountmoneytype" width="100%" style="border-collapse: collapse; border:1px solid #ccc !important;">';
+	tmp+='<tr style="background:#eee; font-size: 12px; height: 30px;margin-bottom: 10px;" id="head_title" class="head-title" align="center"></tr>';
+	tmp+='</table>';
+	dojo.query("#store_record").append(tmp);
+	thead='<th>Delete</th>';
+	thead+='<th>Amount Day</th>';
+	thead+='<th>Price</th>';
+	thead+='<th>Extra Price</th>';
+	thead+='<th>Note</th>';
+	fund_title=1;
+	dojo.query("#head_title").append(thead);	
+	dijit.byId('record_row').attr('value','');
+	initList();
+}
+r=0;
+function addPockage(){
+	r++;
+	tmp='<tr style="border:1px solid #ccc; font-size:12px;" id="row_guide'+r+'">'
+	tmp+="</tr>";
+		dojo.query("#t_amountmoneytype").append(tmp);
+		
+	temp='<td style="width:30px !important;text-align:center;" ><img style="cursor:pointer" onclick="deleteRecord('+r+')" src="/lyna/trunk/public/images/Delete_16.png"></td>';
+	temp+='<td><select style="width:260px;"  id="package_id'+r+'" name="package_id'+r+'" dojoType="dijit.form.FilteringSelect" onchange="getLocation('+r+')">'+province_option+'</select></td>';
+	temp+='<td><input style="width:260px;" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="price_'+r+'" id="price_'+r+'" value="" type="text"></td>';
+	temp+='<td><input style="width:260px;" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="extracharge_'+r+'" id="extracharge_'+r+'" value="" type="text"></td>';
+	temp+='<td><input style="width:260px;" dojoType="dijit.form.TextBox" class="fullside" name="note_'+r+'" id="note_'+r+'" value="" type="text"></td>';
+	
+	dojo.html.set(dojo.byId("row_guide"+r),temp, {
+	    parseContent: true,
+	});
+	if(dijit.byId("record_row").get('value')!="") {
+		var ids = dijit.byId("record_row").value;
+		dijit.byId("record_row").attr('value',ids+','+r);
+	} else { dijit.byId("record_row").attr('value',r);}
+}
+///
+r=0;
+function initList(){
+	<?php foreach ($rows_detail As $rs){?>
+	r++;
+	tmp='<tr style="border:1px solid #ccc; font-size:12px;" id="row_guide'+r+'">'
+	tmp+="</tr>";
+		dojo.query("#t_amountmoneytype").append(tmp);
+		
+	temp='<td style="width:30px !important;text-align:center;" ><img style="cursor:pointer" onclick="deleteRecord('+r+')" src="/lyna/trunk/public/images/Delete_16.png"></td>';
+	temp+='<td><select style="width:260px;"  id="package_id'+r+'" name="package_id'+r+'" dojoType="dijit.form.FilteringSelect" onchange="getLocation('+r+')">'+province_option+'</select></td>';
+	temp+='<td><input style="width:260px;" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="price_'+r+'" id="price_'+r+'" value="" type="text"></td>';
+	temp+='<td><input style="width:260px;" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="extracharge_'+r+'" id="extracharge_'+r+'" value="" type="text"></td>';
+	temp+='<td><input style="width:260px;" dojoType="dijit.form.TextBox" class="fullside" name="note_'+r+'" id="note_'+r+'" value="" type="text"></td>';
+	
+	dojo.html.set(dojo.byId("row_guide"+r),temp, {
+	    parseContent: true,
+	});
+	if(dijit.byId("record_row").get('value')!="") {
+		var ids = dijit.byId("record_row").value;
+		dijit.byId("record_row").attr('value',ids+','+r);
+	} else { dijit.byId("record_row").attr('value',r);}
+	   // alert(r);
+	    dijit.byId('package_id'+r).attr('value',<?php echo $rs['package_id']?>);
+	    dijit.byId('price_'+r).attr('value',<?php echo $rs['price']?>);
+	    dijit.byId('extracharge_'+r).attr('value',<?php echo $rs['extra_price']?>);
+	    dijit.byId('note_'+r).attr('value','<?php echo $rs['note']?>');
+	<?php }?>
+}
+function deleteRecord(index){
+	var ids =dijit.byId('record_row').value;
+	if(ids.length=='' || ids.length==null){
+		dijit.byId('record_row').attr('value','');
+		dojo.query("#row_guide"+ids).remove();
+	}else{
+		var arrays = ids.split(',');
+		for(var i=0;i<arrays.length;i++) {
+			if(arrays[i] == index) arrays.splice(i,1);
+		}
+		var strings = arrays.join(',');
+		dijit.byId('record_row').attr('value',strings);
+		dojo.query("#row_guide"+index).remove();
+	}
+}
+var url_getlocation = '<?php echo $this->url(array('module'=>'location','controller'=>'package','action'=>'get-location')); ?>';
+function getLocation(id){
+			province_id = dijit.byId('province_id'+id).get('value');
+			if(province_id==''){
+				return false;
+			}
+			$('#location_id'+id).empty('');
+			dojo.xhrPost({
+				url:url_getlocation,
+				content:{
+					'province_id':province_id
+					},
+				handleAs:"json",
+				load: function(data) {
+					for(i=0;i<data.length;i++){
+						  $('#location_id'+id).append("<option value="+data[i].id+">"+data[i].location_name+"</option>");
+					}
+					
+				},
+				error: function(err) {
+				}
+			});
+}
+
+ 
+</script>
