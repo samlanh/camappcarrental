@@ -1,0 +1,287 @@
+<title>Add Guide and Driver</title>
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate('ADD_NEWGUIDE'));
+?>	
+<?php  $frm = $this->frm_client;?>
+<form id='add_client' action="<?php echo $this->url(array('module'=>'driverguide','controller'=>'index','action'=>'add')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+<script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				if(dijit.byId('province').get('value')==0){
+					alert('Province required');
+					dijit.byId('province').focus();
+					return false;
+			    }
+                if(dijit.byId('situ_status').get('value')==''){
+					alert('Province situ_status');
+					dijit.byId('situ_status').focus();
+					return false;
+			    }
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<table  width="100%" style="margin-top:-5px;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend ><strong><?php echo $tr->translate("Add New Driver/Guide");?></strong></legend>
+					<div id="mainTabContainer" style="max-width:1110px; height: 540px;" dojoType="dijit.layout.TabContainer" region="center"  >
+						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="<?php echo $tr->translate('Driver/Guide Information');?>" selected="true">
+						<table style="margin: 0 auto; width:100%;" cellspacing="5">
+							<tr>
+								<td><?php echo $tr->translate("Driver's ID")?></td>
+								<td><?php echo $frm->getElement('client_no');?></td>
+								<td><?php echo $tr->translate("First Name")?>*</td>
+								<td><?php  echo $frm->getElement('name_kh');?></td>
+								<td><?php echo $tr->translate("Last Name")?>*</td>
+								<td><?php  echo $frm->getElement('name_en');?></td>
+							</tr>
+							<tr>
+								<td><?php echo $tr->translate("Sex")?></td>
+								<td><?php  echo $frm->getElement('sex');?></td>
+								<td><?php echo $tr->translate("Dob")?></td>
+								<td><?php  echo $frm->getElement('dob_client');?></td>
+								<td><?php echo $tr->translate("Place of Birth")?></td>
+								<td><?php  echo $frm->getElement('pob');?></td>
+							</tr>
+							<tr>
+								<td valign="top"><?php echo $tr->translate("Nationality")?></td>
+								<td><?php  echo $frm->getElement('nationality');?></td>
+								<td><?php echo $tr->translate("National Id")?></td>
+								<td><input id="client_d_type" required="true"/></td>
+								<td>Number</td>
+								<td><?php  echo $frm->getElement('national_id');?></td>
+							</tr>
+							<tr>
+								<td><?php echo $tr->translate("Photo")?></td>
+								<td><?php echo $frm->getElement('photo');?></td>
+								<td valign="top"><?php echo $tr->translate("Langauge Note")?></td>
+								<td><?php  echo $frm->getElement('desc');?></td>
+								<td>Type</td>
+								<td><?php  echo $frm->getElement('type');?></td>
+							</tr>
+							<tr>
+								<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>ID Card Info</strong></td>
+							</tr>
+							<tr>
+								<td valign="top"><?php echo $tr->translate("ID Card")?></td>
+								<td valign="top"><?php  echo $frm->getElement('id_card');?></td>
+								<td valign="top"><?php echo $tr->translate("Issued Date")?></td>
+								<td valign="top"><?php  echo $frm->getElement('issued_date');?></td>
+								<td valign="top"><?php echo $tr->translate("Expired Date")?></td>
+								<td valign="top"><?php  echo $frm->getElement('expired_date');?></td>
+							</tr>
+							<tr>
+								<td valign="top"><?php echo $tr->translate("Registered Date")?></td>
+								<td valign="top"><?php  echo $frm->getElement('registered_date');?></td>
+								<td><?php echo $tr->translate("Experience")?></td>
+								<td><?php echo $frm->getElement('experience');?></td>
+								<td valign="top"><?php echo $tr->translate("Document File")?></td>
+								<td><?php echo $frm->getElement('att_file');?></td>
+							</tr>
+							<tr>
+								<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>Contact Info</strong></td>
+							</tr>
+							<tr>
+								<td><?php echo $tr->translate("Phone")?></td>
+								<td><?php  echo $frm->getElement('phone');?></td>
+								<td><?php echo $tr->translate("Email")?></td>
+								<td><?php  echo $frm->getElement('email');?></td>
+								<td valign="top"><?php echo $tr->translate("Group No")?></td>
+								<td valign="top"><?php  echo $frm->getElement('group');?></td>
+							</tr>
+							<tr>
+								<td><?php echo $tr->translate("Home No")?></td>
+								<td><?php  echo $frm->getElement('home');?></td>
+								<td><?php echo $tr->translate("Street")?></td>
+								<td><?php  echo $frm->getElement('street');?></td>
+								<td><?php echo $tr->translate("Commune")?></td>
+								<td><?php  echo $frm->getElement('commune');?></td>
+								
+							</tr>
+							<tr>
+							   <td valign="top"><?php echo $tr->translate("District")?></td>
+								<td valign="top"><?php  echo $frm->getElement('district');?></td>
+								<td><?php echo $tr->translate("Province/City")?></td>
+								<td><?php  echo $frm->getElement('province');?></td>
+								<td valign="top"><?php echo $tr->translate("Status")?></td>
+								<td valign="top"><?php  echo $frm->getElement('status');?></td>
+							</tr>
+							<tr>
+									<td colspan="6" align="center">
+									<input type="reset" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" 
+										 iconClass="dijitIconClear" /> 
+								    <input type="submit" value="SAVE_CLOSE" label="<?php echo $tr->translate('SAVECLOSE');?>" dojoType="dijit.form.Button" name="save_close"
+										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+									<input type="submit" value="SAVE_NEW" label="<?php echo $tr->translate('SAVENEW');?>"  dojoType="dijit.form.Button" name="save_new"
+										 iconClass="dijitEditorIcon dijitEditorIconSave"/> 
+									</td>
+								</tr>
+							</table>
+							</div>
+							<div class="tabContentSection" dojoType="dijit.layout.ContentPane"  title="<?php echo $tr->translate('Manage Pricing');?>" selected="false">
+								 <table style="margin: 0 auto; width:100%;" cellspacing="5">
+                                                                 <tr>
+									<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>Monthly Price</strong></td>
+								</tr>
+								<tr>
+									<td><?php echo $tr->translate("Monthly Price")?></td>
+									<td><?php echo $frm->getElement('monthly_price');?></td>
+								</tr>
+								 <tr>
+									<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>Around City Price</strong></td>
+								</tr>
+								<tr>
+									<td><?php echo $tr->translate("Normal Price/Day")?></td>
+									<td><?php echo $frm->getElement('cnormalprice');?></td>
+									<td><?php echo $tr->translate("Weekend Price")?></td>
+									<td><?php echo $frm->getElement('weekend_price');?></td>
+									
+								</tr>
+								<tr>
+                                                                        <td valign="top"><?php echo $tr->translate("Public Holiday")?></td>
+									<td><?php echo $frm->getElement('poblicholiday_price');?></td>
+									<td valign="top"><?php echo $tr->translate("OT Price/Hour")?></td>
+									<td><?php  echo $frm->getElement('cotprice');?></td>
+								</tr>
+								<tr>
+									<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>Province Price</strong></td>
+								</tr>
+								<tr>
+									<td><?php echo $tr->translate("Normal Price/Day")?></td>
+									<td><?php echo $frm->getElement('pnormalprice');?></td>
+									<td><?php echo $tr->translate("Weekend Price/Day")?></td>
+									<td><?php echo $frm->getElement('pweekend_price');?></td>
+									
+								</tr>
+								<tr>
+                                                                        <td valign="top"><?php echo $tr->translate("Public Holiday")?></td>
+									<td><?php echo $frm->getElement('ppoblicholiday_price');?></td>
+									<td valign="top"><?php echo $tr->translate("OT Price/Hour")?></td>
+									<td><?php  echo $frm->getElement('potprice');?></td>
+								</tr>
+								<tr>
+									<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>City Tour Price</strong></td>
+								</tr>
+								<tr>
+									<td><?php echo $tr->translate("Normal Price/Day")?></td>
+									<td><?php echo $frm->getElement('citynormalprice');?></td>
+									<td><?php echo $tr->translate("Weekend Price/Day")?></td>
+									<td><?php echo $frm->getElement('cityweekendprice');?></td>
+									
+								</tr>
+								<tr>
+                                                                        <td valign="top"><?php echo $tr->translate("Public Holiday")?></td>
+									<td><?php echo $frm->getElement('citypublicprice');?></td>
+									<td valign="top"><?php echo $tr->translate("OT Price/Hour")?></td>
+									<td><?php  echo $frm->getElement('cityotprice');?></td>
+								</tr>
+								<tr>
+									<td colspan="6" align="center">
+									<input type="reset" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" 
+										 iconClass="dijitIconClear" /> 
+									 <input type="submit" value="SAVE_CLOSE" label="<?php echo $tr->translate('SAVECLOSE');?>" id="save_close" dojoType="dijit.form.Button" name="save_close"
+										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+									<input type="submit" value="SAVE_NEW" label="<?php echo $tr->translate('SAVENEW');?>" id="save_new" dojoType="dijit.form.Button" name="save_new"
+										 iconClass="dijitEditorIcon dijitEditorIconSave"/> 
+									</td>
+								</tr>
+							 </table>
+						</div>
+				 </div>
+					
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>
+<table>
+<tr>
+</tr>
+</table>
+<?php 
+echo $this->frm_popup_clienttype;
+?>
+<script>
+dojo.require("dojo.data.ItemFileWriteStore"); 
+require(["dijit/form/DateTextBox","dijit/form/NumberTextBox",
+          "dijit/Dialog","dijit/layout/TabContainer"]);
+</script>
+<script type="text/javascript">
+var d_datastore  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->clienttype));?> );
+
+dojo.ready(function(){
+	
+	try{
+	new dijit.form.FilteringSelect({
+		store: d_datastore,
+		autoComplete: true,
+		required: false,		           
+		name: "client_d_type",
+		id: "client_d_type",
+		searchAttr: "name",
+		class: 'fullside',
+		missingMessage:"អ្នក​ភ្លេច​បំពេញ​ ឈ្មោះភូមិ!",	
+			onChange: function() {
+				client_d_type = dijit.byId('client_d_type').get('value');
+				if(client_d_type==-1){
+					doc_type=1;
+					showPopupclientdtype();
+				}
+			}
+		}, "client_d_type");
+
+	
+	}catch(e){
+	}
+});
+var document_type_url = '<?php echo $this->url(array('module'=>'group','controller'=>'index','action'=>'insert-document-type'));?>';
+function addNewDocumentType(){
+	dojo.xhrPost({
+		url:document_type_url,	
+		//form:dojo.byId('form_clienttype'),
+		content:{ 
+		    'title_en':dijit.byId('document_kh').get('value'),
+		    'title_kh':dijit.byId('document_en').get('value'),
+		    'type':6,
+		},
+		handleAs:"json",
+		load: function(data) {	
+			clienttypeen = dijit.byId('document_kh').get('value');
+			clienttypekh = dijit.byId('document_en').get('value');
+			/*if(doc_type==1){
+				document_type = dijit.byId('client_d_type');
+				
+			}else if(doc_type==2){
+				document_type = dijit.byId('join_d_type');
+			}else{
+				document_type = dijit.byId('guarantor_d_type');
+			}*/
+
+			 var myNewItem1 = {					
+						id: data,
+						name: clienttypekh+'-'+clienttypeen
+				};			
+				addDataToSelectbox(dijit.byId('client_d_type'), d_datastore, myNewItem1, data);
+
+				/*var Itemmake = {					
+						id: data,
+					    name: dijit.byId('txt_make').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('makename'), make_store, Itemmake, data);*/
+				
+			dijit.byId('frm_clienttype').reset();
+			dijit.byId('frm_clienttype').hide();
+	
+		},
+		error: function(err) {
+			alert(err);
+		}
+	});	
+}
+function showPopupclientdtype(){
+	dijit.byId('frm_clienttype').show();
+}
+</script>

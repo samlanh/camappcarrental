@@ -1,0 +1,73 @@
+<script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
+<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate('Service'));
+?>
+<script type="text/javascript">
+dojo.require("dijit.form.Textarea");
+dojo.require("dijit.form.NumberTextBox");
+require(["dojo/parser", "dijit/Editor"]);
+</script>
+<form id='add_client' action="<?php echo $this->url(array('module'=>'driverguide','controller'=>'serviceprice','action'=>'add')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
+ <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				return true;
+			} else {
+				return false;
+			}
+</script>
+<table cellspacing="10" width="100%" style="margin: 0 auto;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend align="center" ><strong><?php echo $tr->translate("Add Service Rental Price");?></strong></legend>
+					<table style="margin: 0 auto; width: 95%;" cellspacing="10">
+						<tr>
+							<td><?php echo $tr->translate("Servie Title")?></td>
+							<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="serice_title" name="serice_title" value="" type="text" required="required"></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("Price")?></td>
+							<td><input dojoType="dijit.form.NumberTextBox" class="fullside" id="price" name="price" value="" type="text"></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("Description")?></td>
+							<td><textarea class="ckeditor" dojoType="dijit.form.SimpleTextarea"  class="fullside" style="min-height:80px;" id="description" name="description"></textarea></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("Photo")?></td>
+							<td><input type="file" name="photo" id="photo"  class="fullside"/></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("Photo1")?></td>
+							<td><input type="file" name="photo1" id="photo1"  class="fullside"/></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("Photo2")?></td>
+							<td><input type="file" name="photo2" id="photo2"  class="fullside"/></td>
+						</tr>
+						<tr>
+							<td><?php echo $tr->translate("STATUS")?></td>
+							<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true" missingMessage="Invalid Module!" class="fullside">
+								    <option value="1">Active</option>
+								    <option value="0">Deactive</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+									<input type="reset" value="សំអាត" label="<?php echo $tr->translate('CLEAR');?>"dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
+									<input type="submit" value="save_close" name="save_close" label="<?php echo $tr->translate('SAVECLOSE');?>" dojoType="dijit.form.Button" 
+										iconClass="dijitEditorIcon dijitEditorIconSave" />
+									<input type="submit" value="save_new" name="save_new" label="<?php echo $tr->translate('SAVENEW');?>" dojoType="dijit.form.Button" 
+										iconClass="dijitEditorIcon dijitEditorIconSave" />
+							</td>
+						</tr>
+					</table>	
+		</fieldset>		
+		</td>
+	</tr>
+</table>	
+</form>

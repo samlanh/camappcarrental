@@ -1,0 +1,484 @@
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<?php 
+	$rs = $this->row_agreement;
+	$select= "selected='slected'";
+	$rs_customer = $this->rs_customer;
+	$rs_vechicle = $this->rs_vechicle;
+	$barcode = $rs["ag_code"];
+	$url_barcode = $this->url(array("module"=>"agreement","controller"=>"carsale","action"=>"generate-barcode","product_code"=>$barcode),null,true);
+?>
+<style>
+.fixed_lable{ 
+	min-width: 80px; float: left;margin: 3px 5px;
+}
+.fixed_value{ 
+	min-width: 155px; background:#fff; float: left;margin: 1px 5px;
+	padding:0px 3px;border:1px solid #ccc; min-height: 30px;
+}
+.font_size{font-size:12px;}
+.right{text-align: right;padding-right:10px}
+.table{
+	background: rgb(109, 2, 122) none repeat scroll 0% 0%;
+border-radius: 5px;
+padding: 5px;
+font-size: 11px;
+color:white;
+}
+</style>
+<script type="text/javascript">
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.Textarea");
+dojo.require("dijit.form.DateTextBox");
+dojo.require("dijit.form.CheckBox");
+</script>
+ <script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				 if(dijit.byId('record_row').get('value')==''){
+                    alert('Can not submit without record !');
+                    return false;
+                 }
+				return true;
+			} else {
+				return false;
+			}
+	</script>
+<form id="billsale" action="" dojoType="dijit.form.Form" method="post" enctype="multipart/form-data">
+	
+	<table cellspacing="10" style="margin: 0 auto; width: 100%">
+		<tr>
+			<td>
+				<fieldset>
+					<legend align="center"><strong>BILL OF SALE</strong></legend>
+					<table  width="100%" >
+						<tr>
+							<td style="color:#04AE18;"><img src="<?php echo $url_barcode;?>"/></td>
+							<td style="color:red;font-weight:800;text-align: right; padding-right:8px;">Ref. No.: <?php echo $barcode;?></td>
+						</tr>
+						<tr>
+							<td colspan="" style="border-bottom: solid 1px #ccc; color:#04AE18;">ពត៌មានអ្នកលក់ VENDOR’S INFORMATION</td>
+							<td style="color:#04AE18; text-align: right">
+								<select style="width: 50%" name="opt_type" id="opt_type" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside">
+									<option value="0">- - - Choose Operation Type - - -</option>
+									<option value="1" <?php if($rs["operation_type"]==1){ echo $select;}?>>Sale Vehicle</option>
+									<option value="2" <?php if($rs["operation_type"]==2){ echo $select;}?>>Buy Vehicle</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<table width="100%" class="table">
+									<tr>
+										<td class="font_size">Vendor’s Name</td>
+										<td>
+											<select style="width: 100%" name="ven_name" id="ven_name" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getVendor()">
+												<option value="0">- - - Choose Vendor - - -</option>
+												<?php 
+													foreach ($rs_customer as $rss){
+														$check = "";
+														if($rss["id"] == $rs["o_id"]){
+															$check = "selected='selected'";
+														}
+												?>
+												<option value="<?php echo $rss["id"];?>" <?php echo $check?>><?php echo $rss["first_name"]." ".$rss["last_name"]?></option>
+												<?php }?>
+											</select>
+										</td>
+										<td class="font_size right">Gender:</td>
+										<td><select style="width: 100%" name="sex" id="sex" dojoType="dijit.form.FilteringSelect"   class="fullside">
+											<option value="1" <?php if($rs["o_sex"]==1){echo $select;}?>>Male</option>
+											<option value="2" <?php if($rs["o_sex"]==2){echo $select;}?>>Female</option>
+											</select>
+										</td>
+										<td class="font_size right">Age:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="age" id="age"  /></td>
+									</tr>
+									<tr>
+										<td class="font_size">Nationality:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="nation" id="nation"  value="<?php echo $rs["o_national"]?>" /></td>
+										<td class="font_size right">Current Occupation:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="occupation" id="occupation"  value="<?php echo $rs["o_occupation"]?>" /></td>
+										<td class="font_size right">Organization:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="organization" id="organization"  value="<?php echo $rs["o_company_name"]?>" /></td>
+									</tr>
+									<tr>
+										<td class="font_size">Passport | ID No.:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="passport" id="passport"  value="<?php echo $rs["o_passport"]?>" /></td>
+										<td class="font_size right">Cell Phone No.:</td>
+										<td ><input style="width: 100%" dojoType="dijit.form.TextBox" name="phone" id="phone"  value="<?php echo $rs["o_phone"]?>"/></td>
+										<td class="font_size right">E-mail:</td>
+										<td ><input style="width: 100%" dojoType="dijit.form.TextBox" name="email" id="email"   value="<?php echo $rs["o_email"]?>"/></td>
+									</tr>
+									
+									<tr>
+										<td class="font_size">Current Address:</td>
+										<td colspan="6"><input style="width: 100%" dojoType="dijit.form.Textarea" name="address" id="address" value="<?php echo $rs["o_group_num"]."|".$rs["o_home_num"]."| Street ".$rs["o_street"]."| Shangkat ".$rs["o_commune"]."| Khan ".$rs["o_district"]."|".$rs["o_province"]?>"/></td>
+									</tr>
+									
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="border-bottom: solid 1px #ccc; color:#04AE18;">ពត៌មានរថយន្ត VEHICLE’S INFORMATION</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<table width="100%" class="table">
+									<tr>
+										<td class="font_size">លេខយោង | Vehicle Ref. No.:<input type="hidden" name="old_vehicle" value="<?php echo $rs["v_id"]?>"></td>
+										<td>
+											<select name="reffer" id="reffer" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getVehicle();">
+											<option value="0">- - Choose Reffer No - -</option>
+											<?php 
+												foreach ($rs_vechicle as $rss){
+													$check = "";
+													if($rss["id"] == $rs["v_id"]){
+														$check = "selected='selected'";
+													}
+											?>
+												
+											<option value="<?php echo $rss["id"];?>" <?php echo $check;?>><?php echo $rss["reffer"];?></option>
+											<?php }?>
+											</select>
+										</td>
+										<td class="font_size" style="text-align: right;padding-right:10px">ប្រភេទ | Type:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="car_type" id="car_type"  value="<?php echo $rs["car_type"]?>"/>
+										</td>
+										
+										<td class="font_size" style="text-align: right;padding-right:10px">លេខតួ | Frame No.:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="frame_no" id="frame_no"  value="<?php echo $rs["frame_no"]?>"/>
+										</td>
+										
+									</tr>
+									<tr>
+										<td class="font_size">ឆ្នាំផលិត | Year:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="create_year" id="create_year"  value="<?php echo $rs["year"]?>"/>
+										</td>
+										<td class="font_size" style="text-align: right;padding-right:10px">ពណ៌ | Color:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="car_color" id="car_color"   value="<?php echo $rs["color"]?>"/>
+										</td>
+										<td class="font_size" style="text-align: right;padding-right:10px">សាក់ស៊ី | Chassis No.:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="chassis_no" id="chassis_no"  value="<?php echo $rs["chassis_no"]?>"/>
+										</td>
+										
+									</tr>
+									<tr>
+										<td class="font_size">ម៉ាក| Make:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="make" id="make"  value="<?php echo $rs["make"]?>"/>
+										</td>
+										<td class="font_size" style="text-align: right;padding-right:10px">កម្លាំង  | Horse Power:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="car_power" id="car_power"  value="<?php echo $rs["hors_power"]?>"/>
+										</td>
+										<td class="font_size" style="text-align: right;padding-right:10px">លេខម៉ាស៊ីន  | Engine No.:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="engine_no" id="engine_no"  value="<?php echo $rs["engine_number"]?>"/>
+										</td>
+										
+										
+									</tr>
+									<tr>
+										<td class="font_size">ម៉ូដែល | Model:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="model" id="model"  value="<?php echo $rs["model"]?>"/>
+										</td>
+										<td class="font_size" style="text-align: right;padding-right:10px">ចំនួនស៊ីឡាំង | No. of Cylinders:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="cylinders_no" id="cylinders_no"  value="<?php echo $rs["of_cylinder"]?>"/>
+										</td>
+										<td class="font_size" style="text-align: right;padding-right:10px">ចំនួនភ្លៅ | No Of Axles:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="no_of_axlex" id="no_of_axlex"  value="<?php echo $rs["of_axlex"]?>"/>
+										</td>
+										
+									</tr>
+									<tr>
+										<td class="font_size">ម៉ូដែលបន្ទាប់ | Sub-model:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="sub_model" id="sub_model"  value="<?php echo $rs["sub_model"]?>"/>
+										</td>
+										<td class="font_size" style="text-align: right;padding-right:10px">ទំហំស៊ីឡាំង | Cylinder Size:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="cylinder_size" id="cylinder_size"  value="<?php echo $rs["cylinders_dip"]?>"/>
+										</td>
+										
+										<td class="font_size" style="text-align: right;padding-right:10px">ស្លាកលេខ |  Plaque No:</td>
+										<td>
+											<input style="width: 100%" dojotype="dijit.form.TextBox" name="plaque_no" id="plaque_no"  value="<?php echo $rs["licence_plate"]?>"/>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="border-bottom: solid 1px #ccc; color:#04AE18;">ពត៌មានអ្នកទិញ BUYER’S INFORMATION</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<table width="100%" class="table">
+									<tr>
+										<td class="font_size">Customer's Name</td>
+										<td><select style="width: 100%" name="cus_name" id="cus_name" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getCustomer();">
+											<option value="0">- - - Choose customer - - -</option>
+											<?php foreach ($rs_customer as $rss){
+												$check = "";
+												if($rss["id"] == $rs["c_id"]){
+													$check = "selected='selected'";
+												}
+											?>
+											<option value="<?php echo $rss["id"];?>" <?php echo $check?>><?php echo $rss["first_name"]." ".$rss["last_name"]?></option>
+											<?php }?>
+											</select>
+										</td>
+										<td class="font_size right">Gender:</td>
+										<td><select style="width: 100%" name="cus_sex" id="cus_sex" dojoType="dijit.form.FilteringSelect"   class="fullside" >
+											<option value="1" <?php if($rs["sex"]==1){echo $select;}?>>Male</option>
+											<option value="2" <?php if($rs["sex"]==1){echo $select;}?>>Female</option>
+											</select>
+										</td>
+										<td class="font_size right">Age:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="cus_age" id="cus_age"  value=""/></td>
+									</tr>
+									<tr>
+										<td class="font_size">Nationality:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="cus_nation" id="cus_nation"  value="<?php echo $rs["nationality"]?>"/></td>
+										<td class="font_size right">Current Occupation</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="cus_occupation" id="cus_occupation"  value="<?php echo $rs["occupation"]?>"/></td>
+										<td class="font_size right">Organization:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="cus_organization" id="cus_organization"  value="<?php echo $rs["company_name"]?>"/></td>
+									</tr>
+									
+									<tr>
+										<td class="font_size">Passport | ID No.:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="cus_passport" id="cus_passport"  value="<?php echo $rs["o_passport"]?>"/></td>
+										<td class="font_size right">Cell Phone No.:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="cus_phone" id="cus_phone"  value="<?php echo $rs["phone"]?>"/></td>
+										<td class="font_size right">E-mail:</td>
+										<td><input style="width: 100%" dojoType="dijit.form.TextBox" name="cus_email" id="cus_email"  value="<?php echo $rs["email"]?>"/></td>
+									</tr>
+									
+									<tr>
+										<td class="font_size">Current Address::</td>
+										<td colspan="5"><input style="width: 100%" dojoType="dijit.form.Textarea" name="cus_address" id="cus_address" value="<?php echo $rs["group_num"]."|".$rs["house_num"]."| Street ".$rs["street"]."| Shangkat ".$rs["commune"]."| Khan ".$rs["district"]."|".$rs["provice"]?>"/></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2" style="border-bottom: solid 1px #ccc; color:#04AE18;">ពត៌មានសាក្សី​  	WITNESS’S INFORMATION</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<table width="100%" class="table">
+									<tr>
+										<td class="font_size" style="width: 14.5%;">Buyer's Witness Name:</td>
+										<td>
+											<input style="width: 100%" dojoType="dijit.form.TextBox" name="buyer_witness" id="buyer_witness" required="true" value="<?php echo $rs["buyer_witness"]?>"/>
+										</td>
+										<td class="font_size right">Seller's Witness Name:</td>
+										<td>
+											<input style="width: 100%" dojoType="dijit.form.TextBox" name="seller_witness" id="seller_witness" required="true" value="<?php echo $rs["seller_witness"]?>"/>
+										</td>
+										<td></td>
+										<td></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" style="border-bottom: solid 1px #ccc; color:#04AE18;">ពត៌មានតម្លៃរថយន្ត​  	VEHICLE'S PRICE INFORMATION</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<table width="100%" class="table">
+									<tr>
+										<td class="font_size" style="width: 14.5%;">Sale Price:</td>
+										<td>
+											<input dojoType="dijit.form.NumberTextBox" name="sale_price" id="sale_price" required="true" value="<?php echo $rs["sale_price"]?>" onKeyup="doTotal()" />
+										</td>
+										<td>Discout In US$:</td>
+										<td><input dojoType="dijit.form.NumberTextBox" type="text" name="discount" id="discount" value="<?php echo $rs["discount"]?>" onKeyup="doTotal()"></td>
+										<td>Sale Tax(%):</td>
+										<td><input dojoType="dijit.form.NumberTextBox" type="text" name="tax" id="tax" value="<?php echo $rs["tax"]?>" onKeyup="doTotal();"></td>
+										<td>Total:</td>
+										<td><input dojoType="dijit.form.NumberTextBox" type="text" name="total" id="total" value="<?php echo $rs["total_price"]?>" onKeyup="doTotal()"></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						
+						<tr>
+							<td colspan="2" style="border-bottom: solid 1px #ccc; color:#04AE18;">ពត៌មានផ្សេងៗ​  OTHER INFORMATION</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<table width="100%" class="table">
+									<tr>
+										<td class="font_size">1. Imported tax paid</td>
+										<td>
+											<select name="tax_paid" id="tax_paid" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getAllVehicle(2);">
+											<option value="1" <?php if($rs["import_tax"]==1){echo $select;}?>>Yes</option>
+											<option value="0" <?php if($rs["import_tax"]==1){echo $select;}?>>No</option>
+											</select>
+										</td>
+										<td class="font_size right">2. Annual Road Tax </td>
+										<td>
+											<select name="road_tax" id="road_tax" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getAllVehicle(2);">
+											<option value="1" <?php if($rs["annual_road_tax"]==1){echo $select;}?>>Yes</option>
+											<option value="0" <?php if($rs["annual_road_tax"]==1){echo $select;}?>>No</option>
+											</select>
+										</td>
+										<td class="font_size right">3. Certificate Of Vehicle</td>
+										<td>
+											<select name="certificate_vehicle" id="certificate_vehicle" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getAllVehicle(2);">
+											<option value="1" <?php if($rs["vehicle_sertificate"]==1){echo $select;}?>>Yes</option>
+											<option value="0" <?php if($rs["vehicle_sertificate"]==1){echo $select;}?>>No</option>
+											</select>
+										</td>
+										<td class="font_size right">4.ID Card</td>
+										<td>
+											<select name="id_card" id="id_card" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getAllVehicle(2);">
+											<option value="1" <?php if($rs["vehicle_id_card"]==1){echo $select;}?>>Yes</option>
+											<option value="0" <?php if($rs["vehicle_id_card"]==1){echo $select;}?>>No</option>
+											</select>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr align="center">
+							<td colspan="2">
+								<table>
+									<tr align="center">
+										<td>
+											<input type="submit" dojoType="dijit.form.Button" value="save" name="save" label="Edit" iconClass="dijitEditorIcon dijitEditorIconSave"/>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>	
+				</fieldset>
+			</td>			
+		</tr>
+	</table>	
+</form>
+<script type="text/javascript">
+var url_customer = '<?php echo $this->url(array('module'=>'agreement','controller'=>'carsale','action'=>'getcustomer'));?>';
+	function getVendor(){
+		cu_id=dijit.byId('ven_name').get('value');
+		dojo.xhrPost({
+		     url: url_customer, 
+		     content : { 
+		     "cu_id":cu_id,
+		  }, 
+		  handleAs:"json",
+		  load: function(data) {
+			dijit.byId("sex").attr("value",data.sex);
+			dijit.byId('occupation').attr('value',data.occupation);
+			dijit.byId('organization').attr('value',data.company_name);
+			dijit.byId('address').attr('value',data.address1);
+
+			dijit.byId('passport').attr('value',data.passport_name);
+			dijit.byId('nation').attr('value',data.nationality);
+			
+			dijit.byId('phone').attr('value',data.phone);
+			dijit.byId('email').attr('value',data.email);
+
+// 			calCulateDay();
+// 			getBookingVehicleDetail(booking_id);
+		  },
+		  error: function(err) {
+		  	alert("Your message could not be sent, please try again!.");         
+		  }
+		 });
+	}
+
+	
+	function getCustomer(){
+		cu_id=dijit.byId('cus_name').get('value');
+		dojo.xhrPost({
+		     url: url_customer, 
+		     content : { 
+		     "cu_id":cu_id,
+		  }, 
+		  handleAs:"json",
+		  load: function(data) {
+			dijit.byId("cus_sex").attr("value",data.sex);
+			dijit.byId('cus_occupation').attr('value',data.occupation);
+			dijit.byId('cus_organization').attr('value',data.company_name);
+			dijit.byId('cus_address').attr('value',data.address1);
+
+			dijit.byId('cus_passport').attr('value',data.passport_name);
+			dijit.byId('cus_nation').attr('value',data.nationality);
+			
+			dijit.byId('cus_phone').attr('value',data.phone);
+			dijit.byId('cus_email').attr('value',data.email);
+
+// 			calCulateDay();
+// 			getBookingVehicleDetail(booking_id);
+		  },
+		  error: function(err) {
+		  	alert("Your message could not be sent, please try again!.");         
+		  }
+		 });
+	}
+
+	var url_vehicle = '<?php echo $this->url(array('module'=>'agreement','controller'=>'carsale','action'=>'getvehicle'));?>';
+	function getVehicle(){
+		reffer=dijit.byId('reffer').get('value');
+		dojo.xhrPost({
+		     url: url_vehicle, 
+		     content : { 
+		     "reffer":reffer,
+		  }, 
+		  handleAs:"json",
+		  load: function(data) {
+			dijit.byId("make").attr("value",data.make);
+			dijit.byId('model').attr('value',data.model);
+			dijit.byId('sub_model').attr('value',data.sub_model);
+			dijit.byId('create_year').attr('value',data.year);
+
+			dijit.byId('frame_no').attr('value',data.frame_no);
+			dijit.byId('chassis_no').attr('value',data.chassis_no);
+			
+			dijit.byId('engine_no').attr('value',data.engine_number);
+			dijit.byId('no_of_axlex').attr('value',data.of_axlex);
+
+			dijit.byId('car_type').attr('value',data.car_type);
+			dijit.byId('cylinders_no').attr('value',data.of_cylinder);
+
+			dijit.byId('car_color').attr('value',data.color);
+			dijit.byId('car_power').attr('value',data.hors_power);
+
+			dijit.byId('cylinder_size').attr('value',data.cylinders_dip);
+			dijit.byId('plaque_no').attr('value',data.licence_plate);
+
+// 			calCulateDay();
+// 			getBookingVehicleDetail(booking_id);
+		  },
+		  error: function(err) {
+		  	alert("Your message could not be sent, please try again!.");         
+		  }
+		 });
+	}
+	function doTotal(){
+		//total_tax=0;
+		sale_price = dijit.byId('sale_price').get('value');
+		discount = dijit.byId('discount').get('value');
+		tax = dijit.byId('tax').attr('value');
+		total_tax = (sale_price*tax)/100;
+		total = parseFloat(sale_price)-parseFloat(discount)+parseFloat(total_tax);
+		dijit.byId('total').attr('value',total);
+		
+	}
+</script>

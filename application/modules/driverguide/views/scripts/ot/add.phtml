@@ -1,0 +1,119 @@
+<?php 
+	$baseurl =  Zend_Controller_Front::getInstance()->getBaseUrl();
+?>
+<script src="<?php echo $baseurl;?>/js/help.js"></script>
+<table  width="100%" style="margin-top:-5px;">
+	<tr>
+		<td>
+		<fieldset>
+					<legend ><strong>Add Client</strong></legend>
+					<table style="margin: 0 auto; width:100%;" cellspacing="10">
+						<tr>
+							<td>Promotion Title</td>
+							<td><input dojoType="dijit.form.TextBox" class="fullside"  id="client_no" name="client_no" type="text"></td>
+							<td>STAFF_KHMER*</td>
+							<td>
+<input dojoType="dijit.form.ValidationTextBox" class="fullside" required="true" id="name_kh" name="name_kh" value="" type="text"></td>
+							<td>STAFF_ENG*</td>
+							<td>
+<input dojoType="dijit.form.ValidationTextBox" class="fullside" required="true" id="name_en" name="name_en" value="" type="text"></td>
+						</tr>
+						<tr>
+							<td>Start From</td>
+							<td><input dojoType="dijit.form.DateTextBox" class="fullside" id="dob_client" name="dob_client" value="" type="text"></td>
+							<td>End From</td>
+							<td><input dojoType="dijit.form.DateTextBox" class="fullside" id="end_date" name="end_date" value="" type="text"></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td colspan="6" align="center">
+								<input type="hidden" dojoType="dijit.form.TextBox" id="record_row" name="record_row" />
+								<div  id="store_record"></div>
+								<input iconClass="dijitIconClear" type="button" onClick="addNewSeason();" label="Add" dojoType="dijit.form.Button"/></td>
+							</td>
+						</tr>
+					</table>
+			</fieldset>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">
+dojo.require("dojo.data.ObjectStore");
+dojo.require("dojo.NodeList-manipulate");
+dojo.require("dojo.html");
+require(["dojo/ready"], function(ready){
+	ready(function(){
+		addNewRecord();
+	});
+});
+function addNewRecord(){
+	dojo.query("#store_record").append('');
+	tmp='<table id="t_amountmoneytype" width="96%" style="border-collapse: collapse; border:1px solid #ccc !important;">';
+	tmp+='<tr style="background:#eee; font-size: 12px; height: 30px;margin-bottom: 10px;" id="head_title" class="head-title" align="center"></tr>';
+	tmp+='</table>';
+	dojo.query("#store_record").append(tmp);
+	thead='<th>Delete</th>';
+	thead+='<th>Staff Id</th>';
+	thead+='<th>Driver/Guide</th>';
+	thead+='<th>Normal Price</th>';
+	thead+='<th>Weekend</th>';
+	thead+='<th>Holiday</th>';
+	thead+='<th style="border-right:1px solid #000;">OT Pirce </th>';
+	thead+='<th>Normal Price</th>';
+	thead+='<th>Weekend</th>';
+	thead+='<th>Holiday</th>';
+	thead+='<th>OT Pirce</th>';
+	fund_title=1;
+	dojo.query("#head_title").append(thead);	
+	dijit.byId('record_row').attr('value','');
+	addNewSeason();
+}
+r=0;
+function addNewSeason(){
+	r++;
+	tmp='<tr style="border:1px solid #ccc; font-size:12px;" id="row_guide'+r+'">'
+	tmp+="</tr>";
+		dojo.query("#t_amountmoneytype").append(tmp);
+		
+	temp='<td style="width:30px !important;text-align:center;" ><img style="cursor:pointer" onclick="deleteRecord('+r+')" src="/lyna/trunk/public/images/Delete_16.png"></td>';
+	temp+='<td><select style="background:#fff; padding-left:5px;" id="collect_type'+r+'" name="collect_type'+r+'" dojoType="dijit.form.FilteringSelect" onchange="checkSelectOption(1,'+r+')"  ></select></td>';
+    temp+='<td><select style=" width:90%; background:#fff; padding-left:5px;" id="owner_type'+r+'" name="owner_type'+r+'" dojoType="dijit.form.FilteringSelect" onchange="setOwnerNameCollecteralById('+r+')"></select></td>';
+
+	temp+='<td><input style="width:80px;" type="text" required="true" name="cnprice'+r+'" id="cnprice'+r+'" dojoType="dijit.form.NumberTextBox"/></td>';
+	temp+='<td><input style="width:80px;" type="text" required="true" name="cnweekend'+r+'" id="cnweekend'+r+'" dojoType="dijit.form.NumberTextBox"/></td>';
+	temp+='<td><input style="width:80px;" type="text"  name="cnholiday'+r+'" id="cnholiday'+r+'" dojoType="dijit.form.NumberTextBox"/></td>';
+	temp+='<td style="border-right:1px solid #000;"><input style="width:80px;" type="text" name="cnot'+r+'" id="cnot'+r+'" dojoType="dijit.form.NumberTextBox" /></td>';
+
+	temp+='<td><input style="width:80px;" type="text" name="pnprice'+r+'" id="pnprice'+r+'" dojoType="dijit.form.NumberTextBox" /></td>';
+	temp+='<td><input style="width:80px;" type="text" name="pnweekend'+r+'" id="pnweekend'+r+'" dojoType="dijit.form.NumberTextBox" /></td>';
+	temp+='<td><input style="width:80px;" type="text" name="pnholiday'+r+'" id="pnholiday'+r+'" dojoType="dijit.form.NumberTextBox" /></td>';
+	temp+='<td><input style="width:80px;" type="text" name="pnot'+r+'" id="pnot'+r+'" dojoType="dijit.form.NumberTextBox" /></td>';
+	
+		dojo.html.set(dojo.byId("row_guide"+r),temp, {
+	    parseContent: true,
+	     
+	});
+	if(dijit.byId("record_row").get('value')!="") {
+		var ids = dijit.byId("record_row").value;
+		dijit.byId("record_row").attr('value',ids+','+r);
+	} else { dijit.byId("record_row").attr('value',r);}
+}
+function deleteRecord(index){
+	var ids =dijit.byId('record_row').value;
+	if(ids.length=='' || ids.length==null){
+		dijit.byId('record_row').attr('value','');
+		dojo.query("#row_guide"+ids).remove();
+	}else{
+		var arrays = ids.split(',');
+		for(var i=0;i<arrays.length;i++) {
+			if(arrays[i] == index) arrays.splice(i,1);
+		}
+		var strings = arrays.join(',');
+		dijit.byId('record_row').attr('value',strings);
+		dojo.query("#row_guide"+index).remove();
+	}
+}
+
+
+</script>

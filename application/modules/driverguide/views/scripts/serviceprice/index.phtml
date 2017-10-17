@@ -1,0 +1,32 @@
+<title>Service Price</title>
+<table width="100%" border='1' style="border:1px solid #ccc; border-collapse:collapse;">
+	  <tr>
+	    <th class="tdheader header">N.</th>
+	    <th class="tdheader header">Service Title</th>
+<!-- 	    <th class="tdheader header">Description</th> -->
+	    <th class="tdheader header">Photo</th>
+	    <th class="tdheader header">Price</th>
+	    <th class="tdheader header">Status</th>
+	  </tr>
+	  <?php 
+	  $imgnone = $this->baseUrl()."/images/icon/apply2.png";
+	  $imgntow = $this->baseUrl()."/images/icon/cross.png";
+		if(!empty($this->row_service))foreach ($this->row_service as $key =>$row){
+			if ($row['status']==1){
+			     $img="<img src='".$imgnone."'/>";	
+			}else{
+		         $img="<img src='".$imgntow."'/>";
+			} 
+	 ?>
+	  <tr align="center">
+	  	<td style="border:1px solid #ccc;padding:1px;" align="center"><?php echo $key+1;?></td>
+	  	<td style="border:1px solid #ccc;padding:1px;text-align:left;">&nbsp;<a href="<?php echo $this->baseUrl().'/driverguide/serviceprice/edit/id/'.$row['id'];?>"><?php echo $row['service_title'];?></a></td>
+	  	<!--<td style="border:1px solid #ccc;padding:1px;text-align:left;">&nbsp;<a href="<?php //echo $this->baseUrl().'/driverguide/serviceprice/edit/id/'.$row['id'];?>"><?php //echo substr($row['description'],0, 90);?></a><span style="clear: both;"></span></td> -->
+	    <td style="border:1px solid #ccc;padding:1px;text-align: center;" ><a href="<?php echo $this->baseUrl().'/driverguide/serviceprice/edit/id/'.$row['id'];?>"><img src="<?php echo $this->baseUrl().'/images/'.$row['photo'];?>"  style="max-height:50px;"/></a></td>
+	    <td style="border:1px solid #ccc;padding:1px;text-align:left;">&nbsp;<a href="<?php echo $this->baseUrl().'/driverguide/serviceprice/edit/id/'.$row['id'];?>"><?php echo $row['price'];?></a></td>
+	  	<td style="border:1px solid #ccc;padding:1px;"><?php echo $img;?></td>
+	  </tr>
+	  <?php 
+		}
+		?>
+</table>

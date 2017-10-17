@@ -1,0 +1,30 @@
+<title>Vehicle Rental</title>
+<script type="text/javascript">
+dojo.ready(function(){
+	//dijit.byId('vehicle_ref_no').attr("placeholder", "Month");
+	// $("#vehicle_ref_no").attr("placeholder", "Month");
+});
+dojo.require("dojo.data.ItemFileWriteStore");  
+dojo.require("dijit.form.NumberTextBox");
+dojo.require("dijit.form.DateTextBox");
+dojo.require("dijit.form.Textarea");
+require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
+</script>
+<?php $tr = Application_Form_FrmLanguages::getCurrentlanguage();?>
+<?php $frm =  $this->frm_search;?>
+<form id="list" name="list" action="<?php echo $this->url(array('module'=>'booking','controller'=>'guidebooking','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
+  <table>
+  	<tr>
+  		<td><?php echo $frm->getElement("search_text");?></td>
+  		<td>Booking From</td>
+  		<td><?php echo $frm->getElement('from_book_date');?></td>
+  		<td>To Booking</td>
+  		<td><?php echo $frm->getElement('to_book_date');?></td>
+  		<td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>
+  	</tr>
+  </table>
+  
+  
+  
+</form>
+<?php echo $this->list;?>
