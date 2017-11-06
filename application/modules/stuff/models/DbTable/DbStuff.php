@@ -15,7 +15,7 @@ class Stuff_Model_DbTable_DbStuff extends Zend_Db_Table_Abstract
     	try{
 
     		$adapter = new Zend_File_Transfer_Adapter_Http();
-    		$part= PUBLIC_PATH.'/images';
+    		$part= PUBLIC_PATH.'/images/product/';
     		$adapter->setDestination($part);
     		$adapter->receive();
     		
@@ -92,7 +92,7 @@ class Stuff_Model_DbTable_DbStuff extends Zend_Db_Table_Abstract
       	$db->beginTransaction();
       	try{
       		$adapter = new Zend_File_Transfer_Adapter_Http();
-      		$part= PUBLIC_PATH.'/images';
+      		$part= PUBLIC_PATH.'/images/product/';
       		$adapter->setDestination($part);
       		$adapter->receive();
       		

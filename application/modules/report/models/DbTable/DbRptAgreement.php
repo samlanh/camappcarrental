@@ -25,13 +25,15 @@ class Report_Model_DbTable_DbRptAgreement extends Zend_Db_Table_Abstract
 		FROM `ldc_vehicleagreement` AS a,ldc_customer AS c,ldc_owner AS w WHERE
 		c.id=a.customer_id AND a.ownder_id=w.id AND a.id= $id LIMIT 1";
 		return $db->fetchRow($sql);*/
-
-	$db = $this->getAdapter();
+		$dbgb = new Application_Model_DbTable_DbGlobal();
+		$lang= $dbgb->getCurrentLang();
+		$array = array(1=>"province_en_name",2=>"province_kh_name");
+		$db = $this->getAdapter();
 		$sql ="SELECT a.id,a.is_familybook,a.is_idcard,a.is_passport,a.agreement_code,a.agreement_date, a.booking_id,`a`.vehicle_id,
 		a.sunday_price,a.airport_price,a.dropairport_price,a.item_1,a.item_2,a.item_3,a.witness,
 		a.refundable,art1_id,toart1_id,art2_id,toart2_id,art3_id,toart3_id,regular_id,unlimited,repare,insurance,fule,fuel_full,
 		a.inception_date,a.return_date,a.return_time,a.period ,a.price_perday,amount_price,refundable,longdist_acc,grand_total,discount_value,
-		vat_amount,	a.date_create,c.*,(SELECT province_name FROM `ldc_province` WHERE id=c.province_id) AS province_name ,
+		vat_amount,	a.date_create,c.*,(SELECT ".$array[$lang]." FROM `ldc_province` WHERE id=c.province_id) AS province_name ,
 		(SELECT country_name FROM `ldc_country` WHERE id=c.country) As country_name,
 		w.*
 		FROM `ldc_vehicleagreement` AS a,ldc_customer AS c,ldc_owner AS w WHERE

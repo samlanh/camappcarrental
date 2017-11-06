@@ -1,6 +1,6 @@
 <?php 
    $tr = Application_Form_FrmLanguages::getCurrentlanguage();
-   echo $this->headTitle($tr->translate("BOOKING"));
+   echo $this->headTitle($tr->translate("PRODUCTBOOKING"));
    $rows_owner= $this->rows_owner;
    $rows_cus=$this->rows_cus;
    
@@ -34,11 +34,42 @@
 		.note ol{margin-top: -8px;}
 		.note li{font-size: 12px;line-height: 15px;}
 	table tr .text-center{text-align: center;}
+	
+		ul.car-List {
+		    list-style: none;
+		}
+		ul.car-List li.carList {
+		    padding: 10px;
+		    border: solid 1px #eee;
+		    margin-bottom: 10px;
+		    border-radius: 5px;
+		    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.13);
+		}
+		ul.car-List li.carList h2.title {
+		    font-weight: 600;
+		    color: #087fd1;
+		}
+		li.carList	ul.info_list {
+		    list-style: none;
+		    padding: 0;
+		    margin: 0;
+		}
+		ul.info_list li span.span_title {
+		    font-weight: 600;
+		}
+		span.span_value.color {
+		    color: #ee0606;
+		    font-weight: 600;
+		}
+		
+	.taboverflow{
+			max-height: 500px;
+		    display: block;
+		    overflow: auto;
+		}
 </style>
 <script type="text/javascript">
 dojo.ready(function(){
-	//dijit.byId('vehicle_ref_no').attr("placeholder", "Month");
-	// $("#vehicle_ref_no").attr("placeholder", "Month");
 });
 dojo.require("dojo.data.ItemFileWriteStore");  
 dojo.require("dijit.form.NumberTextBox");
@@ -56,252 +87,341 @@ require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 	    </div>
 	</div>
 </div>	
-<table  width="100%" style="margin-top:-5px;">
-	<tr>
-		<td>
-		<fieldset>
-					<legend ><strong>Add Vehicle</strong></legend>
-					<div id="mainTabContainer" style="max-width:1110px; height: 540px;" dojoType="dijit.layout.TabContainer" region="center"  >
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Select Date" <?php if(empty($this->bookinginfo->point_step))echo 'selected="true"';?>>
-							<form action="<?php echo $this->url(array('module'=>'booking','controller'=>'productbooking','action'=>'get-product-available')); ?>" method="post" dojoType="dijit.form.Form" method="post">
-								<table style="margin: 0 auto; width:100%; font-size:14px;white-space: nowrap;" class="date">
-								    <tr>
-										<td width="2%">Pickup Date:</td>
-										<td width="25%"><?php echo $frm->getElement("pickup_date");?></td>
-										<td width="25%" colspan="2">
-											<table>
-												<tr>
-													<td style="width: 23%;">Pickup Time:</td>
-													<td><?php echo $frm->getElement("pickup_time");?></td>
-													<td>Minutes:</td>
-													<td><?php echo $frm->getElement("pickup_minute");?></td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-									<tr>
-										<td width="2%">Return Date:</td>
-										<td width="25%"><?php echo $frm->getElement("return_date");?></td>
-										<td width="25%" colspan="2">
-											<table>
-												<tr>
-													<td style="width: 23%;">Return Time:</td>
-													<td><?php echo $frm->getElement("return_time");?></td>
-													<td>Minutes:</td>
-													<td><?php echo $frm->getElement("return_minute");?></td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-									<tr>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td style="text-align: right;"><input type="submit" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Find Vehicle Now" label="Find Vehicle Now"></td>
-									</tr>
-								</table>
-							</form>
-						</div>
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Product" <?php if($this->bookinginfo->point_step ==1 )echo 'selected="true"'?> >
-							<?php if($this->bookinginfo->step1 ==1 ){?>
-							<form method="post" action="<?php echo $this->url(array('module'=>'booking','controller'=>"productbooking",'action'=>'get-product-selected'),null,true); ?>">
-								<div style="z-index: 100000000;height: 50px;">
-										
-				                        <div style="float: right;" >
-				                        	<input type="submit" dojoType="dijit.form.Button" value="Continue" label="Continue">
-				                        </div>
-			                        </div>
-									<?php if(!empty($session->productAvailable)){ $i=0; foreach ($session->productAvailable as $rs){ $i++;?>
-									<div style="margin-top:30px;position:relative;margin-bottom: 10px; padding:10px; border-radius:10px;border: 1px solid #E5E5E5;border-radius: 11px / 13px;background-color: #FFF;box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.13);">
-										<table class="options-primary">
-											<tr>
-												<td style="width: 20%"><img style="width: 200px;height: 115px;" src="<?php echo $this->baseUrl();?>/images/<?php echo $rs["photo_front"];?>" class="preview" alt="preview"></td>
-												<td style="width: 40%;">
-													<table class="options-primary">
-														<tr>
-															<td colspan="2" style="color:red; font-size:16px;"><h4><?php echo $rs["equipment_name"];?></h4></td>
-														</tr>
-					                                    <tr>
-					                                        <td class="option primary">Reference No:</td>
-					                                        <td class="spec"><?php echo $rs["reference_no"];?></td>
-					                                    </tr>
-					                                     <tr>
-					                                        <td class="option primary">Price:</td>
-					                                        <td class="spec">$<?php echo $rs["price"]?>/day</td>
-					                                    </tr>
-					                                    <tr>
-					                                        <td class="option primary">Extra Price:</td>
-					                                        <td class="spec">$<?php echo $rs["extra_price"]?>/day</td>
-					                                    </tr>
-					                                </table>
-												</td>
-												<td>
-													<table class="options-secondary" style="width:300px">
-													<tr>
-														<td></td>
-														<td style="text-align: right">
-															<input type="hidden" name="equipmentid_<?php echo $i ?>" value="<?php echo $rs["id"] ?>" />
-															<span style="position: absolute;right: 215px;top: 45px;">Tick the Box</span>
-															<input style="width: 50px;" type="checkbox" name="equipment_<?php echo $i; ?>" class="checkbox input-checkbox" onClick="addEquipment(<?php echo $i; ?>)" id="equipment_<?php echo $i;?>" style="rigth: 0 !important;"/>
-														</td>
-													</tr>
-				                                    <tr>
-				                                        <td class="option secondary" style="width:120px">Number of Rent:</td>
-				                                        <td class="spec"><input type="text" class="form-control" name="number_equipment_<?php echo $i;?>"  id="number_equipment_<?php echo $i;?>" placeholder="Qantity"></td>
-				                                    </tr>
-				                                 </table>
-												</td>
-												
-											</tr>
-			                            </table>
-			                         </div>
-			                    <?php }}else echo "No Driver Available!";?>
-				                <input type="hidden" name="identity_equipment" id="identity_equipment"/>
-				           </form>
-				           <?php }?>
-						</div>
-						
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Other Fee" <?php if($this->bookinginfo->point_step ==2 )echo 'selected="true"'?> >
-							<?php if($this->bookinginfo->step2 ==1 ){?>
-							<form method="post" action="<?php echo $this->url(array('module'=>'booking','controller'=>"productbooking",'action'=>'other-fee'),null,true); ?>">
-								<table>
-									<tr id="tr_1">
-										<td><input type="checkbox" name="other_1" id="other_1" onClick="addOtherFee(1);"></td>
-										<td>Other Fee 1:</td>
-										<td><?php echo $frm->getElement("other_fee1"); ?></td>
-										<td class="align">Note :</td>
-										<td><?php echo $frm->getElement("other_fee_note1"); ?></td>
-									</tr>
-									
-									<tr id="tr_2">
-										<td><input type="checkbox" name="other_2" id="other_2" onClick="addOtherFee(2);"></td>
-										<td>Other Fee 2:</td>
-										<td><?php echo $frm->getElement("other_fee2"); ?></td>
-										<td class="align">Note :</td>
-										<td><?php echo $frm->getElement("other_fee_note2"); ?></td>
-									</tr>
-									
-									<tr id="tr_3">
-										<td><input type="checkbox" name="other_3" id="other_3" onClick="addOtherFee(3);"></td>
-										<td>Other Fee 3:</td>
-										<td><?php echo $frm->getElement("other_fee3"); ?></td>
-										<td class="align">Note :</td>
-										<td><?php echo $frm->getElement("other_fee_note3"); ?></td>
-									</tr>
-									
-									<tr id="tr_4">
-										<td><input type="checkbox" name="other_4" id="other_4" onClick="addOtherFee(4);"></td>
-										<td>Other Fee 4:</td>
-										<td><?php echo $frm->getElement("other_fee4"); ?></td>
-										<td class="align">Note :</td>
-										<td><?php echo $frm->getElement("other_fee_note4"); ?></td>
-									</tr>
-									
-									<tr id="tr_5">
-										<td><input type="checkbox" name="other_5" id="other_5" onClick="addOtherFee(5);"></td>
-										<td>Other Fee 5:</td>
-										<td><?php echo $frm->getElement("other_fee5"); ?></td>
-										<td class="align">Note :</td>
-										<td><?php echo $frm->getElement("other_fee_note5"); ?></td>
-									</tr>
-									
-									<tr id="tr_6">
-										<td><input type="checkbox" name="other_6" id="other_6" onClick="addOtherFee(6);"></td>
-										<td>Other Fee 6:</td>
-										<td><?php echo $frm->getElement("other_fee6"); ?></td>
-										<td class="align">Note :</td>
-										<td><?php echo $frm->getElement("other_fee_note6"); ?></td>
-									</tr>
-									<tr>
-										<td><input type="hidden" name="identity_other_fee" id="identity_other_fee"></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										<td class="align"><input type="submit" iconclass="dijitIconNew" dojoType="dijit.form.Button" value="Continue" label="Continue" ></td>
-									</tr>
-								</table>
-								
-							</form>
-							<?php }?>
-						</div>
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Customer Info" <?php if($this->bookinginfo->point_step ==3 )echo 'selected="true"'?> >
-							<?php if($this->bookinginfo->step3 ==1 ){?>
-							<form method="post" action="<?php echo $this->url(array('module'=>'booking','controller'=>"productbooking",'action'=>'customer-info'),null,true); ?>">
-							<div id="exist_customer">
-								<table>
-									<tr>
-										<td style="width:20%">Choose Customer :</td>
-										<td style="width:30%"><?php echo $frm->getElement("customer");?></td>
-										<td></td>
-									</tr>
-								</table>
-								<div id="customer_info" style="margin-top:30px;">
-									
-								</div>
-								<div id="confirm_btn" style="display: none;margin-top:30px;"  >
-									<table>
-										<tr>
-											<td>Filght No.:</td>
-											<td><?php echo $frm->getElement("fly_no");?></td>
-											<td>Flight Date:</td>
-											<td><?php echo $frm->getElement("fly_date");?></td>
-										</tr>
-										<tr>
-											<td>Flight Time Arrival:</td>
-											<td><?php echo $frm->getElement("fly_time");?></td>
-											<td>Flight Distination:</td>
-											<td><?php echo $frm->getElement("fly_destination");?></td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>
-<!-- 												<input type="reset" name="reset" iconclass="dijitIconDelete" dojoType="dijit.form.Button" value="Reset" label="Reset"> -->
-												<input type="submit" name="" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Confirm" label="Confirm" >
-												<input id="create_acc" iconclass="dijitIconNew" dojoType="dijit.form.Button" value="Confirm" label="Create Account" onClick="signup(1);"></td>
-											<td style="text-align: left"></td>
-										</tr>
-									</table>
-								</div>
-								
-							</div>
-							</form>
-							<div id="new_customer" style="display:none;">
-								<form action="" method="Post">
-								<table>
-									<tr>
-										<td>User Name :</td>
-										<td><?php echo $frm->getElement("cu_user_name");?></td>
-										<td>Password</td>
-										<td><?php echo $frm->getElement("cu_pass");?></td>
-										<td>Email</td>
-										<td><?php echo $frm->getElement("cu_email");?></td>
-									</tr>
-									<tr>
-										<td>First Name :</td>
-										<td><?php echo $frm->getElement("cu_first_name");?></td>
-										<td>Last Name</td>
-										<td><?php echo $frm->getElement("cu_last_name");?></td>
-										<td>Gender</td>
-										<td><?php echo $frm->getElement("gender");?></td>
-									</tr>
-									<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td>
-												<input type="reset" name="reset" iconclass="dijitIconDelete" dojoType="dijit.form.Button" value="Reset" label="Reset">
-												<input type="submit" name="confirm_cu" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Confirm" label="Confirm" >
-												<input id="choose_cu" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Choose Customer" label="Choose Customer" onClick="signup(2);"/>
-											</td>
-											<td style="text-align: left"></td>
-											<td style="text-align: left"></td>
-										</tr>
-								</table>
+<div class="clearfix"></div>
+	<div class="row">
+      	 <div class="col-md-12 col-xs-12 forms_padding">
+	          <div class="x_panel">
+	              <div class="x_title">
+	                 <h2><i class="fa  fa-info-circle" aria-hidden="true"></i> <?php echo $tr->translate('PRODUCTBOOKING')?></h2>
+                 <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                    	<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+               	</ul>
+               <div class="clearfix"></div>
+          	</div>
+       		<div class="x_content">
+       			 <div class="col-md-2 col-sm-2 col-xs-12">
+                      <ul class="nav nav-tabs tabs-left">
+                      		<li role="presentation" class="<?php if(empty($this->bookinginfo->point_step))echo "active";?>">
+                      			<a href="#tap1" id="tap1-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Select Date");?></a>
+                      		</li>
+                      		<li role="presentation" class="<?php if($this->bookinginfo->point_step ==1 )echo "active";?>">
+                      			<a href="#tap2" id="tap1-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Product");?></a>
+                      		</li>
+                      		<li role="presentation" class="<?php if($this->bookinginfo->point_step ==2 )echo "active";?>">
+                      			<a href="#tap3" id="tap2-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Other Fee");?></a>
+                      		</li>
+                      		<li role="presentation" class="<?php if($this->bookinginfo->point_step ==3 )echo "active";?>">
+                      			<a href="#tap4" id="tap3-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Customer Infomation");?></a>
+                      		</li>
+                      		<li role="presentation" class="<?php if($this->bookinginfo->point_step ==4 )echo "active";?>">
+                      			<a href="#tap5" id="tap4-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Booking List");?></a>
+                      		</li>
+                      		<li role="presentation" class="<?php if($this->bookinginfo->point_step ==5 )echo "active";?>">
+                      			<a href="#tap6" id="tap5-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Payment");?></a>
+                      		</li>
+                      </ul>
+                  </div>
+                  <div class="col-md-10 col-sm-10 col-xs-12">
+                  	<div class="tab-content">
+						<div role="tabpanel" class="tab-pane fade <?php if(empty($this->bookinginfo->point_step))echo "active in";?>" id="tap1" aria-labelledby="tap1-tab">
+								<form action="<?php echo $this->url(array('module'=>'booking','controller'=>'productbooking','action'=>'get-product-available')); ?>" method="post" dojoType="dijit.form.Form" method="post">
+									 <div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Pickup Date')?> :
+						                   </label>
+						                   <div class="col-md-2 col-sm-2 col-xs-12">
+						                    	<?php echo $frm->getElement("pickup_date");?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Pickup Time")?> :
+						                   </label>
+						                   <div class="col-md-2 col-sm-2 col-xs-12">
+						                    	<?php echo $frm->getElement("pickup_time");?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Minutes")?> :
+						                   </label>
+						                   <div class="col-md-2 col-sm-2 col-xs-12">
+						                    	<?php echo $frm->getElement("pickup_minute");?>
+						                   </div>
+						             </div>
+						             <div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Return Date')?> :
+						                   </label>
+						                   <div class="col-md-2 col-sm-2 col-xs-12">
+						                    	<?php echo $frm->getElement("return_date");?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Return Time")?> :
+						                   </label>
+						                   <div class="col-md-2 col-sm-2 col-xs-12">
+						                    	<?php echo $frm->getElement("return_time");?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Minutes")?> :
+						                   </label>
+						                   <div class="col-md-2 col-sm-2 col-xs-12">
+						                    	<?php echo $frm->getElement("return_minute");?>
+						                   </div>
+						             </div>
+						              <div class="form-group">
+					                    <div class="col-md-4 col-sm-4 col-xs-12 text-left">
+					                    <input type="submit" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Find Vehicle Now" label="<?php echo $tr->translate("Continue");?>">
+					                    </div>
+						             </div>
 								</form>
-							</div>
+						</div>
+						<div role="tabpanel" class="tab-pane fade <?php if($this->bookinginfo->point_step ==1)echo "active in";?> taboverflow" id="tap2" aria-labelledby="tap2-tab">
+							<?php if($this->bookinginfo->step1 ==1 ){?>
+								<form method="post" action="<?php echo $this->url(array('module'=>'booking','controller'=>"productbooking",'action'=>'get-product-selected'),null,true); ?>">
+										<div style="z-index: 100000000;height: 50px;">
+					                        <div style="float: right;" >
+					                        	<button type="submit" class="btn btn-round btn-primary"><?php echo $tr->translate("Continue")?></button>
+					                        </div>
+				                        </div>
+				                        
+										<?php if(!empty($session->productAvailable)){ ?> 
+										<ul class="car-List">
+										<?php $i=0; foreach ($session->productAvailable as $rs){ $i++;?>
+											<li class="carList">
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<div class="image_limk">
+													<?php if (!empty($rs["photo_front"])){?>
+													<img style="width: 200px;height: 115px;" src="<?php echo $this->baseUrl();?>/images/product/<?php echo $rs["photo_front"];?>" class="preview" alt="<?php echo $rs["equipment_name"];?>">
+													<?php }else{?>
+													<img src="<?php echo $this->baseUrl();?>/images/noimage.jpg" class="preview" alt="<?php echo $rs["name"];?>">
+													<?php }?>
+												</div>
+											</div>
+											<div class="col-md-9 col-sm-9 col-xs-12">
+												<h2 class="title">
+													<span class="text-right"><input type="checkbox" name="equipment_<?php echo $i; ?>" class="checkbox input-checkbox" onClick="addEquipment(<?php echo $i; ?>)" id="equipment_<?php echo $i;?>" style="display: inline-block;" /></span>	
+													<?php echo $rs["equipment_name"];?>
+													<input type="hidden" name="equipmentid_<?php echo $i ?>" value="<?php echo $rs["id"] ?>" />
+												</h2>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<ul class="info_list">
+														<li><div class="col-md-6 col-sm-6 col-xs-12"><span class="span_title"><?php echo $tr->translate("Reference No")?></span></div> <div class="col-md-6 col-sm-6 col-xs-12">: <span class="span_value"><?php echo $rs["reference_no"];?></span></div><div class="clearfix"></div></li>
+														<li><div class="col-md-6 col-sm-6 col-xs-12"><span class="span_title"><?php echo $tr->translate("PRICE")?></span></div> <div class="col-md-6 col-sm-6 col-xs-12">: <span class="span_value">$ <?php echo number_format($rs["price"],2);?>/<?php echo $tr->translate("Day")?></span></div><div class="clearfix"></div></li>
+														<li><div class="col-md-6 col-sm-6 col-xs-12"><span class="span_title"><?php echo $tr->translate("Extra Price")?></span></div> <div class="col-md-6 col-sm-6 col-xs-12">: <span class="span_value">$ <?php echo number_format($rs["extra_price"],2);?>/<?php echo $tr->translate("Day")?></span></div><div class="clearfix"></div></li>
+													</ul>
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<ul class="info_list">
+					                                	<li>
+					                                		<div class="col-md-6 col-sm-6 col-xs-12"><span class="span_title"><?php echo $tr->translate("Number of Rent")?></span></div> 
+					                                		<div class="col-md-6 col-sm-6 col-xs-12"><input type="text" class="form-control" name="number_equipment_<?php echo $i;?>"  id="number_equipment_<?php echo $i;?>" placeholder="<?php echo $tr->translate("Qantity")?>"></div>
+					                                		<div class="clearfix"></div>
+					                                	</li>
+													</ul>
+												</div>
+												<div class="clearfix"></div>
+											</div>
+											<div class="clearfix"></div>
+										</li>
+										
+				                    <?php } ?>
+				                    </ul>
+							        <?php }else echo "No Product Available!";?>
+					                <input type="hidden" name="identity_equipment" id="identity_equipment"/>
+					           </form>
+					           <?php }?>
+						</div>
+						<div role="tabpanel" class="tab-pane fade <?php if($this->bookinginfo->point_step ==2)echo "active in";?>" id="tap3" aria-labelledby="tap3-tab">
+							<?php if($this->bookinginfo->step2 ==1 ){?>
+								<form method="post" action="<?php echo $this->url(array('module'=>'booking','controller'=>"productbooking",'action'=>'other-fee'),null,true); ?>">
+									<div style="z-index: 100000000;height: 50px;">
+					                        <div style="float: right;" >
+					                        	<button type="submit" class="btn btn-round btn-primary"><?php echo $tr->translate("Continue")?></button>
+					                        </div>
+				                        </div>
+									<div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><input type="checkbox" name="other_1" id="other_1" onClick="addOtherFee(1);"> <?php echo $tr->translate('Other Fee')?> 1 :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee1"); ?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee_note1"); ?>
+						                   </div>
+						             </div>
+						             <div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<input type="checkbox" name="other_2" id="other_2" onClick="addOtherFee(2);">
+						                   	<?php echo $tr->translate('Other Fee')?> 2 :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee2"); ?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee_note2"); ?>
+						                   </div>
+						             </div>
+						             <div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   <input type="checkbox" name="other_3" id="other_3" onClick="addOtherFee(3);">
+						                   	<?php echo $tr->translate('Other Fee')?> 3 :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee3"); ?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee_note3"); ?>
+						                   </div>
+						             </div>
+						             <div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                  <input type="checkbox" name="other_4" id="other_4" onClick="addOtherFee(4);">
+						                   <?php echo $tr->translate('Other Fee')?> 4 :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee4"); ?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee_note4"); ?>
+						                   </div>
+						             </div>
+						             <div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<input type="checkbox" name="other_5" id="other_5" onClick="addOtherFee(5);">
+						                   	<?php echo $tr->translate('Other Fee')?> 5 :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee5"); ?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee_note5"); ?>
+						                   </div>
+						             </div>
+						             <div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   <input type="checkbox" name="other_6" id="other_6" onClick="addOtherFee(6);">
+						                   	<?php echo $tr->translate('Other Fee')?> 6 :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee6"); ?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("other_fee_note6"); ?>
+						                    	<input type="hidden" name="identity_other_fee" id="identity_other_fee">
+						                   </div>
+						             </div>
+								</form>
 							<?php }?>
 						</div>
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Booking List" <?php if($this->bookinginfo->point_step ==4 )echo 'selected="true"'?> >
+						<div role="tabpanel" class="tab-pane fade <?php if($this->bookinginfo->point_step ==3)echo "active in";?>" id="tap4" aria-labelledby="tap4-tab">
+							<?php if($this->bookinginfo->step3 ==1 ){?>
+								<form method="post" action="<?php echo $this->url(array('module'=>'booking','controller'=>"productbooking",'action'=>'customer-info'),null,true); ?>">
+									<div id="exist_customer">
+										<div class="form-group">
+							                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Choose Customer')?> :
+							                   </label>
+							                   <div class="col-md-4 col-sm-4 col-xs-12">
+							                    	<?php echo $frm->getElement("customer"); ?>
+							                   </div>
+							             </div>
+										<div id="customer_info" style="margin-top:30px;">
+										</div>
+										<div id="confirm_btn" style="display: none;margin-top:30px;"  >
+											<div class="form-group">
+							                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Filght No')?>. :
+							                   </label>
+							                   <div class="col-md-4 col-sm-4 col-xs-12">
+							                    	<?php echo $frm->getElement("fly_no"); ?>
+							                   </div>
+							                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Flight Date')?> :
+							                   </label>
+							                   <div class="col-md-4 col-sm-4 col-xs-12">
+							                    	<?php echo $frm->getElement("fly_date"); ?>
+							                   </div>
+							             	</div>
+							             	<div class="form-group">
+							                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Flight Time Arrival')?> :
+							                   </label>
+							                   <div class="col-md-4 col-sm-4 col-xs-12">
+							                    	<?php echo $frm->getElement("fly_time"); ?>
+							                   </div>
+							                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Flight Distination')?> :
+							                   </label>
+							                   <div class="col-md-4 col-sm-4 col-xs-12">
+							                    	<?php echo $frm->getElement("fly_destination"); ?>
+							                   </div>
+							             	</div>
+							             	<div class="form-group text-center">
+							             		<input type="submit" name="" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Confirm" label="<?php echo $tr->translate('Confirm')?>" >
+												<input id="create_acc" iconclass="dijitIconNew" dojoType="dijit.form.Button" value="Confirm" label="<?php echo $tr->translate('Create Account')?>" onClick="signup(1);">
+							             	</div>
+										</div>
+									</div>
+								</form>
+								<div id="new_customer" style="display:none;">
+									<form action="" method="Post">
+										<div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('User Name')?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("cu_user_name"); ?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('Password')?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("cu_pass"); ?>
+						                   </div>
+						             	</div>
+						             	<div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('First Name')?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("cu_first_name"); ?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('Last Name')?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("cu_last_name"); ?>
+						                   </div>
+						             	</div>
+						             	<div class="form-group">
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('Email')?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("cu_email"); ?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('Gender')?> :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("gender"); ?>
+						                   </div>
+						             	</div>
+						             	<div class="form-group text-center">
+						             		<input type="reset" name="reset" iconclass="dijitIconDelete" dojoType="dijit.form.Button" value="Reset" label="<?php echo $tr->translate('CLEAR')?>">
+											<input type="submit" name="confirm_cu" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Confirm" label="<?php echo $tr->translate('Confirm')?>" >
+											<input id="choose_cu" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Choose Customer" label="<?php echo $tr->translate('Choose Customer')?>" onClick="signup(2);"/>
+						             	</div>
+									</form>
+								</div>
+							<?php }?>
+						</div>
+						<div role="tabpanel" class="tab-pane fade <?php if($this->bookinginfo->point_step ==4)echo "active in";?>" id="tap5" aria-labelledby="tap5-tab">
 							<?php if($this->bookinginfo->step4 ==1 ){?>
 							<form action="<?php echo $this->url(array('module'=>'booking','controller'=>"productbooking",'action'=>'confirm-booking'),null,true); ?>" method="post">
                             		<button type="submit" style="float: right" name="confirm_book" dojoType="dijit.form.Button" value="Cofirm Booking" label="Cofirm Booking">Confirm</button>
@@ -344,7 +464,7 @@ require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 								     <th class="totalbr text-center" width="5%">Discount</th>
 								     <th class="totalbr text-center" width="25%" nowrap="nowrap">Amount</th>
 								  </tr>
-								   <?php $net_total_prodcut=0;  if(!empty($this->bookinginfo->products)){
+								   <?php $net_total_prodcut=0; $j=0;  if(!empty($this->bookinginfo->products)){
 								   		foreach($this->bookinginfo->products As $num => $row){
 												$net_total_prodcut += number_format(($row['pro_price']*$row['amount_rent'])*$total_day,2);
 												$total_price = number_format(($row['pro_price']*$row['amount_rent'])*$total_day,2);
@@ -395,125 +515,137 @@ require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 							   </table>
 							<?php }?>
 						</div>
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="Payment" <?php if($this->bookinginfo->point_step ==5 )echo 'selected="true"'?> >
+						<div role="tabpanel" class="tab-pane fade <?php if($this->bookinginfo->point_step ==5)echo "active in";?>" id="tap6" aria-labelledby="tap6-tab">
 							<?php if($this->bookinginfo->step5 ==1 ){?>
-							<form action="" method="post" id="payment" dojoType="dijit.form.Form">
-								<script type="dojo/method" event="onSubmit">			
-									if(this.validate()) {
-										var pay_type = $('input[name=payment_type]:checked').val();
-										var card_id = dijit.byId('card_id').get('value');
-										var card_name = dijit.byId('card_name').get('value');
-										var card_exp = dijit.byId('card_exp_date').get('value');
-										var card_cvv = dijit.byId('secu_code').get('value');
-										var wu_code = dijit.byId('wu_code').get('value');
-                                        var cash_pay = dijit.byId('cash_pay').get('value');
-										if(pay_type==1){
-											if(card_id==""){
-												alert('Card ID is required');
-												dijit.byId('card_id').focus();
-												return false;
+									<form action="" method="post" id="payment" dojoType="dijit.form.Form">
+										<script type="dojo/method" event="onSubmit">			
+											if(this.validate()) {
+												var pay_type = $('input[name=payment_type]:checked').val();
+												var card_id = dijit.byId('card_id').get('value');
+												var card_name = dijit.byId('card_name').get('value');
+												var card_exp = dijit.byId('card_exp_date').get('value');
+												var card_cvv = dijit.byId('secu_code').get('value');
+												var wu_code = dijit.byId('wu_code').get('value');
+												if(pay_type==1){
+													if(card_id==""){
+														alert('Card ID is required');
+														dijit.byId('card_id').focus();
+														return false;
+													}
+													if(card_name==""){
+														alert('Card Name is required');
+														dijit.byId('card_name').focus();
+														return false;
+													}
+													if(card_exp==""){
+														alert('Card Expiration Date is required');
+														dijit.byId('card_exp_date').focus();
+														return false;
+													}
+													if(card_cvv==""){
+														alert('CVV code is required');
+														dijit.byId('secu_code').focus();
+														return false;
+													}
+											}else if(pay_type==2){
+												if(wu_code==""){
+													alert('MTCN Code is required');
+													dijit.byId('wu_code').focus();
+													return false;
+												}
 											}
-											if(card_name==""){
-												alert('Card Name is required');
-												dijit.byId('card_name').focus();
-												return false;
-											}
-											if(card_exp==""){
-												alert('Card Expiration Date is required');
-												dijit.byId('card_exp_date').focus();
-												return false;
-											}
-											if(card_cvv==""){
-												alert('CVV code is required');
-												dijit.byId('secu_code').focus();
-												return false;
-											}
-										}else if(pay_type==2){
-											if(wu_code=="" || wu_code=="NaN"){
-												alert('MTCN Code is required');
-												dijit.byId('wu_code').focus();
-												return false;
-											}
-										}else if(pay_type==4){
-											if(cash_pay=="" || cash_pay=="NaN"){
-												alert('Total Pay is required');
-												dijit.byId('cash_pay').focus();
-												return false;
-											}
+											return true;
+										} else {
+											return false;
 										}
-										return true;
-									} else {
-										return false;
-									}
 								</script>
-                                	<div style="margin: 20px 20px;">
-                                		<div class="col-md-4" style="float: left;margin-right: 50px;">
-                                			<input id="visa_type" class="payment_type" onChange="paymentType(1);" type="radio" name="payment_type" checked="checked" value="1" style="margin-top: 11px;">
-		                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/visa.jpg" style="margin-left: 30px;">  
-		                            	</div>
-		                            	<div class="col-md-4" style="float: left;margin-right: 50px;">
-		                            		<input id="ws_type" class="payment_type" onChange="paymentType(2);" type="radio" name="payment_type" value="2" style="margin-top: 11px;">
-		                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/western-union-small.jpg" style="margin-left: 30px;"> 
-		                            	</div>
-		                            	<div class="col-md-4" style="float: left;margin-right: 50px;">
-		                            		<input id="wing_type" class="payment_type" onChange="paymentType(3);" type="radio" name="payment_type" value="3" style="margin-top: 11px;">
-		                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/acleda.jpg" style="margin-left: 30px;"> 
-		                            	</div>
-		                            	<div class="col-md-4" style="float: left;margin-right: 50px;">
-		                            		<input id="cash_type" class="payment_type" onChange="paymentType(4);" type="radio" name="payment_type" value="4" style="margin-top: 11px;">
-		                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/cptlogo.png" style="margin-left: 30px;width:174px"> 
-		                            	</div>
-		                            </div>
-		                            
-		                            <div id="visa">
-		                            	<table>
-		                            		<tr>
-		                            			<td>Card Name</td>
-		                            			<td><?php echo $frm->getElement("card_name");?></td>
-		                            			<td>Card No.</td>
-		                            			<td><?php echo $frm->getElement("card_id");?></td>
-		                            		</tr>
-		                            		<tr>
-		                            			<td>Secure Code/CVV</td>
-		                            			<td><?php echo $frm->getElement("secu_code");?></td>
-		                            			<td>Expiration Date</td>
-		                            			<td><?php echo $frm->getElement("card_exp_date");?></td>
-		                            		</tr>
-		                            	</table>
-		                            </div>
-		                            <div id="ws_union" style="display: none">
-		                            	<table style="width: 50%">
-		                            		<tr>
-		                            			<td style="width:10%">Code Number :</td>
-		                            			<td style="width: 20%"><?php echo $frm->getElement("wu_code");?></td>
-		                            		</tr>
-		                            	</table>
-		                            </div>
-		                            <div id="wing" style="text-align: center;display: none;">
-		                            	<!-- <img alt="" src="<?php //echo $this->baseUrl();?>/images/acleda-to.jpg"> -->
-		                            </div>
-		                            <div id="cash" style="text-align: center;display: none;">
-		                            	<table style="width: 50%">
-		                            		<tr>
-		                            			<td style="width:10%">Total Pay :</td>
-		                            			<td style="width: 20%"><?php echo $frm->getElement("cash_pay");?></td>
-		                            		</tr>
-		                            	</table>
-		                            </div>
-		                             <div id="" style="text-align: right;">
-		                            	<input type="submit" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Pay Finish" label="Pay Finish" >
-		                            </div> 
-		                            
+								<div class="form-group">
+				                   <div class="col-md-6 col-sm-6 col-xs-12">
+				                    	<input id="visa_type" class="payment_type" onChange="paymentType(1);" type="radio" name="payment_type" checked="checked" value="1" style="margin-top: 11px;">
+	                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/visa.jpg" style="margin-left: 30px;"> 
+				                   </div>
+				                   <div class="col-md-6 col-sm-6 col-xs-12">
+				                    	<input id="ws_type" class="payment_type" onChange="paymentType(2);" type="radio" name="payment_type" value="2" style="margin-top: 11px;">
+	                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/western-union-small.jpg" style="margin-left: 30px;"> 
+				                   </div>
+				                    
+				             	</div>
+				             	<div class="form-group">
+				             		<div class="col-md-6 col-sm-6 col-xs-12">
+				                    	<input id="wing_type" class="payment_type" onChange="paymentType(3);" type="radio" name="payment_type" value="3" style="margin-top: 11px;">
+	                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/acleda.jpg" style="margin-left: 30px;"> 
+				                    </div>
+				                    <div class="col-md-6 col-sm-6 col-xs-12">
+				                    	<input id="cash_type" class="payment_type" onChange="paymentType(4);" type="radio" name="payment_type" value="4" style="margin-top: 11px;">
+		                            	<img alt="" src="<?php echo $this->baseUrl();?>/images/cptlogo.png" style="margin-left: 30px;width:174px">
+				                    </div>
+				             	</div>
+				             	<div id="visa">
+				             		<div class="form-group">
+					                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+					                   	<?php echo $tr->translate('Card Name')?> :
+					                   </label>
+					                   <div class="col-md-4 col-sm-4 col-xs-12">
+					                    	<?php echo $frm->getElement("card_name"); ?>
+					                   </div>
+					                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+					                   	<?php echo $tr->translate('Card No')?>. :
+					                   </label>
+					                   <div class="col-md-4 col-sm-4 col-xs-12">
+					                    	<?php echo $frm->getElement("card_id"); ?>
+					                   </div>
+							         </div>
+							         <div class="form-group">
+							         	<label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+					                   		<?php echo $tr->translate('Secure Code/CVV')?> :
+					                  	 </label>
+					                  	 <div class="col-md-4 col-sm-4 col-xs-12">
+					                    	<?php echo $frm->getElement("secu_code"); ?>
+					                   	</div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('Expiration Date')?>. :
+						                   </label>
+						                   <div class="col-md-4 col-sm-4 col-xs-12">
+						                    	<?php echo $frm->getElement("card_exp_date"); ?>
+						                   </div>
+							         </div>
+				             	</div>
+	                            <div id="ws_union" style="display: none">
+	                            	 <div class="form-group">
+							         	<label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+					                   		<?php echo $tr->translate('Code Number')?> :
+					                  	 </label>
+					                  	 <div class="col-md-4 col-sm-4 col-xs-12">
+					                    	<?php echo $frm->getElement("wu_code"); ?>
+					                   	</div>
+							         </div>
+	                            </div>
+	                            <div id="wing" style="text-align: center;display: none;">
+	                            </div>
+	                            <div id="cash" style="display: none;">
+	                            	<div class="form-group">
+							         	<label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+					                   		<?php echo $tr->translate('Total Pay')?> :
+					                  	 </label>
+					                  	 <div class="col-md-4 col-sm-4 col-xs-12">
+					                    	<?php echo $frm->getElement("cash_pay"); ?>
+					                   	</div>
+							         </div>
+	                            </div>
+	                             <div id="" class="">
+	                           		 <input type="submit" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Pay Finish" label="<?php echo $tr->translate('Pay Finish')?>" >
+	                            </div> 
                                 </form>
                             <?php }?>
+	                  		</div>
 						</div>
-					</div>	
-		</fieldset>		
-		</td>
-	</tr>
-</table>	
+					</div>
+				</div>
+               </div>
+           </div>
+       </div>
+   </div>
 <script type="text/javascript">
-
 function signup(type){
 	if(type==1){
 		document.getElementById('new_customer').style.display="block";

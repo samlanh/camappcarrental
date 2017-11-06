@@ -128,9 +128,12 @@ class Booking_Model_DbTable_DbGuideBooking extends Zend_Db_Table_Abstract
     	return true;
     }
     
-    function getLocationById($id){
+	function getLocationById($id){
     	$db = $this->getAdapter();
-    	$sql="SELECT p.`id`,p.`province_name` FROM `ldc_province` AS p WHERE p.`id`=$id";
+    	$dbgb = new Application_Model_DbTable_DbGlobal();
+    	$lang= $dbgb->getCurrentLang();
+    	$array = array(1=>"province_en_name",2=>"province_kh_name");
+    	$sql="SELECT p.`id`,".$array[$lang]." as province_name FROM `ldc_province` AS p WHERE p.`id`=$id";
     	return $db->fetchRow($sql);
     }
     
@@ -290,7 +293,6 @@ class Booking_Model_DbTable_DbGuideBooking extends Zend_Db_Table_Abstract
     		$total_day = $diff->format("%a%")+1;
     
     		$rows = $session->driver;
-//     print_r($rows);exit();
     		//Product blog
     		$total =0;
 	    	foreach ($rows as $rs){
@@ -328,11 +330,11 @@ class Booking_Model_DbTable_DbGuideBooking extends Zend_Db_Table_Abstract
     				'return_time'			=>	$return_time,
     				'total_fee'				=>	$total_fee,
     				'total_paymented'		=>	$total_pay,
-    				'item_type'				=>	4,
-    				//'rental_type'		=>	$rental_type,
-    				//'total_duration'	=>	$session->duration,
-//     				'pickup_location'		=>	$pickup_location["id"],
-//     				'dropoff_location'		=>	$return_location["id"],
+    				'item_type'				=>	5,
+    				'rental_type'		=>	$rental_type,
+    				'total_duration'	=>	$session->duration,
+    				//     				'pickup_location'		=>	$pickup_location["id"],
+    				//     				'dropoff_location'		=>	$return_location["id"],
     				'fly_no'				=>	$customer_info["fly_no"],
     				'fly_date'				=>	$customer_info["fly_date"],
     				'fly_time_of_arrival'	=>	$customer_info["fly_time"],
@@ -352,18 +354,14 @@ class Booking_Model_DbTable_DbGuideBooking extends Zend_Db_Table_Abstract
     			$arr['card_exp_date']=$data["card_exp_date"];
     			$arr['card_id']  = $data["card_id"];
     			$arr['payment_type']=1;
-    			//$arr['status']=1;
     
     		}elseif($data["payment_type"]==2){
     			$arr['card_id']=$data["wu_code"];
     			$arr['payment_type']=2;
-    			//$arr['status']=2;
     		}elseif($data["payment_type"]==3){
     			$arr['payment_type']=3;
-    			//$arr['status']=2;
     		}elseif($data["payment_type"]==4){
     			$arr['payment_type']=4;
-    			//$arr['status']=2;
     		}
     
     		$this->_name = "ldc_booking";
@@ -388,7 +386,6 @@ class Booking_Model_DbTable_DbGuideBooking extends Zend_Db_Table_Abstract
     		}
     		// Product info Blog
     		if(!empty($rows)){
-//     			print_r($rows);exit();
     			foreach ($rows as $rs){
     				if($rental_type==1){
     					$price=$rs["driver_price"];
@@ -417,9 +414,6 @@ class Booking_Model_DbTable_DbGuideBooking extends Zend_Db_Table_Abstract
     				$this->_name="ldc_booking_detail";
 //     				$db->getProfiler()->setEnabled(true);
     				$this->insert($arr_product);
-//     				Zend_Debug::dump($db->getProfiler()->getLastQueryProfile()->getQuery());
-//     				Zend_Debug::dump($db->getProfiler()->getLastQueryProfile()->getQueryParams());
-//     				$db->getProfiler()->setEnabled(false);exit();
     			}
     		}
     		$db->commit();
@@ -446,7 +440,6 @@ class Booking_Model_DbTable_DbGuideBooking extends Zend_Db_Table_Abstract
     		$where.=' AND ('.implode(' OR ',$s_where).')';
     	}
     	$order=' ORDER BY id DESC';
-    	//echo $sql.$where.$order;
     	return $db->fetchAll($sql.$where.$order);
     }
 }  

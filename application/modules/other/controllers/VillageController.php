@@ -16,15 +16,13 @@ class Other_VillageController extends Zend_Controller_Action {
 			}
 			else{
 				$search = array(
-						'adv_search' => '',
+						'adv_search' => 1,
 						'search_status' => -1,
 						'province_name'=>0,
 						'district_name'=>'',
 						'commune_name'=>'');
 			}
 			$rs_rows= $db->getAllVillage($search);
-			$glClass = new Application_Model_GlobalClass();
-			$rs_rows = $glClass->getImgActive($rs_rows, BASE_URL, true,null,1);
 			$list = new Application_Form_Frmtable();
 			$collumns = array("VILLAGENAME_KH","VILLAGE_NAME","DISPLAY_BY","COMMNUE_NAME","DISTRICT_NAME","PROVINCE_NAME","DATE","STATUS","BY");
 			$link=array(
@@ -40,15 +38,11 @@ class Other_VillageController extends Zend_Controller_Action {
 		$frm = $frm->FrmAddVillage();
 		Application_Model_Decorator::removeAllDecorator($frm);
 		$this->view->frm_village= $frm;
-		
-		$db= new Application_Model_DbTable_DbGlobal();
-		$this->view->district = $db->getAllDistricts();
-		$this->view->commune_name = $db->getCommune();
 		$this->view->result = $search;
 	}
 	public function addAction(){
 		if($this->getRequest()->isPost()){
-			$db = new Other_Model_DbTable_DbVillage();
+			$db = new Other_Model_DbTable_Dbvillage();
 			$_data = $this->getRequest()->getPost();
 			try{
 				$db->addVillage($_data);
@@ -68,12 +62,12 @@ class Other_VillageController extends Zend_Controller_Action {
 		Application_Model_Decorator::removeAllDecorator($frm);
 		$this->view->frm_village = $frm;
 		
-		$db= new Application_Model_DbTable_DbGlobal();
-		$this->view->district = $db->getAllDistricts();
-		$this->view->commune_name = $db->getCommune();
+		$dbpop = new Application_Form_FrmPopupGlobal();
+		$this->view->frm_popup_comm = $dbpop->frmPopupCommune();
+		$this->view->frm_popup_district = $dbpop->frmPopupDistrict();
 	}
 	public function editAction(){
-		$db = new Other_Model_DbTable_DbVillage();
+		$db = new Other_Model_DbTable_Dbvillage();
 		if($this->getRequest()->isPost()){
 			$_data = $this->getRequest()->getPost();
 			try{
@@ -96,9 +90,9 @@ class Other_VillageController extends Zend_Controller_Action {
 		Application_Model_Decorator::removeAllDecorator($frm);
 		$this->view->frm_village = $frm;
 		
-		$db= new Application_Model_DbTable_DbGlobal();
-		$this->view->district = $db->getAllDistricts();
-		$this->view->commune_name = $db->getCommune();
+		$dbpop = new Application_Form_FrmPopupGlobal();
+		$this->view->frm_popup_comm = $dbpop->frmPopupCommune();
+		$this->view->frm_popup_district = $dbpop->frmPopupDistrict();
 		
 	}
 	public function addNewvillageAction(){
@@ -106,7 +100,7 @@ class Other_VillageController extends Zend_Controller_Action {
 			$data = $this->getRequest()->getPost();
 			$data['status']=1;
 			$data['commune_name']=$data['popup_commune_name'];
-			$db_vill = new Other_Model_DbTable_DbVillage();
+			$db_vill = new Other_Model_DbTable_Dbvillage();
 			$id = $db_vill->addVillage($data);
 			print_r(Zend_Json::encode($id));
 			exit();
@@ -116,9 +110,19 @@ class Other_VillageController extends Zend_Controller_Action {
 		if($this->getRequest()->isPost()){
 			$data = $this->getRequest()->getPost();
 			$data['status']=1;
-			$db_vill = new Other_Model_DbTable_DbVillage();
+			$db_vill = new Other_Model_DbTable_Dbvillage();
 			$id = $db_vill->addVillageByAjax($data);
 			print_r(Zend_Json::encode($id));
+			exit();
+		}
+	}
+      function getAllvillageAction(){
+		if($this->getRequest()->isPost()){
+			$data = $this->getRequest()->getPost();
+			$db = new Other_Model_DbTable_Dbvillage();
+			$rows = $db->getAllvillagebyCommune($data['commune_id']);
+			array_unshift($rows, array ( 'id' => -1, 'name' => 'បន្ថែម​អ្នក​ទទួល​ថ្មី') );
+			print_r(Zend_Json::encode($rows));
 			exit();
 		}
 	}

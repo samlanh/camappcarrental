@@ -71,6 +71,7 @@ class Booking_Model_DbTable_DbCityTourBooking extends Zend_Db_Table_Abstract
 			$session->vehiclevaliable = $db->getAllAvailableVehicle($data);
     	}
     	elseif($step==3){
+    		
     		$discount = $this->getVehicleDiscount($data);
     		$session->point_step=3;
 			$session->step3 =1;
@@ -126,11 +127,14 @@ class Booking_Model_DbTable_DbCityTourBooking extends Zend_Db_Table_Abstract
     	return true;
     }
     
-    function getLocationById($id){
-    	$db = $this->getAdapter();
-    	$sql="SELECT p.`id`,p.`province_name` FROM `ldc_province` AS p WHERE p.`id`=$id";
-    	return $db->fetchRow($sql);
-    }
+		function getLocationById($id){
+	    	$db = $this->getAdapter();
+	    	$dbgb = new Application_Model_DbTable_DbGlobal();
+	    	$lang= $dbgb->getCurrentLang();
+	    	$array = array(1=>"province_en_name",2=>"province_kh_name");
+	    	$sql="SELECT p.`id`,".$array[$lang]." as province_name FROM `ldc_province` AS p WHERE p.`id`=$id";
+	    	return $db->fetchRow($sql);
+	    }
     
     function getPickUpPrice($data){
     	$db = $this->getAdapter();

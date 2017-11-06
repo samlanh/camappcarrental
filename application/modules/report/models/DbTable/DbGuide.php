@@ -3,12 +3,15 @@ class Report_Model_DbTable_DbGuide extends Zend_Db_Table_Abstract
 {
       public function getGuideInfo($data){//rpt-loan-released/
       	$db = $this->getAdapter();
+      	$dbgb = new Application_Model_DbTable_DbGlobal();
+      	$lang= $dbgb->getCurrentLang();
+      	$array = array(1=>"province_en_name",2=>"province_kh_name");
       	$sql = "SELECT id,driver_id,first_name,last_name,
       	(SELECT name_en FROM `ldc_view` WHERE TYPE=1 AND key_code =ldc_driver.`sex`) AS sex ,tel,dob,pob,nationality,
       	(SELECT name_en FROM `ldc_view` WHERE type=`ldc_driver`.document_type LIMIT 1) AS doc_name,
       	doc_number,lang_note,position_type As type,
       	group_num,home_num,street,commune,district,
-      	(SELECT province_name FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name,
+      	(SELECT ".$array[$lang]." FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name,
       	(SELECT name_en FROM `ldc_view` WHERE TYPE=2 AND key_code =ldc_driver.`status`) AS status
       	FROM ldc_driver ";
       	$where = ' WHERE 1 ';
@@ -136,12 +139,15 @@ class Report_Model_DbTable_DbGuide extends Zend_Db_Table_Abstract
       }
       function getAllClients(){
       	$db = $this->getAdapter();
+      	$dbgb = new Application_Model_DbTable_DbGlobal();
+      	$lang= $dbgb->getCurrentLang();
+      	$array = array(1=>"province_en_name",2=>"province_kh_name");
       	$where = " WHERE (first_name!='' OR  last_name!='') ";
       	$sql = " SELECT id,customer_code,first_name,last_name,
       	(SELECT name_en FROM `ldc_view` WHERE TYPE=1 AND key_code =ldc_customer.`sex`) AS sex
       	,dob,phone,pob,nationality,company_name,
       	group_num,house_num,commune,district,
-      	(SELECT province_name FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name
+      	(SELECT ".$array[$lang]." FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name
       	FROM ldc_customer ";
       	$order=" ORDER BY id DESC";
       	return $db->fetchAll($sql.$where.$order);

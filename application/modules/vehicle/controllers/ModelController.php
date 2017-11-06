@@ -1,7 +1,7 @@
 <?php
 class Vehicle_ModelController extends Zend_Controller_Action {
 	const REDIRECT_URL_ADD ='/vehicle/model/add';
-	const REDIRECT_URL_CLOSE ='/vehicle/model/index';
+	const REDIRECT_URL_CLOSE ='/vehicle/model';
     public function init()
     {    	
      /* Initialize action controller here */
@@ -12,6 +12,8 @@ class Vehicle_ModelController extends Zend_Controller_Action {
 	public function indexAction(){
 		$db_model = new Vehicle_Model_DbTable_DbModel();
 		$rows=$db_model->getAllModel();
+		$glClass = new Application_Model_GlobalClass();
+		$rows = $glClass->getImgActive($rows, BASE_URL, true);
 		try{
 			$list = new Application_Form_Frmtable();
 			$collumns = array("Model","Make Name","STATUS");
@@ -33,11 +35,13 @@ class Vehicle_ModelController extends Zend_Controller_Action {
 			    $db_model=new Vehicle_Model_DbTable_DbModel();
 			    if(isset($data['save_new'])){
 			    	$db_model->addModel($data);
-			    	Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+			    	$this->_redirect(self::REDIRECT_URL_ADD);
+// 			    	Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
 			    }
 			    else if(isset($data['save_close'])){
 			    	$db_model->addModel($data);
-			    	Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_CLOSE);
+			    	$this->_redirect(self::REDIRECT_URL_CLOSE);
+// 			    	Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_CLOSE);
 			    }
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
@@ -61,7 +65,8 @@ class Vehicle_ModelController extends Zend_Controller_Action {
 				$db_model=new Vehicle_Model_DbTable_DbModel();
 				if(isset($data['save_close'])){
 					$db_model->updateModel($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_CLOSE);
+					$this->_redirect(self::REDIRECT_URL_CLOSE);
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_CLOSE);
 				}
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));

@@ -21,13 +21,13 @@ Class Other_Form_FrmCO extends Zend_Dojo_Form {
 		$_title = new Zend_Dojo_Form_Element_TextBox('adv_search');
 		$_title->setAttribs(array('dojoType'=>$this->tvalidate,
 				'onkeyup'=>'this.submit()',
+				'class'=>'fullside',
 				'placeholder'=>$this->tr->translate("SEARCH_STAFF_INFO")
 				));
 		$_title->setValue($request->getParam("adv_search"));
 		
-		
 		$_status_search=  new Zend_Dojo_Form_Element_FilteringSelect('status_search');
-		$_status_search->setAttribs(array('dojoType'=>$this->filter));
+		$_status_search->setAttribs(array('dojoType'=>$this->filter,'class'=>'fullside',));
 		$_status_opt = array(
 				-1=>$this->tr->translate("ALL"),
 				1=>$this->tr->translate("ACTIVE"),
@@ -38,24 +38,28 @@ Class Other_Form_FrmCO extends Zend_Dojo_Form {
 		$_btn_search = new Zend_Dojo_Form_Element_SubmitButton('btn_search');
 		$_btn_search->setAttribs(array(
 				'dojoType'=>'dijit.form.Button',
-				'iconclass'=>'dijitIconSearch'
+				'iconclass'=>'dijitIconSearch',
+				'values'=>'Search',
 		));
-		
-		
+		$_btn_search->setLabel("Search");
+		$db = new Application_Model_DbTable_DbGlobal();
 		$_co_id = new Zend_Dojo_Form_Element_TextBox('co_id');
-		$_co_id->setAttribs(array('dojoType'=>$this->tvalidate,'required'=>'true','class'=>'fullside',));
+		$_co_id->setAttribs(array('dojoType'=>$this->tvalidate,'required'=>'true','class'=>'fullside','readOnly'=>true));
+		$_co_id->setValue($db->getStaffNumberByBranch(1));
+		
 		
 		$_branch_id = new Zend_Dojo_Form_Element_FilteringSelect('branch_id');
 		$_branch_id->setAttribs(array(
 				'dojoType'=>'dijit.form.FilteringSelect',
 				'class'=>'fullside',
-				'required' =>'true'
+				'required' =>'true',
+				'Onchange'=>'getStaffCode();'
 		));
-		$db = new Application_Model_DbTable_DbGlobal();
+		
 		$rows = $db->getAllBranchName();
-		$options='';
+		$options=array(''=>'---SELECT_BRANCH---');
 		if(!empty($rows))foreach($rows AS $row){
-			$options[$row['br_id']]=$row['branch_namekh'];
+			$options[$row['br_id']]=$row['project_name'];
 		}
 		$_branch_id->setMultiOptions($options);
 		
@@ -66,7 +70,7 @@ Class Other_Form_FrmCO extends Zend_Dojo_Form {
 				'class'=>'fullside',
 				));
 		
-		$_enname = new Zend_Dojo_Form_Element_TextBox('first_name');
+		$_enname = new Zend_Dojo_Form_Element_TextBox('name_en');
 		$_enname->setAttribs(array('dojoType'=>$this->tvalidate,'required'=>'true','class'=>'fullside',));
 		
 		$_lname = new Zend_Dojo_Form_Element_TextBox('last_name');
@@ -77,7 +81,7 @@ Class Other_Form_FrmCO extends Zend_Dojo_Form {
 				'dojoType'=>'dijit.form.FilteringSelect',
 				'class'=>'fullside',
 		));
-		$opt = array(1=>"Male",2=>"Femail");
+		$opt = array(1=>"Male",2=>"Female");
 		$_sex->setMultiOptions($opt);
 		
 		$_tel = new Zend_Dojo_Form_Element_TextBox('tel');
@@ -117,11 +121,12 @@ Class Other_Form_FrmCO extends Zend_Dojo_Form {
 // 		if(preg_match($pattern,$_email));
 
 		$_national_id = new Zend_Dojo_Form_Element_TextBox('national_id');
-		$_national_id->setAttribs(array('dojoType'=>'dijit.form.NumberTextBox','class'=>'fullside',));
+		$_national_id->setAttribs(array('dojoType'=>'dijit.form.TextBox','class'=>'fullside',));
 		
 		
 		$_address = new Zend_Dojo_Form_Element_TextBox('address');
-		$_address->setAttribs(array('dojoType'=>$this->text,'class'=>'fullside',));
+		$_address->setAttribs(array('dojoType'=>$this->text,'class'=>'fullside',
+				'style'=>'height: 50px;border: 1px solid #aac4e6;widht: 100%;'));
 		
 		$_pob = new Zend_Dojo_Form_Element_TextBox('pob');
 		$_pob->setAttribs(array('dojoType'=>$this->text,'class'=>'fullside',));
@@ -151,6 +156,7 @@ Class Other_Form_FrmCO extends Zend_Dojo_Form {
 				'class'=>'fullside',
 				'required'=>true
 				));
+		$_basic_salary->setValue(0);
 		
 		$_start_work=  new Zend_Dojo_Form_Element_DateTextBox('start_date');
 		$_start_work->setAttribs(array('dojoType'=>'dijit.form.DateTextBox',
@@ -171,7 +177,8 @@ Class Other_Form_FrmCO extends Zend_Dojo_Form {
 		
 		$_note =  new Zend_Dojo_Form_Element_TextBox('note');
 		$_note->setAttribs(array('dojoType'=>'dijit.form.TextBox',
-				'class'=>'fullside'));
+				'class'=>'fullside',
+				'style'=>'height: 50px;border: 1px solid #aac4e6;widht: 100%;'));
 		
 		$opt_shift=array(1=>'ពេញម៉ោង',2=>'ក្រៅម៉ោង');
 		$_shift =  new Zend_Dojo_Form_Element_FilteringSelect('shift');
@@ -200,6 +207,7 @@ Class Other_Form_FrmCO extends Zend_Dojo_Form {
 		$_id = new Zend_Form_Element_Hidden('id');
 		
 		if(!empty($_data)){
+			$_branch_id->setValue($_data['branch_id']);
 			$_co_id->setValue($_data['co_code']);
 			$_name_kh->setValue($_data['co_khname']);
 			$_enname->setValue($_data['co_firstname']);

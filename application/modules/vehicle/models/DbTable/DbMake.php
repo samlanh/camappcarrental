@@ -23,8 +23,8 @@ class Vehicle_Model_DbTable_DbMake extends Zend_Db_Table_Abstract
     	
     function getAllMake($search=null){
     	$db = $this->getAdapter();
-    	$sql='SELECT id,title,(SELECT name_en FROM ldc_view WHERE TYPE=2 AND key_code=status) AS status
-    	FROM ldc_make WHERE status=1 ';
+    	$sql='SELECT id,title,status
+    	FROM ldc_make WHERE 1 ';
     	$order=' ORDER BY id DESC';
         return $db->fetchAll($sql.$order);
     }

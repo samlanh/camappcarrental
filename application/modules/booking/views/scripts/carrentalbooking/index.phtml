@@ -1,8 +1,8 @@
-<title>Vehicle Rental</title>
+<?php $tr = Application_Form_FrmLanguages::getCurrentlanguage();?>
+<?php $frm =  $this->frm_search;?>
+<title><?php echo $tr->translate("CARRENTALBOOKING");?></title>
 <script type="text/javascript">
 dojo.ready(function(){
-	//dijit.byId('vehicle_ref_no').attr("placeholder", "Month");
-	// $("#vehicle_ref_no").attr("placeholder", "Month");
 });
 dojo.require("dojo.data.ItemFileWriteStore");  
 dojo.require("dijit.form.NumberTextBox");
@@ -10,21 +10,32 @@ dojo.require("dijit.form.DateTextBox");
 dojo.require("dijit.form.Textarea");
 require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 </script>
-<?php $tr = Application_Form_FrmLanguages::getCurrentlanguage();?>
-<?php $frm =  $this->frm_search;?>
+ <div class="blog_form_title">
+ 	<h4><i class="fa fa-book" aria-hidden="true"></i> <?php echo $tr->translate("CARRENTALBOOKING")?></h4>
+ </div>
 <form id="list" name="list" action="<?php echo $this->url(array('module'=>'booking','controller'=>'carrentalbooking','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
-  <table>
-  	<tr>
-  		<td><?php echo $frm->getElement("search_text");?></td>
-  		<td>Booking From</td>
-  		<td><?php echo $frm->getElement('from_book_date');?></td>
-  		<td>To Booking</td>
-  		<td><?php echo $frm->getElement('to_book_date');?></td>
-  		<td> <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button></td>
-  	</tr>
-  </table>
-  
-  
-  
+  	<div class="clearfix"></div>
+	  <div class="form-group">
+		<div class="col-md-2 col-xs-12">
+		  <?php echo $frm->getElement("search_text");?>
+		</div>
+		<div class="col-md-1 col-xs-12">
+			<label class="control-label" style="padding-left: 5px;"><?php echo $tr->translate('Booking From')?>
+            </label>
+		</div>
+		<div class="col-md-2 col-xs-12">
+		  <?php echo $frm->getElement('from_book_date');?>
+		</div>
+		<div class="col-md-1 col-xs-12">
+			<label class="control-label" style="padding-left: 5px;"><?php echo $tr->translate('To Booking')?>
+            </label>
+		</div>
+		<div class="col-md-2 col-xs-12">
+		  <?php echo $frm->getElement('to_book_date');?>
+		</div>
+		<div class="col-md-2 col-xs-12">
+			<button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button>
+		</div>
+	  </div>
 </form>
 <?php echo $this->list;?>

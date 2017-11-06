@@ -1,82 +1,131 @@
-<script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
-<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
-<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
 <?php
 	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
-	echo $this->headTitle($tr->translate('Service'));
+	echo $this->headTitle($tr->translate('Edit Service Rental Price'));
+	$holiday= $this->frm_holiday;
+	$row_ser= $this->row_service;
+	$img = $this->baseUrl()."/images/".$row_ser['photo'];
+	$status_view=$this->status_view;
 ?>	
-<?php  
-    $holiday= $this->frm_holiday;
-    $row_ser= $this->row_service;
-    $img = $this->baseUrl()."/images/".$row_ser['photo'];
-?>
-<form  id='add_techer' action="<?php echo $this->url(array('module'=>'driverguide','controller'=>'serviceprice','action'=>'edit')); ?>" dojoType="dijit.form.Form" method="post"
- enctype="multipart/form-data">
- <script type="dojo/method" event="onSubmit">			
-			if(this.validate()) {
-				return true;
-			} else {
-				return false;
-			}
-</script>
  <style>
        .image img{widtd: 100px;
               height: 100px;
              }
 </style>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
+<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
+<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
 <script type="text/javascript">
 dojo.require("dijit.form.Textarea");
 dojo.require("dijit.form.NumberTextBox");
 require(["dojo/parser", "dijit/Editor"]);
 </script>
-<table width="100%" style="margin: 0 auto;">
-	<tr>
-		<td>
-		<fieldset>
-					<legend align="center" ><strong><?php echo $tr->translate("Edit Service Rental Price");?></strong></legend>
-					<table style="margin: 0 auto; width: 100%;" cellspacing="10">
-						<tr>
-							<td><?php echo $tr->translate("Servie Title")?><input type="hidden" name="id" id="id" value="<?php echo $this->row_service['id']?>"/></td>
-							<td><input dojoType="dijit.form.ValidationTextBox" class="fullside" id="serice_title" name="serice_title" value="<?php echo $this->row_service['service_title']?>" type="text" required="required"></td>
-						</tr>
-						<tr>
-							<td><?php echo $tr->translate("Price")?></td>
-							<td><input dojoType="dijit.form.NumberTextBox" class="fullside" id="price" name="price" value="<?php echo $this->row_service['price']?>" type="text"></td>
-						</tr>
-						<tr>
-							<td><?php echo $tr->translate("Description")?></td>
-							<td><textarea class="ckeditor" dojoType="dijit.form.SimpleTextarea"  class="fullside" style="min-height:80px;" id="description" name="description"><?php echo $this->row_service['description']?></textarea></td>
-						</tr>
-						<tr>
-							<td><?php echo $tr->translate("Photo");?></td>
-							<td><input type="file" name="photo" id="photo" value=""   class="fullside"/><?php echo '<img width="80px" src="'.$img.'"/>';?><input type="hidden" name="oldphoto" id="oldphoto" value="<?php echo $this->row_service['photo'];?>"  />
-							</td>
-						</tr>
-						<tr>
-							<td><?php echo $tr->translate("Photo1")?></td>
-							<td><input type="file" name="photo1" id="photo1"  class="fullside"/><img width="80px" src="<?php echo $this->baseUrl()."/images/".$row_ser['photo1'];?>" /><input type="hidden" name="oldphoto1" id="oldphoto1" value="<?php echo $this->row_service['photo1'];?>"  /></td>
-						</tr>
-						<tr>
-							<td><?php echo $tr->translate("Photo2")?></td>
-							<td><input type="file" name="photo2" id="photo2"  class="fullside"/><img width="80px" src="<?php echo $this->baseUrl()."/images/".$row_ser['photo2'];?>" /><input type="hidden" name="oldphoto2" id="oldphoto2" value="<?php echo $this->row_service['photo2'];?>"  /></td>
-						</tr>
-						<tr>
-							<td><?php echo $tr->translate("STATUS")?></td>
-							<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true" missingMessage="Invalid Module!" class="fullside">
-								    <option value="1">Active</option>
-								    <option value="0">Deactive</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2" align="center">
-									<input type="submit" value="save_close" name="save_close" label="<?php echo $tr->translate('SAVECLOSE');?>" dojoType="dijit.form.Button" 
-										iconClass="dijitEditorIcon dijitEditorIconSave" />
-							</td>
-						</tr>
-					</table>	
-		</fieldset>		
-		</td>
-	</tr>
-</table>	
+<form  id='add_techer' action="<?php echo $this->url(array('module'=>'driverguide','controller'=>'serviceprice','action'=>'edit')); ?>" dojoType="dijit.form.Form" method="post" enctype="multipart/form-data">
+ 	<script type="dojo/method" event="onSubmit">			
+			if(this.validate()) {
+				loading();
+				return true;
+			} else {
+				return false;
+			}
+	</script>
+	<div class="clearfix"></div>
+	<div class="row">
+      	<div class="col-md-8 col-xs-12 forms_padding">
+          <div class="x_panel">
+              <div class="x_title">
+                 <h2><i class="fa  fa-edit" aria-hidden="true"></i> <?php echo $tr->translate('Edit Service Rental Price')?></h2>
+                 <ul class="nav navbar-right panel_toolbox">
+	                  <li>
+	                   	<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+	                   </li>
+	               	</ul>
+               		<div class="clearfix"></div>
+         	 	</div>
+	       		<div class="x_content">
+	       			<div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('Service Title')?>
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-12">
+	                    	<input dojoType="dijit.form.ValidationTextBox" class="fullside" id="serice_title" name="serice_title" value="<?php echo $this->row_service['service_title']?>" type="text" required="required">
+	                    	<input type="hidden" name="id" id="id" value="<?php echo $this->row_service['id']?>"/>
+	                   </div>
+	                </div>
+	                <div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('PRICE')?>
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-12">
+	                   		<input dojoType="dijit.form.NumberTextBox" class="fullside" id="price" name="price" value="<?php echo $this->row_service['price']?>" type="text">
+	                   </div>
+	                </div>
+	                <div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('DESCRIPTION')?>
+	                   </label>
+	                </div>
+	                <div class="form-group">
+	                   <div class="col-md-12 col-sm-12 col-xs-12">
+	                   		<textarea class="ckeditor" dojoType="dijit.form.SimpleTextarea"  class="fullside" style="min-height:80px;" id="description" name="description"><?php echo $this->row_service['description']?></textarea>
+	                   </div>
+	                </div>
+	       		</div>
+	       	</div>
+	     </div>
+	     <div class="col-md-4 col-xs-12 forms_padding">
+          <div class="x_panel">
+              <div class="x_title">
+                 <h2><i class="fa fa-file-image-o" aria-hidden="true"></i> <?php echo $tr->translate('Photo')?></h2>
+                 <ul class="nav navbar-right panel_toolbox">
+	                  <li>
+	                   	<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+	                   </li>
+	               	</ul>
+               		<div class="clearfix"></div>
+         	 	</div>
+	       		<div class="x_content">
+	       			<div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('Photo')?>
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-12">
+	                   		<?php echo '<img width="80px" src="'.$img.'"/>';?>
+	                   		<input type="hidden" name="oldphoto" id="oldphoto" value="<?php echo $this->row_service['photo'];?>"  />
+	                   		<input type="file" name="photo" id="photo"  class="fullside"/>
+	                   </div>
+	                </div>
+	                <div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('Photo')?> 1
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-12">
+	                   		<img width="80px" src="<?php echo $this->baseUrl()."/images/".$row_ser['photo1'];?>" />
+	                   		<input type="hidden" name="oldphoto1" id="oldphoto1" value="<?php echo $this->row_service['photo1'];?>"  />
+	                   		<input type="file" name="photo1" id="photo1"  class="fullside"/>
+	                   </div>
+	                </div>
+	                 <div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('Photo')?> 2
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-12">
+	                   		<img width="80px" src="<?php echo $this->baseUrl()."/images/".$row_ser['photo2'];?>" />
+	                   		<input type="hidden" name="oldphoto2" id="oldphoto2" value="<?php echo $this->row_service['photo2'];?>"  />
+	                   		<input type="file" name="photo2" id="photo2"  class="fullside"/>
+	                   </div>
+	                </div>
+	                <div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('STATUS')?>
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-12">
+	                   		<select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true" missingMessage="Invalid Module!" class="fullside">
+							     <?php foreach ($status_view as $rs){?>
+							    <option value="<?php echo $rs['key_code'];?>" <?php if ($rs['key_code']==$this->row_service['status']){ echo 'selected="Selected"'; }?> label="<?php echo $rs['name_en'];?>"><?php echo $rs['name_en'];?></option>
+							    <?php }?>
+							</select>
+	                   </div>
+	                </div>
+	       		</div>
+	       	</div>
+	     </div>
+	     <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+	    	 <input type="reset" value="សំអាត" label="<?php echo $tr->translate('CLEAR');?>"dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
+			 <input type="submit" value="save_close" name="save_close" label="<?php echo $tr->translate('SAVECLOSE');?>" dojoType="dijit.form.Button" 
+					iconClass="dijitEditorIcon dijitEditorIconSave" />
+	    </div>
+	  </div>
 </form>

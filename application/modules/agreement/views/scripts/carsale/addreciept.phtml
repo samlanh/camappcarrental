@@ -1,4 +1,6 @@
 <?php 
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+echo $this->headTitle($tr->translate("RECEIPT OF SALE"));
 	$sale_no = $this->sale_no;
 	$reciept_no = $this->reciept_no;
 	$barcode = $reciept_no;
@@ -18,6 +20,10 @@ table{
 	font-family: 'Khmer OS Siemreap';
 	font-size: 11px;
  }
+div#divPrint table.maintable {
+    display: block;
+    position: relative;
+}
 </style>
 <script type="text/javascript"  src="<?php echo $this->baseUrl();?>/js/convertion.js"></script>	
 <script type="text/javascript">
@@ -40,14 +46,9 @@ dojo.require("dijit.form.CheckBox");
 	</script>
 <script type="text/javascript">
 function doPrint() {
-	//getLabel();
 	window.frames["print_frame"].document.body.innerHTML=dojo.byId('divPrint').innerHTML;
     window.frames["print_frame"].window.focus();
     window.frames["print_frame"].window.print();
-    hideDialog();
-}
-function hideleft(){
-	(dojo.style("leftmenu","display") == "none") ? 'show':'hide'();
 }
 function preview()
 { 
@@ -65,34 +66,24 @@ function preview()
    docprint.focus(); 
 }
 function exportExcel(){
-	$('#exportExcel').tableExport({type:'excel',escape:'false'});
+	window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#exportExcel').html()));
+    e.preventDefault();
 }
-$('document').ready(function(){
+dojo.ready(function(){
 	var ids = '<?php echo $id;?>';
 	if(ids!=""){
-		dijit.byId('refer').attr('value',ids);
+		dijit.byId('refer').set('value',ids);
 	}
 });
 </script>
 <iframe name="print_frame" width="0" height="0" frameborder="0" src=about:blank></iframe>
-<!-- <table width="100%"> -->
-<!-- 	<tr> -->
-<!-- 	<td valign="top"> -->
-<!-- 		<div class="menureport"> -->
-<!-- 			<ul> 
-				<li class="preview"><a title="Preview" href="#" onclick="preview();"></a></li>
-				<li class="print"><a href="#" title="Print" onclick="doPrint();" ></a></li>
-				<li class="excel"><a href="#"  title="Export"  onclick="exportExcel();"></a></li>
-<!-- 			</ul> -->
-<!-- 		</div> -->
-		<div style="clear:both;"></div>
-<!--    	</td> -->
-<!--    	</tr> -->
-<!-- </table> -->
-<form action="" method="post">
-<div style="border: 1px dotted #000;background: #fff; margin: 0 auto;height: 29.7cm;width:21cm">
-		<div id="divPrint">
-			<table style="background:#fff; margin: 0 auto; width: 100%; padding: 0 0.2cm; ">
+<div style="clear:both;"></div>
+<div class="row">
+	<div class="x_panel">
+		<form action="" method="post">
+			<div style="border: 1px dotted #000;background: #fff; margin: 0 auto;height: 29.7cm;width:21cm">
+				<div id="divPrint">
+					<table class="maintable" style="background:#fff; margin: 0 auto; width: 100%; padding: 0 0.2cm; ">
 							<tr>
 								<td style="width: 30%;"><img style="width: 120px" src="<?php echo $this->baseUrl();?>/images/car1.jpg" /></td>
 								<td style="width: 40%;" align="center"><span style=" font-family:Courier New; font-size:22px ; font-weight: 900 !important;color:#04AE18">KINGDOM OF CAMBODIA<br /><span style="font-size:18px;">NATION RELIGION KING</span><br /><span style="font-size:18px;"><strong style="font: 21px bold, 'Webdings'"></strong></span></span></td>
@@ -113,9 +104,9 @@ $('document').ready(function(){
 												<td style="">Invoice No Reference:</td>
 												<td style="">
 													<select style="width: 100%" name="refer" id="refer" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getInvoice()">
-														<option value="0">- - - Choose Invoice No - - -</option>
-															<?php foreach ($sale_no as $rs){?>
-														<option value="<?php echo $rs["id"];?>"><?php echo $rs["ag_code"]?></option>
+														<option value="0"><?php echo $tr->translate("Choose Invoice No");?></option>
+															<?php if (!empty($sale_no)) foreach ($sale_no as $rs){?>
+																<option value="<?php echo $rs["id"];?>" ><?php echo $rs["ag_code"]?></option>
 															<?php }?>
 													</select>
 												</td>
@@ -286,9 +277,11 @@ $('document').ready(function(){
 								</td>
 							</tr>
 					</table>
-	</div>	
+				</div>	
+			</div>
+		</form>
+	</div>
 </div>
-</form>
 <script>
 var url_vehicle = '<?php echo $this->url(array('module'=>'agreement','controller'=>'carsale','action'=>'getinvoice'));?>';
 function getInvoice(){
@@ -384,8 +377,14 @@ function getInvoice(){
 function doBalance(){
 	paid = dijit.byId('paid_amount').get('value');
 	total = dijit.byId('total').get('value');
+	if(paid>total){
+		balance=0;
+		dijit.byId('paid_amount').attr('value',total);
+		paid = total;
+	}else{
 	balance = parseFloat(total)-parseFloat(paid);
 	dijit.byId('balance').attr('value',balance);
+	}
 	
 	total_paid = paid.toString(); 
 	money_khmer = read_money_in_khmer(total_paid);

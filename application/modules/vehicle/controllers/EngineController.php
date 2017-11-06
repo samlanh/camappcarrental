@@ -1,7 +1,7 @@
 <?php
 class Vehicle_engineController extends Zend_Controller_Action {
 	const REDIRECT_URL_ADD ='/vehicle/engine/add';
-	const REDIRECT_URL_CLOSE ='/vehicle/engine/index';
+	const REDIRECT_URL_CLOSE ='/vehicle/engine';
 	private $activelist = array('មិនប្រើ​ប្រាស់', 'ប្រើ​ប្រាស់');
     public function init()
     {    	
@@ -13,6 +13,8 @@ class Vehicle_engineController extends Zend_Controller_Action {
 	public function indexAction(){
 		$db_model = new Vehicle_Model_DbTable_DbEngine();
 		$rows=$db_model->getAllEngince();
+		$glClass = new Application_Model_GlobalClass();
+		$rows = $glClass->getImgActive($rows, BASE_URL, true);
 		try{
 			$list = new Application_Form_Frmtable();
 			$collumns = array("Capacity","STATUS");
@@ -35,11 +37,13 @@ class Vehicle_engineController extends Zend_Controller_Action {
 				$db_model=new Vehicle_Model_DbTable_DbEngine();
 				if(isset($data['save_new'])){
 					$db_model->addEngine($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+					$this->_redirect(self::REDIRECT_URL_ADD);
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
 				}
 				else if(isset($data['save_close'])){
 					$db_model->addEngine($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_CLOSE);
+					$this->_redirect(self::REDIRECT_URL_CLOSE);
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_CLOSE);
 				}
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
@@ -47,6 +51,9 @@ class Vehicle_engineController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
+		$db = new Application_Model_DbTable_DbGlobal();
+		$status=$db->getViews();
+		$this->view->status_view=$status;
 	
 	}
 	public function editAction(){
@@ -56,10 +63,11 @@ class Vehicle_engineController extends Zend_Controller_Action {
 			//print_r($data);exit();
 			try{
 				$db_model=new Vehicle_Model_DbTable_DbEngine();
-				 if(isset($data['save_close'])){
+// 				 if(isset($data['save_close'])){
 					$db_model->updateEngince($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_CLOSE);
-				}
+					$this->_redirect(self::REDIRECT_URL_CLOSE);
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_CLOSE);
+// 				}
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
 				$err =$e->getMessage();

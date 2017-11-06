@@ -25,8 +25,8 @@ class Group_indexController extends Zend_Controller_Action {
 			
 			$rs_rows= $db->getAllClients($search);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Agent'st ID","First Name","Last Name","Sex","DOB","Tel","POB","Nationality","Company Name","Group No",
-					"Home No","commune","District","Province");
+			$collumns = array("CUS_CODE","First Name","Last Name","Gender","DOB","PHONE","POB","Nationality","Company Name","Group No",
+					"House No","Commune","District","Province");
 			$link=array(
 					'module'=>'group','controller'=>'index','action'=>'edit',
 			);
@@ -37,7 +37,7 @@ class Group_indexController extends Zend_Controller_Action {
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 		}
 		
-		$frm = new Location_Form_FrmSearch();
+		$frm = new Group_Form_FrmClient();
 		$frm =$frm->search();
 		Application_Model_Decorator::removeAllDecorator($frm);
 		$this->view->frm_search = $frm;
@@ -47,12 +47,14 @@ class Group_indexController extends Zend_Controller_Action {
 				$data = $this->getRequest()->getPost();
 				$db = new Group_Model_DbTable_DbClient();
 				try{
-				 if(isset($data['save_new'])){
 					$id= $db->addClient($data);
-					Application_Form_FrmMessage::message("ការ​បញ្ចូល​ជោគ​ជ័យ !");
+				 if(isset($data['save_new'])){
+				 	$this->_redirect("/group/index/add");
+// 					Application_Form_FrmMessage::message("ការ​បញ្ចូល​ជោគ​ជ័យ !");
 				}
 				else{
-						Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/group");
+					$this->_redirect("/group");
+// 						Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS", "/group");
 				}
 				
 			}catch (Exception $e){
@@ -83,6 +85,9 @@ class Group_indexController extends Zend_Controller_Action {
 		$fm = new Group_Form_FrmClient();
 		$id = $this->getRequest()->getParam("id");
 		$row = $db->getClientById($id);
+		if (empty($row)){
+			Application_Form_FrmMessage::Sucessfull("NO_RECORD", "/group");
+		}
 		$this->view->id=$row['id'];
 		$frm = $fm->FrmAddClient($row);
 		Application_Model_Decorator::removeAllDecorator($frm);

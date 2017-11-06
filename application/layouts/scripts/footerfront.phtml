@@ -1,0 +1,141 @@
+<?php 
+$request=Zend_Controller_Front::getInstance()->getRequest();
+$action=$request->getActionName();
+$controller=$request->getControllerName();
+$module=$request->getModuleName();
+
+	$session_lang=new Zend_Session_Namespace('lang');
+	$currentlang = $session_lang->lang_id;
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	$db = new Application_Model_DbTable_DbGlobalSelect();
+	$row = $db->getWebsiteSetting('logo');
+	$email = $db->getWebsiteSetting('email');
+	$tel = $db->getWebsiteSetting('tel');
+	$address = $db->getWebsiteSetting('address');
+	$facebook = $db->getWebsiteSetting('facebook');
+	$youtube = $db->getWebsiteSetting('youtube');
+	$twitter = $db->getWebsiteSetting('twitter');
+	$googleplus = $db->getWebsiteSetting('googleplus');
+	
+	$vdgb = new Application_Model_DbTable_DbVdGlobal();
+	$alllang =  $vdgb->getLaguage();
+	
+?>
+<!-- Start Footer -->
+
+<footer class="footer"> 
+  <!-- Start Footer Bottom -->
+  <div class="bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="connect-us">
+            <h3><?php echo $tr->translate("CONNECT_WITH_US");?></h3>
+            <ul class="follow-us clearfix">
+              <li><a href="<?php echo $facebook['value'];?>"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+              <li><a href="<?php echo $twitter['value'];?>"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+              <li><a href="<?php echo $googleplus['value'];?>"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+              <li><a href="<?php echo $youtube['value'];?>"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+            </ul>
+			<p class="copyright">&copy; 2017 <?php echo $tr->translate("DEVELOPED_BY");?> <a href="http://cam-app.com/" target="_blank"><?php echo $tr->translate("CAM_APP");?></a></p>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="subscribe">
+            <h3><?php echo $tr->translate("SUBSCRIBE_WITH_US");?></h3>
+            <div class="input-wrapper clearfix">
+           	 <form action="" method="POST">
+              <input name="email" type="email" required placeholder="<?php echo $tr->translate("ENTER_YOUR_EMAIL_ADDRESS");?>">
+              <button><span class="icon-mail-icon"></span></button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="contact_us">
+            <h3><?php echo $tr->translate("CONTACT_US");?></h3>
+            <ul class="clearfix">
+              <li>
+				<span><i class="fa fa-envelope" aria-hidden="true"></i></span> <span class="value"><?php echo $email['value'];?></span>
+			  </li>
+              <li>
+				<span><i class="fa fa-phone" aria-hidden="true"></i></span> <span class="value"><?php echo $tel['value'];?></span>
+			  </li>
+              <li>
+				<span><i class="fa fa-home" aria-hidden="true"></i></span> <span class="value"><?php echo $address['value'];?></span>
+			  </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Footer Bottom --> 
+</footer>
+<!-- End Footer --> 
+<!-- Start Preloader -->
+<div id="loading">
+  <div class="element">
+    <div class="sk-folding-cube">
+      <div class="sk-cube1 sk-cube"></div>
+      <div class="sk-cube2 sk-cube"></div>
+      <div class="sk-cube4 sk-cube"></div>
+      <div class="sk-cube3 sk-cube"></div>
+    </div>
+  </div>
+</div>
+<!-- End Preloader -->
+<!-- Scroll to top --> 
+<a href="#" class="scroll-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a> 
+
+
+<!-- Bootsrap JS --> 
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/assets/bootstrap/js/bootstrap.min.js"></script> 
+<!-- Select2 JS --> 
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/assets/select2/js/select2.min.js"></script> 
+<!-- Match Height JS --> 
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/assets/matchHeight/js/matchHeight-min.js"></script> 
+<!-- Bxslider JS --> 
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/assets/bxslider/js/bxslider.min.js"></script> 
+<!-- Waypoints JS --> 
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/assets/waypoints/js/waypoints.min.js"></script> 
+<!-- Counter Up JS --> 
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/assets/counterup/js/counterup.min.js"></script> 
+<!-- Magnific Popup JS --> 
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/assets/magnific-popup/js/magnific-popup.min.js"></script> 
+<!-- Owl Carousal JS --> 
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/assets/owl-carousel/js/owl.carousel.min.js"></script> 
+<!-- Modernizr JS --> 
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/js/modernizr.custom.js"></script> 
+
+<!-- Custom JS --> 
+<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/js/custom.js"></script>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<script>
+	jQuery(window).resize(function() {
+	  update_post_view();
+	});
+	jQuery(document).ready(function(){
+		update_post_view();
+	});
+	function update_post_view(){
+		var width = jQuery(document).innerWidth();
+		  if(width<=767){
+			  jQuery(".postlist").removeClass("list-article");
+			  jQuery(".postlist").addClass("grid-article");
+		  }else{
+			  jQuery(".postlist").removeClass("grid-article");
+			  jQuery(".postlist").addClass("list-article");
+		  }
+	}
+</script>
+</body>
+</html>

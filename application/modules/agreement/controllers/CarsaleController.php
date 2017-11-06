@@ -44,76 +44,7 @@ class Agreement_carsaleController extends Zend_Controller_Action {
 // 		$this->view->frm_search = $frm;
 	}
 	
-	public function saleinvoiceAction(){
-		try{
-			$db =new agreement_Model_DbTable_Carsale();
-			if($this->getRequest()->isPost()){
-				$formdata=$this->getRequest()->getPost();
-				$search = array(
-						'title' => $formdata['title'],
-						'status_search'=>$formdata['status_search'],
-				);
-			}
-			else{
-				$search = array(
-						'title' => '',
-						'status_search' => -1,
-				);
-			}
 	
-			$rs_rows= $db->getAllCarSaleAgreement($search);
-			$list = new Application_Form_Frmtable();
-			$collumns = array("Agreement Code","Year","Make","Model","Sub Model","Plaque No","Owner Name","Contac","Buyer","Contact","Price in US$","Balance");
-			$link=array(
-					'module'=>'agreement','controller'=>'carsale','action'=>'invoice',
-			);
-	
-			$this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('id'=>$link,'o_name'=>$link,'name'=>$link,'ag_code'=>$link));
-		}catch (Exception $e){
-			Application_Form_FrmMessage::message("Application Error");
-			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
-		}
-	
-		// 		$frm = new Location_Form_FrmSearch();
-		// 		$frm =$frm->search();
-		// 		Application_Model_Decorator::removeAllDecorator($frm);
-		// 		$this->view->frm_search = $frm;
-	}
-	public function salerecieptAction(){
-		try{
-			$db =new agreement_Model_DbTable_Carsale();
-			if($this->getRequest()->isPost()){
-				$formdata=$this->getRequest()->getPost();
-				$search = array(
-						'title' => $formdata['title'],
-						'status_search'=>$formdata['status_search'],
-				);
-			}
-			else{
-				$search = array(
-						'title' => '',
-						'status_search' => -1,
-				);
-			}
-	
-			$rs_rows= $db->getAllSaleReciept($search);
-			$list = new Application_Form_Frmtable();
-			$collumns = array("Agreement Code","Reciept No","Year","Make","Model","Sub Model","Plaque No","Owner Name","Contac","Buyer","Contact","Price in US$","Amount Paid","Balance","Date Pay");
-			$link=array(
-					'module'=>'agreement','controller'=>'carsale','action'=>'editreciept',
-			);
-	
-			$this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('id'=>$link,'o_name'=>$link,'name'=>$link,'re_no'=>$link,'ag_code'=>$link));
-		}catch (Exception $e){
-			Application_Form_FrmMessage::message("Application Error");
-			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
-		}
-	
-		// 		$frm = new Location_Form_FrmSearch();
-		// 		$frm =$frm->search();
-		// 		Application_Model_Decorator::removeAllDecorator($frm);
-		// 		$this->view->frm_search = $frm;
-	}
 	public function addAction(){
 		$db = new agreement_Model_DbTable_Carsale();
 		if($this->getRequest()->isPost()){
@@ -122,7 +53,6 @@ class Agreement_carsaleController extends Zend_Controller_Action {
 			try{
 				$id = $db->add($data);
 // 				if(@!empty($data['check_invoice'])){
-// 					print_r($data);exit();
 					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL . '/carsale/saleform/id/'.$id);
 // 				}else{
 // // // 					print_r($data);echo "ewrew";exit();
@@ -239,7 +169,7 @@ class Agreement_carsaleController extends Zend_Controller_Action {
 		if($this->getRequest()->isPost()){
 			$post=$this->getRequest()->getPost();
 			$ids = $post["owner_name"];
-			$db = new Other_Model_DbTable_DbOwner();
+			$db = new Application_Model_DbTable_DbGlobal();
 			$row=$db->getOwnerById($ids);
 			print_r(Zend_Json::encode($row));
 			exit();
@@ -254,8 +184,8 @@ class Agreement_carsaleController extends Zend_Controller_Action {
 		if($this->getRequest()->isPost()){
 			$post=$this->getRequest()->getPost();
 			$ids = $post["owner_name"];
-			$db = new Other_Model_DbTable_DbOwner();
-			$row=$db->getOwnerById($ids);
+			$db = new Application_Model_DbTable_DbGlobal();
+			$row= $db->getOwnerById($ids);
 			print_r(Zend_Json::encode($row));
 			exit();
 		}

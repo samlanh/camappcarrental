@@ -1,12 +1,13 @@
 <?php
 
-class RsvAcl_UserTypeController extends Zend_Controller_Action
+class RsvAcl_UsertypeController extends Zend_Controller_Action
 {
-	
+	protected $tr;
 	const REDIRECT_URL = '/rsvacl/usertype';
 	
     public function init()
     {
+		
         /* Initialize action controller here */
     	header('content-type: text/html; charset=utf8');
     	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
@@ -56,6 +57,7 @@ class RsvAcl_UserTypeController extends Zend_Controller_Action
     }
 	public function addAction()
 		{
+			$tr = Application_Form_FrmLanguages::getCurrentlanguage();
 			if($this->getRequest()->isPost())
 			{
 				$db=new RsvAcl_Model_DbTable_DbUserType();	
@@ -67,16 +69,15 @@ class RsvAcl_UserTypeController extends Zend_Controller_Action
 				             $userLog= new Application_Model_Log();
 				    		 $userLog->writeUserLog($id);
 				     	  //End write log file
-				
-						//Application_Form_FrmMessage::message('One row affected!');
-						Application_Form_FrmMessage::redirector('/rsvacl/usertype/index');																			
+				    		 $this->_redirect(self::REDIRECT_URL);
+// 						Application_Form_FrmMessage::redirector('/rsvacl/usertype/index');																			
 				}else {
 					Application_Form_FrmMessage::message('User type had existed already');
 				}
 			}
 			$db=new Application_Model_DbTable_DbGlobal();
 			$rs=$db->getGlobalDb('SELECT user_type_id,user_type FROM rms_acl_user_type WHERE status=1');
-			$options=array(''=>'Please select');
+			$options=array(''=>$tr->translate('SELECT_PARENT'));
 			foreach($rs as $read) $options[$read['user_type_id']]=$read['user_type'];
 			$this->view->usertype_list= $options;
 				
@@ -84,7 +85,7 @@ class RsvAcl_UserTypeController extends Zend_Controller_Action
 	}
 	
     public function editAction()
-    {	
+    {	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
     	if($this->getRequest()->getParam('id')){
     		$db = new RsvAcl_Model_DbTable_DbUserType();
     		$user_type_id = $this->getRequest()->getParam('id');
@@ -92,7 +93,7 @@ class RsvAcl_UserTypeController extends Zend_Controller_Action
     		$this->view->usertype=$rs;
     		$db1=new Application_Model_DbTable_DbGlobal();
     		$allusertype=$db1->getGlobalDb('SELECT user_type_id,user_type FROM rms_acl_user_type WHERE status=1 AND user_type_id <> '.$user_type_id);
-    		$options=array(''=>'Please select');
+    		$options=array(''=>$tr->translate('SELECT_PARENT'));
     		foreach($allusertype as $read) $options[$read['user_type_id']]=$read['user_type'];
     		$this->view->usertype_list= $options;
     	
@@ -113,8 +114,8 @@ class RsvAcl_UserTypeController extends Zend_Controller_Action
 				             $userLog= new Application_Model_Log();
 				    		 $userLog->writeUserLog($user_type_id);
 				     	  //End write log file
-					//Application_Form_FrmMessage::message('One row affected!');
-					Application_Form_FrmMessage::redirector('/rsvacl/usertype/index');																																				
+				    		 $this->_redirect(self::REDIRECT_URL);
+// 					Application_Form_FrmMessage::redirector('/rsvacl/usertype/index');																																				
 				
 			}else{
 				if(!$db->isUserTypeExist($post['user_type'])){
@@ -124,7 +125,8 @@ class RsvAcl_UserTypeController extends Zend_Controller_Action
 				    		 $userLog->writeUserLog($user_type_id);
 				     //End write log file
 					//Application_Form_FrmMessage::message('One row affected!');
-					Application_Form_FrmMessage::redirector('/rsvacl/usertype/index');						
+				    		 $this->_redirect(self::REDIRECT_URL);
+// 					Application_Form_FrmMessage::redirector('/rsvacl/usertype/index');						
 				}else {
 					Application_Form_FrmMessage::message('User had existed already');
 				}

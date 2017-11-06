@@ -1,5 +1,10 @@
 <?php 
-	$this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
-	echo '<title>'. $this->tr->translate("STUFF").'</title>';
-	echo $this->list;
+	$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+	echo '<title>'. $tr->translate("STUFF").'</title>';
+?>
+<div class="blog_form_title">
+	<h4><i class="fa fa-cubes" aria-hidden="true"></i> <?php echo $tr->translate("STUFF")?></h4>
+</div>
+<?php 
+echo $this->list;
 ?>

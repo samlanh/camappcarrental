@@ -13,6 +13,8 @@ class Vehicle_TransmissionController extends Zend_Controller_Action {
 	public function indexAction(){
 		$db_tran = new Vehicle_Model_DbTable_DbTransmission();
 		$rows=$db_tran->getAllTransmission();
+		$glClass = new Application_Model_GlobalClass();
+		$rows = $glClass->getImgActive($rows, BASE_URL, true);
 		try{
 			$list = new Application_Form_Frmtable();
 			$collumns = array("Transmission Name","STATUS");
@@ -33,10 +35,12 @@ class Vehicle_TransmissionController extends Zend_Controller_Action {
 			$db_tran = new Vehicle_Model_DbTable_DbTransmission();
 			if(!empty($data['save_new'])){
 				$db_tran->addTransmission($data);
-				Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+				$this->_redirect(self::REDIRECT_URL_ADD);
+// 				Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
 			}else {
 				$db_tran->addTransmission($data);
-				Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+				$this->_redirect(self::REDIRECT_URL_ADD_CLOSE);
+// 				Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
 			}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
@@ -44,16 +48,20 @@ class Vehicle_TransmissionController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
+		$db = new Application_Model_DbTable_DbGlobal();
+		$status=$db->getViews();
+		$this->view->status_view=$status;
 	}
 	public function editAction(){
 		if($this->getRequest()->isPost()){
 			$data=$this->getRequest()->getPost();
 			try {
 			$db_tran = new Vehicle_Model_DbTable_DbTransmission();
-			if(!empty($data['save_close'])){
+// 			if(!empty($data['save_close'])){
 				$db_tran->updateTransmission($data);
-				Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
-			}
+				$this->_redirect(self::REDIRECT_URL_ADD_CLOSE);
+// 				Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+// 			}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
 				$err =$e->getMessage();
@@ -64,6 +72,10 @@ class Vehicle_TransmissionController extends Zend_Controller_Action {
 		$db_tran = new Vehicle_Model_DbTable_DbTransmission();
 		$row=$db_tran->getTransmissionById($id);
 		$this->view->row=$row;
+		
+		$db = new Application_Model_DbTable_DbGlobal();
+		$status=$db->getViews();
+		$this->view->status_view=$status;
 	}
 }
 

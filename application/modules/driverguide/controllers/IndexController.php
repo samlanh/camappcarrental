@@ -23,9 +23,11 @@ class Driverguide_indexController extends Zend_Controller_Action {
 				);
 			}	
 			$rs_rows= $db->getAllDriverGuide($search);
+			$glClass = new Application_Model_GlobalClass();
+			$rs_rows = $glClass->getImgActive($rs_rows, BASE_URL, true,null);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Driver's Id","First Name","Last Name","Sex","Tel","Dob","Pob","Nationality","Group No","Home No","Stree",
-					"Commune","District","Province","Status");
+			$collumns = array("Driver's Id","First Name","Last Name","Gender","TEL","DOB","POB","Nationality","Group No","House No","Street No",
+					"Commune","District","Province","STATUS");
 			$link=array(
 					'module'=>'driverguide','controller'=>'index','action'=>'edit',
 			);
@@ -46,10 +48,13 @@ class Driverguide_indexController extends Zend_Controller_Action {
 			try{
 				$id= $db->addDriver($data);
 				if(isset($data['save_new'])){
-					Application_Form_FrmMessage::message("ការ​បញ្ចូល​ជោគ​ជ័យ !");
+					$this->_redirect("/driverguide/index/add");
+// 					Application_Form_FrmMessage::message("ការ​បញ្ចូល​ជោគ​ជ័យ !");
+					
 				}
 				else{
-					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESSS","/group/index");
+					$this->_redirect("/driverguide");
+// 					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESSS","/group/index");
 				}
 		
 			}catch (Exception $e){
@@ -81,7 +86,8 @@ class Driverguide_indexController extends Zend_Controller_Action {
 			$data = $this->getRequest()->getPost();
 			try{
 					$id= $db_model->updateDriver($data);
-					Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESSS","/driverguide");
+					$this->_redirect("/driverguide");
+// 					Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESSS","/driverguide");
 		
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message("Application Error");

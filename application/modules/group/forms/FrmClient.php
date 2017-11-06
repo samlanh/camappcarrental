@@ -5,11 +5,33 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 	{
 		$this->tr = Application_Form_FrmLanguages::getCurrentlanguage();
 	}
+	public function search(){
+		$request=Zend_Controller_Front::getInstance()->getRequest();
+	
+		$_title = new Zend_Dojo_Form_Element_TextBox('title');
+		$_title->setAttribs(array('dojoType'=>'dijit.form.TextBox',
+				'placeholder'=>$this->tr->translate("ADVANCE_SEARCH")));
+		$_title->setValue($request->getParam("title"));
+	
+		$_status=  new Zend_Dojo_Form_Element_FilteringSelect('status_search');
+		$_status->setAttribs(array('dojoType'=>'dijit.form.FilteringSelect',));
+		$_status_opt = array(
+				-1=>$this->tr->translate("ALL_STATUS"),
+				1=>$this->tr->translate("ACTIVE"),
+				0=>$this->tr->translate("DACTIVE"));
+		$_status->setMultiOptions($_status_opt);
+		$_status->setValue($request->getParam("status_search"));
+		$this->addElements(array($_title,$_status));
+	
+		return $this;
+	}
 	public function FrmAddClient($data=null){
 		
 		$_dob= new Zend_Dojo_Form_Element_DateTextBox('dob_client');
 		$_dob->setValue(date("Y-m-d"));
-		$_dob->setAttribs(array('dojoType'=>'dijit.form.DateTextBox','class'=>'fullside'));
+		$_dob->setAttribs(array('dojoType'=>'dijit.form.DateTextBox','class'=>'fullside',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
+				));
 		
 		$request=Zend_Controller_Front::getInstance()->getRequest();
 		$db = new Application_Model_DbTable_DbGlobal();
@@ -150,7 +172,7 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 		
 		$_desc = new Zend_Dojo_Form_Element_TextBox('desc');
 		$_desc->setAttribs(array('dojoType'=>'dijit.form.TextBox','class'=>'fullside',
-				'style'=>'width:96%;min-height:30px;'));
+				'style'=>'min-height:30px;'));
 		
 		$_status=  new Zend_Dojo_Form_Element_FilteringSelect('status');
 		$_status->setAttribs(array('dojoType'=>'dijit.form.FilteringSelect','class'=>'fullside',));
@@ -209,6 +231,7 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 		$p_issuedate = new Zend_Dojo_Form_Element_DateTextBox('pissue_date');
 		$p_issuedate->setAttribs(array(
 				'dojoType'=>'dijit.form.DateTextBox',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
 				'class'=>'fullside',
 		));
 		$p_issuedate->setValue(date("Y-m-d"));
@@ -216,6 +239,7 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 		$p_expireddate = new Zend_Dojo_Form_Element_DateTextBox('pexpired_date');
 		$p_expireddate->setAttribs(array(
 				'dojoType'=>'dijit.form.DateTextBox',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
 				'class'=>'fullside',
 		));
 		$p_expireddate->setValue(date("Y-m-d"));
@@ -229,6 +253,7 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 		$c_issuedate = new Zend_Dojo_Form_Element_DateTextBox('cissue_date');
 		$c_issuedate->setAttribs(array(
 				'dojoType'=>'dijit.form.DateTextBox',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
 				'class'=>'fullside',
 		));
 		$c_issuedate->setValue(date("Y-m-d"));
@@ -236,6 +261,7 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 		$c_expireddate = new Zend_Dojo_Form_Element_DateTextBox('cexpired_date');
 		$c_expireddate->setAttribs(array(
 				'dojoType'=>'dijit.form.DateTextBox',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
 				'class'=>'fullside',
 		));
 		$c_expireddate->setValue(date("Y-m-d"));
@@ -249,6 +275,7 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 		$f_issuedate = new Zend_Dojo_Form_Element_DateTextBox('fissue_date');
 		$f_issuedate->setAttribs(array(
 				'dojoType'=>'dijit.form.DateTextBox',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
 				'class'=>'fullside',
 		));
 		$f_issuedate->setValue(date("Y-m-d"));
@@ -256,6 +283,7 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 		$f_expireddate = new Zend_Dojo_Form_Element_DateTextBox('fexpired_date');
 		$f_expireddate->setAttribs(array(
 				'dojoType'=>'dijit.form.DateTextBox',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
 				'class'=>'fullside',
 		));
 		$f_expireddate->setValue(date("Y-m-d"));
@@ -395,7 +423,9 @@ $district->setValue($data['district']);
 		));
 
 		$_dob= new Zend_Dojo_Form_Element_DateTextBox('dob_client');
-		$_dob->setAttribs(array('dojoType'=>'dijit.form.DateTextBox','class'=>'fullside',));
+		$_dob->setAttribs(array('dojoType'=>'dijit.form.DateTextBox','class'=>'fullside',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
+				));
 		$_dob->setValue(date("Y-m-d"));
 	
 	
@@ -537,7 +567,7 @@ $district->setValue($data['district']);
 		
 		$_desc = new Zend_Dojo_Form_Element_TextBox('desc');
 		$_desc->setAttribs(array('dojoType'=>'dijit.form.TextBox','class'=>'fullside',
-				'style'=>'width:96%;min-height:30px;'));
+				'style'=>'min-height:30px;'));
 		
 		$lang = new Zend_Dojo_Form_Element_TextBox('lang');
 		$lang->setAttribs(array('dojoType'=>'dijit.form.TextBox','class'=>'fullside',
@@ -605,6 +635,7 @@ $district->setValue($data['district']);
 		$issued_date = new Zend_Dojo_Form_Element_DateTextBox('issued_date');
 		$issued_date->setAttribs(array(
 				'dojoType'=>'dijit.form.DateTextBox',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
 				'class'=>'fullside',
 		));
 		$issued_date->setValue(date("Y-m-d"));
@@ -612,6 +643,7 @@ $district->setValue($data['district']);
 		$registered_date = new Zend_Dojo_Form_Element_DateTextBox('registered_date');
 		$registered_date->setAttribs(array(
 				'dojoType'=>'dijit.form.DateTextBox',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
 				'class'=>'fullside',
 		));
 		$registered_date->setValue(date("Y-m-d"));
@@ -619,6 +651,7 @@ $district->setValue($data['district']);
 		$expired_date = new Zend_Dojo_Form_Element_DateTextBox('expired_date');
 		$expired_date->setAttribs(array(
 				'dojoType'=>'dijit.form.DateTextBox',
+				'constraints'=>"{datePattern:'dd/MM/yyyy'}",
 				'class'=>'fullside',
 		));
 		$expired_date->setValue(date("Y-m-d"));

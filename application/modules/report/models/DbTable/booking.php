@@ -3,14 +3,17 @@ class Report_Model_DbTable_booking extends Zend_Db_Table_Abstract
 {
 	public function getAllBooking($search){
 		$db = $this->getAdapter();
+		$dbgb = new Application_Model_DbTable_DbGlobal();
+		$lang= $dbgb->getCurrentLang();
+		$array = array(1=>"province_en_name",2=>"province_kh_name");
 		$date_book = $search["date_book"];
 		$pickup_date = $search["pickup_date"];
 		$return_date = $search["return_date"];
 		$sql='SELECT b.`id`,b.`booking_no`,
 		(SELECT customer_code FROM `ldc_customer` AS c WHERE c.`id`=b.`customer_id` LIMIT 1) AS customercode,
 		(SELECT CONCAT(c.`first_name`," ",c.`last_name`) FROM `ldc_customer` AS c WHERE c.`id`=b.`customer_id` LIMIT 1) AS customer,
-		(SELECT p.`province_name` FROM `ldc_province` AS p WHERE p.`id`=b.`pickup_location` LIMIT 1) AS pickup_lc,
-		(SELECT p.`province_name` FROM `ldc_province` AS p WHERE p.`id`=b.`dropoff_location` LIMIT 1) AS return_lc,
+		(SELECT p.'.$array[$lang].' FROM `ldc_province` AS p WHERE p.`id`=b.`pickup_location` LIMIT 1) AS pickup_lc,
+		(SELECT p.'.$array[$lang].' FROM `ldc_province` AS p WHERE p.`id`=b.`dropoff_location` LIMIT 1) AS return_lc,
 		b.`date_book`,CONCAT(b.`pickup_date`," ",b.`pickup_time`) AS pickup_date,CONCAT(b.`return_date`," ",b.`return_time`) AS return_date,
 		b.`total_vat`,b.`total_fee`,b.`deposite_fee`,b.`total_paymented`,b.`payment_type` FROM `ldc_booking` AS b WHERE 1';
 		$where ="";

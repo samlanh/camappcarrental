@@ -14,7 +14,7 @@ class agreement_Model_DbTable_DbProductAgreement extends Zend_Db_Table_Abstract
 				(SELECT CONCAT(first_name,' ',last_name) FROM `ldc_customer` WHERE id=$this->_name.customer_id LIMIT 1) 
 				AS customer_name,
 				booking_id,start_date,finish_date,
-				period,rental_fee,refundable,grand_total,paid_amount,due_amount  FROM $this->_name ";
+				period,rental_fee,refundable,grand_total,paid_amount,due_amount  FROM $this->_name ORDER BY id DESC";
     	return $db->fetchAll($sql);
     }
     function getAgreementById($id){

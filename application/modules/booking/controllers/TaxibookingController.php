@@ -44,14 +44,18 @@ class Booking_TaxibookingController extends Zend_Controller_Action {
 	function addAction(){
 		
 		if($this->getRequest()->isPost()){
-			$data = $this->getRequest()->getPost();
-			$db = new Booking_Model_DbTable_DbTaxiBooking();
-			$booking_id=$db->addProductRental($data);
-			//$db_mail->sendInvoiceEmail($booking_id);
-			 
-			$session =new Zend_Session_Namespace('Taxibooking');
-			$session->unsetAll();
-			Application_Form_FrmMessage::redirectUrl("/booking/taxibooking/add");
+			try{
+				$data = $this->getRequest()->getPost();
+				$db = new Booking_Model_DbTable_DbTaxiBooking();
+				$booking_id=$db->addProductRental($data);
+				 
+				$session =new Zend_Session_Namespace('Taxibooking');
+				$session->unsetAll();
+				Application_Form_FrmMessage::redirectUrl("/booking/taxibooking/add");
+			}catch (Exception $e){
+				Application_Form_FrmMessage::message("Application Error");
+				Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
+			}
 		}
 		
 		$session =new Zend_Session_Namespace('Taxibooking');

@@ -1,5 +1,8 @@
 <?php 
-$this->tr=Application_Form_FrmLanguages::getCurrentlanguage();
-echo '<title>'. $this->tr->translate("Taxi Rental Price").'</title>';
-echo $this->list;
+$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+echo '<title>'. $tr->translate("Taxi Rental Price").'</title>';
 ?>
+ <div class="blog_form_title">
+ 	<h4><i class="fa fa-car" aria-hidden="true"></i> <?php echo $tr->translate("Taxi Rental Price")?></h4>
+ </div>
+ <?php echo $this->list;?>

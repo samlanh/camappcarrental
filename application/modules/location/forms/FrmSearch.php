@@ -15,21 +15,38 @@ Class Location_Form_FrmSearch extends Zend_Dojo_Form{
 	}	
 	public function search(){
 		$request=Zend_Controller_Front::getInstance()->getRequest();
-	
+		$db = new Application_Model_DbTable_DbGlobal();
+		
 		$_title = new Zend_Dojo_Form_Element_TextBox('title');
 		$_title->setAttribs(array('dojoType'=>$this->text,
+				'class'=>'fullside',
 				'placeholder'=>$this->tr->translate("ADVANCE_SEARCH")));
 		$_title->setValue($request->getParam("title"));
 	
 		$_status=  new Zend_Dojo_Form_Element_FilteringSelect('status_search');
-		$_status->setAttribs(array('dojoType'=>$this->filter,));
+		$_status->setAttribs(array('dojoType'=>$this->filter,
+				'class'=>'fullside'));
 		$_status_opt = array(
 				-1=>$this->tr->translate("ALL_STATUS"),
 				1=>$this->tr->translate("ACTIVE"),
 				0=>$this->tr->translate("DACTIVE"));
 		$_status->setMultiOptions($_status_opt);
 		$_status->setValue($request->getParam("status_search"));
-		$this->addElements(array($_title,$_status));
+		
+		$service_rs = $db->getServiceType();
+		$_service_type = new Zend_Dojo_Form_Element_FilteringSelect("service_type");
+		$_arr=array(0=>$this->tr->translate("Choose Service Type"));
+		if(!empty($service_rs))foreach($service_rs AS $row){
+			$_arr[$row['id']]=$row['name'];
+		}
+		$_service_type->setMultiOptions($_arr);
+		$_service_type->setAttribs(array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'required'=>'true',
+				'class'=>'fullside'));
+		$_service_type->setValue($request->getParam("service_type"));
+		
+		$this->addElements(array($_service_type,$_title,$_status));
 	
 		return $this;
 	}

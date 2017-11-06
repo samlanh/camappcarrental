@@ -27,6 +27,7 @@ class Location_Model_DbTable_DbLocation extends Zend_Db_Table_Abstract
 	    			'user_id' => $this->getUserId(),
 	    			'service_type'=>$_data['service_type'],
 	    			'locationtype_id'=>$_data['location_type'],
+	    			'create_date'=> date("Y-m-d H:i"),
 	    	);
 	    	$id =  $this->insert($_arr);
 	    	
@@ -129,6 +130,8 @@ class Location_Model_DbTable_DbLocation extends Zend_Db_Table_Abstract
 
     		$db->commit();
     	}catch(Exception $e){
+    		$err=$e->getMessage();
+    		Application_Model_DbTable_DbUserLog::writeMessageError($err);
     		$db->rollBack();
     		
     	}
@@ -159,10 +162,17 @@ class Location_Model_DbTable_DbLocation extends Zend_Db_Table_Abstract
     }
     function getAllLocations($search=null){
     	$db = $this->getAdapter();
-    	$sql = " SELECT  id,location_name, (SELECT province_name FROM `ldc_province` WHERE id=province_id) AS province_name,
-                 date,(SELECT name_en FROM `ldc_view` WHERE TYPE=2 AND key_code =$this->_name.`status`) AS status
+    	$dbgb = new Application_Model_DbTable_DbGlobal();
+    	$lang= $dbgb->getCurrentLang();
+    	$array = array(1=>"province_en_name",2=>"province_kh_name");
+    	$arrayview = array(1=>"name_en",2=>"name_kh");
+    	$array_ser = array(1=>"title_en",2=>"title_kh");
+    	$sql = " SELECT  id,location_name, (SELECT ".$array[$lang]." FROM `ldc_province` WHERE id=province_id) AS province_name,
+    			(SELECT ".$array_ser[$lang]." FROM ldc_service_type as st WHERE st.id = service_type limit 1) as service_type,
+                 date,(SELECT ".$arrayview[$lang]." FROM `ldc_view` WHERE TYPE=2 AND key_code =$this->_name.`status`) AS status
                  FROM $this->_name WHERE is_package !=1 AND location_name!='' ";
     	$order=" order by id DESC";
+    	
     	$where = '';
     	if(!empty($search['title'])){
     		$s_where=array();
@@ -170,15 +180,21 @@ class Location_Model_DbTable_DbLocation extends Zend_Db_Table_Abstract
     		$s_where[]=" location_name LIKE '%{$s_search}%'";
     		$where.=' AND ('.implode(' OR ', $s_where).')';
     	}
-    	if($search['status']>-1){
-    		$where.= " AND status = ".$db->quote($search['status']);
+    	if(!empty($search['service_type'])){
+    		$where.= " AND service_type = ".$db->quote($search['service_type']);
+    	}
+    	if($search['status_search']>-1){
+    		$where.= " AND status = ".$db->quote($search['status_search']);
     	}
     	return $db->fetchAll($sql.$where.$order);
     }
     /*----------------------------package----------------------------*/
     function getAllPackages($search=null){
     	$db = $this->getAdapter();
-    	$sql = " SELECT  id,location_name, (SELECT province_name FROM `ldc_province` WHERE id=province_id) AS province_name,
+    	$dbgb = new Application_Model_DbTable_DbGlobal();
+    	$lang= $dbgb->getCurrentLang();
+    	$array = array(1=>"province_en_name",2=>"province_kh_name");
+    	$sql = " SELECT  id,location_name, (SELECT ".$array[$lang]." FROM `ldc_province` WHERE id=province_id) AS province_name,
     	date,(SELECT name_en FROM `ldc_view` WHERE TYPE=2 AND key_code =$this->_name.`status`) AS status
     	FROM $this->_name WHERE location_name!='' AND is_package=1 ";
     	$order=" order by id DESC";
@@ -282,8 +298,10 @@ class Location_Model_DbTable_DbLocation extends Zend_Db_Table_Abstract
 			}
 			$db->commit();
 		}catch(Exception $e){
-			$db->rollBack();
+			$err=$e->getMessage();
+			Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			echo $e->getMessage();
+			$db->rollBack();
 		}
 			
 	}

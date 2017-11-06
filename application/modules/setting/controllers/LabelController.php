@@ -27,7 +27,7 @@ class Setting_LabelController extends Zend_Controller_Action {
 		$this->_helper->flashMessenger->addMessage(array("err_message" => 'unable to comply'));
 	}
 	function addAction(){
-		$this->_redirect('/setting/index');
+		$this->_redirect('/setting/label');
 		
 	}
 	function editAction(){

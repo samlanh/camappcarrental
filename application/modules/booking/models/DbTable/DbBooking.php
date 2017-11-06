@@ -159,7 +159,10 @@ class Booking_Model_DbTable_DbBooking extends Zend_Db_Table_Abstract
     
     function getLocationById($id){
     	$db = $this->getAdapter();
-    	$sql="SELECT p.`id`,p.`province_name` FROM `ldc_province` AS p WHERE p.`id`=$id";
+    	$db_gb = new Application_Model_DbTable_DbGlobal();
+    	$lang= $db_gb->getCurrentLang();
+    	$array = array(1=>"province_en_name",2=>"province_kh_name");
+    	$sql="SELECT p.`id`,".$array[$lang]." as province_name FROM `ldc_province` AS p WHERE p.`id`=$id";
     	return $db->fetchRow($sql);
     }
     

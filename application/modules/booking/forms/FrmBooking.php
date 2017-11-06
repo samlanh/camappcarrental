@@ -25,22 +25,22 @@ class Booking_Form_FrmBooking extends Zend_Dojo_Form{
 		$_db = new Application_Model_DbTable_DbGlobal();
 		$c_date = date("Y-m-d");
 		$pickup_date = new Zend_Dojo_Form_Element_DateTextBox("pickup_date");
-		$pickup_date->setAttribs(array('dojoType'=>$this->date,'class'=>"fullside",'onChange'=>'mothlyRetntal();'
+		$pickup_date->setAttribs(array('dojoType'=>$this->date,'constraints'=>"{datePattern:'dd/MM/yyyy'}",'class'=>"fullside",'onChange'=>'mothlyRetntal();'
 				));
 		$pickup_date->setValue($c_date);
 		$return_date = new Zend_Form_Element_Text("return_date");
-		$return_date->setAttribs(array('dojoType'=>$this->date,'class'=>"fullside"));
+		$return_date->setAttribs(array('dojoType'=>$this->date,'constraints'=>"{datePattern:'dd/MM/yyyy'}",'class'=>"fullside",));
 		if($request->getParam("return_date")==""){
 			$return_date->setValue($c_date);
 		}else{
 			$return_date->setValue($request->getParam("return_date"));
 		}
 		
-		$rows = $_db->getGlobalDb("SELECT id,province_name FROM `ldc_province` WHERE `status` = 1");
-		
+// 		$rows = $_db->getGlobalDb("SELECT id,province_name FROM `ldc_province` WHERE `status` = 1");
+		$rows = $_db->getAllProvince();
 		$opt_location = array(0=>$this->tr->translate("CHOOSE_LOCTION"));
 		if(!empty($rows)){
-			foreach($rows AS $row) {$opt_location[$row['id']]=$row['province_name'];};
+			foreach($rows AS $row) {$opt_location[$row['id']]=$row['name'];};
 		}
 		$pickup_location = new Zend_Form_Element_Select("pickup_location");
 		$pickup_location->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside"));

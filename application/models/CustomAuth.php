@@ -31,7 +31,7 @@ class Application_Model_CustomAuth extends Zend_Controller_Plugin_Abstract
 	public function preDispatch(Zend_Controller_Request_Abstract $request)
  	{ 	
  		//clear session from search session
- 		//$this->clearSession();
+ 		$this->clearSession();
  		
  		$session_user=new Zend_Session_Namespace('auth');
  		$module = $request->getModuleName();
@@ -42,6 +42,7 @@ class Application_Model_CustomAuth extends Zend_Controller_Plugin_Abstract
  		
  		//have login
  		if(isset($session_user->arr_acl)){
+ 			
 	 		$arr_acl = $session_user->arr_acl;
 	 		$valid_action = FALSE;
 	 		
@@ -59,12 +60,13 @@ class Application_Model_CustomAuth extends Zend_Controller_Plugin_Abstract
 				
 	 		} 
 	 		
+	 		//echo $valid_action."valid action";exit();
 	 		//redirect to homepage
 	 		if(!$valid_action){
 	 			//just open block below
-	 			if($url !== "default/index/index" && $url !=="default/error/error" && $url !=="default/index/changepassword" && $url !=="default/index/logout"){
-	 				$_url = '/';
-	 			}
+// 	 			if($url !== "default/index/index" && $url !=="default/error/error" && $url !=="default/index/changepassword" && $url !=="default/index/logout"){
+// 	 				$_url = '/';
+// 	 			}
 	 			$_have = false;
 	 			foreach ($this->_exception_url as $i => $val){
 	 				if($url === $val){
@@ -76,21 +78,22 @@ class Application_Model_CustomAuth extends Zend_Controller_Plugin_Abstract
 	 				$_url = '/';
 	 			}		
 	 		}
-	 		else{
+	 		else{//if no have action
 	 			$_url = $this->rewriteUrl($url);
 	 		}
  		}else{ //no login
  			//redirect to login page
-	 		if($url !== "default/index/index"){ 
+ 		   if($url !== "default/index/index"){ 
 	 			$_url = "/";
 	 		}
 	 	}
-	 	
 	 	if(!empty($_url)){
-// 	 		echo"url here". $_url;exit();
-	 		$_url="/home";
 	 		Application_Form_FrmMessage::redirectUrl($_url);
 	 	}
+// 	 	if(!empty($_url)){
+// 	 		$_url="/home";
+// 	 		Application_Form_FrmMessage::redirectUrl($_url);
+// 	 	}
 			
  	}
  	

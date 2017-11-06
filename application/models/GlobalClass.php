@@ -9,6 +9,15 @@ class Application_Model_GlobalClass  extends Zend_Db_Table_Abstract
 		$head="W".$date->get('YY-MM-d/ss');
 		return $head.$sub;
    }
+   public function getAllProvinceOption(){
+   	$_db = new Application_Model_DbTable_DbGlobal();
+   	$rows = $_db->getAllProvince();
+   	$options= '<option value="-1" >'.htmlspecialchars('Please Select Province', ENT_QUOTES).'</option>';
+   	if(!empty($rows))foreach($rows as $value){
+   		$options .= '<option value="'.$value['id'].'" >'.htmlspecialchars($value['name'], ENT_QUOTES).'</option>';
+   	}
+   	return $options;
+   }
    public function getOptonsHtml($sql, $display, $value){
    	$db = $this->getAdapter();
    	$option = '<option value="">--- Select ---</option>';
@@ -18,6 +27,24 @@ class Application_Model_GlobalClass  extends Zend_Db_Table_Abstract
    	}
    	return $option;
    }
+   public function getAllPackageDayOption(){
+   	$_db = new Application_Model_DbTable_DbGlobal();
+   	$rows = $_db->getAllPackageDay();
+   	$options= '';
+   	if(!empty($rows))foreach($rows as $value){
+   		$options .= '<option value="'.$value['id'].'" >'.htmlspecialchars($value['package'], ENT_QUOTES).'</option>';
+   	}
+   	return $options;
+   }
+   public function getAllLocationOption(){
+   	$sql="SELECT id,province_id,location_name FROM ldc_package_location WHERE `status`=1";
+   	$rows=$this->getAdapter()->fetchAll($sql);
+   	$options= '<option value="-1" >'.htmlspecialchars('Please Select Province', ENT_QUOTES).'</option>';
+   	if(!empty($rows))foreach($rows as $value){
+   		$options .= '<option value="'.$value['id'].'" >'.htmlspecialchars($value['location_name'], ENT_QUOTES).'</option>';
+   	}
+   	return $options;
+   }
    public function getYesNoOption(){
    	//Select Public for report
    	$myopt = '<option value="">---Select----</option>';
@@ -25,7 +52,16 @@ class Application_Model_GlobalClass  extends Zend_Db_Table_Abstract
    	$myopt .= '<option value="No">No</option>';
    	return $myopt;
    
-   }	
+   }
+public function getOptonsHtmlTranslate($sql, $display, $value){
+   	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+   	$db = $this->getAdapter();
+   	$option = '<option value="">--- Select ---</option>';
+   	foreach($db->fetchAll($sql) as $r){
+   		$option .= '<option value="'.$r[$value].'">'.htmlspecialchars($tr->translate(strtoupper($r[$display])), ENT_QUOTES).'</option>';
+   	}
+   	return $option;
+   }   
    public function getImgAttachStatus($rows,$base_url, $case=''){
 		if($rows){			
 			$imgattach='<img src="'.$base_url.'/images/icon/attachment.png"/>';
@@ -161,34 +197,47 @@ class Application_Model_GlobalClass  extends Zend_Db_Table_Abstract
 	 * @param $limit number of limit record
 	 * @return $record_count number of record
 	 */
-
-		public function getAllProvinceOption(){
+// 		public function getList($url,$frm,$start,$limit,$record_count){
+// 			$page = new Application_Form_FrmNavigation($url, $start, $limit, $record_count);
+// 			$page->init($url, $start, $limit, $record_count);//can wrong $form
+// 			$nevigation = $page->navigationPage();
+// 			$rows_per_page = $page->getRowsPerPage($limit, $frm);
+// 			$result_row = $page->getResultRows();
+// 			$arr = array(
+// 					"nevigation"=>$nevigation,
+// 					"rows_per_page"=>$rows_per_page,
+// 					"result_row"=>$result_row);
+// 			return $arr;
+// 		}
+// 		public function getAllMetionOption(){
+// 			$_db = new Application_Model_DbTable_DbGlobal();
+// 			$rows = $_db->getAllMention();
+// 			$option = '';
+// 			if(!empty($rows))foreach($rows as $key => $value){
+// 				$option .= '<option value="'.$key.'" >'.htmlspecialchars($value, ENT_QUOTES).'</option>';
+// 			}
+// 			return $option;
+// 		}
+// 		public function getAllPayMentTermOption(){
+// 			$_db = new Application_Model_DbTable_DbGlobal();
+// 			$rows = $_db->getAllPaymentTerm();
+// 			$option = '';
+// 			if(!empty($rows))foreach($rows as $key => $value){
+// 				$option .= '<option value="'.$key.'" >'.htmlspecialchars($value, ENT_QUOTES).'</option>';
+// 			}
+// 			return $option;
+// 		}
+		public function getAllFacultyOption(){
 			$_db = new Application_Model_DbTable_DbGlobal();
-			$rows = $_db->getAllProvince();
-			$options= '<option value="-1" >'.htmlspecialchars('Please Select Province', ENT_QUOTES).'</option>';
+			$rows = $_db->getAllFecultyName();
+			array_unshift($rows, array('dept_id'=>-1,'en_name'=>"Add New"));
+			$options = '';
 			if(!empty($rows))foreach($rows as $value){
-				$options .= '<option value="'.$value['id'].'" >'.htmlspecialchars($value['province_name'], ENT_QUOTES).'</option>';
+				$options .= '<option value="'.$value['dept_id'].'" >'.htmlspecialchars($value['en_name'], ENT_QUOTES).'</option>';
 			}
 			return $options;
 		}
-		public function getAllLocationOption(){
-			$sql="SELECT id,province_id,location_name FROM ldc_package_location WHERE `status`=1";
-			$rows=$this->getAdapter()->fetchAll($sql);
-			$options= '<option value="-1" >'.htmlspecialchars('Please Select Province', ENT_QUOTES).'</option>';
-			if(!empty($rows))foreach($rows as $value){
-				$options .= '<option value="'.$value['id'].'" >'.htmlspecialchars($value['location_name'], ENT_QUOTES).'</option>';
-			}
-			return $options;
-		}
-		public function getAllPackageDayOption(){
-			$_db = new Application_Model_DbTable_DbGlobal();
-			$rows = $_db->getAllPackageDay();
-			$options= '';
-			if(!empty($rows))foreach($rows as $value){
-				$options .= '<option value="'.$value['id'].'" >'.htmlspecialchars($value['package'], ENT_QUOTES).'</option>';
-			}
-			return $options;
-		}
+		
 		public function getImgActive($rows,$base_url, $case='',$degree=null,$display=null){
 			if($rows){
 				$imgnone='<img src="'.$base_url.'/images/icon/cross.png"/>';
@@ -197,13 +246,27 @@ class Application_Model_GlobalClass  extends Zend_Db_Table_Abstract
 				foreach ($rows as $i =>$row){
 					if($degree!=null){
 						$dg = new Application_Model_DbTable_DbGlobal();
+						
 						$rows[$i]['degree']  = $dg->getAllDegree($row['degree']);
+					}
+					if($display!=null){
+						$rows[$i]['displayby']= ($row['displayby']==1)?'Khmer':'English';
+					}
+					if (!empty($row['is_require'])){
+						if($row['is_require'] == 1){
+							$rows[$i]['is_require']= $imgtick;
+						}
+						else{
+							$rows[$i]['is_require'] = $imgnone;
+						
+						}
 					}
 					if($row['status'] == 1){
 						$rows[$i]['status']= $imgtick;
 					}
 					else{
 						$rows[$i]['status'] = $imgnone;
+						
 					}
 					
 				}

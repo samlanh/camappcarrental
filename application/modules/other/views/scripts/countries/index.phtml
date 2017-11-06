@@ -1,8 +1,0 @@
-<title>Prayer List</title>
-<form id="list" name="list" action="<?php echo $this->url(array('module'=>'other','controller'=>'countries','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
-	<input dojoType="dijit.form.TextBox" placeholder="Search" id="title" name="title" value="<?php echo $this->value['title']?>" type="text">  
-	<button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit">Search</button>
-</form>
-<?php 
-   echo $this->list;
-?>

@@ -75,6 +75,7 @@ class Booking_CitytourbookingController extends Zend_Controller_Action {
 		$vehicle_id = $this->getRequest()->getParam("id");
 		$db = new Booking_Model_DbTable_DbCityTourBooking();
 		if($vehicle_id){
+		
 			$db->createSessionBookingCityTour($vehicle_id,3);
 			$this->_redirect("booking/citytourbooking/add");
 		}

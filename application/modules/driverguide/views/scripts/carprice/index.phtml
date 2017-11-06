@@ -1,4 +1,10 @@
-<title>Manage Car Rental Pickup Price</title>
+<?php 
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+?>
+<title><?php echo $tr->translate("CARPRICE");?></title>
+ <div class="blog_form_title">
+ 	<h4><i class="fa fa-car" aria-hidden="true"></i> <?php echo $tr->translate("CARPRICE")?></h4>
+ </div>
 <?php 
  echo $this->list;
 ?>

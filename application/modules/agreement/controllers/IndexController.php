@@ -139,7 +139,7 @@ class Agreement_indexController extends Zend_Controller_Action {
 		if($this->getRequest()->isPost()){
 			$post=$this->getRequest()->getPost();
 			$ids = $post["owner_name"];
-			$db = new Other_Model_DbTable_DbOwner();
+			$db = new agreement_Model_DbTable_DbAgreement();
 			$row=$db->getOwnerById($ids);
 			print_r(Zend_Json::encode($row));
 			exit();

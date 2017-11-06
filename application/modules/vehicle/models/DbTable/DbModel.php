@@ -24,8 +24,8 @@ class Vehicle_Model_DbTable_DbModel extends Zend_Db_Table_Abstract
     	
    function getAllModel($search=null){
     	$db = $this->getAdapter();
-    	$sql='SELECT id,title,(SELECT title FROM ldc_make WHERE id=m.brand_id ) AS brand_id,(SELECT name_en FROM ldc_view WHERE TYPE=2 AND key_code=m.status) AS `status` 
-    	      FROM ldc_model AS m WHERE status=1 OR status = 0 ';
+    	$sql='SELECT id,title,(SELECT title FROM ldc_make WHERE id=m.brand_id ) AS brand_id,`status` 
+    	      FROM ldc_model AS m WHERE status>-1';
     	$order=' ORDER BY id DESC';
         return $db->fetchAll($sql.$order);
     }

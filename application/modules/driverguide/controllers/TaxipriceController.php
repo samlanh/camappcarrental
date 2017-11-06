@@ -47,6 +47,9 @@ class Driverguide_TaxipriceController extends Zend_Controller_Action {
 		$db = new Application_Model_DbTable_DbGlobal();
 		$this->view->rs_tax =$db->getAllTax();
 		$this->view->vehicle=$db_model->getVehecleName();
+		
+		$status=$db->getViews(2);
+		$this->view->status_view=$status;
 	}
 	public function editAction(){
 		$db_model = new Driverguide_Model_DbTable_Dbvehicleprice();
@@ -70,10 +73,12 @@ class Driverguide_TaxipriceController extends Zend_Controller_Action {
 		$db = new Application_Model_DbTable_DbGlobal();
 		$this->view->rs_tax =$db->getAllTax();
 		$this->view->vehicle=$db_model->getVehecleName();
+		$status=$db->getViews(2);
+		$this->view->status_view=$status;
 		
 		$db=new Driverguide_Model_DbTable_DbTaxiprice();
 		$row=$this->view->row_taxi=$db->getVehicleTaxiById($id);
-		//print_r($row);exit();
+		
 	}
 }
 

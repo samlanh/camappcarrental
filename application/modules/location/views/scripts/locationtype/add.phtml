@@ -1,43 +1,62 @@
-<title>Add Location Type</title>
+<?php 
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+echo $this->headTitle($tr->translate('Add Location Type'));
+$frm = $this->frm;
+?>
 <form id='add_locationtype' action="<?php echo $this->url(array('module'=>'location','controller'=>'locationtype','action'=>'add')); ?>" enctype="application/x-www-form-urlencoded" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
 <script type="dojo/method" event="onSubmit">			
 	if(this.validate()) {
-				return true;
-			} else {
-				return false;
-			}
+		loading();
+		return true;
+	} else {
+		return false;
+	}
 </script>
-<table  width="450px" style="margin:0 auto;">
-	<tr>
-		<td>
-		<fieldset>
-					<legend ><strong>Add Location Type</strong></legend>
-					<table style="margin: 0 auto; width:100%;" cellspacing="10">
-						<tr>
-							<td valign="top">Location Type</td>
-							<td valign="top" ><input dojoType="dijit.form.ValidationTextBox" required="true" class="fullside" id="loation_type" name="loation_type" value="" type="text"></td>
-						</tr>
-						<tr>
-							<td valign="top">Status</td>
-							<td valign="top"><select name="status" id="status" dojoType="dijit.form.FilteringSelect" class="fullside">
-								    <option value="1">Active</option>
-								    <option value="0">Deactive</option>
-								</select>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2" align="center">
-							<input type="reset" label="Clear" dojoType="dijit.form.Button" 
+<div class="clearfix"></div>
+	<div class="row">
+		<div class="col-md-2 col-xs-12"></div>
+       <div class="col-md-8 col-xs-12 ">
+          <div class="x_panel">
+              <div class="x_title">
+                 <h2><i class="fa fa-plus-circle" aria-hidden="true"></i> <?php echo $tr->translate('Add Location Type')?></h2>
+                 <ul class="nav navbar-right panel_toolbox">
+                    <li>
+                    	<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+               	</ul>
+               <div class="clearfix"></div>
+          	</div>
+       		<div class="x_content">
+               <br />
+	               <div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-4" for="first-name"><?php echo $tr->translate('Location Type')?><span class="required">*</span>
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-8">
+	                     <?php echo $frm->getElement("loation_type");?>
+	                   </div>
+	                </div>
+	                <div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-4" for="first-name"><?php echo $tr->translate('STATUS')?><span class="required">*</span>
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-8">
+	                   	<?php echo $frm->getElement("status");?>
+	                   </div>
+	                </div>
+	                <div class="clearfix"></div>
+	                <div class="ln_solid"></div>
+	                 <div class="form-group">
+	                     <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+	                     <input type="reset" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" 
 								 iconClass="dijitIconClear" /> 
-						    <input type="submit" value="SAVE_CLOSE" label="Save&Close" id="save_close" dojoType="dijit.form.Button" name="save_close"
+						    <input type="submit" value="SAVE_CLOSE" label="<?php echo $tr->translate('SAVECLOSE');?>" id="save_close" dojoType="dijit.form.Button" name="save_close"
 								 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
-							<input type="submit" value="SAVE_NEW" label="Save&New" id="save_new" dojoType="dijit.form.Button" name="save_new"
+							<input type="submit" value="SAVE_NEW" label="<?php echo $tr->translate('SAVENEW');?>" id="save_new" dojoType="dijit.form.Button" name="save_new"
 								 iconClass="dijitEditorIcon dijitEditorIconSave"/> 
-							</td>
-						</tr>
-					</table>	
-		</fieldset>		
-		</td>
-	</tr>
-</table>	
+	                     </div>
+	                </div>
+	          </div>
+      	  </div>
+      </div>
+      <div class="col-md-2 col-xs-12"></div>
+   </div>
 </form>

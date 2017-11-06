@@ -11,15 +11,13 @@ class location_LocationController extends Zend_Controller_Action {
 		try{
 			if($this->getRequest()->isPost()){
 				$_data=$this->getRequest()->getPost();
-				$search = array(
-						'title' => $_data['title'],
-						'status' => $_data['status_search']);
-			}
-			else{
+				$search =$_data;
+			}else{
 		
 				$search = array(
+						'service_type'=>0,
 						'title' => '',
-						'status' => -1,
+						'status_search' => -1,
 				);
 		
 			}
@@ -27,7 +25,7 @@ class location_LocationController extends Zend_Controller_Action {
 			$rs_rows= $db->getAllLocations($search);
 		
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Location Type","Province","Modify","Status");
+			$collumns = array("Location Name","Province","Service Type","Modify Date","STATUS");
 			$link=array(
 					'module'=>'location','controller'=>'location','action'=>'edit',
 			);
@@ -44,36 +42,56 @@ class location_LocationController extends Zend_Controller_Action {
 	
 	public function addAction(){
 		if($this->getRequest()->isPost()){
-			$db = new Location_Model_DbTable_DbLocation();
-			$data = $this->getRequest()->getPost();
-			$db->addPackage($data);
-			if(!empty($data['save_new'])){
-				Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL."/location/add");
-			}else{
-				Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL."/index");
+			try {
+				$db = new Location_Model_DbTable_DbLocation();
+				$data = $this->getRequest()->getPost();
+				$db->addPackage($data);
+				if(!empty($data['save_new'])){
+					$this->_redirect(self::REDIRECT_URL."/location/add");
+	// 				Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL."/location/add");
+				}else{
+					$this->_redirect(self::REDIRECT_URL."/location");
+	// 				Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL."/index");
+				}
+			}catch (Exception $e){
+				Application_Form_FrmMessage::message($this->tr->translate("EDIT_FAIL"));
+				$err=$e->getMessage();
+				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
-		$db = new Location_Model_DbTable_DbProvince();
-		$this->view->provincelist = $db->getAllProvince();
-		$this->view->locationtype = $db->getAllLocationType();
+		$frm = new Location_Form_FrmLocation();
+		$frm=$frm->FrmAddLocation();
+		Application_Model_Decorator::removeAllDecorator($frm);
+		$this->view->frm = $frm;
+		
 	}
 	public function editAction(){
 		$db_model = new Location_Model_DbTable_DbLocation();
 		
 		if($this->getRequest()->isPost()){
-			
+			try {
 			$data = $this->getRequest()->getPost();
 			$db_model->updatePackage($data);
-			Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL."/location");
+			$this->_redirect(self::REDIRECT_URL."/location");
+// 				Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL."/location");
+			}catch (Exception $e){
+				Application_Form_FrmMessage::message($this->tr->translate("EDIT_FAIL"));
+				$err=$e->getMessage();
+				Application_Model_DbTable_DbUserLog::writeMessageError($err);
+			}
 		}
 		$db = new Location_Model_DbTable_DbProvince();
 		$this->view->provincelist = $db->getAllProvince();
 		$id = $this->getRequest()->getParam("id");
-		$this->view->row = $db_model->getLocationById($id);
-		
-		//print_r($db_model->getLocationById($id));
-		$this->view->rowpic = $db_model->getPhotoDetailById($id);
-		$this->view->locationtype = $db->getAllLocationType();
+		$row = $db_model->getLocationById($id);;
+		$this->view->row = $row;
+		if (empty($row)){
+			Application_Form_FrmMessage::Sucessfull("NO_RECORD",self::REDIRECT_URL."/locationtype");
+		}
+		$frm = new Location_Form_FrmLocation();
+		$frm=$frm->FrmAddLocation($row);
+		Application_Model_Decorator::removeAllDecorator($frm);
+		$this->view->frm = $frm;
 	}
 }
 

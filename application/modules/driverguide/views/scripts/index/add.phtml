@@ -1,206 +1,318 @@
-<title>Add Guide and Driver</title>
 <?php
 	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
-	echo $this->headTitle($tr->translate('ADD_NEWGUIDE'));
+	echo $this->headTitle($tr->translate('Add New Driver And Guide'));
 ?>	
 <?php  $frm = $this->frm_client;?>
+<script src="<?php echo $this->baseUrl();?>/js/help.js"  type="text/javascript"></script>
 <form id='add_client' action="<?php echo $this->url(array('module'=>'driverguide','controller'=>'index','action'=>'add')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
-<script type="dojo/method" event="onSubmit">			
+	<script type="dojo/method" event="onSubmit">			
 			if(this.validate()) {
 				if(dijit.byId('province').get('value')==0){
 					alert('Province required');
 					dijit.byId('province').focus();
 					return false;
 			    }
-                if(dijit.byId('situ_status').get('value')==''){
-					alert('Province situ_status');
-					dijit.byId('situ_status').focus();
-					return false;
-			    }
+                //if(dijit.byId('situ_status').get('value')==''){
+					//alert('Province situ_status');
+					//dijit.byId('situ_status').focus();
+					//return false;
+			    //}
+				loading();
 				return true;
 			} else {
 				return false;
 			}
-</script>
-<table  width="100%" style="margin-top:-5px;">
-	<tr>
-		<td>
-		<fieldset>
-					<legend ><strong><?php echo $tr->translate("Add New Driver/Guide");?></strong></legend>
-					<div id="mainTabContainer" style="max-width:1110px; height: 540px;" dojoType="dijit.layout.TabContainer" region="center"  >
-						<div class="tabContentSection" dojoType="dijit.layout.ContentPane" title="<?php echo $tr->translate('Driver/Guide Information');?>" selected="true">
-						<table style="margin: 0 auto; width:100%;" cellspacing="5">
-							<tr>
-								<td><?php echo $tr->translate("Driver's ID")?></td>
-								<td><?php echo $frm->getElement('client_no');?></td>
-								<td><?php echo $tr->translate("First Name")?>*</td>
-								<td><?php  echo $frm->getElement('name_kh');?></td>
-								<td><?php echo $tr->translate("Last Name")?>*</td>
-								<td><?php  echo $frm->getElement('name_en');?></td>
-							</tr>
-							<tr>
-								<td><?php echo $tr->translate("Sex")?></td>
-								<td><?php  echo $frm->getElement('sex');?></td>
-								<td><?php echo $tr->translate("Dob")?></td>
-								<td><?php  echo $frm->getElement('dob_client');?></td>
-								<td><?php echo $tr->translate("Place of Birth")?></td>
-								<td><?php  echo $frm->getElement('pob');?></td>
-							</tr>
-							<tr>
-								<td valign="top"><?php echo $tr->translate("Nationality")?></td>
-								<td><?php  echo $frm->getElement('nationality');?></td>
-								<td><?php echo $tr->translate("National Id")?></td>
-								<td><input id="client_d_type" required="true"/></td>
-								<td>Number</td>
-								<td><?php  echo $frm->getElement('national_id');?></td>
-							</tr>
-							<tr>
-								<td><?php echo $tr->translate("Photo")?></td>
-								<td><?php echo $frm->getElement('photo');?></td>
-								<td valign="top"><?php echo $tr->translate("Langauge Note")?></td>
-								<td><?php  echo $frm->getElement('desc');?></td>
-								<td>Type</td>
-								<td><?php  echo $frm->getElement('type');?></td>
-							</tr>
-							<tr>
-								<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>ID Card Info</strong></td>
-							</tr>
-							<tr>
-								<td valign="top"><?php echo $tr->translate("ID Card")?></td>
-								<td valign="top"><?php  echo $frm->getElement('id_card');?></td>
-								<td valign="top"><?php echo $tr->translate("Issued Date")?></td>
-								<td valign="top"><?php  echo $frm->getElement('issued_date');?></td>
-								<td valign="top"><?php echo $tr->translate("Expired Date")?></td>
-								<td valign="top"><?php  echo $frm->getElement('expired_date');?></td>
-							</tr>
-							<tr>
-								<td valign="top"><?php echo $tr->translate("Registered Date")?></td>
-								<td valign="top"><?php  echo $frm->getElement('registered_date');?></td>
-								<td><?php echo $tr->translate("Experience")?></td>
-								<td><?php echo $frm->getElement('experience');?></td>
-								<td valign="top"><?php echo $tr->translate("Document File")?></td>
-								<td><?php echo $frm->getElement('att_file');?></td>
-							</tr>
-							<tr>
-								<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>Contact Info</strong></td>
-							</tr>
-							<tr>
-								<td><?php echo $tr->translate("Phone")?></td>
-								<td><?php  echo $frm->getElement('phone');?></td>
-								<td><?php echo $tr->translate("Email")?></td>
-								<td><?php  echo $frm->getElement('email');?></td>
-								<td valign="top"><?php echo $tr->translate("Group No")?></td>
-								<td valign="top"><?php  echo $frm->getElement('group');?></td>
-							</tr>
-							<tr>
-								<td><?php echo $tr->translate("Home No")?></td>
-								<td><?php  echo $frm->getElement('home');?></td>
-								<td><?php echo $tr->translate("Street")?></td>
-								<td><?php  echo $frm->getElement('street');?></td>
-								<td><?php echo $tr->translate("Commune")?></td>
-								<td><?php  echo $frm->getElement('commune');?></td>
-								
-							</tr>
-							<tr>
-							   <td valign="top"><?php echo $tr->translate("District")?></td>
-								<td valign="top"><?php  echo $frm->getElement('district');?></td>
-								<td><?php echo $tr->translate("Province/City")?></td>
-								<td><?php  echo $frm->getElement('province');?></td>
-								<td valign="top"><?php echo $tr->translate("Status")?></td>
-								<td valign="top"><?php  echo $frm->getElement('status');?></td>
-							</tr>
-							<tr>
-									<td colspan="6" align="center">
-									<input type="reset" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" 
-										 iconClass="dijitIconClear" /> 
-								    <input type="submit" value="SAVE_CLOSE" label="<?php echo $tr->translate('SAVECLOSE');?>" dojoType="dijit.form.Button" name="save_close"
-										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
-									<input type="submit" value="SAVE_NEW" label="<?php echo $tr->translate('SAVENEW');?>"  dojoType="dijit.form.Button" name="save_new"
-										 iconClass="dijitEditorIcon dijitEditorIconSave"/> 
-									</td>
-								</tr>
-							</table>
-							</div>
-							<div class="tabContentSection" dojoType="dijit.layout.ContentPane"  title="<?php echo $tr->translate('Manage Pricing');?>" selected="false">
-								 <table style="margin: 0 auto; width:100%;" cellspacing="5">
-                                                                 <tr>
-									<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>Monthly Price</strong></td>
-								</tr>
-								<tr>
-									<td><?php echo $tr->translate("Monthly Price")?></td>
-									<td><?php echo $frm->getElement('monthly_price');?></td>
-								</tr>
-								 <tr>
-									<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>Around City Price</strong></td>
-								</tr>
-								<tr>
-									<td><?php echo $tr->translate("Normal Price/Day")?></td>
-									<td><?php echo $frm->getElement('cnormalprice');?></td>
-									<td><?php echo $tr->translate("Weekend Price")?></td>
-									<td><?php echo $frm->getElement('weekend_price');?></td>
-									
-								</tr>
-								<tr>
-                                                                        <td valign="top"><?php echo $tr->translate("Public Holiday")?></td>
-									<td><?php echo $frm->getElement('poblicholiday_price');?></td>
-									<td valign="top"><?php echo $tr->translate("OT Price/Hour")?></td>
-									<td><?php  echo $frm->getElement('cotprice');?></td>
-								</tr>
-								<tr>
-									<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>Province Price</strong></td>
-								</tr>
-								<tr>
-									<td><?php echo $tr->translate("Normal Price/Day")?></td>
-									<td><?php echo $frm->getElement('pnormalprice');?></td>
-									<td><?php echo $tr->translate("Weekend Price/Day")?></td>
-									<td><?php echo $frm->getElement('pweekend_price');?></td>
-									
-								</tr>
-								<tr>
-                                                                        <td valign="top"><?php echo $tr->translate("Public Holiday")?></td>
-									<td><?php echo $frm->getElement('ppoblicholiday_price');?></td>
-									<td valign="top"><?php echo $tr->translate("OT Price/Hour")?></td>
-									<td><?php  echo $frm->getElement('potprice');?></td>
-								</tr>
-								<tr>
-									<td colspan="6" style="border-bottom:2px solid #ccc;"><strong>City Tour Price</strong></td>
-								</tr>
-								<tr>
-									<td><?php echo $tr->translate("Normal Price/Day")?></td>
-									<td><?php echo $frm->getElement('citynormalprice');?></td>
-									<td><?php echo $tr->translate("Weekend Price/Day")?></td>
-									<td><?php echo $frm->getElement('cityweekendprice');?></td>
-									
-								</tr>
-								<tr>
-                                                                        <td valign="top"><?php echo $tr->translate("Public Holiday")?></td>
-									<td><?php echo $frm->getElement('citypublicprice');?></td>
-									<td valign="top"><?php echo $tr->translate("OT Price/Hour")?></td>
-									<td><?php  echo $frm->getElement('cityotprice');?></td>
-								</tr>
-								<tr>
-									<td colspan="6" align="center">
-									<input type="reset" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" 
-										 iconClass="dijitIconClear" /> 
-									 <input type="submit" value="SAVE_CLOSE" label="<?php echo $tr->translate('SAVECLOSE');?>" id="save_close" dojoType="dijit.form.Button" name="save_close"
-										 iconClass="dijitEditorIcon dijitEditorIconSave" /> 
-									<input type="submit" value="SAVE_NEW" label="<?php echo $tr->translate('SAVENEW');?>" id="save_new" dojoType="dijit.form.Button" name="save_new"
-										 iconClass="dijitEditorIcon dijitEditorIconSave"/> 
-									</td>
-								</tr>
-							 </table>
-						</div>
-				 </div>
-					
-		</fieldset>		
-		</td>
-	</tr>
-</table>	
+	</script>
+	<div class="clearfix"></div>
+	<div class="row">
+      	 <div class="col-md-12 col-xs-12 forms_padding">
+	          <div class="x_panel">
+	              <div class="x_title">
+	                 <h2><i class="fa  fa-plus-circle" aria-hidden="true"></i> <?php echo $tr->translate('Add New Driver And Guide')?></h2>
+	                 <ul class="nav navbar-right panel_toolbox">
+	                    <li>
+	                    	<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+	                    </li>
+	               	</ul>
+	               <div class="clearfix"></div>
+	          	</div>
+	       		<div class="x_content">
+	       			<div class="" role="tabpanel" data-example-id="togglable-tabs">
+                      <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate('Driver And Guide Infomation')?></a></li>
+                        <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false"><?php echo $tr->translate('Manage Pricing')?></a></li>
+                      </ul>
+                      <div id="myTabContent" class="tab-content">
+                      		<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+                      			<div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Driver's ID")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('client_no');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("First Name")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('name_kh');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Last Name")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('name_en');?>
+				                   </div>
+				                </div>
+				                <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Gender")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('sex');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("DOB")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('dob_client');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("POB")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('pob');?>
+				                   </div>
+				                </div>
+				                <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Nationality")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('nationality');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("National Id")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<input id="client_d_type" required="true"/>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Number")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('national_id');?>
+				                   </div>
+				                </div>
+				                <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Photo")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('photo');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Langauge Note")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('desc');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Type")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('type');?>
+				                   </div>
+				                </div>
+				                <div class="title_form_blog">
+				               		<h4><i class="fa  fa-user" aria-hidden="true"></i> <?php echo $tr->translate('ID Card Info')?></h4>
+				               </div>
+				               <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("ID Card")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('id_card');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Issued Date")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('issued_date');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Expired Date")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('expired_date');?>
+				                   </div>
+				                </div>
+				                <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Registered Date")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('registered_date');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Experience")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('experience');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Document File")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('att_file');?>
+				                   </div>
+				                </div>
+				                <div class="title_form_blog">
+				               		<h4><i class="fa  fa-phone" aria-hidden="true"></i> <?php echo $tr->translate('Contact Info')?></h4>
+				               </div>
+				               <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Phone")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('phone');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Email")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('email');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Group No")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('group');?>
+				                   </div>
+				                </div>
+				                <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("House No")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('home');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Street No")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('street');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Commune")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('commune');?>
+				                   </div>
+				                </div>
+				                <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("District")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('district');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Province")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('province');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("STATUS")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('status');?>
+				                   </div>
+				                </div>
+                      		</div>
+                      		<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                      			<div class="title_form_blog">
+				               		<h4><i class="fa  fa-calendar" aria-hidden="true"></i> <?php echo $tr->translate('Monthly Price')?></h4>
+				               	</div>
+				               	<div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Monthly Price")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('monthly_price');?>
+				                   </div>
+				                </div>
+				                <div class="title_form_blog">
+				               		<h4><i class="fa fa-crosshairs" aria-hidden="true"></i> <?php echo $tr->translate('Around City Price')?></h4>
+				               	</div>
+				               	<div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Normal Price/Day")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('cnormalprice');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Weekend Price")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('weekend_price');?>
+				                   </div>
+				                </div>
+				                <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Public Holiday")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('poblicholiday_price');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("OT Price/Hour")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('cotprice');?>
+				                   </div>
+				                </div>
+				                <div class="title_form_blog">
+				               		<h4><i class="fa fa-crosshairs" aria-hidden="true"></i> <?php echo $tr->translate('Province Price')?></h4>
+				               	</div>
+				               	<div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Normal Price/Day")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('pnormalprice');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Weekend Price/Day")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('pweekend_price');?>
+				                   </div>
+				                </div>
+				                <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Public Holiday")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('ppoblicholiday_price');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("OT Price/Hour")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('potprice');?>
+				                   </div>
+				                </div>
+				                 <div class="title_form_blog">
+				               		<h4><i class="fa fa-crosshairs" aria-hidden="true"></i> <?php echo $tr->translate('City Tour Price')?></h4>
+				               	</div>
+				               	<div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Normal Price/Day")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('citynormalprice');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Weekend Price/Day")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('cityweekendprice');?>
+				                   </div>
+				                </div>
+				                <div class="form-group">
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Public Holiday")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php echo $frm->getElement('citypublicprice');?>
+				                   </div>
+				                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("OT Price/Hour")?>
+				                   </label>
+				                   <div class="col-md-2 col-sm-2 col-xs-12">
+				                   		<?php  echo $frm->getElement('cityotprice');?>
+				                   </div>
+				                </div>
+                      		</div>
+                      </div>
+                    </div>
+                    <div class="clearfix"></div>
+				    <div class="col-md-12 col-xs-12 forms_padding text-center">
+				    	<input type="reset" style="color:#000;" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" 
+							iconClass="dijitIconClear" /> 
+						<input type="submit" value="SAVE_CLOSE" label="<?php echo $tr->translate('SAVECLOSE');?>" style="color:#000;" id="save_close" dojoType="dijit.form.Button" name="save_close"
+							iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+						<input type="submit" value="SAVE_NEW" label="<?php echo $tr->translate('SAVENEW');?>" id="save_new" style="color:#000;" dojoType="dijit.form.Button" name="save_new"
+							iconClass="dijitEditorIcon dijitEditorIconSave"/>
+				    </div>
+	       		</div>
+	       	</div>
+	     </div>
+	 </div>
 </form>
-<table>
-<tr>
-</tr>
-</table>
 <?php 
 echo $this->frm_popup_clienttype;
 ?>

@@ -2,7 +2,7 @@
 
 class RsvAcl_UserController extends Zend_Controller_Action
 {
-	const REDIRECT_URL = '/user';
+	const REDIRECT_URL = '/rsvacl/user';
 	const MAX_USER = 20;
 	private $activelist = array('មិនប្រើ​ប្រាស់', 'ប្រើ​ប្រាស់');
 	private $user_typelist = array();
@@ -36,14 +36,13 @@ class RsvAcl_UserController extends Zend_Controller_Action
         );
         if($this->getRequest()->isPost()){     	
         	$_data=$this->getRequest()->getPost();
-        	print_r($_data);
         }
         $rs_rows = $db_user->getUserList($_data);
         $_rs = array();
         foreach ($rs_rows as $key =>$rs){
         	$_rs[$key] =array(
         	'id'=>$rs['id'],
-        	'name'=>$rs['last_name'].' '.$rs['name'],
+        	'name'=>$rs['name'],
         	'user_name'=>$rs['user_name'],
         	'user_type'=>$this->user_typelist[$rs['user_type']],
         	'status'=>$rs['status']);
@@ -58,47 +57,10 @@ class RsvAcl_UserController extends Zend_Controller_Action
         }
         $collumns = array("LASTNAME_FIRSTNAME","USER_NAME","USER_TYPE","STATUS");
         $link=array(
-        		'module'=>'aclAcl','controller'=>'user','action'=>'edited',
+        		'module'=>'rsvacl','controller'=>'user','action'=>'edit',
         );
-        $this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('cate_name'=>$link,'title'=>$link));
+        $this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('user_name'=>$link,'name'=>$link));
     }
-    public function viewUserAction()
-    {   
-    	/* Initialize action controller here */
-    	if($this->getRequest()->getParam('id')){
-    		$db = new RsvAcl_Model_DbTable_DbUser();
-    		$user_id = $this->getRequest()->getParam('id');
-    		$rs=$db->getUser($user_id);
-    		//print_r($rs); exit;
-    		$this->view->rs=$rs;
-    	}  	 
-    	
-    }
-	public function addUserAction()
-		{
-			$form=new RsvAcl_Form_FrmUser();	
-			$this->view->form=$form;
-			
-			if($this->getRequest()->isPost())
-			{
-				$db=new RsvAcl_Model_DbTable_DbUser();	
-				$post=$this->getRequest()->getPost();			
-				if(!$db->isUserExist($post['username'])){
-					
-						$id=$db->insertUser($post);
-						  //write log file 
-				             $userLog= new Application_Model_Log();
-				    		 $userLog->writeUserLog($id);
-				     	  //End write log file
-				
-						//Application_Form_FrmMessage::message('One row affected!');
-						Application_Form_FrmMessage::redirector('/rsvacl/user/index');																			
-				}else {
-					Application_Form_FrmMessage::message('User had existed already');
-				}
-			}
-			Application_Model_Decorator::removeAllDecorator($form);
-		}
 	public function addAction()
 	{
 			// action body
@@ -115,7 +77,8 @@ class RsvAcl_UserController extends Zend_Controller_Action
 					
 				try {
 					$db = $db_user->insertUser($userdata);
-					Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ', self::REDIRECT_URL);
+					$this->_redirect(self::REDIRECT_URL);
+// 					Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ', self::REDIRECT_URL);
 				} catch (Exception $e) {
 					$this->view->msg = 'ការ​បញ្ចូល​មិន​ជោគ​ជ័យ';
 				}
@@ -136,50 +99,50 @@ class RsvAcl_UserController extends Zend_Controller_Action
 				$userdata=$this->getRequest()->getPost();	
 				
 				try {
-					$db = $db_user->updateUser($userdata);				
-					Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ', self::REDIRECT_URL);		
+					$db = $db_user->updateUser($userdata);		
+					$this->_redirect(self::REDIRECT_URL);
+// 					Application_Form_FrmMessage::Sucessfull('ការ​បញ្ចូល​​ជោគ​ជ័យ', self::REDIRECT_URL);		
 				} catch (Exception $e) {
 					$this->view->msg = 'ការ​បញ្ចូល​មិន​ជោគ​ជ័យ';
 				}
 			}
     }
-    
+    function profileAction(){
+    	$db_user=new Application_Model_DbTable_DbUsers();
+    	$session_user=new Zend_Session_Namespace('auth');
+    	if (!empty($session_user->user_id)){
+    		$userinfo = $db_user->getUserInfomation($session_user->user_id);
+    		$this->view->profile = $userinfo;
+    	}
+    	
+    	
+    }
  
-    public function changePasswordAction()
+    public function changepasswordAction()
 	{
-		$session_user=new Zend_Session_Namespace('auth');
-		
-		if($session_user->user_id==$this->getRequest()->getParam('id') OR $session_user->level == 1){
-			$form = new RsvAcl_Form_FrmChgpwd();	
-			//echo $form->getElement('current_password'); exit;	
-			$this->view->form=$form;
-			//echo "Work"; exit; 
-			
-			if($this->getRequest()->isPost())
-			{
-				$db=new RsvAcl_Model_DbTable_DbUser();
-				$user_id=$this->getRequest()->getParam('id');		
-				if(!$user_id) $user_id=0;			
-				$current_password=$this->getRequest()->getParam('current_password');
-				$password=$this->getRequest()->getParam('password');
-				if($db->isValidCurrentPassword($user_id,$current_password)){ 
-					$db->changePassword($user_id, md5($password));	
-					      //write log file 
-					             $userLog= new Application_Model_Log();
-					    		 $userLog->writeUserLog($user_id);
-					     	  //End write log file		
-					Application_Form_FrmMessage::message('Password has been changed');
-					Application_Form_FrmMessage::redirector('/rsvacl/user/view-user/id/'.$user_id);
-				}else{
-					Application_Form_FrmMessage::message('Invalid current password');
-				}
-			}		
-		}else{ 
-			   Application_Form_FrmMessage::message('Access Denied!');
-		       Application_Form_FrmMessage::redirector('/rsvacl');	
-		}
+		if ($this->getRequest()->isPost()){ 
+			$session_user=new Zend_Session_Namespace('auth');    		
+    		$pass_data=$this->getRequest()->getPost();
+    		if ($pass_data['current_password'] == $session_user->pwd){
+    			    			 
+				$db_user = new Application_Model_DbTable_DbUsers();				
+				try {
+					$db_user->changePassword($pass_data['password'], $session_user->user_id);
+					$session_user->unlock();	
+					$session_user->pwd=$pass_data['password'];
+					$session_user->lock();
+					$this->view->msg ="Your password has been change successfully!";
+					Application_Form_FrmMessage::Sucessfull('ការផ្លាស់ប្តូរដោយជោគជ័យ', "/rsvacl/user");
+					
+				} catch (Exception $e) {
+					Application_Form_FrmMessage::message('ការផ្លាស់ប្តូរត្រូវបរាជ័យ');
+				}				
+    		}else{
+    			$this->view->msg ="Please check your old password was wrong!";
+    			Application_Form_FrmMessage::message('ការផ្លាស់ប្តូរត្រូវបរាជ័យ');
+    		}
+        }   
 		
 	}
 
 }
-

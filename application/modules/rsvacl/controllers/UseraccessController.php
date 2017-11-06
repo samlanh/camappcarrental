@@ -1,6 +1,6 @@
 <?php
 
-class RsvAcl_UserAccessController extends Zend_Controller_Action
+class RsvAcl_UseraccessController extends Zend_Controller_Action
 {
 	const REDIRECT_URL = '/rmsacl/useraccess';
     public function init()
@@ -37,11 +37,15 @@ class RsvAcl_UserAccessController extends Zend_Controller_Action
     	}
     }
 public function addAction()
-    {   
+    {  
+    	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
     	/* Initialize action controller here */
     	if($this->getRequest()->getParam('id')){
     	
     		$id = $this->getRequest()->getParam('id');
+    		if (empty($id)){
+    			$this->_redirect("/rsvacl/useraccess");
+    		}
     		$db = new RsvAcl_Model_DbTable_DbUserType();
     		$userAccessQuery = "SELECT user_type_id, user_type, status from rms_acl_user_type where user_type_id=".$id;
     		$rows = $db->getUserTypeInfo($userAccessQuery);
@@ -50,14 +54,14 @@ public function addAction()
     		//Add filter search
     		$gc = new Application_Model_GlobalClass();
     		// For list all module
-    		$sql = "SELECT DISTINCT acl.`module` FROM `rms_acl_acl` AS acl";
-    		$this->view->optoin_mod =  $gc->getOptonsHtml($sql, "module", "module");
+    		$sql = "SELECT DISTINCT acl.`module` FROM `rms_acl_acl` AS acl WHERE acl.status=1";
+    		$this->view->optoin_mod =  $gc->getOptonsHtmlTranslate($sql, "module", "module");
     		// For list all controller
     		$sql = "SELECT DISTINCT acl.`controller` FROM `rms_acl_acl` AS acl WHERE acl.`status` = 1";
-    		$this->view->optoin_con =  $gc->getOptonsHtml($sql, "controller", "controller");
+    		$this->view->optoin_con =  $gc->getOptonsHtmlTranslate($sql, "controller", "controller");
     		// For List all action
     		$sql = "SELECT DISTINCT acl.`action` FROM `rms_acl_acl` AS acl WHERE acl.`status` = 1";
-    		$this->view->optoin_act =  $gc->getOptonsHtml($sql, "action", "action");
+    		$this->view->optoin_act =  $gc->getOptonsHtmlTranslate($sql, "action", "action");
     		//For Status enable or disable
     		$this->view->optoin_status =  $gc->getYesNoOption();
     	
@@ -107,17 +111,17 @@ public function addAction()
     			//Display all for admin id = 1
     			//Do not change admin id = 1 in database
     			//Otherwise, it error
-    			$sql = "select acl.acl_id,acl.label,CONCAT(acl.module,'/', acl.controller,'/', acl.action) AS user_access
+    			$sql = "select acl.acl_id,acl.controller,acl.label,acl.action,CONCAT(acl.module,'/', acl.controller,'/', acl.action) AS user_access
     			from rms_acl_acl as acl
-    			WHERE 1 " . $where;
+    			WHERE acl.status=1 " . $where;
     		}
     		 
     		else {
     			//Display all of his/her parent access
-    			$sql="SELECT acl.acl_id,acl.label, CONCAT(acl.module,'/', acl.controller,'/', acl.action) AS user_access, acl.status
+    			$sql="SELECT acl.acl_id,acl.controller,acl.label,acl.action,CONCAT(acl.module,'/', acl.controller,'/', acl.action) AS user_access, acl.status
     			FROM rms_acl_user_access AS ua
     			INNER JOIN rms_acl_user_type AS ut ON (ua.user_type_id = ut.parent_id)
-    			INNER JOIN rms_acl_acl AS acl ON (acl.acl_id = ua.acl_id) WHERE ut.user_type_id =".$id . $where;
+    			INNER JOIN rms_acl_acl AS acl ON (acl.acl_id = ua.acl_id) WHERE acl.status=1 AND ut.user_type_id =".$id . $where;
     		}
     		//echo $sql; exit;
     		$acl=$db_acl->getGlobalDb($sql);
@@ -131,13 +135,13 @@ public function addAction()
     			$sql_acl = "SELECT acl.acl_id,acl.label, CONCAT(acl.module,'/', acl.controller,'/', acl.action) AS user_access, acl.status
     			FROM rms_acl_user_access AS ua
     			INNER JOIN rms_acl_user_type AS ut ON (ua.user_type_id = ut.user_type_id)
-    			INNER JOIN rms_acl_acl AS acl ON (acl.acl_id = ua.acl_id) WHERE ua.user_type_id =".$id . $where;
+    			INNER JOIN rms_acl_acl AS acl ON (acl.acl_id = ua.acl_id) WHERE acl.status=1 AND ua.user_type_id =".$id . $where;
     		}else{
     			//Display only he / she access in rsv_acl_user_access
     			$sql_acl = "SELECT acl.acl_id,acl.label, CONCAT(acl.module,'/', acl.controller,'/', acl.action) AS user_access, acl.status
     			FROM rms_acl_user_access AS ua
     			INNER JOIN rms_acl_user_type AS ut ON (ua.user_type_id = ut.parent_id)
-    			INNER JOIN rms_acl_acl AS acl ON (acl.acl_id = ua.acl_id) WHERE ua.user_type_id =".$id . $where;
+    			INNER JOIN rms_acl_acl AS acl ON (acl.acl_id = ua.acl_id) WHERE acl.status=1 AND ua.user_type_id =".$id . $where;
     		}
     	
     		$acl_name=$db_acl->getGlobalDb($sql_acl);
@@ -161,13 +165,17 @@ public function addAction()
     			if(!empty($status) || $status === 0){
     				if($tmp_status !== $status) continue;
     			}
-    			$rows[] = array($com['acl_id'],$com['label'], $com['user_access'], $img) ;
+    			
+    			$lbl_controller = $tr->translate(strtoupper($com['controller']));
+    			if($com['action']!='index'){
+    			  $lbl_controller=$tr->translate(strtoupper($com['action'])).$lbl_controller;
+    			}
+    			$rows[] = array($com['acl_id'],$lbl_controller, $com['user_access'], $img) ;
     		}
     	
 //     		$list=new Application_Form_Frmlist();
     		$list = new Application_Form_Frmtable();
-    		$tr = Application_Form_FrmLanguages::getCurrentlanguage();
-    		$columns=array("Label",$tr->translate('URL'), $tr->translate('STATUS'));
+    		$columns=array("LABEL",$tr->translate('URL'), $tr->translate('STATUS'));
     		$this->view->list = $list->getCheckList('radio', $columns, $rows);
     			
     		//$this->view->acl_name=$acl_name;

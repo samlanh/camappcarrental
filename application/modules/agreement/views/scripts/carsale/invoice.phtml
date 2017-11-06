@@ -1,4 +1,6 @@
 <?php 
+$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+echo $this->headTitle($tr->translate("INVOICE"));
 	$rs = $this->rs;
 	$o_sex="";
 	if($rs["o_sex"]==1){
@@ -36,15 +38,11 @@
 <script type="text/javascript"  src="<?php echo $this->baseUrl();?>/js/convertion.js"></script>
 <script type="text/javascript">
 function doPrint() {
-	//getLabel();
 	window.frames["print_frame"].document.body.innerHTML=dojo.byId('divPrint').innerHTML;
     window.frames["print_frame"].window.focus();
     window.frames["print_frame"].window.print();
-    hideDialog();
 }
-function hideleft(){
-	(dojo.style("leftmenu","display") == "none") ? 'show':'hide'();
-}
+
 function preview()
 { 
   var disp_setting="toolbar=no,status=no,resizable=no,location=no,directories=yes,menubar=no,"; 
@@ -61,75 +59,69 @@ function preview()
    docprint.focus(); 
 }
 function exportExcel(){
-	$('#exportExcel').tableExport({type:'excel',escape:'false'});
+	
+	//$('#exportExcel').tableExport({type:'excel',escape:'false'});
+	window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#exportExcel').html()));
+    e.preventDefault();
 }
 
-var total = '<?php echo $rs["sale_price"]?>';
-$('document').ready(function(){
-	money_khmer=read_money_in_khmer(total);
-	money_us = read_money_in_english(total);
-//		$('#amount_in_khmer').append(money_us);
-	document.getElementById('amount_in_khmer').innerHTML  = money_khmer+"​ ដុល្លា | "+money_us+" Dollar";
-	document.getElementById('amount_print').innerHTML  = money_khmer+"​ ដុល្លា | "+money_us+" Dollar";
-	});
 </script>
 <iframe name="print_frame" width="0" height="0" frameborder="0" src=about:blank></iframe>
-<table width="100%">
-	<tr>
-	<td valign="top">
-		<div class="menureport">
-			<ul>
-				<li class="preview"><a title="Preview" href="#" onclick="preview();"></a></li>
-				<li class="print"><a href="#" title="Print" onclick="doPrint();" ></a></li>
-				<li class="excel"><a href="#"  title="Export"  onclick="exportExcel();"></a></li>
-			</ul>
+<style>
+table.padd td h4 {
+    font-size: 12px;
+}
+div#divPrint table.maintable {
+    display: block;
+    position: relative;
+}
+</style>
+<div class="row">
+	<div class="x_panel">
+		<div class="x_content">
+			<div class="col-md-8 col-sm-8 col-xs-12">
+				<a class="btn btn-app" href="#" title="<?php echo $tr->translate("Preview");?>" onclick="preview();">
+	  				<i class="fa fa-search-plus"></i> <?php echo $tr->translate("Preview");?>
+				</a>
+				<a class="btn btn-app" href="#" title="<?php echo $tr->translate("Print");?>" onclick="doPrint();">
+	                <i class="fa fa-print"></i> <?php echo $tr->translate("Print");?>
+				</a>
+	            <a class="btn btn-app" href="#"  title="Export"  onclick="exportExcel();">
+	                <i class="fa fa-file-excel-o"></i> <?php echo $tr->translate("Excel");?>
+	            </a>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12 text-right">
+            <a class="btn btn-app" href="<?php echo $url_invoice;?>"  title="<?php echo $tr->translate("Make Receipt");?>">
+                <i class="fa fa-file-text"></i> <?php echo $tr->translate("Make Receipt");?>
+            </a>
+            </div>
 		</div>
-		<div style="clear:both;"></div>
-   	</td>
-   	<td align="right">
-			<a href="<?php echo $url_invoice;?>" ><button iconClass="dijitEditorIcon dijitEditorIconSave" dojoType="dijit.form.Button">Make Receipt</button></a>
-	</td>
-   	</tr>
-</table>
-<form>
-<div style="border: 1px dotted #000;background: #fff; margin: 0 auto;height: 29.7cm;width:21cm;padding:0;">
-		<div id="divPrint" style="height: 29.7cm;width:21cm; margin:0 auto;position: relative;">
-		<div style="width:21.0cm;height: 14.8cm; margin:0 auto; font-size:12px;position: relative;">
-		<style>
-			#footer{display: none;}
-			table{
-				font-family: 'Khmer OS Siemreap';
-				font-size: 12px;
-			}
-			 .padd tr td{ 
-				font-family: 'Khmer OS Siemreap';
-				font-size: 12px;
-			 }
-			 .td{/*border-bottom: 1px dotted !important;*/}
-			 table tr td{padding: 0 5px;}
-			 table tr td table .tb tr{line-height: 17px !important;}
-			 table tr{line-height: 22px !important;}
-			 table .padd tr td{border:1px solid #000}
-			 table tr td .ln {line-height: 15px !important;}
-			.center{text-align: center;color: #1285DA;font-weight: 900;}
-			.st{width:37.5%}
-			table tr td .td-pad{padding: 1px 4px 0 4px !important;}
-			.td-pad{position:relative;border: 1px solid #F93DE9; border-color: #EC008C;white-space: nowrap;}
-			</style>
-			<img src="<?php echo $this->baseUrl();?>/images/Lyna_garage_invoice.jpg"/>
-			<table style="background:#fff; margin: 0 auto;  padding: 0 0.2cm; ">
-							<!--  <tr>
-								<td colspan="4">
-									<table style="width: 100%;">
-										<tr>
-											<td style="width: 30%;"><img style="width: 100px" src="<?php echo $this->baseUrl();?>/images/car1.jpg" /></td>
-											<td style="width: 40%;" align="center"><span style=" font-family:Courier New; font-size:15px ; font-weight: 900 !important;color:#04AE18">KINGDOM OF CAMBODIA<br /><span style="font-size:13px;">NATION RELIGION KING</span><br /><span style="font-size:15px;"><strong style="font: 21px bold, 'Webdings'"></strong></span></span></td>
-											<td style="text-align: right;width: 30%;"><img style="width: 117px" src="<?php echo $this->baseUrl();?>/images/car2.jpg" /></td>
-										</tr>
-									</table>
-								</td>
-							</tr>-->
-							
+		<div class="col-md-12 col-sm-12 col-xs-12">
+			<div  id="print" style="border: 1px dotted #000;background: #fff; margin: 0 auto;height: 26cm;width:21cm;">
+				<div id="divPrint" style="padding: 0 !important;margin: 0 auto !important;">
+					<div >
+						<style>
+							#footer{display: none;}
+							table{
+								font-family: 'Khmer OS Siemreap';
+								font-size: 12px;
+							}
+							 .padd tr td{ 
+								font-family: 'Khmer OS Siemreap';
+								font-size: 12px;
+							 }
+							 .td{/*border-bottom: 1px dotted !important;*/}
+							 table tr td{padding: 0 5px;}
+							 table tr td table .tb tr{line-height: 17px !important;}
+							 table tr{line-height: 22px !important;}
+							 table .padd tr td{border:1px solid #000}
+							 table tr td .ln {line-height: 15px !important;}
+							.center{text-align: center;color: #1285DA;font-weight: 900;}
+							.st{width:37.5%}
+							table tr td .td-pad{padding: 1px 4px 0 4px !important;}
+							.td-pad{position:relative;border: 1px solid #F93DE9; border-color: #EC008C;white-space: nowrap;}
+						</style>
+						<table id="exportExcel" class="maintable" style="background:#fff; margin: 0 auto;  padding: 0 0.2cm; ">
 							<tr>
 								<td align="left">
 									<table class="vat" border="0" style="border-collapse: collapse;border-color: #EC008C;">
@@ -355,7 +347,12 @@ $('document').ready(function(){
 								</td>
 							</tr>
 					</table>
-	</div>	
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-</div>
+<form>
+
 </form>

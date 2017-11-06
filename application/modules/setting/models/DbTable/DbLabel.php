@@ -73,6 +73,9 @@ class Setting_Model_DbTable_DbLabel extends Zend_Db_Table_Abstract
 				}else if($key == 'reschedule_postfix'){
 					$where=$this->getAdapter()->quoteInto('keycode=?', "reschedule_postfix");
 					$this->update( $_key_code_data, $where);
+				}else if($key == 'co_prefix'){
+					$where=$this->getAdapter()->quoteInto('keycode=?', "co_prefix");
+					$this->update( $_key_code_data, $where);
 				}else if($key == 'theme_setting'){
 					$where=$this->getAdapter()->quoteInto('keycode=?', "theme_setting");
 					$this->update( $_key_code_data, $where);

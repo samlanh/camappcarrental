@@ -29,7 +29,7 @@ class Location_IndexController extends Zend_Controller_Action {
 			$rs_rows= $db->getAllProvince($search);
 		
 			$glClass = new Application_Model_GlobalClass();
-			$rs = $glClass->getImgActive($rs_rows, BASE_URL, true,null,1);
+			$rs = $glClass->getImgActive($rs_rows, BASE_URL, true,null);
 		
 			$list = new Application_Form_Frmtable();
 			$collumns = array("PROVINCE","DATE","STATUS","BY_USER");
@@ -54,10 +54,12 @@ class Location_IndexController extends Zend_Controller_Action {
 				$_dbmodel = new Location_Model_DbTable_DbProvince();				
 				if(!empty($_data['save_new'])){
 					$_dbmodel->addNewProvince($_data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL."/index/add");
+					$this->_redirect("/location/index/add");
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL."/index/add");
 				}else{
 					$_dbmodel->addNewProvince($_data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL."/index/index");
+					$this->_redirect("/location/index");
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL."/index/index");
 				}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
@@ -79,7 +81,8 @@ class Location_IndexController extends Zend_Controller_Action {
 			$data = $this->getRequest()->getPost();
 			try {
 			$db->updateProvince($data,$id);
-				Application_Form_FrmMessage::Sucessfull($this->tr->translate("EDIT_SUCCESS"),self::REDIRECT_URL . "/index/index");
+				$this->_redirect("/location/index");
+// 				Application_Form_FrmMessage::Sucessfull($this->tr->translate("EDIT_SUCCESS"),self::REDIRECT_URL . "/index/index");
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message($this->tr->translate("EDIT_FAIL"));
 				$err=$e->getMessage();

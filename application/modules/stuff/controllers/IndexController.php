@@ -9,7 +9,7 @@ class Stuff_indexController extends Zend_Controller_Action {
     	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
 	}
 	public function indexAction(){
-			try{
+		try{
 			if($this->getRequest()->isPost()){
 				$_data=$this->getRequest()->getPost();
 			}else{
@@ -26,12 +26,12 @@ class Stuff_indexController extends Zend_Controller_Action {
 				$link=array(
 						'module'=>'stuff','controller'=>'index','action'=>'edit',
 				);
-				
-			}catch (Exception $e){
-				Application_Form_FrmMessage::message("Application Error");
-				Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
-			}
-			$this->view->list= $list->getCheckList(0, $collumns, $rows,array('equipment_name'=>$link,'reference_no'=>$link));
+				$this->view->list= $list->getCheckList(0, $collumns, $rows,array('equipment_name'=>$link,'reference_no'=>$link));
+		}catch (Exception $e){
+			Application_Form_FrmMessage::message("Application Error");
+			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
+		}
+			
 	}
 	function addAction(){
 		if($this->getRequest()->isPost()){//check condition return true click submit button
@@ -53,6 +53,10 @@ class Stuff_indexController extends Zend_Controller_Action {
 		}
 		$db = new Application_Model_GlobalClass();
 		$this->view->pro_option = $db->getAllPackageDayOption();
+		
+		$db = new Application_Model_DbTable_DbGlobal();
+		$status=$db->getViews(2);
+		$this->view->status_view=$status;
 	}
 	function editAction(){
 		if($this->getRequest()->isPost()){
@@ -78,6 +82,10 @@ class Stuff_indexController extends Zend_Controller_Action {
 	    //print_r($rows_stuf_de);exit();
 	    $this->view->row_stuff=$row_stuff;
 	    $this->view->rows_detail=$rows_stuf_de;
+	    
+	    $db = new Application_Model_DbTable_DbGlobal();
+	    $status=$db->getViews(2);
+	    $this->view->status_view=$status;
 	}
 }
 

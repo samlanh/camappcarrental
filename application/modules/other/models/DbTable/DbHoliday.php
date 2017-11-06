@@ -3,7 +3,7 @@
 class Other_Model_DbTable_DbHoliday extends Zend_Db_Table_Abstract
 {
 
-    protected $_name = 'ldc_holiday';
+    protected $_name = 'ln_holiday';
     public function getUserId(){
     	$session_user=new Zend_Session_Namespace('auth');
     	return $session_user->user_id;
@@ -11,21 +11,53 @@ class Other_Model_DbTable_DbHoliday extends Zend_Db_Table_Abstract
     }
 	public function addHoliday($_data){
 		try {
-		$_arr=array(
-				'holiday_name'=> $_data['holiday_name'],
-				'amount_day'  => $_data['amount_day'],
-				'start_date'  => $_data['start_date'],
-				'end_date'	  => $_data['end_date'],
-				'status'	  => $_data['status'],
-				'modify_date' => date('Y-m-d'),
-				'note' 		  => $_data['note'],
-				'user_id'	  => $this->getUserId()
-		);
+			$_arr=array(
+					'holiday_name'=> $_data['holiday_name'],
+					'amount_day'  => $_data['amount_day'],
+					'start_date'  => $_data['start_date'],
+					'end_date'	  => $_data['end_date'],
+					'status'	  => $_data['status'],
+					'modify_date' => date('Y-m-d'),
+					'note' 		  => $_data['note'],
+					'user_id'	  => $this->getUserId()
+			);
 		if(!empty($_data['id'])){
-			$where = 'id = '.$_data['id'];
-			return  $this->update($_arr, $where);
+			$where = 'branch_id = '.$_data['id'];
+			$this->delete($where);
+			
+			$id = $this->insert($_arr);
+			$_arr['branch_id']=$id;
+			$where='id='.$id;
+			$this->update($_arr, $where);
+			if($_data['amount_day']>1){
+				$date_next=$_data['start_date'];
+				for($i=1;$i<$_data['amount_day'];$i++){
+					$d = new DateTime($date_next);
+					$str_next = '+1 day';
+					$d->modify($str_next);
+					$date_next =  $d->format( 'Y-m-d' );
+					$_arr['start_date']=$date_next;
+					$_arr['branch_id']=$id;
+					$this->insert($_arr);
+				}
+			}
 		}else{
-			return  $this->insert($_arr);
+			$id = $this->insert($_arr);
+			$_arr['branch_id']=$id;
+			$where='id='.$id;
+			$this->update($_arr, $where);
+			if($_data['amount_day']>1){
+				$date_next=$_data['start_date'];
+				for($i=1;$i<$_data['amount_day'];$i++){
+					$d = new DateTime($date_next);
+					$str_next = '+1 day';
+					$d->modify($str_next); 
+					$date_next =  $d->format( 'Y-m-d' );
+					$_arr['start_date']=$date_next;
+					$_arr['branch_id']=$id;
+					$this->insert($_arr);
+				}
+			}
 		}
 		}catch(Exception $e){
 			echo $e->getMessage();
@@ -58,7 +90,7 @@ class Other_Model_DbTable_DbHoliday extends Zend_Db_Table_Abstract
 			$where.=' AND ('.implode(' OR ', $s_where).')';
 			//$where.=' AND ('.implode(' OR ',$s_where).')';
 		}
-		$order = " ORDER BY id DESC";
+		$order = " GROUP BY branch_id";
 		//echo $sql.$where;		
 		return $db->fetchAll($sql.$where.$order);	
 	}	

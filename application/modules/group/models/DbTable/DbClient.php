@@ -69,12 +69,14 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 				'status'  => $_data['status'],
 				'date'  => date("Y-m-d"),
 		);
+		
 		if(!empty($_data['id'])){
 			$where = 'id = '.$_data['id'];
 			$this->update($_arr, $where);
 			return $_data['id'];
 			 
 		}else{
+			
 			return  $this->insert($_arr);
 		}
 		}catch(Exception $e){
@@ -132,7 +134,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 		(SELECT name_en FROM `ldc_view` WHERE TYPE=1 AND key_code =$this->_name.`sex`) AS sex
 		,dob,phone,pob,nationality,company_name,
 			group_num,house_num,commune,district,
-		(SELECT province_name FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name
+		(SELECT province_en_name FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name
 	    FROM $this->_name ";
 		if(!empty($search['title'])){
 			$s_where = array();
@@ -152,7 +154,7 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 			$where .=' AND ('.implode(' OR ',$s_where).')';
 		}
 		if($search['status_search']>-1){
-			$where.= " AND status_search = ".$search['status'];
+			$where.= " AND status = ".$search['status_search'];
 		}
 
 		$order=" ORDER BY id DESC";

@@ -27,7 +27,7 @@ class Location_LocationtypeController extends Zend_Controller_Action {
 			$rs_rows= $db->getAllLocationType($search);
 		
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Location Type","Modify","Status");
+			$collumns = array("Location Type","Modify Date","STATUS");
 			$link=array(
 					'module'=>'location','controller'=>'locationtype','action'=>'edit',
 			);
@@ -49,10 +49,12 @@ class Location_LocationtypeController extends Zend_Controller_Action {
 				$_dbmodel = new Location_Model_DbTable_DbLocationtype();
 				if(!empty($_data['save_new'])){
 					$_dbmodel->addLocationType($_data);
-					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL."/locationtype/add");
+					$this->_redirect(self::REDIRECT_URL."/locationtype/add");
+// 					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL."/locationtype/add");
 				}else{
 					$_dbmodel->addNewProvince($_data);
-					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL."/locationtype");
+					$this->_redirect(self::REDIRECT_URL."/locationtype");
+// 					Application_Form_FrmMessage::Sucessfull("INSERT_SUCCESS",self::REDIRECT_URL."/locationtype");
 				}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
@@ -60,6 +62,11 @@ class Location_LocationtypeController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
+		
+		$frm = new Location_Form_FrmLocation();
+		$frm=$frm->FrmAddLocationType();
+		Application_Model_Decorator::removeAllDecorator($frm);
+		$this->view->frm = $frm;
 	}
 	public function editAction(){
 		$_db= new Location_Model_DbTable_DbLocationtype();
@@ -67,7 +74,8 @@ class Location_LocationtypeController extends Zend_Controller_Action {
 			$_data = $this->getRequest()->getPost();
 			try {
 				$_db->updateLocationType($_data);
-				Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS",self::REDIRECT_URL."/locationtype");
+				$this->_redirect(self::REDIRECT_URL."/locationtype");
+// 				Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS",self::REDIRECT_URL."/locationtype");
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
 				$err =$e->getMessage();
@@ -75,7 +83,16 @@ class Location_LocationtypeController extends Zend_Controller_Action {
 			}
 		}
 		$id = $this->getRequest()->getParam("id");
-		$this->view->row = $_db->getLocationTypeById($id);
+		$row = $_db->getLocationTypeById($id);
+		$this->view->row = $row;
+		if (empty($row)){
+			Application_Form_FrmMessage::Sucessfull("NO_RECORD",self::REDIRECT_URL."/locationtype");
+		}
+		
+		$frm = new Location_Form_FrmLocation();
+		$frm=$frm->FrmAddLocationType($row);
+		Application_Model_Decorator::removeAllDecorator($frm);
+		$this->view->frm = $frm;
 	}
 }
 

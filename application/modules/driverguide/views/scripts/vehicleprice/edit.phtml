@@ -1,11 +1,19 @@
-<title>Edit Vehicle Rental Price</title>
+<?php
+	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+	echo $this->headTitle($tr->translate('Edit Vehicle Rental Price'));
+	$status_view=$this->status_view;
+?>	
 <style>
 .fixed_lable{ 
 	min-width: 80px; float: left;margin: 3px 5px;
 }
 .fixed_value{ 
-	min-width: 160px; background:#fff; float: left;margin: 1px 5px;
-	padding:0px 3px;border:1px solid #ccc; min-height: 30px;
+	min-width: 160px;
+    background: #fff;
+    margin: 1px 5px;
+    padding: 4px 3px;
+    border: 1px solid #ccc;
+   	min-height: 27px;
 }
 </style>
 <form id="vehicleprice" action="<?php echo $this->url(array('module'=>'driverguide','controller'=>'vehicleprice','action'=>'edit')); ?>" dojoType="dijit.form.Form" method="post" enctype="multipart/form-data">
@@ -15,103 +23,134 @@
                     alert('Can not submit without record !');
                     return false;
                  }
+				loading();
 				return true;
 			} else {
 				return false;
 			}
 	</script>
-	<table cellspacing="10" style="margin: 0 auto; width: 100%">
-		<tr>
-			<td>
-				<fieldset>
-					<legend align="center"><strong>Vehicle Rental Price</strong></legend>
-					<table  width="100%" >
-						<tr>
-							<td align="center" valign="top">
-								<table style="margin: 0 auto; width:100%;" cellspacing="10">
-									<tr>
-										<td>Vehicle Ref</td>
-										<td><select name="reference_id" id="reference_id" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getAllVehicle(1);">
-											<?php if(!empty($this->vehicle))foreach ($this->vehicle as $rows){?>
-												<option <?php if($this->vehicle_id==$rows['id']){echo "selected='selected'";}?> value="<?php echo $rows['id'];?>"><?php echo $rows['reffer'];?></option>
-											<?php }?>
-										</select></td>
-										<td>Frame No</td>
-										<td><select name="frame_id" id="frame_id" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getAllVehicle(2);">
-											<?php if(!empty($this->vehicle))foreach ($this->vehicle as $rows){?>
-												<option <?php if($this->vehicle_id==$rows['id']){echo'selected="selected"';}?> value="<?php echo $rows['id'];?>"><?php echo $rows['frame_no'];?></option>
-											<?php }?>
-										</select></td>
-									</tr>
-									<tr>
-										<td colspan="4" height="60px" style="border:1px solid #ccc;" valign="top">
-										<table style="white-space: nowrap;">
-													<tr>
-														<td><label class="fixed_lable">Vehicle Ref</label></td>
-														<td><label class="fixed_value" id='lbl_refer'></label></td>
-														<td><label class="fixed_lable">Frame No</label></td>
-														<td><label class="fixed_value" id='lbl_frame'></label></td>
-														<td><label class="fixed_lable">Licence Plate</label></td>
-														<td><label class="fixed_value" id='lbl_licence'></label></td>
-													</tr>
-													<tr>
-														<td><label class="fixed_lable">Make</label></td>
-														<td> <label class="fixed_value" id='lbl_make'></label></td>
-														<td><label class="fixed_lable">Model</label></td>
-														<td><label class="fixed_value" id='lbl_model'></label></td>
-														<td><label class="fixed_lable">Sub Model</label></td>
-														<td><label class="fixed_value" id='lbl_submodel'></label></td>
-													</tr>
-													<tr>
-														<td><label class="fixed_lable">Year</label></td>
-														<td><label class="fixed_value" id='lbl_year'></label></td>
-														<td><label class="fixed_lable">Seat</label></td>
-														<td><label class="fixed_value" id='lbl_seat'></label></td>
-														<td></td>
-														<td></td>
-													</tr>
-												</table>
-										</td>
-									</tr>
-									<tr>
-										<td>Tax</td>
-										<td><select name="tax" id="tax" dojoType="dijit.form.FilteringSelect" class="fullside"> 
-											<?php if(!empty($this->rs_tax))foreach ($this->rs_tax as $key=> $row){?>
-												<option value="<?php echo $row['id'];?>"><?php echo $row['title'];?></option>
-											<?php }?>
-											</select>
-										</td>
-										<td>Status</td>
-										<td><select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside">
-											    <option value="1" label="Active">Active</option>
-											    <option value="0" label="Deactive">Deactive</option>
-											</select>
-										</td>	
-									</tr>
-									<tr>
-										<td colspan="6" align="center">
-											<div style="clear: both;"></div>
-											<input type="hidden" dojoType="dijit.form.TextBox" id="record_row" name="record_row" />
-											<div  id="store_record"></div>
-											<input iconClass="dijitIconClear" type="button" onClick="addPockage();" label="Add Record" dojoType="dijit.form.Button"/>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="6" align="center">
-											<input type="reset"  label="Clear"dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
-											<input type="submit" value="save_close" name="save_new" label="Edit" dojoType="dijit.form.Button" 
-												iconClass="dijitEditorIcon dijitEditorIconSave" />
-										</td>
-									</tr>					
-								</table>
-							</td>							
-						</tr>
-					</table>	
-				</fieldset>
-			</td>			
-		</tr>
-		
-	</table>	
+	<div class="clearfix"></div>
+	<div class="row">
+      	<div class="col-md-12 col-xs-12 forms_padding">
+	          <div class="x_panel">
+	              <div class="x_title">
+	                 <h2><i class="fa  fa-edit" aria-hidden="true"></i> <?php echo $tr->translate('Edit Vehicle Rental Price')?></h2>
+	                 <ul class="nav navbar-right panel_toolbox">
+		                  <li>
+		                   	<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+		                   </li>
+		               	</ul>
+	               		<div class="clearfix"></div>
+	         	 	</div>
+		       		<div class="x_content">
+		       			<div class="form-group">
+		                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Vehicle Ref')?>
+		                   </label>
+		                   <div class="col-md-4 col-sm-4 col-xs-12">
+		                    	<select name="reference_id" id="reference_id" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getAllVehicle(1);">
+									<?php if(!empty($this->vehicle))foreach ($this->vehicle as $rows){?>
+										<option <?php if($this->vehicle_id==$rows['id']){echo "selected='selected'";}?> value="<?php echo $rows['id'];?>"><?php echo $rows['reffer'];?></option>
+									<?php }?>
+								</select>
+		                   </div>
+		                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Frame No")?>
+		                   </label>
+		                   <div class="col-md-4 col-sm-4 col-xs-12">
+		                    	<select name="frame_id" id="frame_id" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside" onChange="getAllVehicle(2);">
+									<?php if(!empty($this->vehicle))foreach ($this->vehicle as $rows){?>
+										<option <?php if($this->vehicle_id==$rows['id']){echo'selected="selected"';}?> value="<?php echo $rows['id'];?>"><?php echo $rows['frame_no'];?></option>
+									<?php }?>
+								</select>
+		                   </div>
+		                </div>
+		                <div class="title_form_blog">
+		               		<h4><i class="fa  fa-car" aria-hidden="true"></i> <?php echo $tr->translate('CAR_INFO')?></h4>
+		               </div>
+		               <div class="form-group">
+		                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Vehicle Ref')?>
+		                   </label>
+		                   <div class="col-md-2 col-sm-2 col-xs-12">
+		                    	<label class="fixed_value" id='lbl_refer'></label>
+		                   </div>
+		                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Frame No")?>
+		                   </label>
+		                   <div class="col-md-2 col-sm-2 col-xs-12">
+		                    	<label class="fixed_value" id='lbl_frame'></label>
+		                   </div>
+		                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Licence Plate")?>
+		                   </label>
+		                   <div class="col-md-2 col-sm-2 col-xs-12">
+		                    	<label class="fixed_value" id='lbl_licence'></label>
+		                   </div>
+		                </div>
+		                <div class="form-group">
+		                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Make')?>
+		                   </label>
+		                   <div class="col-md-2 col-sm-2 col-xs-12">
+		                    	<label class="fixed_value" id='lbl_make'></label>
+		                   </div>
+		                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Model")?>
+		                   </label>
+		                   <div class="col-md-2 col-sm-2 col-xs-12">
+		                    	<label class="fixed_value" id='lbl_model'></label>
+		                   </div>
+		                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Sub Model")?>
+		                   </label>
+		                   <div class="col-md-2 col-sm-2 col-xs-12">
+		                    	<label class="fixed_value" id='lbl_submodel'></label>
+		                   </div>
+		                </div>
+		                <div class="form-group">
+		                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Year')?>
+		                   </label>
+		                   <div class="col-md-2 col-sm-2 col-xs-12">
+		                    	<label class="fixed_value" id='lbl_year'></label>
+		                   </div>
+		                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Seat")?>
+		                   </label>
+		                   <div class="col-md-2 col-sm-2 col-xs-12">
+		                    	<label class="fixed_value" id='lbl_seat'></label>
+		                   </div>
+		                </div>
+		                <div class="title_form_blog">
+		               		<h4><i class="fa fa-hand-o-right" aria-hidden="true"></i></h4>
+		               </div>
+		               <div class="form-group">
+		                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Tax')?>
+		                   </label>
+		                   <div class="col-md-4 col-sm-4 col-xs-12">
+		                    	<select name="tax" id="tax" dojoType="dijit.form.FilteringSelect" class="fullside"> 
+								<?php if(!empty($this->rs_tax))foreach ($this->rs_tax as $key=> $row){?>
+									<option value="<?php echo $row['id'];?>"><?php echo $row['title'];?></option>
+								<?php }?>
+								</select>
+		                   </div>
+		                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("STATUS")?>
+		                   </label>
+		                   <div class="col-md-4 col-sm-4 col-xs-12">
+		                    	<select name="status" id="status" dojoType="dijit.form.FilteringSelect" required="true"  class="fullside">
+								    <?php foreach ($status_view as $rs){?>
+								    <option value="<?php echo $rs['key_code'];?>" label="<?php echo $rs['name_en'];?>"><?php echo $rs['name_en'];?></option>
+								    <?php }?>
+								</select>
+		                   </div>
+		                </div>
+		                <div class="form-group">
+		                	<div style="clear: both;"></div>
+							<input type="hidden" dojoType="dijit.form.TextBox" id="record_row" name="record_row" />
+							<div  id="store_record"></div>
+							<input iconClass="dijitIconClear" type="button" onClick="addPockage();" label="Add Record" dojoType="dijit.form.Button"/>
+		                </div>
+		       		</div>
+	       		</div>
+	      </div>
+	      <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+	        <input type="reset" style="color:#000;" label="<?php echo $tr->translate('CLEAR');?>" dojoType="dijit.form.Button" 
+					iconClass="dijitIconClear" /> 
+			<input type="submit" value="SAVE_CLOSE" label="<?php echo $tr->translate('SAVECLOSE');?>" style="color:#000;" id="save_close" dojoType="dijit.form.Button" name="save_close"
+				iconClass="dijitEditorIcon dijitEditorIconSave" /> 
+	    </div>
+	  </div>
 </form>
 
 <script type="text/javascript">
@@ -131,11 +170,11 @@ function innitialize(){
 	tmp+='<tr style="background:#eee; height: 30px;margin-bottom: 10px;" id="head_title" class="head-title" align="center"></tr>';
 	tmp+='</table>';
 	dojo.query("#store_record").append(tmp);
-	thead='<th>Delete</th>';
-	thead+='<th>Amount Day</th>';
-	thead+='<th>Price</th>';
-	thead+='<th>Extra Day Price</th>';
-	thead+='<th>Note</th>';
+	thead='<th><?php echo $tr->translate('Amount Day');?></th>';
+	thead+='<th><?php echo $tr->translate('PRICE');?></th>';
+	thead+='<th><?php echo $tr->translate('Extra Day Price');?></th>';
+	thead+='<th><?php echo $tr->translate('NOTE');?></th>';
+	thead+='<th><?php echo $tr->translate('DELETE');?></th>';
 	fund_title=1;
 	dojo.query("#head_title").append(thead);	
 	dijit.byId('record_row').attr('value','');
@@ -146,12 +185,11 @@ function innitialize(){
 	tmp='<tr style="border:1px solid #ccc;" id="row_guide'+r+'">'
 	tmp+="</tr>";
 		dojo.query("#t_amountmoneytype").append(tmp);
-		temp='<td style="width:30px !important;text-align:center;" ><img style="cursor:pointer" onclick="deleteRecord('+r+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
-		temp+='<td><select style="width:250px;"  id="package_id'+r+'" name="package_id'+r+'" dojoType="dijit.form.FilteringSelect" onchange="getLocation('+r+')">'+province_option+'</select></td>';
+		temp='<td><select style="width:250px;"  id="package_id'+r+'" name="package_id'+r+'" dojoType="dijit.form.FilteringSelect" onchange="getLocation('+r+')">'+province_option+'</select></td>';
 		temp+='<td><input style="width:250px;" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="price_'+r+'" id="price_'+r+'" value="" type="text"></td>';
 		temp+='<td><input style="width:250px;" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="extracharge_'+r+'" id="extracharge_'+r+'" value="" type="text"></td>';
 		temp+='<td><input style="width:250px;" dojoType="dijit.form.TextBox" class="fullside" name="note_'+r+'" id="note_'+r+'" value="" type="text"></td>';
-		
+		temp+='<td style="width:30px !important;text-align:center;" ><img style="cursor:pointer" onclick="deleteRecord('+r+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 		dojo.html.set(dojo.byId("row_guide"+r),temp, {
 	    parseContent: true,
 	     
@@ -182,11 +220,11 @@ function addNewRecord(){
 	tmp+='<tr style="background:#eee; height: 30px;margin-bottom: 10px;" id="head_title" class="head-title" align="center"></tr>';
 	tmp+='</table>';
 	dojo.query("#store_record").append(tmp);
-	thead='<th>delete</th>';
-	thead+='<th>Amount Day</th>';
-	thead+='<th>Price</th>';
-	thead+='<th>Extra Day Price</th>';
-	thead+='<th>Note</th>';
+	thead='<th><?php echo $tr->translate('Amount Day');?></th>';
+	thead+='<th><?php echo $tr->translate('PRICE');?></th>';
+	thead+='<th><?php echo $tr->translate('Extra Day Price');?></th>';
+	thead+='<th><?php echo $tr->translate('NOTE');?></th>';
+	thead+='<th><?php echo $tr->translate('DELETE');?></th>';
 	fund_title=1;
 	dojo.query("#head_title").append(thead);	
 	dijit.byId('record_row').attr('value','');
@@ -199,12 +237,11 @@ function addPockage(){
 	tmp+="</tr>";
 		dojo.query("#t_amountmoneytype").append(tmp);
 		
-	temp='<td style="width:30px !important;text-align:center;" ><img style="cursor:pointer" onclick="deleteRecord('+r+')" src="/lyna/trunk/public/images/Delete_16.png"></td>';
-	temp+='<td><select style="width:250px;"  id="package_id'+r+'" name="package_id'+r+'" dojoType="dijit.form.FilteringSelect" onchange="getLocation('+r+')">'+province_option+'</select></td>';
+	temp='<td><select style="width:250px;"  id="package_id'+r+'" name="package_id'+r+'" dojoType="dijit.form.FilteringSelect" onchange="getLocation('+r+')">'+province_option+'</select></td>';
 	temp+='<td><input style="width:250px;" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="price_'+r+'" id="price_'+r+'" value="" type="text"></td>';
 	temp+='<td><input style="width:250px;" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="extracharge_'+r+'" id="extracharge_'+r+'" value="" type="text"></td>';
 	temp+='<td><input style="width:250px;" dojoType="dijit.form.TextBox" class="fullside" name="note_'+r+'" id="note_'+r+'" value="" type="text"></td>';
-	
+	temp+='<td style="width:30px !important;text-align:center;" ><img style="cursor:pointer" onclick="deleteRecord('+r+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"></td>';
 	dojo.html.set(dojo.byId("row_guide"+r),temp, {
 	    parseContent: true,
 	});

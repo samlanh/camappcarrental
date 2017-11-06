@@ -1,153 +1,182 @@
-<?php
+	<?php
+	$tr=Application_Form_FrmLanguages::getCurrentlanguage();
 	$request=Zend_Controller_Front::getInstance()->getRequest();
 	$action = $request->getActionName();
+	$moduless = $request->getModuleName();
+	$controllersss=$request->getControllerName();
 	$baseurl  = $this->baseUrl();
-		/*--------------------URLs link display--------------------------*/
-		  $tr=Application_Form_FrmLanguages::getCurrentlanguage();
-		$arr_param_menu=array( 
-			'home'=>array(
-						'index'=>'<li><a href="">'.$tr->translate("HOME").'</a></li>',
-			),
-			'other'=>array(
-// 						'branch'=>'<li><a href="">'.$tr->translate("BRANCH_LIST").'</a></li>',
-// 						'province'=>'<li><a href="">'.$tr->translate("PROVINCE").'</a></li>',
-// 						'district'=>'<li><a href="">'.$tr->translate("DISTRICT").'</a></li>',
-// 						'commune'=>'<li><a href="">'.$tr->translate("COMMUNE").'</a></li>',
-// 						'village'=>'<li><a href="">'.$tr->translate("VILLAGE").'</a></li>',
-// 						'zone'=>'<li><a href="">'.$tr->translate("ZONE_AREA").'</a></li>',
-					    'service'=>'<li><a href="">'.$tr->translate("Manage Services").'</a></li>',
-					    'season'=>'<li><a href="">'.$tr->translate("Manage Seasonal Promotion").'</a></li>',
-'mediafile'=>'<li><a href="">'.$tr->translate("Media Files").'</a></li>',
-					    'otherinformation'=>'<li><a href="">'.$tr->translate("Other Information").'</a></li>',
-						'holiday'=>'<li><a href="">'.$tr->translate("Manage Holiday Setting").'</a></li>',
-					//	'loantype'=>'<li><a href="">'.$tr->translate("LOAN_TYPE").'</a></li>' ,
-                        'slideshow'=>'<li><a href="">'.$tr->translate("Manage Slide Show").'</a></li>',
-                        'photo'=>'<li><a href="">'.$tr->translate("Manage Photo Gallery").'</a></li>',
-                        'tax'=>'<li><a href="">'.$tr->translate("Manage Tax Setting").'</a></li>', 
-					    'day'=>'<li><a href="">'.$tr->translate("Manage Rank Day").'</a></li>',
-					    'job'=>'<li><a href="">'.$tr->translate("Job Announcement").'</a></li>',
-					    'instruction'=>'<li><a href="">'.$tr->translate("Instruction").'</a></li>',
-                                            'countries'=>'<li><a href="">'.$tr->translate("Countries").'</a></li>',
-					    'playerlist'=>'<li><a href="">'.$tr->translate("Prayer List").'</a></li>',
-					    'seo'=>'<li><a href="">'.$tr->translate("SEO").'</a></li>',
-					    'faq'=>'<li><a href="">'.$tr->translate("FAQS").'</a></li>',
-					    'help'=>'<li><a href="">'.$tr->translate("Terms and Conditions").'</a></li>',
-						'welcomenote'=>'<li><a href="">'.$tr->translate("Welcome Note").'</a></li>',
-					    'guestbook'=>'<li><a href="">'.$tr->translate("Testimonials").'</a></li>',
-						'about'=>'<li><a href="">'.$tr->translate("About Us").'</a></li>',
-						'contact'=>'<li><a href="">'.$tr->translate("Contact Us").'</a></li>',
-						'privacy'=>'<li><a href="">'.$tr->translate("Privacy").'</a></li>',
-					    'ownervehicle'=>'<li><a href="">'.$tr->translate("Owner Vehicle Registration").'</a></li>',
-					    'paramater'=>'<li><a href="">'.$tr->translate("Manage Paramater").'</a></li>',
-			),
-			'group'=>array(
-					    'index'=>'<li><a href="">'.$tr->translate("Customer Information").'</a></li>',
-						'vehicle'=>'<li><a href="">'.$tr->translate("Vehicle Rental Agreement").'</a></li>',
-						'citytour'=>'<li><a href="">'.$tr->translate("City Tour Rental Agreement").'</a></li>',
-						'stuffrental'=>'<li><a href="">'.$tr->translate("Equipment Rental Agreement").'</a></li>',
-				),
-			'stuff'=>array(
-						'index'=>'<li><a href="" title="">'.$tr->translate("Manage Product").'</a></li>',
-					    /*'service'=>'<li><a href="" title="">'.$tr->translate("Services").'</a></li>',
-						'groupdisburse'=>'<li><a href="" title="">'.$tr->translate("GROUP_DISBURS").'</a></li>',
-						'ilpayment'=>'<li><a href="" title="">'.$tr->translate("IL_PAYMENT").'</a></li>',
-						'ilquickpayment'=>'<li><a href="" title="">'.$tr->translate("QUICK_PAYMENT").'</a></li>',
-						'grouppayment'=>'<li><a href="" title="">'.$tr->translate("GROUP_PAYMENT").'</a></li>',*/
-				),
-			'callecterall'=>array(
-						'callecterall'=>'<li><a href="">'.$tr->translate("CALLECTERALL").'</a></li>',
-						'callecteralllist'=>'<li><a href="">'.$tr->translate("CALLECTERALLLIST").'</a></li>',
-						'chengcallecterall'=>'<li><a href="">'.$tr->translate("CHENGCALLECTERALL").'</a></li>',
-						'refundcallecterall'=>'<li><a href="">'.$tr->translate("REFUNDCALLECTERALL").'</a></li>',
-						'salecallecterall'=>'<li><a href="">'.$tr->translate("SALECALLECTERALL").'</a></li>',
-				),
-		   'booking'=>array(
-		   				/*'department'=>'<li><a href="">'.$tr->translate("DEPARTMENT").'</a></li>',
-						'position'=>'<li><a href="">'.$tr->translate("POSITION").'</a></li>',
-						'co'=>'<li><a href="">'.$tr->translate("STAFF").'</a></li>',
-						'permission'=>'<li><a href="">'.$tr->translate("PERMISSION").'</a></li>',
-		   				'salary'=>'<li><a href="">'.$tr->translate("SALARY").'</a></li>',
-		   				'setting'=>'<li><a href="">'.$tr->translate("SETTING").'</a></li>',*/
-		   		                'carrentalbooking'=>'<li><a href="">'.$tr->translate("Car Rental Booking").'</a></li>',
-		   				'productbooking'=>'<li><a href="">'.$tr->translate("Product Rental Booking").'</a></li>',
-		   				'guidebooking'=>'<li><a href="">'.$tr->translate("Tour Guide | Driver Rental Booking").'</a></li>',
-		   				'taxibooking'=>'<li><a href="">'.$tr->translate("Taxi Service Booking").'</a></li>',
-		   				'citytourbooking'=>'<li><a href="">'.$tr->translate("City Tour Service Booking").'</a></li>',
-				),
-			'location'=>array(
-						'index'=>'<li><a href="">'.$tr->translate("Manage Province").'</a></li>',
-						'location'=>'<li><a href="">'.$tr->translate("Manage Location").'</a></li>',
-						'package'=>'<li><a href="">'.$tr->translate("Manage Package Location").'</a></li>',
-						//'manageprice'=>'<li><a href="">'.$tr->translate("manageprice").'</a></li>',
-						'locationtype'=>'<li><a href="">'.$tr->translate("Manage Location Type").'</a></li>',
-				),
-			'vehicle'=>array(
-						'index'=>'<li><a href="">'.$tr->translate("Manage Vehicle").'</a></li>',
-						'vehicletype'=>'<li><a href="">'.$tr->translate("Manage Vehicle Group").'</a></li>',
-						'make'=>'<li><a href="">'.$tr->translate("Manage Make").'</a></li>',
-						'model'=>'<li><a href="">'.$tr->translate("Manage Model").'</a></li>',
-                        'submodel'=>'<li><a href="">'.$tr->translate("Manage Sub Model").'</a></li>',
-						'engine'=>'<li><a href="">'.$tr->translate("Manage Engine").'</a></li>',
-						'type'=>'<li><a href="">'.$tr->translate("Manage Vehicle Type").'</a></li>',
-						'transmission'=>'<li><a href="">'.$tr->translate("Manage Transmission").'</a></li>',
-						//'manageprice'=>'<li><a href="">'.$tr->translate("Manage Price").'</a></li>',	
-						//'manageseason'=>'<li><a href="">'.$tr->translate("Manage Price Season").'</a></li>',	   
-            ),
-			'driverguide'=>array(
-						'index'=>'<li><a href="">'.$tr->translate("Manage Driver & Guide").'</a></li>',
-						'vehicleprice'=>'<li><a href="">'.$tr->translate("Manage Vehicle Rental Price").'</a></li>',
-						'taxiprice'=>'<li><a href="">'.$tr->translate("Manage Taxi Rental Price").'</a></li>',
-						'citytourprice'=>'<li><a href="">'.$tr->translate("Manage City Tour Rental Price").'</a></li>',
-					    'serviceprice'=>'<li><a href="">'.$tr->translate("Manage Service Price").'</a></li>',
-					    'carprice'=>'<li><a href="">'.$tr->translate("Manage Car Rental Pickup Price").'</a></li>',
-			),
-			'agreement'=>array(
-					   'index'=>'<li><a href="">'.$tr->translate("Vehicle Rental Agreement").'</a></li>',
-						'citytour'=>'<li><a href="">'.$tr->translate("City Tour Rental Agreement").'</a></li>',
-						'stuffrental'=>'<li><a href="">'.$tr->translate("Product Rental Agreement").'</a></li>',
-					    'driver'=>'<li><a href="">'.$tr->translate("Tour Guide | Driver Rental Agreement").'</a></li>',
-					    'taxi'=>'<li><a href="">'.$tr->translate("Taxi Service Agreement").'</a></li>',
-						'carsale'=>'<li><a href="">'.$tr->translate("Car Sale Form").'</a></li>',
-						'carsale/saleinvoice'=>'<li><a href="">'.$tr->translate("Car Sale Invoice").'</a></li>',
-						'carsale/salereciept'=>'<li><a href="">'.$tr->translate("Car Sale Receipt").'</a></li>',
-				),
-			'report'=>array(
-						'pricing'=>'<li><a href="" title="">'.$tr->translate("Pricing Reports").'</a></li>',
-'carsale'=>'<li><a href="" title="">'.$tr->translate("Vehicle Sale Report").'</a></li>',
-				),
-			'user'=>array(
-				'index'=>'<li><a href="">'.$tr->translate("USER").'</a></li>',
-			),	
-			'rsvacl'=>array(
-					 	'index'=>'<li><a href="">'.$tr->translate("USER").'</a></li>',
-					    'acl'=>'<li><a href="">'.$tr->translate("ACL").'</a></li>',
-						'user'=>'<li><a href="">'.$tr->translate('USER').'</a></li>',
-						'useraccess'=>'<li><a href="">'.$tr->translate("USER_ACCESS").'</a></li>',
-						'usertype'=>'<li><a href="">'.$tr->translate("USER_TYPE").'</a></li>',
-				),
-			'backup'=>array(
-						'index'=>'<li><a href="">'.$tr->translate("Backup List").'</a></li>',
-						'index'=>'<li><a href="">'.$tr->translate("Backup List").'</a></li>',
-				),	
-			'setting'=>array(
-						'label'=>'<li><a href="">'.$tr->translate("Label_SETTING").'</a></li>',
-						//'profile'=>'<li><a href="">'.$tr->translate("COM_PROFILE").'</a></li>',
-						'database'=>'<li><a href="">'.$tr->translate("DATA_BASE_SETTING").'</a></li>',
-						'setting'=>'<li><a href="">'.$tr->translate("System_SETTING").'</a></li>',
-					
-					)
-				);       
+	
+	$dbuser = new Application_Model_DbTable_DbUsers();
+	
+	$session_user=new Zend_Session_Namespace('auth');
+	$arr_module = $session_user->arr_acl;
+	$username = $session_user->first_name;
+	$userinfo="";
+	if (!empty($session_user->user_id)){
+	$userinfo = $dbuser->getUserInfomation($session_user->user_id);
+	}
+	$menu = array();
+	$module = '';
+	$controller=array();
+	$newarray=array();
+	if(!empty($arr_module)){
+		foreach ($arr_module as $key => $rs){
+			
+			$lblcontroller = $rs['controller'];
+			if($rs['module']=='report' AND $rs['controller']!='index'){
+				$lblcontroller='REPORT';
+				continue;
+			}
+			if($rs['controller']=='index' AND $rs['module']=='group' ){
+				$lblcontroller='CLIENT_INFO';
+			}
+			if($rs['controller']=='index' AND $rs['module']=='location' ){
+				$lblcontroller='Province';
+			}
+			if($rs['controller']=='index' AND $rs['module']=='other' ){
+				$lblcontroller='province';
+			}
+			if($rs['controller']=='index' AND $rs['module']=='vehicle' ){
+				$lblcontroller='VEHICLE';
+			}
+			if($rs['controller']=='index' AND $rs['module']=='stuff' ){
+				$lblcontroller='product';
+			}
+			if($rs['controller']=='index' AND $rs['module']=='driverguide' ){
+				$lblcontroller='DRIVER_AND_GUIDE';
+			}
+			if($rs['controller']=='index' AND $rs['module']=='product' ){
+				$lblcontroller='product';
+			}
+			if($rs['controller']=='index' AND $rs['module']=='agreement' ){
+				$lblcontroller='VEHICLERENTALAGREEMENT';
+			}
+			if($rs['controller']=='stuffrental' AND $rs['module']=='agreement' ){
+				$lblcontroller='STUFFRENTAL_AGREEMENT';
+			}
+			if($rs['controller']=='driver' AND $rs['module']=='agreement' ){
+				$lblcontroller='DRIVER_GUIDE_AGREEMENT';
+			}
+			if($rs['controller']=='index' AND $rs['module']=='report' ){
+				$lblcontroller='REPORT_LIST';
+			}
+			
+			if($module!=$rs['module']){
+				$newarray= array($rs['controller']=>$tr->translate(strtoupper($lblcontroller)));
+				$menu[$rs['module']]= $newarray;
+				$old_module=$rs['module'];
+			}else{
+				$newarray= array_merge($newarray,array($rs['controller']=>$tr->translate(strtoupper($lblcontroller))));
+			    $menu[$rs['module']] = $newarray;
+			}
+			$module=$rs['module'];
+		}
+	}
+	$arr_param_menu = $menu;
+	$dc=new Application_Model_Decorator();
 	?>
-	<div id="header-left">
-	<ul>
-			<?php 
-				$dc=new Application_Model_Decorator();					
-				$class="current-left";					
-				$menu=$dc->getMenuLeft($arr_param_menu[$request->getModuleName()],$request->getControllerName(),$request->getModuleName());
-				if($menu) echo $menu;					
-			?>
-	</ul>																
-	</div>
-	<style>
-	.current-left{  background: none repeat scroll 0 0 #EDF7F8 !important;}
-	</style>
+	<?php 
+	$array_icon = array(
+			'home'=>'<i class="fa  fa-home" aria-hidden="true"></i>',
+			'other'=>'<i class="fa  fa-info-circle" aria-hidden="true"></i>',
+			'booking'=>'<i class="fa fa-book" aria-hidden="true"></i>',
+			'agreement'=>'<i class="fa fa-file-text" aria-hidden="true"></i>',
+			'group'=>'<i class="fa  fa-users" aria-hidden="true"></i>',
+			'vehicle'=>'<i class="fa fa-automobile" aria-hidden="true"></i>',
+			'driverguide'=>'<i class="fa  fa-bus" aria-hidden="true"></i>',
+			'stuff'=>'<i class="fa  fa-cubes" aria-hidden="true"></i>',
+			'report'=>'<i class="fa  fa-file-text" aria-hidden="true"></i>',
+			'rsvacl'=>'<i class="fa  fa-cog" aria-hidden="true"></i>',
+			'setting'=>'<i class="fa  fa-cogs" aria-hidden="true"></i>',
+			'menu-manager'=>'<i class="fa fa-list" aria-hidden="true"></i>',
+			'product'=>'<i class="fa fa-cubes" aria-hidden="true"></i>',
+			'location'=>'<i class="fa fa-crosshairs" aria-hidden="true"></i>',
+			'field-manager'=>'<i class="fa fa-window-restore" aria-hidden="true"></i>',
+	);
+	
+	$arr_module = $session_user->arr_module;
+	$arr_acl = $session_user->arr_acl;
+	?>
+		<!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                	<?php if(!empty($arr_module)){ foreach ($arr_module as $rs){
+                		$url =$this->url(array('module'=>$rs,'controller'=>'index','action'=>'index'), null, true);
+                		if ($rs=="group"){
+                			$title=$tr->translate("CUSTOMER");
+                		}else{
+                			$title=$tr->translate(strtoupper($rs));
+                		}
+                	?>
+                	<li><a><?php echo $array_icon[$rs];?> <?php echo $title;?> <?php if (!empty($arr_param_menu[$rs])){?><span class="fa fa-chevron-down"></span><?php }?></a>
+                		<?php if (!empty($arr_param_menu[$rs])){?>
+	                    <ul class="nav child_menu">
+	                       <?php  foreach ($arr_param_menu[$rs] as $key => $sub){
+	                       	$urlsub = $this->url(array('module'=>$rs,'controller'=>$key,'action'=>'index'), null, true);
+	                       	?>
+	                      <li><a href="<?php echo $urlsub;?>"><?php echo $sub;?></a></li>
+	                       <?php }?>
+	                    </ul>
+	                    <?php }?>
+                 	 </li>
+                	<?php }
+                	}?>
+                </ul>
+              </div>
+
+            </div>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" onClick="toggleFullScreen(document.body)" title="<?php echo $tr->translate("FullScreen");?>">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="<?php echo $tr->translate("SIGN_OUT");?>" href="<?php echo $this->url(array('module'=>'','controller'=>'index','action'=>'logout','value'=>'1')); ?>">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+              	<li>
+              	<?php if($action=='index' AND $moduless!='report' AND $moduless!='home'){?>
+              		<a href="<?php echo $this->url(array('module'=>$moduless,'controller'=>$controllersss,'action'=>'add'),null,true); ?>"><?php echo $tr->translate('ADD');?> <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+              	<?php }elseif($action=='add' OR $action=='edit'){?>
+              		<a href="<?php echo $this->url(array('module'=>$moduless,'controller'=>$controllersss,'action'=>'index'),null,true); ?>"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> <?php echo $tr->translate('GO_BACK');?></a>
+              	<?php }else {?>
+              
+              	<?php }?>
+              	</li>
+                <li class="">
+                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <?php if (!empty($userinfo['profile_img'])){$imagepro="/images/profile/".$userinfo['profile_img'];}else{$imagepro="/images/user.png";}?>
+                    <img src="<?php echo $this->baseUrl().$imagepro;?>" alt="">
+                    
+                    <?php echo $username;?>
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                 	<li><a href="<?php echo $this->url(array('module'=>'rsvacl','controller'=>'user','action'=>'profile')); ?>"> <i class="fa fa-user pull-right"></i> <?php echo $tr->translate("Profile");?></a></li>
+                    <li><a href="<?php echo $this->url(array('module'=>'rsvacl','controller'=>'user','action'=>'changepassword')); ?>"> <i class="fa fa-key pull-right"></i> <?php echo $tr->translate("Change Password");?></a></li>
+                    <li><a href="<?php echo $this->url(array('module'=>'','controller'=>'index','action'=>'logout','value'=>'1')); ?>"><i class="fa fa-sign-out pull-right"></i> <?php echo $tr->translate("SIGN_OUT");?></a></li>
+                  </ul>
+                </li>
+
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->

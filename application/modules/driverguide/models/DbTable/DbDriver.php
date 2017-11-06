@@ -11,11 +11,15 @@ class Driverguide_Model_DbTable_DbDriver extends Zend_Db_Table_Abstract
     }
     function getAllDriverGuide($search=null){
     	$db = $this->getAdapter();
+    	$dbgb = new Application_Model_DbTable_DbGlobal();
+    	$lang= $dbgb->getCurrentLang();
+    	$array = array(1=>"province_en_name",2=>"province_kh_name");
+    	$arrayview = array(1=>"name_en",2=>"name_kh");
     	$sql = "SELECT id,driver_id,first_name,last_name,
-    	(SELECT name_en FROM `ldc_view` WHERE TYPE=1 AND key_code =$this->_name.`sex`) AS sex ,tel,dob,pob,nationality,
+    	(SELECT ".$arrayview[$lang]." FROM `ldc_view` WHERE TYPE=1 AND key_code =$this->_name.`sex`) AS sex ,tel,dob,pob,nationality,
     	group_num,home_num,street,commune,district,
-    	(SELECT province_name FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name,
-    	(SELECT name_en FROM `ldc_view` WHERE TYPE=2 AND key_code =$this->_name.`status`) AS status
+    	(SELECT ".$array[$lang]." FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name,
+    	status
     	FROM $this->_name  ";
     	$where = ' WHERE 1 ';
     	if($search['status_search']>-1){

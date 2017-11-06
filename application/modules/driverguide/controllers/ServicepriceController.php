@@ -28,6 +28,9 @@ class Driverguide_ServicepriceController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 			}
 		}
+		$db = new Application_Model_DbTable_DbGlobal();
+		$status=$db->getViews(2);
+		$this->view->status_view=$status;
 	}
 	public function editAction(){
 		if($this->getRequest()->isPost()){
@@ -46,6 +49,10 @@ class Driverguide_ServicepriceController extends Zend_Controller_Action {
         $id=$this->getRequest()->getParam('id');
         $db=new Driverguide_Model_DbTable_DbServicePrice();
         $this->view->row_service=$db->getServiceById($id);
+        
+        $db = new Application_Model_DbTable_DbGlobal();
+        $status=$db->getViews(2);
+        $this->view->status_view=$status;
 	}
 }
 

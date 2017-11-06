@@ -36,8 +36,8 @@ Class Location_Form_FrmProvince extends Zend_Dojo_Form {
 				'missingMessage'=>'Invalid Module!',
 				'class'=>'fullside'));
 		if(!empty($data)){
-			$_en_province->setValue($data['province_name']);
-			$_kh_province->setValue($data['province_name']);
+			$_en_province->setValue($data['province_en_name']);
+			$_kh_province->setValue($data['province_kh_name']);
 			$_status->setValue($data['status']);
 		}
 		$this->addElements(array($_en_province,$_kh_province, $_display,$_status));

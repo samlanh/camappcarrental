@@ -1,12 +1,15 @@
-<center><h2>Welcome to Lyna-CarRental.Com</h2></center>
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 <!-- BEGIN HEAD -->
+<?php 
+$tr=Application_Form_FrmLanguages::getCurrentlanguage();
+
+?>
 <head>
    <meta charset="utf-8" />
-   <title>Loan Management System</title>
+   <title><?php echo $tr->translate("COMPANY_NAME");?></title>
    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
    <meta content="" name="description" />
    <meta content="" name="author" />
@@ -23,37 +26,7 @@
 	 overflow: hidden;
 }
 </style>
-<?php 
-$tr=Application_Form_FrmLanguages::getCurrentlanguage();
-$client=$this->url(array('module'=>'group','controller'=>'index','action'=>'index'), null, true);
-$collecteral=$this->url(array('module'=>'group','controller'=>'callteral','action'=>'index'), null, true);
-$chagen_coll=$this->url(array('module'=>'group','controller'=>'changecollteral','action'=>'index'), null, true);
-$indi_loan=$this->url(array('module'=>'loan','controller'=>'index','action'=>'index'), null, true);
-$disburse_loan=$this->url(array('module'=>'loan','controller'=>'groupdisburse','action'=>'index'), null, true);
-$indi_payment=$this->url(array('module'=>'loan','controller'=>'ilpayment','action'=>'index'), null, true);
-$group_payment=$this->url(array('module'=>'loan','controller'=>'grouppayment','action'=>'index'), null, true);
-$repay_schedule=$this->url(array('module'=>'loan','controller'=>'repaymentschedule','action'=>'index'), null, true);
-$quickpayment=$this->url(array('module'=>'loan','controller'=>'ilquickpayment','action'=>'index'), null, true);
-$co=$this->url(array('module'=>'payroll','controller'=>'co','action'=>'index'), null, true);
-$bad_loan=$this->url(array('module'=>'loan','controller'=>'badloan','action'=>'index'), null, true);
-// report
-$rpt_loanrelease=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-loan-disburse'), null, true);
-$rpt_loanoustading=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-loan-outstanding'), null, true);
-$rpt_collectfromco=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-loan-collectionco'), null, true);
-$rpt_loancollect=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-loancollect'), null, true);
-$rpt_dailypayment=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-payment'), null, true);
-$rpt_loanincome=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-loan-income'), null, true);
-$rpt_loan_late=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-loan-late'), null, true);
-$rpt_total_collect=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-loan-total-collect'), null, true);
-$rpt_writoff=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-writoff'), null, true);
-$rpt_paymenthistory=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-payment-history'), null, true);
-$rpt_reschedule=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-reschedule-loan'), null, true);
-$rpt_writeoff=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-loan-payoff'), null, true);
-$rpt_expectincome=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-loan-expect-income'), null, true);
-$rpt_exchangemoney=$this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-loan-xchange'), null, true);
 
-
-?>
 <style type="text/css">
 .metro-nav {
     font-family: 'Kh Battambang','Khmer Battambang' !important;
@@ -71,147 +44,62 @@ $rpt_exchangemoney=$this->url(array('module'=>'report','controller'=>'loan','act
                 <!--BEGIN METRO STATES-->
                 <div class="metro-nav metro-fix-view">
                     <div class="metro-nav-block nav-block-green long">
-                        <a href="<?php echo $this->url(array('module'=>'other','controller'=>'service','action'=>'index'), null, true);?>" style="text-align: center;" class="text-center" data-original-title="">
+                        <a href="<?php echo $this->baseUrl()."/group";?>" style="text-align: center;" class="text-center" data-original-title="">
                             <span class="value">
-                                <i class="icon-user"></i>
+                                <i class="fa  fa-user"></i>
                             </span>
                         </a>
-                         <div class="status" align="center"><?php echo $tr->translate('Parameter');?></div>
-                    </div>
-                   <div class="metro-nav-block nav-block-red double" >
-                       <a href="<?php echo $this->url(array('module'=>'driverguide','controller'=>'vehicleprice','action'=>'index'), null, true);?>" data-original-title="" >
-                           <i class="icon-comments-alt"></i>
-                           <div class="info"></div>
-                           <div class="status" ><?php echo $tr->translate('Manage Vehicle Rental Price');?></div>
-                       </a>
-                   </div>
-                    <div class="metro-nav-block nav-block-blue double">
-                        <a href="<?php echo $this->url(array('module'=>'driverguide','controller'=>'carprice','action'=>'index'), null, true);;?>" data-original-title="">
-                            <i class="icon-tasks"></i>
-                            <div class="info">$37624</div>
-                            <div class="status"><?php echo $tr->translate('Manage Car Rental Pickup Price');?></div>
-                        </a>
-                    </div>
-                    <div class="metro-nav-block nav-block-yellow">
-                        <a href="<?php echo $this->url(array('module'=>'vehicle','controller'=>'index','action'=>'index'), null, true);?>" data-original-title="">
-                            <i class="icon-tags"></i>
-                            <div class="info"></div>
-                            <div class="status"><?php echo $tr->translate('5. Vehicle Info');?></div>
-                        </a>
-                    </div>
-                     <div class="metro-nav-block nav-block-red">
-                        <a href="<?php echo $this->url(array('module'=>'group','controller'=>'index','action'=>'index'), null, true);?>" data-original-title="">
-                            <i class="icon-shopping-cart"></i>
-                            <div class="info"></div>
-                            <div class="status"><?php echo $tr->translate('6. Customer Info');?></div>
-                        </a>
-                    </div>
-                   
-                    <div class="metro-nav-block nav-block-orange double">
-                        <a href="<?php echo $this->url(array('module'=>'stuff','controller'=>'index','action'=>'index'), null, true);?>" data-original-title="" class="text-center">
-                            <i class="icon-star-empty"></i>
-                            <div class="status"><?php echo $tr->translate('7. Manage Product Rental');?></div>
-                        </a>
-                    </div>
-                    <div class="metro-nav-block nav-block-blue double">
-                        <a href="<?php echo $this->url(array('module'=>'booking','controller'=>'carrentalbooking','action'=>'index'), null, true);?>" class="text-center" data-original-title="">
-                            <i class="icon-bar-chart"></i>
-                            <div class="status"><?php echo $tr->translate('8. Car Rental Booking');?></div>
-                        </a>
+                         <div class="status" align="center"><?php echo $tr->translate('CLIENT_INFO');?></div>
                     </div>
                     <div class="metro-nav-block nav-block-red double">
-                        <a href="<?php echo $this->url(array('module'=>'booking','controller'=>'productbooking','action'=>'index'), null, true);?>" data-original-title="">
-                            <i class="icon-bar-chart"></i>
-                            <div class="status"><?php echo $tr->translate('9. Product Rental Booking');?></div>
+                        <a href="<?php echo $this->baseUrl()."/product";?>" data-original-title="">
+                            <i class="fa fa-cubes" aria-hidden="true"></i>
+                            <div class="info"></div>
+                            <div class="status"><?php echo $tr->translate('PRODUCT');?></div>
+                        </a>
+                    </div>
+                    <div class="metro-nav-block nav-block-blue double">
+                        <a href="<?php echo $this->baseUrl()."/group/invoice";?>" data-original-title="">
+                            <i class="fa  fa-newspaper-o" ></i>
+                            <div class="info">	</div>
+                            <div class="status"><?php echo $tr->translate('INVOICE');?></div>
+                        </a>
+                    </div>
+                    <div class="metro-nav-block nav-block-purple double">
+                        <a href="<?php echo $this->baseUrl()."/group/reciept";?>" class="text-center" data-original-title="">
+                           <i class="fa fa-money" aria-hidden="true"></i>
+                            <div class="status"><?php echo $tr->translate('RECIEPT');?></div>
                         </a>
                     </div>
                     
-                    <div class="metro-nav-block nav-block-purple double">
-                        <a href="<?php echo $this->url(array('module'=>'report','controller'=>'pricing','action'=>'index'), null, true);?>" data-original-title="">
-                            <i class="icon-eye-open"></i>
-                            <div class="info"></div>
-                            <div class="status"><?php echo $tr->translate('10. Report');?> </div>
-                        </a>
-                    </div>
-                    <div class="metro-nav-block nav-block-grey">
-                        <a href="<?php echo $this->url(array('module'=>'other','controller'=>'service','action'=>'index'), null, true);?>" data-original-title="">
-                            <i class="icon-remove-sign"></i>
-                            <div class="info"></div>
-                            <div class="status"><?php echo $tr->translate('11. Module');?></div>
-                        </a>
-                    </div>
-                    <div class="metro-nav-block nav-block-blue">
-                        <a href="<?php echo $this->url(array('module'=>'setting','controller'=>'index','action'=>'index'), null, true);?>" class="text-center" data-original-title="">
-                            <i class="icon-dashboard"></i>
-                            <div class="status"><?php echo $tr->translate('12. Setting');?></div>
-                        </a>
-                    </div>
-                     <div class="metro-nav-block nav-block-blue double">
-                        <a target="_blank" href="<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'index'), null, true);?>" data-original-title="">
-                            <i class="icon-external-link"></i>
-                            <div class="info"></div>
-                            <div class="status"><?php echo $tr->translate('13. View Website');?></div>
-                        </a>
-                    </div>
-                    <div class="metro-nav-block nav-block-purple double">
-                        <a href="<?php echo $this->url(array('module'=>'agreement','controller'=>'index','action'=>'index'), null, true);?>" data-original-title="" class="text-center">
-                            <i class="icon-cogs"></i>
-                            <div class="status"><?php echo $tr->translate('Vehicle Rental Agreement');?></div>
+                   
+                    <div class="metro-nav-block nav-block-orange double">
+                        <a href="<?php echo $this->baseUrl()."/other/slide";?>" data-original-title="" class="text-center">
+                            <i class="fa fa fa-file-image-o" aria-hidden="true"></i>
+                            <div class="status"><?php echo $tr->translate('SLIDE_MANAGEMENT');?></div>
                         </a>
                     </div>
                     <div class="metro-nav-block nav-block-blue double">
-                        <a href="<?php echo $this->url(array('module'=>'agreement','controller'=>'driver','action'=>'index'), null, true);?>" data-original-title="">
-                            <i class="icon-shopping-cart"></i>
-                            <div class="info"></div>
-                            <div class="status"><?php echo $tr->translate('Driver/Guide Agreement');?></div>
+                        <a href="<?php echo $this->baseUrl()."/menu-manager/category";?>" class="text-center" data-original-title="">
+                          <i class="fa fa-cubes" aria-hidden="true"></i>
+                            <div class="status"><?php echo $tr->translate('CATEGORY');?></div>
                         </a>
                     </div>
-                    <div class="metro-nav-block nav-block-green double">
-                        <a href="<?php echo $this->url(array('module'=>'agreement','controller'=>'stuffrental','action'=>'index'), null, true);?>" data-original-title="">
-                            <i class="icon-external-link"></i>
-                            <div class="info">$53412</div>
-                            <div class="status"><?php echo $tr->translate('Product Agreement');?></div>
+                    <div class="metro-nav-block nav-block-grey double">
+                        <a href="<?php echo $this->baseUrl()."/setting/general";?>" data-original-title="">
+                             <i class="fa  fa-cogs"></i>
+                            <div class="info"></div>
+                            <div class="status"><?php echo $tr->translate('GENERAL_SETTING');?></div>
                         </a>
                     </div>
                    
-                    <div class="metro-nav-block nav-block-grey double">
-                        <a href="<?php //echo $this->url(array('module'=>'other','controller'=>'service','action'=>'index'), null, true);?>" class="text-center" data-original-title="">
-                            <i class="icon-dashboard"></i>
-                            <div class="status"><?php echo $tr->translate('Taxi Agreement');?></div>
-                        </a>
-                    </div>
-                     <div class="metro-nav-block nav-block-yellow double">
-                        <a href="<?php //echo $this->url(array('module'=>'other','controller'=>'service','action'=>'index'), null, true);?>" class="text-center" data-original-title="">
-                            <i class=" icon-puzzle-piece"></i>
-                           <div class="status"><?php echo $tr->translate('City Agreement');?></div>
-                        </a>
-                    </div>
-                    <div class="metro-nav-block nav-block-orange double">
-                        <a href="<?php echo $this->url(array('module'=>'booking','controller'=>'return','action'=>'index'), null, true);?>" class="text-center" data-original-title="">
-                            <i class="icon-signout"></i>
-                            <div class="status"><?php echo $tr->translate('Return Booking');?></div>
-                        </a>
-                    </div>
-                     <div class="metro-nav-block nav-block-orange double">
-                        <a href="<?php echo $this->url(array('module'=>'other','controller'=>'service','action'=>'index'), null, true);?>" data-original-title="">
-                            <i class="icon-external-link"></i>
-                            <div class="info">$53412</div>
-                            <div class="status"><?php echo $tr->translate('Product Returning');?></div>
-                        </a>
-                    </div>
                     <div class="metro-nav-block nav-block-purple double">
-                        <a href="<?php //echo $this->url(array('module'=>'other','controller'=>'service','action'=>'index'), null, true);?>" data-original-title="" class="text-center">
-                            <i class="icon-cogs"></i>
-                            <div class="status"><?php echo $tr->translate('Other');?></div>
+                        <a href="<?php echo $this->baseUrl()."/rsvacl/useraccess";?>" data-original-title="" class="text-center">
+                           <i class="fa fa-users" aria-hidden="true"></i>
+                            <div class="status"><?php echo $tr->translate('USERACCESS');?></div>
                         </a>
                     </div>
-                    <div class="metro-nav-block nav-block-blue double">
-                        <a href="#<?php //echo $this->url(array('module'=>'other','controller'=>'service','action'=>'index'), null, true);?>" data-original-title="">
-                            <i class="icon-shopping-cart"></i>
-                            <div class="info"></div>
-                            <div class="status"><?php echo $tr->translate('Other');?></div>
-                        </a>
-                    </div>  
+
                 </div>
 
                 <div class="space10"></div>
@@ -227,7 +115,7 @@ $rpt_exchangemoney=$this->url(array('module'=>'report','controller'=>'loan','act
 
    <!-- BEGIN FOOTER -->
    <div id="footer">
-      &copy;CopyRight by VSS Consultancy.
+      &copy;CopyRight by Cam App Technology.
    </div>
    <!-- END FOOTER -->
 

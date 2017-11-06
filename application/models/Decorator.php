@@ -36,7 +36,7 @@ class Application_Model_Decorator
 		
 		//if(is_array($arr_menu)){
 			foreach($arr_menu as $param=>$url){
-				$access = array_search($module.'/'.$param,$arr_actin);
+				//$access = array_search($module.'/'.$param,$arr_actin);
 				//if($access!=''){
 						if($param==$controller){
 							$uri=$this->baseUrl().'/'.$module.'/'.$param;

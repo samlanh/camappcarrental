@@ -68,7 +68,7 @@ class agreement_Model_DbTable_DbAgreement extends Zend_Db_Table_Abstract
     	$db = $this->getAdapter();
     	$agreement_code = $this->getNewAgreementCode($data['agreement_date']);
     	$arr = array(
-                        'vat_owner'=>$data['vat_owner'],
+                'vat_owner'=>$data['vat_owner'],
     			'vat_customer'=>$data['vat_customer'],
     			'agreement_code'=>$agreement_code,
     			'agreement_date'=>$data['agreement_date'],
@@ -149,6 +149,10 @@ class agreement_Model_DbTable_DbAgreement extends Zend_Db_Table_Abstract
 		 		FROM `ldc_booking_detail` WHERE book_id=$data AND item_type=1 LIMIT 1 ";
 		return $db->fetchRow($sql);
 	}
-	
+	function getOwnerById($id){
+		$db = $this->getAdapter();
+		$sql = "SELECT id,owner_name,`position`,id_card,hand_phone,email,hotline,`status` FROM ldc_owner where id= ".$id;
+		return $db->fetchRow($sql);
+	}
 }
 

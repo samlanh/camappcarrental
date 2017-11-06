@@ -13,6 +13,8 @@ class Vehicle_typeController extends Zend_Controller_Action {
 	public function indexAction(){
 		$db_make = new Vehicle_Model_DbTable_DbType();
 		$rows=$db_make->getAllType();
+		$glClass = new Application_Model_GlobalClass();
+		$rows = $glClass->getImgActive($rows, BASE_URL, true);
 		try{
 			$list = new Application_Form_Frmtable();
 			$collumns = array("TYPE","STATUS");
@@ -29,15 +31,16 @@ class Vehicle_typeController extends Zend_Controller_Action {
 	public function addAction(){
 		if($this->getRequest()->isPost()){
 			$data= $this->getRequest()->getPost();
-	//	print_r($data);exit();    
 			try {
 				$db_make = new Vehicle_Model_DbTable_DbType();
 				if(!empty($data['save_new'])){
 					$db_make->addType($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+					$this->_redirect(self::REDIRECT_URL_ADD);
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
 				}else{
 					$db_make->addType($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+					$this->_redirect(self::REDIRECT_URL_ADD_CLOSE);
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
 				}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
@@ -52,13 +55,12 @@ class Vehicle_typeController extends Zend_Controller_Action {
 	public function editAction(){
 		if($this->getRequest()->isPost()){
 			$data= $this->getRequest()->getPost();
-			//	print_r($data);exit();
+// 			print_r($data);exit();
 			try {
 				$db_type = new Vehicle_Model_DbTable_DbType();
-				if(!empty($data['save_close'])){
 					$db_type->updateType($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
-				}
+					$this->_redirect(self::REDIRECT_URL_ADD_CLOSE);
+// 				}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
 				$err =$e->getMessage();

@@ -12,9 +12,11 @@ class Vehicle_VehicletypeController extends Zend_Controller_Action {
 	public function indexAction(){
 		$db_make = new Vehicle_Model_DbTable_DbVehicleType();
 		$rows=$db_make->getAllVehicleType();
+		$glClass = new Application_Model_GlobalClass();
+		$rows = $glClass->getImgActive($rows, BASE_URL, true);
 		try{
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Vehicle Type","STATUS");
+			$collumns = array("VEHICLETYPE","STATUS");
 			$link=array(
 					'module'=>'vehicle','controller'=>'vehicletype','action'=>'edit',
 			);
@@ -44,9 +46,9 @@ class Vehicle_VehicletypeController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
-// 		$db = new Application_Model_DbTable_DbGlobal();
-// 		$status=$db->getViews();
-// 		$this->view->status_view=$status;
+		$db = new Application_Model_DbTable_DbGlobal();
+		$status=$db->getViews();
+		$this->view->status_view=$status;
 	}
 	function editAction(){
 		if($this->getRequest()->isPost()){
@@ -68,6 +70,9 @@ class Vehicle_VehicletypeController extends Zend_Controller_Action {
 		$db_vehicletype = new Vehicle_Model_DbTable_DbVehicleType();
 		$row=$db_vehicletype->getVehicleTypeById($id);
 		$this->view->row=$row;
+		$db = new Application_Model_DbTable_DbGlobal();
+		$status=$db->getViews();
+		$this->view->status_view=$status;
 	}
 	
 }

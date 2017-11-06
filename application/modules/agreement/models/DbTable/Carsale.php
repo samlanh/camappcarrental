@@ -82,6 +82,9 @@ class agreement_Model_DbTable_Carsale extends Zend_Db_Table_Abstract
     }
     function getSaleAgreementById($id){
     	$db = $this->getAdapter();
+    	$dbgb = new Application_Model_DbTable_DbGlobal();
+    	$lang= $dbgb->getCurrentLang();
+    	$array = array(1=>"province_en_name",2=>"province_kh_name");
     	$sql ="SELECT 
 				  a.id,
 				  a.ag_code,
@@ -106,7 +109,7 @@ class agreement_Model_DbTable_Carsale extends Zend_Db_Table_Abstract
 				  o.`street` AS o_street,
 				  o.`commune` AS o_commune,
 				  o.`district` AS o_district,
-				  (SELECT p.`province_name` FROM ldc_province AS p WHERE p.`id`=o.`province_id`) AS o_province,
+				  (SELECT ".$array[$lang]." as `province_name` FROM ldc_province AS p WHERE p.`id`=o.`province_id`) AS o_province,
 				  o.company_name AS o_company_name,
 				  o.`address1` AS o_addr1,
 				  o.`address2` AS o_addr2,
@@ -125,7 +128,7 @@ class agreement_Model_DbTable_Carsale extends Zend_Db_Table_Abstract
 				  c.`street`,
 				  c.`commune`,
 				  c.`district`,
-				  (SELECT p.`province_name` FROM `ldc_province` AS p WHERE p.`id`=c.`province_id`) AS provice,
+				  (SELECT ".$array[$lang]." as `province_name` FROM `ldc_province` AS p WHERE p.`id`=c.`province_id`) AS provice,
 				  c.`address1`,
 				  c.`address2`,
 				  c.`passport_name`,
@@ -210,6 +213,7 @@ class agreement_Model_DbTable_Carsale extends Zend_Db_Table_Abstract
 	    	return $id;
     	
     	}catch (Exception $e){
+    		Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
     		$db->rollBack();
     		echo $e->getMessage();
     	}

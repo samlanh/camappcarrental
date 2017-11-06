@@ -14,9 +14,11 @@ class Vehicle_makeController extends Zend_Controller_Action {
 	public function indexAction(){
 		$db_make = new Vehicle_Model_DbTable_DbMake();
 		$rows=$db_make->getAllMake();
+		$glClass = new Application_Model_GlobalClass();
+		$rows = $glClass->getImgActive($rows, BASE_URL, true);
         try{
         $list = new Application_Form_Frmtable();
-        $collumns = array("Make","STATUS");
+        $collumns = array("Make Name","STATUS");
         $link=array(
         		'module'=>'vehicle','controller'=>'make','action'=>'edit',
         );
@@ -36,10 +38,12 @@ class Vehicle_makeController extends Zend_Controller_Action {
 				$db_make = new Vehicle_Model_DbTable_DbMake();
 				if(!empty($data['save_new'])){
 					$db_make->addMake($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+					$this->_redirect(self::REDIRECT_URL_ADD);
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
 				}else{
 					$db_make->addMake($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+					$this->_redirect(self::REDIRECT_URL_ADD_CLOSE);
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
 				}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
@@ -59,7 +63,8 @@ class Vehicle_makeController extends Zend_Controller_Action {
 				$db_make = new Vehicle_Model_DbTable_DbMake();
 				if(!empty($data['save_close'])){
 					$db_make->updateMake($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+					$this->_redirect(self::REDIRECT_URL_ADD_CLOSE);
+// 					Application_Form_FrmMessage::Sucessfull($this->tr->translate("INSERT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
 				}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
