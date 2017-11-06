@@ -10,8 +10,21 @@ class Report_Model_DbTable_DbRptAgreement extends Zend_Db_Table_Abstract
 		booking_id,
 		(SELECT reffer FROM `ldc_vehicle` WHERE id=$this->_name.vehicle_id LIMIT 1) AS reffer,
 		inception_date,return_date,return_time,period ,price_perday,date_create
-		FROM $this->_name ORDER BY id DESC";
-		return $db->fetchAll($sql);
+		FROM $this->_name WHERE 1 ";
+		$where='';
+		if (!empty($data['adv_search'])){
+			$s_where = array();
+			$s_search = addslashes(trim($data['adv_search']));
+			 
+			$s_where[] = " agreement_code LIKE '%{$s_search}%'";
+			$s_where[] = " (SELECT owner_name FROM `ldc_owner` WHERE id=ownder_id LIMIT 1) LIKE '%{$s_search}%'";
+			$s_where[] = " (SELECT CONCAT(first_name,' ',last_name) FROM `ldc_customer` WHERE id=$this->_name.customer_id LIMIT 1) LIKE '%{$s_search}%'";
+			$s_where[] = " (SELECT reffer FROM `ldc_vehicle` WHERE id=$this->_name.vehicle_id LIMIT 1) LIKE '%{$s_search}%'";
+			$s_where[] = " inception_date LIKE '%{$s_search}%'";
+			$where .=' AND ('.implode(' OR ',$s_where).')';
+		}
+		$order = ' ORDER BY id DESC ';
+		return $db->fetchAll($sql.$where.$order);
 	}
 	function getAllVehicleAgreementById($id){
 		/*$db = $this->getAdapter();

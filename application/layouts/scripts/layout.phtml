@@ -249,7 +249,8 @@ function preview()
    docprint.focus(); 
 }
 function exportExcel(){
-	$('#exportExcel').tableExport({type:'excel',escape:'false'});
+	window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('#exportExcel').html()));
+    e.preventDefault();
 }
 </script>
 <?php }?>

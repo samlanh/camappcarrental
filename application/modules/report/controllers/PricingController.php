@@ -32,25 +32,89 @@ class Report_PricingController extends Zend_Controller_Action {
 	 	$this->view->frm = $form;
 	 }
 	function rptGuidepriceAction(){//release all loan
+		if($this->getRequest()->isPost()){
+			$search = $this->getRequest()->getPost();
+		}
+		else{
+			$search = array(
+					'adv_search'=>'',
+					'status'=>'',
+					'start_date'=> date('Y-m-d'),
+					'end_date'=>date('Y-m-d'));
+		}
+		$this->view->list_end_date = $search;
 		$db = new Report_Model_DbTable_DbGuide();
-		$this->view->rows = $db->getGuidePrice();
+		$this->view->rows = $db->getGuidePrice($search);
+		
+		$frm = new Application_Form_FrmAdvanceSearch();
+		$form = $frm->AdvanceSearch();
+		Application_Model_Decorator::removeAllDecorator($form);
+		$this->view->frm = $form;
 	  }
 	 
 	  function rptVehicleinfoAction(){
+	  	if($this->getRequest()->isPost()){
+	  		$search = $this->getRequest()->getPost();
+	  	}
+	  	else{
+	  		$search = array(
+	  				'adv_search'=>'',
+	  				'status'=>-1,
+	  				'start_date'=> date('Y-m-d'),
+	  				'end_date'=>date('Y-m-d'));
+	  	}
+	  	
 	  	$db = new Report_Model_DbTable_DbGuide();
-	  	$this->view->rows = $db->getAllVehicleInfo();
+	  	$this->view->rows = $db->getAllVehicleInfo($search);
+	  	
+	  	$frm = new Application_Form_FrmAdvanceSearch();
+	  	$form = $frm->AdvanceSearch();
+	  	Application_Model_Decorator::removeAllDecorator($form);
+	  	$this->view->frm = $form;
 	  }
 	  function vehicleRentalpriceAction(){
+	  	if($this->getRequest()->isPost()){
+	  		$search = $this->getRequest()->getPost();
+	  	}
+	  	else{
+	  		$search = array(
+	  				'adv_search'=>'',
+	  				'status'=>-1,
+	  				'start_date'=> date('Y-m-d'),
+	  				'end_date'=>date('Y-m-d'));
+	  	}
+	  	
 	  	$db = new Report_Model_DbTable_DbGuide();
-		$this->view->rows = $db->getAllVehiclePrice();
+		$this->view->rows = $db->getAllVehiclePrice($search);
+		
+		$frm = new Application_Form_FrmAdvanceSearch();
+		$form = $frm->AdvanceSearch();
+		Application_Model_Decorator::removeAllDecorator($form);
+		$this->view->frm = $form;
 	  }
 	  function rptTaxirentalpriceAction(){
 	  	$db = new Report_Model_DbTable_DbGuide();
 	  	$this->view->rows = $db->getAllVehicleTaxi();
 	  }
 	  function rptCitytourirentalpriceAction(){
+	  	if($this->getRequest()->isPost()){
+	  		$search = $this->getRequest()->getPost();
+	  	}
+	  	else{
+	  		$search = array(
+	  				'adv_search'=>'',
+	  				'status'=>-1,
+	  				'start_date'=> date('Y-m-d'),
+	  				'end_date'=>date('Y-m-d'));
+	  	}
+	  	
 	  	$db = new Report_Model_DbTable_DbGuide();
-	  	$this->view->rows = $db->getAllVehicleTaxiTour();
+	  	$this->view->rows = $db->getAllVehicleTaxiTour($search);
+	  	
+	  	$frm = new Application_Form_FrmAdvanceSearch();
+	  	$form = $frm->AdvanceSearch();
+	  	Application_Model_Decorator::removeAllDecorator($form);
+	  	$this->view->frm = $form;
 	  }
 	  function rptServicePriceAction(){
 	  	$db = new Report_Model_DbTable_DbGuide();
@@ -58,8 +122,24 @@ class Report_PricingController extends Zend_Controller_Action {
 	  	
 	  }
 	  function rptCarrentalpickupAction(){
+	  	if($this->getRequest()->isPost()){
+	  		$search = $this->getRequest()->getPost();
+	  	}
+	  	else{
+	  		$search = array(
+	  				'adv_search'=>'',
+	  				'status'=>-1,
+	  				'start_date'=> date('Y-m-d'),
+	  				'end_date'=>date('Y-m-d'));
+	  	}
+	  	
 	  	$db = new Report_Model_DbTable_DbGuide();
-	  	$this->view->rows = $db->getAllCarprice();
+	  	$this->view->rows = $db->getAllCarprice($search);
+	  	
+	  	$frm = new Application_Form_FrmAdvanceSearch();
+	  	$form = $frm->AdvanceSearch();
+	  	Application_Model_Decorator::removeAllDecorator($form);
+	  	$this->view->frm = $form;
 	  	 
 	  }
 	  function rptVehicleAction(){
@@ -109,10 +189,25 @@ class Report_PricingController extends Zend_Controller_Action {
 	  	$this->view->customer = $db->getCustomerInfoByBooking($id);
 	  	$this->view->rows = $db->getItemBookingDetail($id);
 	  }
-           function rptVehicleagreementAction(){
+     function rptVehicleagreementAction(){
+     	if($this->getRequest()->isPost()){
+     		$search = $this->getRequest()->getPost();
+     	}
+     	else{
+     		$search = array(
+     				'adv_search'=>'',
+     				'status'=>'',
+     				'start_date'=> date('Y-m-d'),
+     				'end_date'=>date('Y-m-d'));
+     	}
+     	
 	  	$db = new Report_Model_DbTable_DbRptAgreement();
-	  	$search=array();
 	  	$this->view->rows = $db->getAllVehicleAgreement($search);
+	  	
+	  	$frm = new Application_Form_FrmAdvanceSearch();
+	  	$form = $frm->AdvanceSearch();
+	  	Application_Model_Decorator::removeAllDecorator($form);
+	  	$this->view->frm = $form;
 	  }
 	  function vehicleagreementAction(){
 	  	$id = $this->getRequest()->getParam('id');

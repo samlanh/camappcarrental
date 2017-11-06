@@ -60,7 +60,7 @@ class Application_Form_FrmAdvanceSearch extends Zend_Dojo_Form
 		$_date = $request->getParam("start_date");
 		
 		if(empty($_date)){
-			//$_date = date("Y-m-d");
+			$_date = date("Y-m-d");
 			if (!empty($type)){
 				$_date = date("Y-m-01");
 			}

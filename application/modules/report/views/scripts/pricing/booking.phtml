@@ -30,55 +30,66 @@
 		</form>
 		<div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
 			<div id="divPrint" style="width: 100%;">
-				<table width="100%" style="font-family: 'Khmer OS Battambang';" style="margin:0; padding:0;border:none;">
-			            	<tr>
-			                	<td width="20%"></td>
-			                	<td width="60%" valign="top">
-			                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("BRANCH_TITLE");?></label></h2>
-			                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php echo $tr->translate("Car Rental Booking Report");?></h2>
-			                	</td>
-			                    <td width="20%"></td>
-			                </tr> 
-			                <tr>
-			                	<td colspan="3">
-					              </td>
-					           </tr>   
-			            </table>
+					<table width="100%" style="font-family: 'Khmer OS Battambang';" style="margin:0; padding:0;border:none;">
+		            	<tr>
+		                	<td width="20%"></td>
+		                	<td width="60%" valign="top">
+		                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("BRANCH_TITLE");?></label></h2>
+		                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php echo $tr->translate("Car Rental Booking Report");?></h2>
+		                	</td>
+		                    <td width="20%"></td>
+		                </tr> 
+		                <tr>
+		                	<td colspan="3">
+				              </td>
+				           </tr>   
+		            </table>
+		            <style>
+						tr.header {
+						    font-weight: bold;
+						    line-height: 14px;
+						    font-size: 12px;
+						    background: #eee;
+						}
+						tr.header td {
+						    padding: 5px;
+						}
+		            </style>
 					<table width="100%" border="1" style="border-collapse:collapse;font-size:10px; white-space: nowrap;" bordercolor="black">
-				    	<tr​>
-				        	<th style="font-family:'Khmer MEF2'"><?php echo $tr->translate("NUM");?></th>
-				            <th><?php echo $tr->translate("Booking No.");?></th>
-				            <th><?php echo $tr->translate("Booking Date");?></th>
-				            <th><?php echo $tr->translate("Pickup Date");?></th>
-				            <th><?php echo $tr->translate("Return Date");?></th>
-				            <th><?php echo $tr->translate("Pickup Location");?></th>
-				            <th><?php echo $tr->translate("Return Location");?></th>
-				            <th><?php echo $tr->translate("Customer Id");?></th>
-				            <th><?php echo $tr->translate("Customer Name");?></th>
-				            <th><?php echo $tr->translate("Booking Fee");?></th>
-				            <th><?php echo $tr->translate("Total VAT");?></th>
-				            <th><?php echo $tr->translate("Refundable Deposit");?></th>
-				            <th><?php echo $tr->translate("Paid Amount");?></th>
-				            <th><?php echo $tr->translate("Payment Type");?></th>
-				            <th><?php echo $tr->translate("Status");?></th>
+				    	<tr class="header">
+				        	<td style="font-family:'Khmer MEF2'"><?php echo $tr->translate("NUM");?></th>
+				            <td><?php echo $tr->translate("Booking No.");?></td>
+				            <td><?php echo $tr->translate("Booking Date");?></td>
+				            <td><?php echo $tr->translate("Pickup Date");?></td>
+				            <td><?php echo $tr->translate("Return Date");?></td>
+				            <td><?php echo $tr->translate("Pickup Location");?></td>
+				            <td><?php echo $tr->translate("Return Location");?></td>
+				            <td><?php echo $tr->translate("Customer Id");?></td>
+				            <td><?php echo $tr->translate("Customer Name");?></td>
+				            <td><?php echo $tr->translate("Booking Fee");?></td>
+				            <td><?php echo $tr->translate("Total VAT");?></td>
+				            <td><?php echo $tr->translate("Refundable Deposit");?></td>
+				            <td><?php echo $tr->translate("Paid Amount");?></td>
+				            <td><?php echo $tr->translate("Payment Type");?></td>
+				            <!-- <td><?php //echo $tr->translate("Status");?></td> -->
 				        </tr>
-				      <?php if($rss){ $i =0 ;foreach ($rss as $rs){ ?>
-				      <tr align="center">
-				        	<td><?php echo $i+1;?></td>
-				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["booking_no"]?></a></td>
-				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["date_book"]?></a></td>
-				             <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["pickup_date"]?></a></td>
-				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["return_date"]?></a></td>
-				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["pickup_lc"]?></a></td>
-				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["return_lc"]?></a></td>
-				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["customercode"]?></a></td>
-				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>"><?php echo $rs["customer"]?></a></td>
-				            <td><?php echo number_format($rs["total_fee"],2);?></td>
-				            <td><?php echo number_format($rs["total_vat"],2)?></td>
-				            <td><?php echo number_format($rs["deposite_fee"],2)?></td>
-				            <td><?php echo number_format($rs["total_paymented"],2); ?></td>
-				            <td><?php echo $rs["payment_type"]; ?></td>
-				            <td><?php //echo $rs["payment_type"]; ?></td>
+				      <?php if($rss){ $i =0 ;foreach ($rss as $rs){ $i++;?>
+				      <tr align="center" style="line-height: 18px; background: #fff;">
+				        	<td><?php echo $i;?></td>
+				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>">&nbsp;<?php echo $rs["booking_no"]?>&nbsp;</a></td>
+				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>">&nbsp;<?php echo $rs["date_book"]?>&nbsp;</a></td>
+				             <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>">&nbsp;<?php echo $rs["pickup_date"]?>&nbsp;</a></td>
+				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>">&nbsp;<?php echo $rs["return_date"]?>&nbsp;</a></td>
+				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>">&nbsp;<?php echo $rs["pickup_lc"]?>&nbsp;</a></td>
+				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>">&nbsp;<?php echo $rs["return_lc"]?>&nbsp;</a></td>
+				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>">&nbsp;<?php echo $rs["customercode"]?>&nbsp;</a></td>
+				            <td><a style="color: #333;" href="<?php echo $this->baseUrl();?>/report/pricing/viewbooking/id/<?php echo $rs["id"]?>">&nbsp;<?php echo $rs["customer"]?>&nbsp;</a></td>
+				            <td>&nbsp;<?php echo number_format($rs["total_fee"],2);?>&nbsp;</td>
+				            <td>&nbsp;<?php echo number_format($rs["total_vat"],2)?>&nbsp;</td>
+				            <td>&nbsp;<?php echo number_format($rs["deposite_fee"],2)?>&nbsp;</td>
+				            <td>&nbsp;<?php echo number_format($rs["total_paymented"],2); ?>&nbsp;</td>
+				            <td>&nbsp;<?php echo $rs["payment_type"]; ?></td>
+				            <!-- <td><?php //echo $rs["payment_type"]; ?></td> -->
 				        </tr>
 				        <?php } }?>
 				    </table>

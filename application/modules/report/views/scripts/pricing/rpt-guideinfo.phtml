@@ -27,6 +27,15 @@ dojo.require("dijit.form.DateTextBox");
 					font-family: 'Khmer OS Battambang';
 				}
 				th{padding: 5px;}
+				tr.header {
+				    font-weight: bold;
+				    line-height: 14px;
+				    font-size: 12px;
+				    background: #eee;
+				}
+				tr.header td {
+				    padding: 10px;
+				}
 				</style>
 				<table style="font-family: 'Khmer OS Content'; width:100%;">
 					<tr>
@@ -35,8 +44,8 @@ dojo.require("dijit.form.DateTextBox");
 				            	<tr>
 				                	<td width="20%"></td>
 				                	<td width="60%" valign="top">
-				                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("BRANCH_TITLE");?></label></h2>
-				                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php echo $tr->translate("Guide/Driver Info Report");?></h2>
+				                	<h2 style="text-align:center; font-size:18px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("BRANCH_TITLE");?></label></h2>
+				                	<h2 style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><?php echo $tr->translate("Guide/Driver Info Report");?></h2>
 				                	</td>
 				                    <td width="20%"></td>
 				                </tr> 
@@ -50,7 +59,7 @@ dojo.require("dijit.form.DateTextBox");
 				    <tr>
 				    	<td>
 				            <table id="exportExcel" border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:10px; white-space: nowrap;" width="100%" cellspacing="0">
-				                 <tr bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:5px 0px; ">
+				                 <tr class="header">
 				                    <th >&nbsp;<?php echo $tr->translate("NUM");?>&nbsp;</th>
 				                    <th ><?php echo $tr->translate("Driver Id");?></th>
 				                    <th ><?php echo $tr->translate("First Name");?></th>
@@ -73,8 +82,7 @@ dojo.require("dijit.form.DateTextBox");
 				                </tr>
 				               <?php 
 				               if(!empty($this->rows)) foreach($this->rows as $key =>$row){?>
-				              
-									<tr align="center" style="line-height: 18px;">
+								<tr align="center" style="line-height: 18px; background: #fff;">
 									<td>&nbsp;<?php echo $key+1; ?>&nbsp;</td>
 									<td align="left" >&nbsp;<?php echo $row['driver_id']; ?>&nbsp;</td>
 									<td align="left">&nbsp;<?php echo $row['first_name'];?>&nbsp;</td>
@@ -94,8 +102,7 @@ dojo.require("dijit.form.DateTextBox");
 									<td align="center" style="font-size:8px;">&nbsp;<?php if($row['type']==1){echo "Guide";}else if($row['type']==2){echo "Driver";}else {echo "Both";} ?>&nbsp;</td>	
 									<td style="white-space:nowrap;" >&nbsp;<?php echo $row['lang_note'];?>&nbsp;</td>
 									<td align="left" style="font-size:8px;">&nbsp;<?php echo $row['status']; ?>&nbsp;</td>	
-									
-									</tr>
+								</tr>
 								<?php } ?>
 				            </table>
 				            <br />

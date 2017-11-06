@@ -14,11 +14,21 @@ $url_client = $this->url(array('module'=>'report','controller'=>'loan','action'=
 		<div style="min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
 			<div id="divPrint" style="width: 100%;">
 				<style>
-				.style{
-					line-height: 20px;font-size: 10px !important;
-					font-family: 'Khmer OS Battambang';
-				}
-				th{padding: 5px;}
+					.style{
+						line-height: 20px;font-size: 10px !important;
+						font-family: 'Khmer OS Battambang';
+					}
+					th{padding: 5px;}
+					tr.header {
+					    font-weight: bold;
+					    line-height: 14px;
+					    font-size: 12px;
+					    background: #eee;
+					    text-align: center;
+					}
+					tr.header td {
+					    padding: 5px;
+					}
 				</style>
 				<table style="font-family: 'Khmer OS Content'; width:100%;">
 					<tr>
@@ -27,8 +37,8 @@ $url_client = $this->url(array('module'=>'report','controller'=>'loan','action'=
 				            	<tr>
 				                	<td width="20%"></td>
 				                	<td width="60%" valign="top">
-				                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><label></label></h2>
-				                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php echo $tr->translate("Taxi Rental Price Report");?></h2>
+				                	<h2 style="text-align:center; font-size:18px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("BRANCH_TITLE");?></label></h2>
+				                	<h2 style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><?php echo $tr->translate("Taxi Rental Price Report");?></h2>
 				                	<h2 style="text-align:center; font-size:13px;"><?php echo date("d-M-Y",strtotime($this->list_end_date['start_date'])).' '.$tr->translate('TO').' ';echo date("D-d-M-Y",strtotime($this->list_end_date['end_date']));?></h2>
 				                	</td>
 				                    <td width="20%"></td>
@@ -43,7 +53,7 @@ $url_client = $this->url(array('module'=>'report','controller'=>'loan','action'=
 				    <tr>
 				    	<td>
 				            <table id="exportExcel" border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:11px; white-space: nowrap;" width="100%" cellspacing="0">
-				                 <tr bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:5px 0px; ">
+				                 <tr class="header">
 				                    <th>&nbsp;<?php echo $tr->translate("No");?>&nbsp;</th>
 				                     <th><?php echo $tr->translate("Reffer");?></th>
 				                    <th><?php echo $tr->translate("Frame No");?></th>
@@ -65,7 +75,7 @@ $url_client = $this->url(array('module'=>'report','controller'=>'loan','action'=
 				               <?php 
 				               if(!empty($this->rows)) foreach($this->rows as $key =>$row){?>
 				              
-									<tr align="center" style="line-height: 18px;">
+									<tr align="center" style="line-height: 18px; background: #fff;">
 										<td>&nbsp;<?php echo $key+1; ?>&nbsp;</td>
 										<td align="left" >&nbsp;<?php echo $row['reffer']; ?>&nbsp;</td>
 										<td align="left">&nbsp;<?php echo $row['frame_no'];?>&nbsp;</td>

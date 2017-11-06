@@ -25,6 +25,7 @@ class Report_CarsaleController extends Zend_Controller_Action {
 	 	
 	 	$db = new Report_Model_DbTable_DbSale();
 	 	$rs_rows = $db->getAllSaleAgreement($search);
+	 	$this->view->row = $rs_rows;
 	 	
 	 	$frm = new Application_Form_FrmAdvanceSearch();
 	 	$form = $frm->AdvanceSearch();
@@ -54,6 +55,7 @@ class Report_CarsaleController extends Zend_Controller_Action {
 	 	
 	 	$db = new Report_Model_DbTable_DbSale();
 	 	$rs_rows = $db->getAllSaleAgreement($search);
+	 	$this->view->row = $rs_rows;
 	 	
 	 	$frm = new Application_Form_FrmAdvanceSearch();
 	 	$form = $frm->AdvanceSearch();
@@ -84,6 +86,7 @@ class Report_CarsaleController extends Zend_Controller_Action {
 	 	
 	 	$db = new Report_Model_DbTable_DbSale();
 	 	$rs_rows = $db->getAllSaleReciept($search);
+	 	$this->view->row = $rs_rows;
 	 	
 	 	$frm = new Application_Form_FrmAdvanceSearch();
 	 	$form = $frm->AdvanceSearch();

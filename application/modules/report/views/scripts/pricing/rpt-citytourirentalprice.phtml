@@ -2,15 +2,21 @@
 $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 $url = $this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-groupmember'));
 $url_client = $this->url(array('module'=>'report','controller'=>'loan','action'=>'rpt-paymentschedules'));
-
+$frm=$this->frm;
 ?>
 <meta charset="utf-8">
-<title><?php echo $tr->translate("LOAN_DISBURSE");?></title>
+<title><?php echo $tr->translate("Report City Tour Rental Price");?></title>
 <form method="post">
 	
 	</form>
 <div class="row">
 	<div class="x_panel " >
+		<form method="post">
+			<div class="form-group">
+				<div class="col-md-2 col-sm-2 col-xs-12"><?php echo $frm->getElement('adv_search');?></div>
+				<div class="col-md-2 col-sm-2 col-xs-12"><?php echo $frm->getElement('btn_search');?></div>
+			</div>
+		</form>
 		<div style=" width:28cm;min-height:28cm; margin:0 auto; border: 1px dotted #ccc; padding:0px 0.2cm">
 			<div id="divPrint" style="width: 100%;">
 				<style>
@@ -19,6 +25,16 @@ $url_client = $this->url(array('module'=>'report','controller'=>'loan','action'=
 					font-family: 'Khmer OS Battambang';
 				}
 				th{padding: 5px;}
+				tr.header {
+				    font-weight: bold;
+				    line-height: 14px;
+				    font-size: 12px;
+				    background: #eee;
+				    text-align: center;
+				}
+				tr.header td {
+				    padding: 5px;
+				}
 				</style>
 				<table style="font-family: 'Khmer OS Content'; width:100%;">
 					<tr>
@@ -27,9 +43,8 @@ $url_client = $this->url(array('module'=>'report','controller'=>'loan','action'=
 				            	<tr>
 				                	<td width="20%"></td>
 				                	<td width="60%" valign="top">
-				                	<h2 style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("Lyna-CarRental.Com");?></label></h2>
-				                	<h2 style="text-align:center; font-size:13px; font-family:'Khmer MEF2'"><?php echo $tr->translate("City Tour Rental Price Report");?></h2>
-				                	<h2 style="text-align:center; font-size:13px;"><?php echo date("d-M-Y",strtotime($this->list_end_date['start_date'])).' '.$tr->translate('TO').' ';echo date("D-d-M-Y",strtotime($this->list_end_date['end_date']));?></h2>
+				                	<h2 style="text-align:center; font-size:18px; font-family:'Khmer MEF2'"><label><?php echo $tr->translate("BRANCH_TITLE");?></label></h2>
+				                	<h2 style="text-align:center; font-size:16px; font-family:'Khmer MEF2'"><?php echo $tr->translate("Report City Tour Rental Price");?></h2>
 				                	</td>
 				                    <td width="20%"></td>
 				                </tr> 
@@ -39,23 +54,21 @@ $url_client = $this->url(array('module'=>'report','controller'=>'loan','action'=
 				    <tr>
 				    	<td>
 				            <table id="exportExcel" border="1"​ style="border-collapse:collapse;border:1px solid #000; font-size:11px; white-space: nowrap;" width="100%" cellspacing="0">
-				                 <tr bgcolor="#ccc" class="style" align="center" style="floafont-weight:bold; line-height: 14px; font-size:12px; padding:5px 0px; ">
-				                    <th>&nbsp;<?php echo $tr->translate("NUM");?>&nbsp;</th>
-				                    <th><?php echo $tr->translate("Vehicle Id");?></th>
-				                    <th><?php echo $tr->translate("Frame ID");?></th>
-				                    <th><?php echo $tr->translate("Tax");?></th>
-				                    <th><?php echo $tr->translate("Package Name");?></th>
-				                    <th><?php echo $tr->translate("Price");?></th>
-				                    <th><?php echo $tr->translate("One Hour");?></th>
-				                    <th><?php echo $tr->translate("Max Hour");?></th>
-				                    <th><?php echo $tr->translate("Note");?></th>
-				                    <th><?php echo $tr->translate("Status");?></th>
+				                 <tr class="header">
+				                    <td>&nbsp;<?php echo $tr->translate("NUM");?>&nbsp;</td>
+				                    <td><?php echo $tr->translate("Vehicle Id");?></td>
+				                    <td><?php echo $tr->translate("Frame ID");?></td>
+				                    <td><?php echo $tr->translate("Tax");?></td>
+				                    <td><?php echo $tr->translate("Package Name");?></td>
+				                    <td><?php echo $tr->translate("Price");?></td>
+				                    <td><?php echo $tr->translate("One Hour");?></td>
+				                    <td><?php echo $tr->translate("Max Hour");?></td>
+				                    <td><?php echo $tr->translate("Note");?></td>
+				                    <td><?php echo $tr->translate("Status");?></td>
 				                </tr>
 				               <?php 
 				               if(!empty($this->rows)) foreach($this->rows as $key =>$row){?>
-				              
-									<tr align="center" style="line-height: 18px;">
-									
+									<tr align="center" style="line-height: 18px; background: #fff;">
 										<td>&nbsp;<?php echo $key+1; ?>&nbsp;</td>
 										<td align="left">&nbsp;<?php echo $row['vehicle_id']; ?>&nbsp;</td>
 										<td align="left">&nbsp;<?php echo $row['frame_id'];?>&nbsp;</td>
@@ -66,7 +79,6 @@ $url_client = $this->url(array('module'=>'report','controller'=>'loan','action'=
 										<td style="white-space:nowrap; text-align: right;">&nbsp;<?php echo $row['max_hour'] ?>&nbsp;</td>
 										<td style="white-space:nowrap;">&nbsp;<?php echo $row['note']; ?>&nbsp;</td>
 										<td style="white-space:nowrap;">&nbsp;<?php echo $row['status'] ?>&nbsp;</td>
-										
 									</tr>
 								<?php }?>
 				            </table>

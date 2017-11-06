@@ -32,7 +32,7 @@ class Report_Model_DbTable_DbSale extends Zend_Db_Table_Abstract
 		$where ="";
 		if($search["adv_search"]!=""){
 			$s_where = array();
-      		$s_search = addslashes(trim($data['adv_search']));
+      		$s_search = addslashes(trim($search['adv_search']));
       		$s_where[] = " a.ag_code LIKE '%{$s_search}%'";
       		$s_where[] = " v.licence_plate LIKE '%{$s_search}%'";
       		$s_where[] = " o_name LIKE '%{$s_search}%'";
@@ -43,7 +43,7 @@ class Report_Model_DbTable_DbSale extends Zend_Db_Table_Abstract
       		$where .=' AND '.implode(' OR ',$s_where).'';
 		}
 		
-		if($search["status"]!=""){
+		if(!empty($search["status"])){
 			$where.=" AND a.`status` =".$search["status"];
 		}
 		$order= " ORDER BY id DESC";

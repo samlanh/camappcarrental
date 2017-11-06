@@ -39,7 +39,7 @@ class Report_Model_DbTable_DbGuide extends Zend_Db_Table_Abstract
 //       	echo sql.$where.$order;
       	return $db->fetchAll($sql.$where.$order);
       }
-      public function getGuidePrice(){//rpt-loan-released/
+      public function getGuidePrice($search){//rpt-loan-released/
       	$db = $this->getAdapter();
       	$sql = "SELECT id,driver_id,first_name,last_name,
       	(SELECT name_en FROM `ldc_view` WHERE TYPE=1 AND key_code =ldc_driver.`sex`) AS sex ,tel,
@@ -48,11 +48,22 @@ class Report_Model_DbTable_DbGuide extends Zend_Db_Table_Abstract
       	p_normalprice,p_weekendprice,p_holidayprice,p_otprice,
       	(SELECT name_en FROM `ldc_view` WHERE TYPE=2 AND key_code =ldc_driver.`status`) AS status
       	FROM ldc_driver ";
-      	$where = ' WHERE status=1 ';
+      	$where = ' WHERE 1 AND status=1 ';
+      	if (!empty($search['adv_search'])){
+      		$s_where = array();
+      		$s_search = addslashes(trim($search['adv_search']));
+      		
+      		$s_where[] = " first_name LIKE '%{$s_search}%'";
+      		$s_where[] = " last_name LIKE '%{$s_search}%'";
+      		$s_where[] = " sex LIKE '%{$s_search}%'";
+      		$s_where[] = " tel LIKE '%{$s_search}%'";
+      		
+      		$where .=' AND ('.implode(' OR ',$s_where).')';
+      	}
       	$order=' ORDER BY id DESC';
       	return $db->fetchAll($sql.$where.$order);
       }
-      function getAllVehicleInfo(){
+      function getAllVehicleInfo($search){
       	$db=$this->getAdapter();
       	$where =" ";
       	$sql="SELECT v.id,v.reffer,v.frame_no,v.licence_plate,v.`year`,max_weight,seat_amount,org_cost,
@@ -64,11 +75,29 @@ class Report_Model_DbTable_DbGuide extends Zend_Db_Table_Abstract
       	(SELECT `type` FROM ldc_type AS t WHERE t.id=v.type) AS `type`,
       	(SELECT t.title FROM `ldc_vechicletye` AS t WHERE t.id=v.car_type) AS car_type,
       	(SELECT name_en FROM `ldc_view` WHERE TYPE=2 AND key_code =v.`status`) AS status
-      	FROM ldc_vehicle AS v  WHERE  v.status=1 ";
+      	FROM ldc_vehicle AS v  WHERE  1 ";
+      	if ($search['status']>-1){
+      		$where .=' AND v.`status` = '.$search['status'];
+      	}
+      	if (!empty($search['adv_search'])){
+      		$s_where = array();
+      		$s_search = addslashes(trim($search['adv_search']));
+      	
+      		$s_where[] = " reffer LIKE '%{$s_search}%'";
+      		$s_where[] = " frame_no LIKE '%{$s_search}%'";
+      		$s_where[] = " licence_plate LIKE '%{$s_search}%'";
+      		$s_where[] = " year LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT title FROM ldc_make WHERE id=v.make_id) LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT title FROM ldc_model WHERE id=v.model_id) LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT title FROM ldc_submodel WHERE id=v.sub_model) LIKE '%{$s_search}%'";
+      		
+      		$where .=' AND ('.implode(' OR ',$s_where).')';
+      	}
+    
       	$order = " GROUP BY v.id ORDER BY v.id DESC";
       	return $db->fetchAll($sql.$where.$order);
       }
-      function getAllVehiclePrice(){
+      function getAllVehiclePrice($search){
       	$db=$this->getAdapter();
       	$where =" ";
       	$sql="SELECT v.id,v.reffer,v.frame_no,v.licence_plate,
@@ -80,19 +109,47 @@ class Report_Model_DbTable_DbGuide extends Zend_Db_Table_Abstract
          d.price,d.extraprice,d.vat_value,d.note,
          (SELECT day_title FROM `ldc_rankday` WHERE id=d.packageday_id LIMIT 1) As package_name,
       	(SELECT name_en FROM `ldc_view` WHERE TYPE=2 AND key_code =v.`status`) AS status
-      	FROM ldc_vehicle AS v,ldc_vehiclefee_detail AS d   WHERE v.id=d.vehicle_id AND v.status=1 ";
+      	FROM ldc_vehicle AS v,ldc_vehiclefee_detail AS d   WHERE v.id=d.vehicle_id ";
       	$order = " GROUP BY v.id ORDER BY v.id DESC";
+      	
+      	if (!empty($search['adv_search'])){
+      		$s_where = array();
+      		$s_search = addslashes(trim($search['adv_search']));
+      		 
+      		$s_where[] = " v.reffer LIKE '%{$s_search}%'";
+      		$s_where[] = " v.frame_no LIKE '%{$s_search}%'";
+      		$s_where[] = " v.licence_plate LIKE '%{$s_search}%'";
+      		$s_where[] = " v.`year` LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT title FROM ldc_make WHERE id=v.make_id) LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT title FROM ldc_model WHERE id=v.model_id) LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT title FROM ldc_submodel WHERE id=v.sub_model) LIKE '%{$s_search}%'";
+      		$where .=' AND ('.implode(' OR ',$s_where).')';
+      	}
+      	if ($search['status']>-1){
+      		$where .=' AND v.`status` = '.$search['status'];
+      	}
       	return $db->fetchAll($sql.$where.$order);
       }
-      function getAllVehicleTaxiTour(){
+      function getAllVehicleTaxiTour($search){
       	$sql="SELECT vehicle_id As id,(SELECT reffer FROM ldc_vehicle WHERE id=vehicle_id) AS vehicle_id,
       	(SELECT frame_no FROM ldc_vehicle WHERE id=frame_id) AS frame_id,
       	(SELECT CONCAT(title,'( ',value,'%)') FROM ldc_tax WHERE value=tax) AS tax,
       	(SELECT location_name FROM ldc_package_location WHERE id=package_id ) AS package_id,
-      	price,one_hour,max_hour,note,`status`
-      	FROM ldc_vehicletaxitour WHERE `status` = 1";
+      	price,one_hour,max_hour,note,
+      	(SELECT name_en FROM `ldc_view` WHERE TYPE=2 AND key_code =status) AS status
+      	FROM ldc_vehicletaxitour WHERE `status` = 1 ";
+      	$where='';
+      	if (!empty($search['adv_search'])){
+      		$s_where = array();
+      		$s_search = addslashes(trim($search['adv_search']));
+      		$s_where[] = " (SELECT reffer FROM ldc_vehicle WHERE id=vehicle_id) LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT frame_no FROM ldc_vehicle WHERE id=frame_id) LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT location_name FROM ldc_package_location WHERE id=package_id ) LIKE '%{$s_search}%'";
+      		$s_where[] = " price LIKE '%{$s_search}%'";
+      		$where .=' AND ('.implode(' OR ',$s_where).')';
+      	}
       	$order=' ORDER BY id DESC';
-      	return $this->getAdapter()->fetchAll($sql.$order);
+      	return $this->getAdapter()->fetchAll($sql.$where.$order);
       }
       function getAllServicePrice(){
       	$sql="SELECT id,service_title,description,photo,price,`status`FROM ldc_serviceprice WHERE 1";
@@ -100,7 +157,7 @@ class Report_Model_DbTable_DbGuide extends Zend_Db_Table_Abstract
       	$order=" ORDER BY  id DESC";
       	return $db->fetchAll($sql.$order);
       }
-      function getAllCarprice(){
+      function getAllCarprice($search){
       	$sql="SELECT vehicle_id As id,(SELECT reffer FROM ldc_vehicle WHERE id=vehicle_id) AS vehicle_id,
       	(SELECT frame_no FROM ldc_vehicle WHERE id=ldc_pickupcarprice.frame_no) As frame_no,
       	(SELECT CONCAT(title,'( ',value,'%)') FROM ldc_tax WHERE value=tax) AS tax,
@@ -108,7 +165,19 @@ class Report_Model_DbTable_DbGuide extends Zend_Db_Table_Abstract
       	(SELECT location_name FROM ldc_package_location WHERE id=to_location ) AS to_location,price,note,`status`
       	FROM ldc_pickupcarprice WHERE `status`=1";
       	$order=' ORDER BY id DESC';
-      	return $this->getAdapter()->fetchAll($sql.$order);
+      	$where='';
+      	if (!empty($search['adv_search'])){
+      		$s_where = array();
+      		$s_search = addslashes(trim($search['adv_search']));
+      		 
+      		$s_where[] = " (SELECT reffer FROM ldc_vehicle WHERE id=vehicle_id) LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT frame_no FROM ldc_vehicle WHERE id=ldc_pickupcarprice.frame_no) LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT location_name FROM ldc_package_location WHERE id=form_location ) LIKE '%{$s_search}%'";
+      		$s_where[] = " (SELECT location_name FROM ldc_package_location WHERE id=to_location ) LIKE '%{$s_search}%'";
+      		$s_where[] = " price LIKE '%{$s_search}%'";
+      		$where .=' AND ('.implode(' OR ',$s_where).')';
+      	}
+      	return $this->getAdapter()->fetchAll($sql.$where.$order);
       }
       function getAllVehicleTaxi(){
       	$sql="SELECT 
