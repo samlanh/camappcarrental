@@ -3,7 +3,11 @@
 	$this->headTitle($tr->translate("USER_TYPE")); 
 	echo $this->headTitle();
 ?>	
- <div class="title_left">
- 	<h3><?php echo $tr->translate("USER_TYPE")?></h3>
- </div>
-<?php echo $this->list;?>
+<div class="row">
+	<div class="x_panel" >
+		 <div class="title_left">
+		 	<h3><?php echo $tr->translate("USER_TYPE")?></h3>
+		 </div>
+		<?php echo $this->list;?>
+	</div>
+</div>
