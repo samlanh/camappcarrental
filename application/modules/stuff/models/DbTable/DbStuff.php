@@ -16,43 +16,45 @@ class Stuff_Model_DbTable_DbStuff extends Zend_Db_Table_Abstract
 
     		$adapter = new Zend_File_Transfer_Adapter_Http();
     		$part= PUBLIC_PATH.'/images/product/';
-    		$adapter->setDestination($part);
-    		$adapter->receive();
     		
-    		$photo = $adapter->getFileInfo();
-    		if(!empty($photo['front_Veiw']['name'])){
-    			$_data['front_Veiw']=$photo['front_Veiw']['name'];
-    		}else{
-    			$_data['front_Veiw']='';
+    		$identity = $_data['identity'];
+    		$ids = explode(',', $identity);
+    		$image_feature="";
+    		$image_list="";
+    		$set_image_fea =0;
+    		foreach ($ids as $i){
+    			$name = $_FILES['photo'.$i]['name'];
+    			if (!empty($name)){
+    				$ss = 	explode(".", $name);
+    				//if(in_array($ext,$valid_formats)) {
+    				$image_name = 'car_'.date("Y").date("m").date("d").time().$i.".".end($ss);
+    				$tmp = $_FILES['photo'.$i]['tmp_name'];
+    				if(move_uploaded_file($tmp, $part.$image_name)){
+    					$photo = $image_name;
+    				}
+    				else
+    					$string = "Image Upload failed";
+    				if ($set_image_fea==0){
+    					$image_feature = $image_name;
+    					$set_image_fea=1;
+    				}
+    				if (empty($image_list )){
+    					$image_list=$image_name;
+    				}else{$image_list = $image_list.",".$image_name;
+    				}
+    			}
     		}
-    		
-    		if(!empty($photo['Front_Right']['name'])){
-    			$_data['Front_Right']=$photo['Front_Right']['name'];
-    		}else{
-    			$_data['Front_Right']='';
-    		}
-    		 
-    		if(!empty($photo['front_left']['name'])){
-    			$_data['front_left']=$photo['front_left']['name'];
-    		}else{
-    			$_data['front_left']='';
-    		}
-    		 
-    		if(!empty($photo['rear_left']['name'])){
-    			$_data['rear_left']=$photo['rear_left']['name'];
-    		}else{
-    			$_data['rear_left']='';
-    		}
-    		 
 	    	$_arr = array(
 	    			'equipment_name'=>$_data['Eq_name'],
 	    			'reference_no'=>$_data['Referent'],
 	    			'url'=>$_data['Url'],
 	    			'status'=>$_data['status'],
-	    			'photo_front'=>$_data['front_Veiw'],
-	    			'photo_front_right'=>$_data['Front_Right'],
-	    			'photo_front_left'=>$_data['front_left'],
-	    			'photo_rear_left'=>$_data['rear_left'],
+	    			'images_list'=>$image_list,
+	    			'photo_front'=>$image_feature,
+// 	    			'photo_front'=>$_data['front_Veiw'],
+// 	    			'photo_front_right'=>$_data['Front_Right'],
+// 	    			'photo_front_left'=>$_data['front_left'],
+// 	    			'photo_rear_left'=>$_data['rear_left'],
 	    			'year'=>$_data['year'],
 	    			'color'=>$_data['color'],
 	    			'model'=>$_data['model'],
@@ -93,43 +95,48 @@ class Stuff_Model_DbTable_DbStuff extends Zend_Db_Table_Abstract
       	try{
       		$adapter = new Zend_File_Transfer_Adapter_Http();
       		$part= PUBLIC_PATH.'/images/product/';
-      		$adapter->setDestination($part);
-      		$adapter->receive();
-      		
-      		$photo = $adapter->getFileInfo();
-      		if(!empty($photo['front_Veiw']['name'])){
-      			$_data['front_Veiw']=$photo['front_Veiw']['name'];
-      		}else{
-      			$_data['front_Veiw']=$_data['old_front_Veiw'];
-      		}
-      		
-      		if(!empty($photo['Front_Right']['name'])){
-      			$_data['Front_Right']=$photo['Front_Right']['name'];
-      		}else{
-      			$_data['Front_Right']=$_data['old_Front_Right'];
-      		}
-      		 
-      		if(!empty($photo['front_left']['name'])){
-      			$_data['front_left']=$photo['front_left']['name'];
-      		}else{
-      			$_data['front_left']=$_data['old_Front_Right'];
-      		}
-      		 
-      		if(!empty($photo['rear_left']['name'])){
-      			$_data['rear_left']=$photo['rear_left']['name'];
-      		}else{
-      			$_data['rear_left']=$_data['old_Front_Right'];
-      		}
+	      	$identity = $_data['identity'];
+	    	$ids = explode(',', $identity);
+	    	$image_feature="";
+	    	$image_list="";
+	    	$set_image_fea =0;
+	    	foreach ($ids as $i){
+	    			$name = $_FILES['photo'.$i]['name'];
+	    			if (!empty($name)){
+	    				$ss = 	explode(".", $name);
+	    				$image_name = 'car_'.date("Y").time().$i.".".end($ss);
+	    				$tmp = $_FILES['photo'.$i]['tmp_name'];
+	    				if(move_uploaded_file($tmp, $part.$image_name)){
+	    					$photo = $image_name;
+	    				}
+	    				else
+	    					$string = "Image Upload failed";
+		    				
+	    			}else{
+	    				$image_name = $_data['old_photo'.$i];
+	    			}
+	    			
+	    			if ($set_image_fea==0){
+	    				$image_feature = $image_name;
+	    				$set_image_fea=1;
+	    			}
+	    			if (empty($image_list )){
+	    				$image_list=$image_name;
+	    			}else{$image_list = $image_list.",".$image_name;
+	    			}
+    		}
       		
       		$_arr = array(
       				'equipment_name'=>$_data['Eq_name'],
       				'reference_no'=>$_data['Referent'],
       				'url'=>$_data['Url'],
       				'status'=>$_data['status'],
-      				'photo_front'=>$_data['front_Veiw'],
-      				'photo_front_right'=>$_data['Front_Right'],
-      				'photo_front_left'=>$_data['front_left'],
-      				'photo_rear_left'=>$_data['rear_left'],
+      				'images_list'=>$image_list,
+	    			'photo_front'=>$image_feature,
+// 	    			'photo_front'=>$_data['front_Veiw'],
+// 	    			'photo_front_right'=>$_data['Front_Right'],
+// 	    			'photo_front_left'=>$_data['front_left'],
+// 	    			'photo_rear_left'=>$_data['rear_left'],
       				'year'=>$_data['year'],
       				'color'=>$_data['color'],
       				'model'=>$_data['model'],
@@ -168,7 +175,7 @@ class Stuff_Model_DbTable_DbStuff extends Zend_Db_Table_Abstract
       }
       function getAllStuff(){
       	$db = $this->getAdapter();
-      	$sql = " SELECT `id`,`equipment_name`,`reference_no`,`year`,model,serial_no,telephone_num,`status` FROM ldc_stuff";
+      	$sql = " SELECT `id`,`equipment_name`,`reference_no`,`year`,model,serial_no,telephone_num,`status` FROM ldc_stuff ORDER BY id DESC";
       	return $db->fetchAll($sql);
       }
       function getAllStuffInFrontend(){
