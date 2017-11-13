@@ -5,7 +5,7 @@ class Driverguide_Model_DbTable_DbServicePrice extends Zend_Db_Table_Abstract
 
     protected $_name = 'ldc_serviceprice';
     public function getUserId(){
-    	$session_user=new Zend_Session_Namespace('auth');
+    	$session_user=new Zend_Session_Namespace('authcar');
     	return $session_user->user_id;
     
     }

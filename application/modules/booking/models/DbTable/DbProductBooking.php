@@ -263,7 +263,7 @@ class Booking_Model_DbTable_DbProductBooking extends Zend_Db_Table_Abstract
     public function addProductRental($data){
     	$db = $this->getAdapter();
     	$db->beginTransaction();
-    	$session_user=new Zend_Session_Namespace('auth');
+    	$session_user=new Zend_Session_Namespace('authcar');
     	$user_id = $session_user->user_id;
     	try{
     		$session =new Zend_Session_Namespace('Productlbooking');

@@ -8,7 +8,7 @@
 	
 	$dbuser = new Application_Model_DbTable_DbUsers();
 	
-	$session_user=new Zend_Session_Namespace('auth');
+	$session_user=new Zend_Session_Namespace('authcar');
 	$arr_module = $session_user->arr_acl;
 	$username = $session_user->first_name;
 	$userinfo="";

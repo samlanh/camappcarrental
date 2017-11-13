@@ -5,7 +5,7 @@ class agreement_Model_DbTable_DbAgreement extends Zend_Db_Table_Abstract
 
     protected $_name = 'ldc_vehicleagreement';
     public function getUserId(){
-    	$session_user=new Zend_Session_Namespace('auth');
+    	$session_user=new Zend_Session_Namespace('authcar');
     	return $session_user->user_id;
     }
     public function getSystemSetting($keycode){

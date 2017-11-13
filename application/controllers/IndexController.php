@@ -75,7 +75,7 @@ class IndexController extends Zend_Controller_Action
     function administratorAction(){
 		// action body
         /* set this to login page to change the character charset of browsers to Utf-8  ...*/ 
-    	$session_user=new Zend_Session_Namespace('auth');
+    	$session_user=new Zend_Session_Namespace('authcar');
     	if (!empty($session_user->user_id)){
     		$this->_redirect("/menu-manager/menu-items");
     	}
@@ -182,7 +182,7 @@ class IndexController extends Zend_Controller_Action
         if($this->getRequest()->getParam('value')==1){        	
         	$aut=Zend_Auth::getInstance();
         	$aut->clearIdentity();        	
-        	$session_user=new Zend_Session_Namespace('auth');
+        	$session_user=new Zend_Session_Namespace('authcar');
         	
         	$log=new Application_Model_DbTable_DbUserLog();
 			$log->insertLogout($session_user->user_id);
@@ -199,7 +199,7 @@ class IndexController extends Zend_Controller_Action
     {
         // action body
         if ($this->getRequest()->isPost()){ 
-			$session_user=new Zend_Session_Namespace('auth');    		
+			$session_user=new Zend_Session_Namespace('authcar');    		
     		$pass_data=$this->getRequest()->getPost();
     		if ($pass_data['password'] == $session_user->pwd){
     			    			 

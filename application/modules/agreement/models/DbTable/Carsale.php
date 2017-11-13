@@ -51,7 +51,7 @@ class agreement_Model_DbTable_Carsale extends Zend_Db_Table_Abstract
     }
     
     public function getUserId(){
-    	$session_user=new Zend_Session_Namespace('auth');
+    	$session_user=new Zend_Session_Namespace('authcar');
     	return $session_user->user_id;
     }
     function getIdNamecustomer(){
