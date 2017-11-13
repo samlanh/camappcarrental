@@ -12,83 +12,39 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     function addVehicle($data){
 //     	print_r($data);exit();
     	$adapter = new Zend_File_Transfer_Adapter_Http();
-    	$part= PUBLIC_PATH.'/images/vehicle';
+    	$part= PUBLIC_PATH.'/images/vehicle/';
     	$adapter->setDestination($part);
     	$adapter->receive();
     	$photo = $adapter->getFileInfo();
     	
-    	if(!empty($photo['front']['name'])){
-    		$data['front']=$photo['front']['name'];
-    	}else{
-    		$data['front']='';
-    	}
     	
-    	if(!empty($photo['front_right']['name'])){
-    		$data['front_right']=$photo['front_right']['name'];
-    	}else{
-    		$data['front_right']='';
+    	$identity = $data['identity'];
+    	$ids = explode(',', $identity);
+    	$image_feature="";
+    	$image_list="";
+    	$set_image_fea =0;
+    	foreach ($ids as $i){
+    		$name = $_FILES['photo'.$i]['name'];
+    		if (!empty($name)){
+    			$ss = 	explode(".", $name);
+    			//if(in_array($ext,$valid_formats)) {
+    			$image_name = 'car_'.date("Y").date("m").date("d").time().$i.".".end($ss);
+    			$tmp = $_FILES['photo'.$i]['tmp_name'];
+    			if(move_uploaded_file($tmp, $part.$image_name)){
+    				$photo = $image_name;
+    			}
+    			else
+    				$string = "Image Upload failed";
+    			if ($set_image_fea==0){
+    				$image_feature = $image_name;
+    				$set_image_fea=1;
+    			}
+    			if (empty($image_list )){
+    				$image_list=$image_name;
+    			}else{$image_list = $image_list.",".$image_name;
+    			}
+    		}
     	}
-    	
-    	if(!empty($photo['side_right']['name'])){
-    		$data['img_sr']=$photo['side_right']['name'];
-    	}else{
-    		$data['img_sr']='';
-    	}
-    	
-    	if(!empty($photo['rear_right']['name'])){
-    		$data['rear_right']=$photo['rear_right']['name'];
-    	}else{
-    		$data['rear_right']="";
-    	}
-    	
-    	if(!empty($photo['img_rear']['name'])){
-    		$data['img_rear']=$photo['img_rear']['name'];
-    	}else{
-    		$data['img_rear']="";
-    	}
-    	
-    	if(!empty($photo['front_left']['name'])){
-    		$data['front_left']=$photo['front_left']['name'];
-    	}else{
-    		$data['front_left']="";
-    	}
-    	
-    	if(!empty($photo['rear_left']['name'])){
-    		$data['rear_left']=$photo['rear_left']['name'];
-    	}else{
-    		$data['rear_left']="";
-    	}
-    	
-    	if(!empty($photo['side_left']['name'])){
-    		$data['side_left']=$photo['side_left']['name'];
-    	}else{
-    		$data['side_left']="";
-    	}
-    	
-    	if(!empty($photo['seat']['name'])){
-    		$data['seat']=$photo['seat']['name'];
-    	}else{
-    		$data['seat']="";
-    	}
-    	
-    	if(!empty($photo['passenger']['name'])){
-    		$data['passenger']=$photo['passenger']['name'];
-    	}else{
-    		$data['passenger']="";
-    	}
-    	 
-    	if(!empty($photo['trunk']['name'])){
-    		$data['trunk']=$photo['trunk']['name'];
-    	}else{
-    		$data['trunk']="";
-    	}
-    	
-    	if(!empty($photo['luggage']['name'])){
-    		$data['img_luggage']=$photo['luggage']['name'];
-    	}else{
-    		$data['img_luggage']="";
-    	}
-    	
     	
     	$_arr = array(
     			'reffer'=>$data['vehicle_ref_no'],
@@ -133,18 +89,20 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     			'sale_price'=>$data['sale_price'],
     			'description_sale'=>$data['desc_sale'],
     			
-    			'img_front'=>$data['front'],
-    			'img_front_right'=>$data['front_right'],
-    			'img_sr'=>$data['img_sr'],
-    			'img_rear_right'=>$data['rear_right'],
-    			'img_rear'=>$data['img_rear'],
-    			'img_rear_left'=>$data['rear_left'],
-    			'img_sl'=>$data['side_left'],
-    			'img_front_left'=>$data['front_left'],
-    			'img_seat'=>$data['seat'],
-    			'img_passenger'=>$data['passenger'],
-    			'img_trunk'=>$data['trunk'],
-    			'img_luggage'=>$data['img_luggage'],
+    			'images_list'=>$image_list,
+    			'img_front'=>$image_feature,
+//     			'img_front'=>$data['front'],
+//     			'img_front_right'=>$data['front_right'],
+//     			'img_sr'=>$data['img_sr'],
+//     			'img_rear_right'=>$data['rear_right'],
+//     			'img_rear'=>$data['img_rear'],
+//     			'img_rear_left'=>$data['rear_left'],
+//     			'img_sl'=>$data['side_left'],
+//     			'img_front_left'=>$data['front_left'],
+//     			'img_seat'=>$data['seat'],
+//     			'img_passenger'=>$data['passenger'],
+//     			'img_trunk'=>$data['trunk'],
+//     			'img_luggage'=>$data['img_luggage'],
     			
     			'user_id'=>$this->getUserId(),
     			);
@@ -154,84 +112,37 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     public function updateVehicle($data){
     	
     	$adapter = new Zend_File_Transfer_Adapter_Http();
-    	$part= PUBLIC_PATH.'/images/vehicle';
-    	$adapter->setDestination($part);
-    	$adapter->receive();
-    	
-    	$photo = $adapter->getFileInfo();
-    	
-    	
-    	if(!empty($photo['front']['name'])){
-    		$data['front']=$photo['front']['name'];
-    	}else{
-    		$data['front']=$data['old_front'];
-    	}
-    	 
-    	if(!empty($photo['front_right']['name'])){
-    		$data['front_right']=$photo['front_right']['name'];
-    	}else{
-    		$data['front_right']=$data['old_front_right'];
-    	}
-    	 
-    	if(!empty($photo['side_right']['name'])){
-    		$data['img_sr']=$photo['side_right']['name'];
-    	}else{
-    		$data['img_sr']=$data['old_side_right'];
-    	}
-    	 
-    	if(!empty($photo['rear_right']['name'])){
-    		$data['rear_right']=$photo['rear_right']['name'];
-    	}else{
-    		$data['rear_right']=$data['old_rear_right'];
-    	}
-    	 
-    	if(!empty($photo['img_rear']['name'])){
-    		$data['img_rear']=$photo['img_rear']['name'];
-    	}else{
-    		$data['img_rear']=$data['old_img_rear'];
-    	}
-    	 
-    	if(!empty($photo['front_left']['name'])){
-    		$data['front_left']=$photo['front_left']['name'];
-    	}else{
-    		$data['front_left']=$data['old_front_left'];
-    	}
-    	 
-    	if(!empty($photo['rear_left']['name'])){
-    		$data['rear_left']=$photo['rear_left']['name'];
-    	}else{
-    		$data['rear_left']=$data['old_rear_left'];
-    	}
-    	 
-    	if(!empty($photo['side_left']['name'])){
-    		$data['side_left']=$photo['side_left']['name'];
-    	}else{
-    		$data['side_left']=$data['old_side_left'];
-    	}
-    	 
-    	if(!empty($photo['seat']['name'])){
-    		$data['seat']=$photo['seat']['name'];
-    	}else{
-    		$data['seat']=$data['old_seat'];
-    	}
-    	 
-    	if(!empty($photo['passenger']['name'])){
-    		$data['passenger']=$photo['passenger']['name'];
-    	}else{
-    		$data['passenger']=$data['old_passenger'];
-    	}
-    	
-    	if(!empty($photo['trunk']['name'])){
-    		$data['trunk']=$photo['trunk']['name'];
-    	}else{
-    		$data['trunk']=$data['old_trunk'];
-    	}
-    	 
-    	if(!empty($photo['luggage']['name'])){
-    		$data['img_luggage']=$photo['luggage']['name'];
-    	}else{
-    		$data['img_luggage']=$data['old_luggage'];
-    	}
+    	$part= PUBLIC_PATH.'/images/vehicle/';
+    	$identity = $data['identity'];
+    	$ids = explode(',', $identity);
+    	$image_feature="";
+    	$image_list="";
+    	$set_image_fea =0;
+    	foreach ($ids as $i){
+    			$name = $_FILES['photo'.$i]['name'];
+    			if (!empty($name)){
+    				$ss = 	explode(".", $name);
+    				$image_name = 'car_'.date("Y").time().$i.".".end($ss);
+    				$tmp = $_FILES['photo'.$i]['tmp_name'];
+    				if(move_uploaded_file($tmp, $part.$image_name)){
+    					$photo = $image_name;
+    				}
+    				else
+    					$string = "Image Upload failed";
+	    				
+    			}else{
+    				$image_name = $data['old_photo'.$i];
+    			}
+    			
+    			if ($set_image_fea==0){
+    				$image_feature = $image_name;
+    				$set_image_fea=1;
+    			}
+    			if (empty($image_list )){
+    				$image_list=$image_name;
+    			}else{$image_list = $image_list.",".$image_name;
+    			}
+    		}
     	
     	$_arr = array(
     			'reffer'=>$data['vehicle_ref_no'],
@@ -271,19 +182,20 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     			'is_sale'=>!empty($data['is_sale'])?1:0,
     			'sale_price'=>$data['sale_price'],
     			'description_sale'=>$data['desc_sale'],
-    			
-    			'img_front'=>$data['front'],
-    			'img_front_right'=>$data['front_right'],
-    			'img_sr'=>$data['img_sr'],
-    			'img_rear_right'=>$data['rear_right'],
-    			'img_rear'=>$data['img_rear'],
-    			'img_rear_left'=>$data['rear_left'],
-    			'img_sl'=>$data['side_left'],
-    			'img_front_left'=>$data['front_left'],
-    			'img_seat'=>$data['seat'],
-    			'img_passenger'=>$data['passenger'],
-    			'img_trunk'=>$data['trunk'],
-    			'img_luggage'=>$data['img_luggage'],
+    			'images_list'=>$image_list,
+    			'img_front'=>$image_feature,
+//     			'img_front'=>$data['front'],
+//     			'img_front_right'=>$data['front_right'],
+//     			'img_sr'=>$data['img_sr'],
+//     			'img_rear_right'=>$data['rear_right'],
+//     			'img_rear'=>$data['img_rear'],
+//     			'img_rear_left'=>$data['rear_left'],
+//     			'img_sl'=>$data['side_left'],
+//     			'img_front_left'=>$data['front_left'],
+//     			'img_seat'=>$data['seat'],
+//     			'img_passenger'=>$data['passenger'],
+//     			'img_trunk'=>$data['trunk'],
+//     			'img_luggage'=>$data['img_luggage'],
     			
     			'user_id'=>$this->getUserId(),
     			);
