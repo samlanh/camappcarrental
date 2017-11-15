@@ -1,7 +1,7 @@
 <?php $tr = Application_Form_FrmLanguages::getCurrentlanguage();?>
 <?php
 	$tr = Application_Form_FrmLanguages::getCurrentlanguage();
-	echo $this->headTitle($tr->translate("Customer List"));
+	echo $this->headTitle($tr->translate("CUSTOMERTYPE"));
 ?>	
 <?php $frm =  $this->frm_search;
 ?>
@@ -14,10 +14,10 @@
 <div class="row">
 	<div class="x_panel" >
 		 <div class="blog_form_title">
-		 	<h4><i class="fa fa-users" aria-hidden="true"></i> <?php echo $tr->translate("CUSTOMER")?></h4>
+		 	<h4><i class="fa fa-users" aria-hidden="true"></i> <?php echo $tr->translate("CUSTOMERTYPE")?></h4>
 		 </div>
-		<form id="list" name="list" action="<?php echo $this->url(array('module'=>'group','controller'=>'index','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
-		  <div class="clearfix"></div>
+		<form id="list" name="list" action="" dojoType="dijit.form.Form" method="post">
+			<div class="clearfix"></div>
 			<div class="form-group">
 				<div class="col-md-2 col-xs-12 mg-10">
 		  			<?php echo $frm->getElement("title");?>
@@ -29,7 +29,7 @@
 		  			<button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button>
 		  		</div>
 		  	</div>
-		</form>
 		<?php echo $this->list;?>
+		</form>
 	</div>
 </div>

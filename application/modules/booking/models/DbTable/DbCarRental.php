@@ -4,8 +4,9 @@ class Booking_Model_DbTable_DbCarRental extends Zend_Db_Table_Abstract
 {
 	protected $_name ="ldc_stuff";
 	public static function getUserId(){
-		$session_user=new Zend_Session_Namespace('authcar');
-		return $session_user->user_id;
+		$db = new Application_Model_DbTable_DbGlobal();
+    	$cud = $db->getUserId();
+    	return $cud;
 	
 	}
 	public function init()

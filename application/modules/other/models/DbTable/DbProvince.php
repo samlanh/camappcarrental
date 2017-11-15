@@ -5,9 +5,9 @@ class Other_Model_DbTable_DbProvince extends Zend_Db_Table_Abstract
 
     protected $_name = 'ln_province';
     public function getUserId(){
-    	$session_user=new Zend_Session_Namespace('authcar');
-    	return $session_user->user_id;
-    	 
+    	$db = new Application_Model_DbTable_DbGlobal();
+    	$cud = $db->getUserId();
+    	return $cud;
     }
     public function addNewProvince($_data){
     	$_arr=array(

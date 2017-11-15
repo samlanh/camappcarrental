@@ -51,8 +51,9 @@ class agreement_Model_DbTable_Carsale extends Zend_Db_Table_Abstract
     }
     
     public function getUserId(){
-    	$session_user=new Zend_Session_Namespace('authcar');
-    	return $session_user->user_id;
+    	$db = new Application_Model_DbTable_DbGlobal();
+    	$cud = $db->getUserId();
+    	return $cud;
     }
     function getIdNamecustomer(){
     	$sql="SELECT id,customer_code,first_name,last_name FROM ldc_customer WHERE 1";

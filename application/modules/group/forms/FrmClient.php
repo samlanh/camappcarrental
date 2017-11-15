@@ -199,15 +199,17 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 		$_title->setMultiOptions($_status_opt);
 		
 		$customer_type=  new Zend_Dojo_Form_Element_FilteringSelect('customer_type');
-		$customer_type->setAttribs(array('dojoType'=>'dijit.form.FilteringSelect','class'=>'fullside',));
-		$_status_opt = array(
-				1=>$this->tr->translate("Personal"),
-				2=>$this->tr->translate("Agent"),
-				3=>$this->tr->translate("Organization"),
-				4=>$this->tr->translate("Embassy"),
-				5=>$this->tr->translate("UN Agency"),
-				6=>$this->tr->translate("Tourist"),
-		);
+		$customer_type->setAttribs(
+			array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'class'=>'fullside',
+				'onChange'=>'getPopFormCus();',
+				));
+		$_status_opt = array("0"=>"","-1"=>$this->tr->translate("ADD_NEW"));
+		$customer_opt= $db->getViewsAsName(9);
+		if(!empty($customer_opt))foreach($customer_opt AS $row){
+			$_status_opt[$row['id']]=$row['name'];
+		}
 		$customer_type->setMultiOptions($_status_opt);
 		
 		$nationality = new Zend_Dojo_Form_Element_TextBox('nationality');
@@ -350,6 +352,16 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 				'class'=>'fullside',
 		));
 		
+		$password = new Zend_Dojo_Form_Element_PasswordTextBox('password');
+		$password->setAttribs(array(
+				'dojoType'=>'dijit.form.TextBox',
+				'class'=>'fullside',
+		));
+		$email_login=new Zend_Dojo_Form_Element_TextBox('email_login');
+		$email_login->setAttribs(array(
+				'dojoType'=>'dijit.form.TextBox',
+				'class'=>'fullside',
+		));
 		$old_photo = new Zend_Form_Element_Hidden('old_photo');
 		
 		
@@ -401,9 +413,13 @@ $district->setValue($data['district']);
             $in_phone->setValue($data['i_phone']);
 			$icontry->setValue($data['country']);
 			$_situ_status->setValue($data['status']);
+			$email_login->setValue($data['email_login']);
 		}
 		$this->addElements(array($state,$occupation,$old_photo,$id,$icontry,$in_phone,$in_zipcode,$i_city,$address2,$address1,$customer_type,$commune,$district,$province,$p_issuedate,$p_expireddate,$c_issuedate,$c_expireddate,$f_issuedate,$f_expireddate,$passport,$card_code,$ftb,$company_name,$nationality,$_title,$balance,$fax,$email,$group_num,$country,$_id,$photo,$job,$national_id,$_namekh,$_nameen,$_sex,$_situ_status,
-				$_street,$_id_type,$address,$_phone,$_desc,$_status,$_clientno,$_dob));
+				$_street,$_id_type,$address,$_phone,$_desc,$_status,$_clientno,$_dob,
+				$password,$email_login
+				
+				));
 		return $this;
 		
 	}

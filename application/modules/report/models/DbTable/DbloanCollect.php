@@ -3,10 +3,6 @@ class Report_Model_DbTable_DbloanCollect extends Zend_Db_Table_Abstract
 {
       
        protected  $db_name='ln_loanmember_funddetail';
-//     public function getUserId(){
-//     	$session_user=new Zend_Session_Namespace('authcar');
-//     	return $session_user->user_id;
-//     }
     public function getAllLnClient($search=null){
     	$db=$this->getAdapter();
     	$start_date = $search['start_date'];

@@ -5,8 +5,9 @@ class Stuff_Model_DbTable_DbStuff extends Zend_Db_Table_Abstract
 
     protected $_name = 'ldc_stuff';
     public function getUserId(){
-    	$session_user=new Zend_Session_Namespace('authcar');
-    	return $session_user->user_id;
+    	$db = new Application_Model_DbTable_DbGlobal();
+    	$cud = $db->getUserId();
+    	return $cud;
     }
     function addStuff($_data){
     	

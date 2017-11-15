@@ -18,8 +18,6 @@ class Other_Model_DbTable_DbBranch extends Zend_Db_Table_Abstract
     			'displayby'=>$_data['branch_display'],
     			);
     	$this->insert($_arr);//insert data
-//     	$where = 'id = 1';
-//     	$this->delete($where);
     }
     public function updateBranch($_data,$id){
     	$_arr = array(

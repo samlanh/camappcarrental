@@ -96,5 +96,14 @@ class Vehicle_SubmodelController extends Zend_Controller_Action {
     		exit();
     	}
     }
+    function getModelsearchAction(){//for search on vehicle index
+    	if($this->getRequest()->isPost()){
+    		$data=$this->getRequest()->getPost();
+    		$db = new Vehicle_Model_DbTable_DbModel();
+    		$makes = $db->getAllModelById($data['make_id']);
+    		print_r(Zend_Json::encode($makes));
+    		exit();
+    	}
+    }
 }
 

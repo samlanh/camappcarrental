@@ -15,7 +15,6 @@ class Vehicle_indexController extends Zend_Controller_Action {
 		$db_make = new Vehicle_Model_DbTable_DbVehicle();
 		if($this->getRequest()->isPost()){
 			$search=$this->getRequest()->getPost();
-			//print_r($search);exit();
 		}
 		else{
 			$search = array(
@@ -24,6 +23,8 @@ class Vehicle_indexController extends Zend_Controller_Action {
 					'model'=> -1,
 					'submodel'=> -1,
 					'search_status' =>-1,
+					'vehicle_type'=>-1,
+					'year'=>-1
 					);
 		}
 		$rows=$db_make->getAllVehicle($search);
@@ -34,11 +35,14 @@ class Vehicle_indexController extends Zend_Controller_Action {
 			$link=array(
 					'module'=>'vehicle','controller'=>'index','action'=>'edit',
 			);
-			$this->view->list=$list->getCheckList(0, $collumns, $rows,array('reffer'=>$link,'year'=>$link,'make_id'=>$link,'model_id'=>$link,'sub_model'=>$link,'status'=>$link,'type'=>$link));
+			$this->view->list=$list->getCheckList(0, $collumns, $rows,array('reffer'=>$link,'year'=>$link,'make_id'=>$link,'model_id'=>$link,'sub_model'=>$link,'status'=>$link,'car_type'=>$link));
 		}catch (Exception $e){
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 		}
+		$rows_veh_typ=$db_make->getAllVehicleType();
+		$this->view->rows_veh_typ=$rows_veh_typ;
+		
 		$db = new Application_Model_DbTable_DbGlobal();
 		$model = $db->getAllMake();
 		//array_unshift($model, array ( 'id' => -1, 'name' => 'Selected Make') );
@@ -68,6 +72,10 @@ class Vehicle_indexController extends Zend_Controller_Action {
 		$db=new Vehicle_Model_DbTable_DbVehicle();
 		$rows_engin=$db->getAllEnGince();
 		$this->view->rows_engine=$rows_engin;
+		
+		$rows_enginAsName=$db->getAllEnGinceAsname();
+		$this->view->rows_enginename=$rows_enginAsName;
+		
 		$rows_type=$db->getAllType();
 		$this->view->rows_type=$rows_type;
 		$rows_tran=$db->getAllTransmisstion();
@@ -79,6 +87,10 @@ class Vehicle_indexController extends Zend_Controller_Action {
 		$model = $db->getAllMake();
 		array_unshift($model, array ( 'id' => -1, 'name' => 'បន្ថែម​អ្នក​ទទួល​ថ្មី') );
 		$this->view->all_make=$model;
+		$this->view->rs_tax =$db->getAllTax();
+		
+		$dbGC = new Application_Model_GlobalClass();
+		$this->view->pro_option = $dbGC->getAllPackageDayOption();
 	}
 	function editAction(){
 		if($this->getRequest()->isPost()){
@@ -87,7 +99,8 @@ class Vehicle_indexController extends Zend_Controller_Action {
 				$db_make = new Vehicle_Model_DbTable_DbVehicle();
 				if(isset($data['save_close'])){
 					$db_make->updateVehicle($data);
-					Application_Form_FrmMessage::Sucessfull($this->tr->translate("EDIT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
+					$this->_redirect(self::REDIRECT_URL_ADD_CLOSE);
+					//Application_Form_FrmMessage::Sucessfull($this->tr->translate("EDIT_SUCCESS"),self::REDIRECT_URL_ADD_CLOSE);
 				}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message($this->tr->translate("INSERT_FAIL"));
@@ -101,6 +114,12 @@ class Vehicle_indexController extends Zend_Controller_Action {
 		$this->view->row_vehicle=$rows_v;
 		$rows_engin=$db->getAllEnGince();
 		$this->view->rows_engine=$rows_engin;
+		
+		$this->view->rows = $db->getVehiclePriceById($id);//get car rental price by package
+		
+		$rows_enginAsName=$db->getAllEnGinceAsname();
+		$this->view->rows_enginename=$rows_enginAsName;
+		
 		$rows_type=$db->getAllType();
 		$this->view->rows_type=$rows_type;
 		$rows_tran=$db->getAllTransmisstion();
@@ -112,6 +131,10 @@ class Vehicle_indexController extends Zend_Controller_Action {
 		$model = $db->getAllMake();
 		array_unshift($model, array ( 'id' => -1, 'name' => 'បន្ថែម​អ្នក​ទទួល​ថ្មី') );
 		$this->view->all_make=$model;
+		$this->view->rs_tax =$db->getAllTax();
+		
+		$dbGC = new Application_Model_GlobalClass();
+		$this->view->pro_option = $dbGC->getAllPackageDayOption();
 		
 	}
 	function getSubModelAction(){
@@ -120,6 +143,15 @@ class Vehicle_indexController extends Zend_Controller_Action {
 			$db = new Vehicle_Model_DbTable_DbVehicle();
 			$makes = $db->getAllSubModelById($data['model_id']);
 			array_unshift($makes, array ( 'id' => -1, 'name' => 'បន្ថែមថ្មី') );
+			print_r(Zend_Json::encode($makes));
+			exit();
+		}
+	}
+	function getSubModelsearchAction(){//for search on vehicle index
+		if($this->getRequest()->isPost()){
+			$data=$this->getRequest()->getPost();
+			$db = new Vehicle_Model_DbTable_DbVehicle();
+			$makes = $db->getAllSubModelById($data['model_id']);
 			print_r(Zend_Json::encode($makes));
 			exit();
 		}

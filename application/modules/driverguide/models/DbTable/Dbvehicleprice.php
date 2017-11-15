@@ -63,7 +63,6 @@ class Driverguide_Model_DbTable_Dbvehicleprice extends Zend_Db_Table_Abstract
     		);
     		$this->insert($arr);
     	}
-    	
     }
     function updateVehicleRental($_data){
     	$db = $this->getAdapter();

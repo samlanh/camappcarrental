@@ -40,12 +40,18 @@ fieldset{border: 1px solid #fff;}
  </div>
 <form id='add_client' action="<?php echo $this->url(array('module'=>'group','controller'=>'index','action'=>'edit')); ?>" enctype="multipart/form-data" dojoType="dijit.form.Form" method="post">
 	<script type="dojo/method" event="onSubmit">			
-			if(this.validate()) {
+		if(this.validate()) {
+				customer_type = dijit.byId('customer_type').get('value');
+				if(customer_type<1){
+					alert("<?php echo $tr->translate("Please Select Customer Type")?>");
+					dijit.byId('customer_type').focus(); 
+					return false;
+				}
 				loading();
 				return true;
-			} else {
-				return false;
-			}
+		}else{
+			return false;
+		}
 	</script>
 	<div class="clearfix"></div>
 	<div class="row">
@@ -272,7 +278,7 @@ fieldset{border: 1px solid #fff;}
 	       <div class="col-md-4 col-xs-12 forms_padding">
 	          <div class="x_panel">
 	              <div class="x_title">
-	                 <h2><i class="fa fa-phone" aria-hidden="true"></i> <?php echo $tr->translate('Contact Infomation')?></h2>
+	                 <h2><i class="fa fa-phone" aria-hidden="true"></i> <?php echo $tr->translate('Other Infomation')?></h2>
 	                 <ul class="nav navbar-right panel_toolbox">
 	                    <li>
 	                    	<a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -281,6 +287,35 @@ fieldset{border: 1px solid #fff;}
 	               <div class="clearfix"></div>
 	          	</div>
 	       		<div class="x_content">
+	       			<div class="clearfix"></div>
+	               <div class="title_form_blog">
+		               		<h4><i class="fa  fa-user" aria-hidden="true"></i> <?php echo $tr->translate("Account Information")?></h4>
+		           </div>
+		           <div class="form-group">
+		           		<?php if (empty($this->row['email_login'])){?>
+		                   <label class="control-label col-md-12 col-sm-12 col-xs-12" for="first-name">
+		                  	 <?php echo $tr->translate("Create Account");?> <input type="checkbox" class="checkbox" name="create_acc" id="create_acc" onchange="checkingCreateAccount();" style=" height: initial; display: inline-block;">
+		                   </label>
+	                   <?php }else{?>
+	                   		 <label class="control-label col-md-12 col-sm-12 col-xs-12" for="first-name">
+	                  	 <?php echo $tr->translate("Change Password");?> <input type="checkbox" class="checkbox" name="changepass" id="changepass" onchange="checkingChangePass();" style=" height: initial; display: inline-block;">
+	                   </label>
+	                   <?php }?>
+	                </div>
+		           <div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('Password')?>
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-12">
+	                    	<?php echo $frm->getElement('password');?>
+	                   </div>
+	                </div>
+	                <div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('EMAIL_LOGIN')?>
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-12">
+	                    	<?php echo $frm->getElement('email_login');?>
+	                   </div>
+	                </div>
 	       		   <div class="clearfix"></div>
 	               <div class="title_form_blog">
 		               		<h4><i class="fa  fa-home" aria-hidden="true"></i> <?php echo $tr->translate("Local Contact Information")?></h4>
@@ -428,12 +463,19 @@ fieldset{border: 1px solid #fff;}
 	    </div>
   	</div>	
 </form>
+<script src="<?php echo $this->baseUrl();?>/js/help.js"  type="text/javascript"></script>
 <script type="text/javascript">
 dojo.require("dijit.form.DateTextBox");
+dojo.require("dojo.data.ItemFileWriteStore");  
+require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 dojo.ready(function(){
 	
 	try{	
-	
+		<?php if (empty($this->row['email_login'])){?>
+			checkingCreateAccount();
+		<?php }else{?>
+			checkingChangePass();
+		<?php }?>
 	}catch(e){
 		alert(e);
 	}
@@ -445,4 +487,73 @@ var loadFile = function(event) {
 function showPopupclientdtype(){
 	dijit.byId('frm_clienttype').show();
 }
+function getPopFormCus(){
+	customer_type = dijit.byId('customer_type').get('value');
+	if(customer_type==-1){
+		dijit.byId("pop_customertype").show();
+	}
+}
+var custype_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->custype));?> );
+var url_customerttype = '<?php echo $this->url(array('module'=>'group','controller'=>'customertype','action'=>'addcustomertype')); ?>';
+function addCustometType(){
+	if(dijit.byId('frm_customertype').validate()){
+		dojo.xhrPost({
+			url:url_customerttype,
+			form: dojo.byId("frm_customertype"),
+			handleAs:"json",
+			load: function(data) {
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('txt_make').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('customer_type'), custype_store, Itemmake, data);
+				dijit.byId('frm_customertype').reset();
+				dijit.byId("pop_customertype").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+
+<?php if (empty($this->row['email_login'])){?>
+function checkingCreateAccount(){
+	if($('#create_acc').is(":checked")){
+		dijit.byId('password').reset();
+		dijit.byId('password').set('required',true);
+		dijit.byId('password').disabled=false; 
+		dijit.byId('password').set('readonly',false);
+		
+		dijit.byId('email_login').reset();
+		dijit.byId('email_login').set('required',true);
+		dijit.byId('email_login').set('readonly',false); 
+		dijit.byId('email_login').disabled=false;
+	}else{
+		dijit.byId('password').reset();
+		dijit.byId('password').set('required',false);
+		dijit.byId('password').disabled=true; 
+		dijit.byId('password').set('readonly',true); 
+		
+		dijit.byId('email_login').reset();
+		dijit.byId('email_login').set('required',false);
+		dijit.byId('email_login').disabled=true; 
+		dijit.byId('email_login').set('readonly',true); 
+	}
+}
+<?php }else{?>
+function checkingChangePass(){
+	if($('#changepass').is(":checked")){
+		dijit.byId('password').reset();
+		dijit.byId('password').set('required',true);
+		dijit.byId('password').disabled=false; 
+		dijit.byId('password').set('readonly',false);
+	}else{
+		dijit.byId('password').reset();
+		dijit.byId('password').set('required',false);
+		dijit.byId('password').disabled=true; 
+		dijit.byId('password').set('readonly',true); 
+	}
+}
+<?php }?>
 </script>

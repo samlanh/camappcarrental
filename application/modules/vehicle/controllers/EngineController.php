@@ -83,5 +83,14 @@ class Vehicle_engineController extends Zend_Controller_Action {
 		$status=$db->getViews();
 		$this->view->status_view=$status;
 	}
+	public function addengineAction(){
+		if($this->getRequest()->isPost()){
+			$db = new Vehicle_Model_DbTable_DbEngine();
+			$data = $this->getRequest()->getPost();
+			$id = $db->addEngineAjax($data);
+			print_r(Zend_Json::encode($id));
+			exit();
+		}
+	}
 }
 

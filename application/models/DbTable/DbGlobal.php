@@ -105,6 +105,13 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 		$sql="SELECT key_code,".$array[$lang]." as name_en FROM ldc_view WHERE `type`=$type";
 		return $db->fetchAll($sql);
 	}
+	function getViewsAsName($type=2){
+		$db=$this->getAdapter();
+		$lang= $this->getCurrentLang();
+		$array = array(1=>"name_en",2=>"name_kh");
+		$sql="SELECT key_code as id ,".$array[$lang]." as name FROM ldc_view WHERE `type`=$type";
+		return $db->fetchAll($sql);
+	}
 	public  function getclientdtype(){
 		$db = $this->getAdapter();
 		$lang= $this->getCurrentLang();

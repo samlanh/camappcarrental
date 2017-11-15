@@ -62,9 +62,13 @@ class Group_indexController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 			}
 		}
+		$dbgb = new Application_Model_DbTable_DbGlobal();
+		$customer_opt= $dbgb->getViewsAsName(9);
+		$tr= Application_Form_FrmLanguages::getCurrentlanguage();
+		array_unshift($customer_opt,array('id' => 0,'name' =>"",),array('id' => -1,'name' => $tr->translate("ADD_NEW"),));
+		$this->view->custype = $customer_opt;
 		
 		$fm = new Group_Form_FrmClient();
-		
 		$frm = $fm->FrmAddClient();
 		Application_Model_Decorator::removeAllDecorator($frm);
 		$this->view->frm_client = $frm;
@@ -75,8 +79,7 @@ class Group_indexController extends Zend_Controller_Action {
 			$data = $this->getRequest()->getPost();
 			try{
 					$db->addClient($data);
-					Application_Form_FrmMessage::Sucessfull("EDIT_SUCCESS", "/group");
-		
+				$this->_redirect("/group");
 			}catch (Exception $e){
 				Application_Form_FrmMessage::message("Application Error");
 				Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
@@ -88,6 +91,13 @@ class Group_indexController extends Zend_Controller_Action {
 		if (empty($row)){
 			Application_Form_FrmMessage::Sucessfull("NO_RECORD", "/group");
 		}
+		$this->view->row = $row;
+		$dbgb = new Application_Model_DbTable_DbGlobal();
+		$customer_opt= $dbgb->getViewsAsName(9);
+		$tr= Application_Form_FrmLanguages::getCurrentlanguage();
+		array_unshift($customer_opt,array('id' => 0,'name' =>"",),array('id' => -1,'name' => $tr->translate("ADD_NEW"),));
+		$this->view->custype = $customer_opt;
+		
 		$this->view->id=$row['id'];
 		$frm = $fm->FrmAddClient($row);
 		Application_Model_Decorator::removeAllDecorator($frm);
