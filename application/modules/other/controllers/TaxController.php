@@ -17,6 +17,8 @@ class Other_TaxController extends Zend_Controller_Action {
 				}
 				$db = new Other_Model_DbTable_DbTax();
 				$rs = $db->getAllTax();
+				$glClass = new Application_Model_GlobalClass();
+				$rs = $glClass->getImgActive($rs, BASE_URL, true);
 				$list = new Application_Form_Frmtable();
 				$collumns = array("Tax Title","Tax Value","Status");
 				$link=array(
