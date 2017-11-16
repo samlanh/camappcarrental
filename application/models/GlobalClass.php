@@ -43,6 +43,7 @@ class Application_Model_GlobalClass  extends Zend_Db_Table_Abstract
    	if(!empty($rows))foreach($rows as $value){
    		$options .= '<option value="'.$value['id'].'" >'.htmlspecialchars($value['location_name'], ENT_QUOTES).'</option>';
    	}
+   
    	return $options;
    }
    public function getYesNoOption(){

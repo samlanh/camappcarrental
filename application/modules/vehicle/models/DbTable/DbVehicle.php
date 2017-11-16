@@ -10,13 +10,7 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     	return $cud;
     }
     function addVehicle($data){
-    	$adapter = new Zend_File_Transfer_Adapter_Http();
     	$part= PUBLIC_PATH.'/images/vehicle/';
-    	$adapter->setDestination($part);
-    	$adapter->receive();
-    	$photo = $adapter->getFileInfo();
-    	
-    	
     	$identity = $data['identity'];
     	$ids = explode(',', $identity);
     	$image_feature="";
@@ -27,7 +21,7 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     		if (!empty($name)){
     			$ss = 	explode(".", $name);
     			//if(in_array($ext,$valid_formats)) {
-    			$image_name = 'car_'.date("Y").date("m").date("d").time().$i.".".end($ss);
+    			$image_name = "car_".date("Y").date("m").date("d").time().$i.".".end($ss);
     			$tmp = $_FILES['photo'.$i]['tmp_name'];
     			if(move_uploaded_file($tmp, $part.$image_name)){
     				$photo = $image_name;
@@ -110,6 +104,9 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     	if (!empty($data['add_rent_price'])){ // add price Rental Vehicle By Package
     		$this->addVehicleRental($data);
     	}
+    	if (!empty($data['add_rent_price_location'])){ // add price Rental Vehicle By Location to Location
+    		$this->addCarprice($data);
+    	}
     }
     function addVehicleRental($_data){ // add price Rental Vehicle By Package
     	$ids = explode(',', $_data['record_row']);
@@ -129,15 +126,40 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     		$this->insert($arr);
     	}
     }
+    function addCarprice($data){ // add price Rental Vehicle By Location to Location
+    	$ids=explode(',', $data['record_row_rent']);
+    	foreach ($ids as $i){
+    		$item =array(
+    				'vehicle_id'=>$data['vehicle_id'],
+    				'tax'=>$data['car_rent_price_tax'],
+    				'form_location'=>$data['from_locaation'.$i],
+    				'to_location'=>$data['to_locaation'.$i],
+    				'price'=>$data['rent_price_'.$i],
+    				'note'=>$data['rent_note_'.$i],
+    				'date'=>date("Y-m-d"),
+    				'user_id'=>$this->getUserId(),
+    				'status'=>1,
+    		);
+    		$this->_name='ldc_pickupcarprice';
+    		$this->insert($item);
+    	}
+    }
     public function getVehiclePriceById($id){ // get price Rental Vehicle By Package
     	$this->_name='ldc_vehiclefee_detail';
     	$db = $this->getAdapter();
     	$sql = "SELECT * FROM $this->_name WHERE status=1 AND vehicle_id = $id ORDER BY id ASC ";
     	return $db->fetchAll($sql);
     }
+    
+    function getCarpriceById($id){  // get Price Rental Vehicle By Location to Location
+    	$this->_name='ldc_pickupcarprice';
+    	$sql="SELECT *
+    	FROM $this->_name WHERE vehicle_id =$id";
+    	$db=$this->getAdapter();
+    	return $db->fetchAll($sql);
+    }
     public function updateVehicle($data){
     	
-    	$adapter = new Zend_File_Transfer_Adapter_Http();
     	$part= PUBLIC_PATH.'/images/vehicle/';
     	$identity = $data['identity'];
     	$ids = explode(',', $identity);
@@ -236,6 +258,14 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     		$where = " vehicle_id = ".$data['vehicle_id'];
     		$this->delete($where);
     	}
+    	
+    	if (!empty($data['add_rent_price_location'])){ // update price Rental Vehicle By Location to Location
+    		$this->updateCarprice($data);
+    	}else{
+    		$this->_name='ldc_pickupcarprice';
+    		$where = " vehicle_id = ".$data['vehicle_id'];
+    		$this->delete($where);
+    	}
     }
     function updateVehicleRental($_data){ // update price Rental Vehicle By Package
     	$db = $this->getAdapter();
@@ -299,6 +329,69 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     		$db->rollBack();
     	}
     
+    }
+    function updateCarprice($data){ // update price Rental Vehicle By Location to Location
+    	$db = $this->getAdapter();
+    	$db->beginTransaction();
+    	try{
+    		$ids=explode(',', $data['record_row_rent']);
+    		$iddetail='';
+    		foreach ($ids as $i){
+    			if (empty($iddetail)){
+    				if (!empty($data['old_id_price_locattion'.$i])){
+    					$iddetail=$data['old_id_price_locattion'.$i];
+    				}
+    			}
+    			else{
+    				if (!empty($data['old_id_price_locattion'.$i])){
+    					$iddetail=$iddetail.",".$data['old_id_price_locattion'.$i];
+    				}
+    			}
+    		}
+    		$this->_name='ldc_pickupcarprice';
+    		$where = " vehicle_id = ".$data['vehicle_id'];
+    		if (!empty($iddetail)){
+    			$where.=" AND id NOT IN (".$iddetail.")";
+    		}
+    		$this->delete($where);
+    		
+	    	
+	    	foreach ($ids as $i){
+	    		if (!empty($data['old_id_price_locattion'.$i])){
+	    			$item =array(
+	    					'vehicle_id'=>$data['vehicle_id'],
+	    					'tax'=>$data['car_rent_price_tax'],
+	    					'form_location'=>$data['from_locaation'.$i],
+	    					'to_location'=>$data['to_locaation'.$i],
+	    					'price'=>$data['rent_price_'.$i],
+	    					'note'=>$data['rent_note_'.$i],
+	    					'date'=>date("Y-m-d"),
+	    					'user_id'=>$this->getUserId(),
+	    					'status'=>1,
+	    			);
+	    			$this->_name='ldc_pickupcarprice';
+	    			$where1 = " vehicle_id = ".$data['vehicle_id']." AND id = ".$data['old_id_price_locattion'.$i];
+	    			$this->update($item, $where1);
+	    		}else{
+		    		$item =array(
+		    				'vehicle_id'=>$data['vehicle_id'],
+		    				'tax'=>$data['car_rent_price_tax'],
+		    				'form_location'=>$data['from_locaation'.$i],
+		    				'to_location'=>$data['to_locaation'.$i],
+		    				'price'=>$data['rent_price_'.$i],
+		    				'note'=>$data['rent_note_'.$i],
+		    				'date'=>date("Y-m-d"),
+		    				'user_id'=>$this->getUserId(),
+		    				'status'=>1,
+		    		);
+		    		$this->_name='ldc_pickupcarprice';
+		    		$this->insert($item);
+	    		}
+	    	}
+    	$db->commit();
+    	}catch( Exception $e){
+    		$db->rollBack();
+    	}
     }
  function getTypeById($id){
     	$db = $this->getAdapter();

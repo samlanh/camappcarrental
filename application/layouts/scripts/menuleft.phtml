@@ -51,14 +51,20 @@
 			if($rs['controller']=='index' AND $rs['module']=='agreement' ){
 				$lblcontroller='VEHICLERENTALAGREEMENT';
 			}
+			if($rs['controller']=='index' AND $rs['module']=='agreement' ){
+				$lblcontroller='VEHICLERENTALAGREEMENT';
+			}
 			if($rs['controller']=='stuffrental' AND $rs['module']=='agreement' ){
 				$lblcontroller='STUFFRENTAL_AGREEMENT';
 			}
 			if($rs['controller']=='driver' AND $rs['module']=='agreement' ){
 				$lblcontroller='DRIVER_GUIDE_AGREEMENT';
 			}
-			if($rs['controller']=='index' AND $rs['module']=='report' ){
-				$lblcontroller='REPORT_LIST';
+			if($rs['controller']=='tax' AND $rs['module']=='other' ){
+				$lblcontroller='TAX_SETTING';
+			}
+			if($rs['controller']=='day' AND $rs['module']=='other' ){
+				$lblcontroller='RANK_DAY';
 			}
 			
 			if($module!=$rs['module']){

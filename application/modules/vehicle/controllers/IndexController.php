@@ -91,6 +91,7 @@ class Vehicle_indexController extends Zend_Controller_Action {
 		
 		$dbGC = new Application_Model_GlobalClass();
 		$this->view->pro_option = $dbGC->getAllPackageDayOption();
+		$this->view->location_option = $dbGC->getAllLocationOption();
 	}
 	function editAction(){
 		if($this->getRequest()->isPost()){
@@ -116,6 +117,7 @@ class Vehicle_indexController extends Zend_Controller_Action {
 		$this->view->rows_engine=$rows_engin;
 		
 		$this->view->rows = $db->getVehiclePriceById($id);//get car rental price by package
+		$this->view->row_carprice=$db->getCarpriceById($id);// get Price Rental Vehicle By Location to Location
 		
 		$rows_enginAsName=$db->getAllEnGinceAsname();
 		$this->view->rows_enginename=$rows_enginAsName;
@@ -135,6 +137,7 @@ class Vehicle_indexController extends Zend_Controller_Action {
 		
 		$dbGC = new Application_Model_GlobalClass();
 		$this->view->pro_option = $dbGC->getAllPackageDayOption();
+		$this->view->location_option = $dbGC->getAllLocationOption();
 		
 	}
 	function getSubModelAction(){

@@ -49,7 +49,7 @@ class Driverguide_Model_DbTable_DbCarPricePickUp extends Zend_Db_Table_Abstract
     }
     function getAllCarprice(){
         $sql="SELECT vehicle_id As id,(SELECT reffer FROM ldc_vehicle WHERE id=vehicle_id) AS vehicle_id,
-               (SELECT frame_no FROM ldc_vehicle WHERE id=ldc_pickupcarprice.frame_no) As frame_no,
+               (SELECT frame_no FROM ldc_vehicle WHERE id=ldc_pickupcarprice.vehicle_id) As frame_no,
                (SELECT CONCAT(title,'( ',value,'%)') FROM ldc_tax WHERE value=tax) AS tax,
                (SELECT location_name FROM ldc_package_location WHERE id=form_location ) AS form_location,
                (SELECT location_name FROM ldc_package_location WHERE id=to_location ) AS to_location,price,note,`status`
