@@ -41,12 +41,11 @@ class Location_Model_DbTable_DbLocationtype extends Zend_Db_Table_Abstract
 	}
     function getAllLocationType($search=null){
     	$db = $this->getAdapter();
-    	$dbgb = new Application_Model_DbTable_DbGlobal();
-    	$lang= $dbgb->getCurrentLang();
-    	$arrayview = array(1=>"name_en",2=>"name_kh");
+//     	$dbgb = new Application_Model_DbTable_DbGlobal();
+//     	$lang= $dbgb->getCurrentLang();
+//     	$arrayview = array(1=>"name_en",2=>"name_kh");
     	$sql = " SELECT id,title,date,
-    	(SELECT ".$arrayview[$lang]." FROM `ldc_view` WHERE TYPE=2 AND key_code =$this->_name.`status`) 
-		AS status
+    	$this->_name.`status`
     	FROM $this->_name
     	WHERE title!='' ";
     	$order=" order by id DESC";

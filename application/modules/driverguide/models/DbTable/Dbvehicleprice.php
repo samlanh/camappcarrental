@@ -18,7 +18,7 @@ class Driverguide_Model_DbTable_Dbvehicleprice extends Zend_Db_Table_Abstract
     	(SELECT title FROM ldc_submodel WHERE id=v.sub_model) AS sub_model,
     	(SELECT `type` FROM ldc_type AS t WHERE t.id=v.type) AS `type`,
     	d.vat_value,d.date,
-    	(SELECT name_en FROM `ldc_view` WHERE TYPE=2 AND key_code =d.`status`) AS status
+    	d.`status`
     	FROM ldc_vehicle AS v ,ldc_vehiclefee_detail AS d WHERE v.id=d.vehicle_id ";
     	if($search['search_status']>-1){
     		$where.= " AND v.status = ".$search['search_status'];

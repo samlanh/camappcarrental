@@ -25,33 +25,15 @@ class location_PackageController extends Zend_Controller_Action {
 			}
 			$db = new Location_Model_DbTable_DbLocation();
 			$rs_rows= $db->getAllPackages($search);
-			$rs = array();
-			foreach ($rs_rows as $key =>$row){
-				$rs[$key]=array(
-						'id'=>$row['id'],
-						'location_name'=>$row['location_name'],
-						'location'=>'',
-						'date'=>$row['date'],
-						'status'=>$row['status']
-				);
-				$rows= $db->getAllLocationByPackage($row['id']);
-				foreach ($rows as $index =>$result){
-					if(!empty($rows[$index+1])){
-						$text = $result['location_name']." ,";
-					}else{
-					 	$text = $result['location_name'];
-					}
-					$rs[$key]['location'].=$text;
-				}
-				
-			     }
+			$glClass = new Application_Model_GlobalClass();
+			$rs_rows = $glClass->getImgActive($rs_rows, BASE_URL, true);
 		
 			$list = new Application_Form_Frmtable();
 			$collumns = array("Package Name","Location Name","Modify Date","STATUS");
 			$link=array(
 					'module'=>'location','controller'=>'package','action'=>'edit',
 			);
-			$this->view->list=$list->getCheckList(0, $collumns, $rs,array('location_name'=>$link,'location'=>$link));
+			$this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('location_name'=>$link,'location'=>$link));
 		}catch (Exception $e){
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());

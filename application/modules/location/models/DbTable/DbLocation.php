@@ -165,12 +165,12 @@ class Location_Model_DbTable_DbLocation extends Zend_Db_Table_Abstract
     	$dbgb = new Application_Model_DbTable_DbGlobal();
     	$lang= $dbgb->getCurrentLang();
     	$array = array(1=>"province_en_name",2=>"province_kh_name");
-    	$arrayview = array(1=>"name_en",2=>"name_kh");
+//     	$arrayview = array(1=>"name_en",2=>"name_kh");
     	$array_ser = array(1=>"title_en",2=>"title_kh");
     	$sql = " SELECT  id,location_name, (SELECT ".$array[$lang]." FROM `ldc_province` WHERE id=province_id) AS province_name,
     			(SELECT ".$array_ser[$lang]." FROM ldc_service_type as st WHERE st.id = service_type limit 1) as service_type,
     			(SELECT lt.title FROM `ldc_locationtype` AS lt WHERE lt.id = ldc_package_location.`locationtype_id` LIMIT 1) AS location_type,
-                 date,(SELECT ".$arrayview[$lang]." FROM `ldc_view` WHERE TYPE=2 AND key_code =$this->_name.`status`) AS status
+                 date,$this->_name.`status`
                  FROM $this->_name WHERE is_package !=1 AND location_name!='' ";
     	$order=" order by id DESC";
     	
@@ -199,7 +199,7 @@ class Location_Model_DbTable_DbLocation extends Zend_Db_Table_Abstract
     	$lang= $dbgb->getCurrentLang();
     	$array = array(1=>"province_en_name",2=>"province_kh_name");
     	$sql = " SELECT  id,location_name, (SELECT ".$array[$lang]." FROM `ldc_province` WHERE id=province_id) AS province_name,
-    	date,(SELECT name_en FROM `ldc_view` WHERE TYPE=2 AND key_code =$this->_name.`status`) AS status
+    	date,$this->_name.`status`
     	FROM $this->_name WHERE location_name!='' AND is_package=1 ";
     	$order=" order by id DESC";
     	$where = '';

@@ -25,7 +25,8 @@ class Location_LocationtypeController extends Zend_Controller_Action {
 			}
 			$db = new Location_Model_DbTable_DbLocationtype();
 			$rs_rows= $db->getAllLocationType($search);
-		
+			$glClass = new Application_Model_GlobalClass();
+			$rs_rows = $glClass->getImgActive($rs_rows, BASE_URL, true);
 			$list = new Application_Form_Frmtable();
 			$collumns = array("Location Type","Modify Date","STATUS");
 			$link=array(

@@ -23,6 +23,8 @@ class Driverguide_VehiclepriceController extends Zend_Controller_Action {
 				);
 			}
 			$rows=$db_make->getAllVehiclePrice($search);
+			$glClass = new Application_Model_GlobalClass();
+			$rows = $glClass->getImgActive($rows, BASE_URL, true);
 			$list = new Application_Form_Frmtable();
 			$collumns = array("Vehicle Ref","Frame No","Licence No","YEAR","MAKE","MODEL","Sub Model","TYPE","Tax","DATE","STATUS");
 			$link=array('module'=>'driverguide','controller'=>'vehicleprice','action'=>'edit',);
