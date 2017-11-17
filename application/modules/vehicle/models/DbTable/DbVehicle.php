@@ -421,6 +421,12 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     	$order=' ORDER BY id DESC';
     	return $db->fetchAll($sql.$order);
     }
+    function getAllTypeAsName(){
+    	$db=$this->getAdapter();
+    	$sql="SELECT id,`type` as name FROM ldc_type WHERE `status`= 1 ";
+    	$order=' ORDER BY id DESC';
+    	return $db->fetchAll($sql.$order);
+    }
     function getAllTransmisstion(){
     	$db=$this->getAdapter();
     	$sql="SELECT id,tran_name FROM ldc_transmission WHERE `status`=1";
@@ -430,6 +436,12 @@ class Vehicle_Model_DbTable_DbVehicle extends Zend_Db_Table_Abstract
     function getAllVehicleType(){
     	$db=$this->getAdapter();
     	$sql="SELECT id,title FROM ldc_vechicletye WHERE `status`= 1 ";
+    	$order=' ORDER BY id DESC';
+    	return $db->fetchAll($sql.$order);
+    }
+    function getAllVehicleTypeAsName(){
+    	$db=$this->getAdapter();
+    	$sql="SELECT id,title As name FROM ldc_vechicletye WHERE `status`= 1 ";
     	$order=' ORDER BY id DESC';
     	return $db->fetchAll($sql.$order);
     }

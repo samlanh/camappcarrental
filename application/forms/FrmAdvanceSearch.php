@@ -22,7 +22,6 @@ class Application_Form_FrmAdvanceSearch extends Zend_Dojo_Form
 		
 		$_title = new Zend_Dojo_Form_Element_TextBox('adv_search');
 		$_title->setAttribs(array('dojoType'=>$this->text,
-				'onkeyup'=>'this.submit()',
 				'class'=>'fullside',
 				'placeholder'=>$this->tr->translate("ADVANCE_SEARCH")
 				));
@@ -30,9 +29,9 @@ class Application_Form_FrmAdvanceSearch extends Zend_Dojo_Form
 		
 		
 		$_status=  new Zend_Dojo_Form_Element_FilteringSelect('status');
-		$_status->setAttribs(array('dojoType'=>$this->filter));
+		$_status->setAttribs(array('dojoType'=>$this->filter,'class'=>'fullside',));
 		$_status_opt = array(
-				-1=>$this->tr->translate("ALL"),
+				-1=>$this->tr->translate("Status All"),
 				1=>$this->tr->translate("ACTIVE"),
 				0=>$this->tr->translate("DACTIVE"));
 		$_status->setMultiOptions($_status_opt);

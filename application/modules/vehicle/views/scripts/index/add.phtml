@@ -191,7 +191,9 @@ function getallSubModel(model_id){
 					                 		<label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Vehicle Type')?>
 						                   </label>
 						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                 	 <select tabindex="6" name="vehicle_type" id="vehicle_type" dojoType="dijit.form.FilteringSelect" class="fullside">
+						                 	 <select tabindex="6" name="vehicle_type" id="vehicle_type" dojoType="dijit.form.FilteringSelect" class="fullside" onchange="getPopupFormVehicleType();">
+												<option value="0" ><?php echo $tr->translate('Choose Vehicle Type')?></option>
+										       	<option value="-1" ><?php echo $tr->translate('ADD_NEW')?></option>
 												<?php foreach ($rows_veh_typ as $rs){?>
 												<option value="<?php echo $rs['id'];?>" ><?php echo $rs['title'];?></option>
 												<?php }?>
@@ -313,7 +315,9 @@ function getallSubModel(model_id){
 					                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("Type")?>
 						                   </label>
 						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                   		<select tabindex="22" name="type" id="type" dojoType="dijit.form.FilteringSelect" class="fullside">
+						                   		<select tabindex="22" name="type" id="type" dojoType="dijit.form.FilteringSelect" class="fullside" onchange="getPopupFormType();">
+						                   			 <option value="0" ><?php echo $tr->translate('Choose Type')?></option>
+										        	 <option value="-1" ><?php echo $tr->translate('ADD_NEW')?></option>
 											         <?php foreach ($rows_type as $rs){?>
 											         <option value="<?php echo $rs['id'];?>" ><?php echo $rs['type'];?> </option>
 											         <?php }?>
@@ -613,6 +617,42 @@ function getallSubModel(model_id){
 		</form>
 	</div>
 </div>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_type" title="<?php echo $tr->translate("Add Type")?>">
+		<form id='frm_type' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td><?php echo $tr->translate("TITLE")?></td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="type_title" name="type_title" value="" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="<?php echo $tr->translate("SAVE")?>" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addType();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-type="dijit.Dialog" id="pop_vehicle_type" title="<?php echo $tr->translate("Add Vehicle Type")?>">
+		<form id='frm_vehicle_type' dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
+		<table class="height" >
+			<tr>
+				<td><?php echo $tr->translate("TITLE")?></td>
+				<td><input dojoType="dijit.form.ValidationTextBox" required="true" id="vehicletype_title" name="vehicletype_title" value="" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+				  	<input type="button"  label="<?php echo $tr->translate("SAVE")?>" dojoType="dijit.form.Button" 
+				 	iconClass="dijitEditorIcon dijitEditorIconSave" onclick="addvehicleType();"/>
+				</td>
+			</tr>
+		</table>
+		</form>
+	</div>
+</div>
 <script type="text/javascript">
 dojo.require("dijit.form.Textarea"); 
 dojo.require("dojo.parser");
@@ -650,6 +690,64 @@ function CheckisRent(){
 				dijit.byId('extracharge_'+arrays[i]).set('required',false);
 			}
 		}
+	}
+}
+function getPopupFormVehicleType(){
+	vehicle_type = dijit.byId('vehicle_type').get('value');
+	if(vehicle_type==-1){
+		dijit.byId("pop_vehicle_type").show();
+	}
+}
+var vehicletype_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->rows_veh_typasname));?> );
+var url_vehicletype = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'vehicletype','action'=>'addvehiceltype')); ?>';
+function addvehicleType(){
+	if(dijit.byId('frm_vehicle_type').validate()){
+		dojo.xhrPost({
+			url: url_vehicletype,
+			form: dojo.byId("frm_vehicle_type"),
+			handleAs:"json",
+			load: function(data) {
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('vehicletype_title').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('vehicle_type'), vehicletype_store, Itemmake, data);
+				dijit.byId('frm_vehicle_type').reset();
+				dijit.byId("pop_vehicle_type").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
+	}
+}
+function getPopupFormType(){
+	type = dijit.byId('type').get('value');
+	if(type==-1){
+		dijit.byId("pop_type").show();
+	}
+}
+var type_store  = getDataStorefromJSON('id','name', <?php print_r(Zend_Json::encode($this->rows_typename));?> );
+var url_type = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'type','action'=>'addtype')); ?>';
+function addType(){
+	if(dijit.byId('frm_type').validate()){
+		dojo.xhrPost({
+			url: url_type,
+			form: dojo.byId("frm_type"),
+			handleAs:"json",
+			load: function(data) {
+				var Itemmake = {					
+						id: data,
+					    name: dijit.byId('type_title').get('value')
+				};			
+				addDataToSelectbox(dijit.byId('type'), type_store, Itemmake, data);
+				dijit.byId('frm_type').reset();
+				dijit.byId("pop_type").hide();
+			},
+			error: function(err) {
+				alert(err);
+			}
+		});
 	}
 }
 function getPopupFormEgin(){

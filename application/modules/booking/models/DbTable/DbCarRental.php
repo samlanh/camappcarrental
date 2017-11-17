@@ -477,6 +477,9 @@ class Booking_Model_DbTable_DbCarRental extends Zend_Db_Table_Abstract
     		$s_where[]=" c.customer_code LIKE '%{$s_search}%'";
     		$where.=' AND ('.implode(' OR ',$s_where).')';
 		}
+		if ($search['customer']>0){
+			$where.=" AND b.`customer_id`=".$search['customer'];
+		}
 		$order=' ORDER BY id DESC';
 		//echo $sql.$where.$order;
 		return $db->fetchAll($sql.$where.$order);

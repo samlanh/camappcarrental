@@ -25,16 +25,33 @@ class Vehicle_Model_DbTable_DbVehicleType extends Zend_Db_Table_Abstract
     	$db = $this->getAdapter();
     	$sql="SELECT id,title,status
     	FROM $this->_name WHERE 1 ";
+    	$where='';
+  		  if(!empty($search['adv_search'])){
+    		$s_where=array();
+    		$s_search=addslashes(trim($search['adv_search']));
+    		$s_where[]=" title LIKE '%{$s_search}%'";
+    		$where.=' AND ('.implode(' OR ',$s_where).')';
+    	}
+    	if($search['status']>-1){
+    		$where.= " AND status= ".$search['status'];
+    	}
     	$order=' ORDER BY id DESC';
-        return $db->fetchAll($sql.$order);
+    	
+        return $db->fetchAll($sql.$where.$order);
     }
     
- function getVehicleTypeById($id){
+ 	function getVehicleTypeById($id){
     	$db = $this->getAdapter();
     	$sql = "SELECT id,title,status FROM $this->_name  WHERE id=".$id;
    		return $db->fetchRow($sql);
     }
-
+    function addVehicleTypeAjax($data){
+    	$_arr = array(
+    			'title'=>$data['vehicletype_title'],
+    			'status'=>1,
+    	);
+    	return $this->insert($_arr);//insert data
+    }
 }  
 	  
 

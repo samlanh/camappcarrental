@@ -46,6 +46,20 @@ Class Location_Form_FrmSearch extends Zend_Dojo_Form{
 				'class'=>'fullside'));
 		$_service_type->setValue($request->getParam("service_type"));
 		
+		$location_rs = $db->getAllLocationType();
+		$_location_type = new Zend_Dojo_Form_Element_FilteringSelect("location_type");
+		$_arr_loca = array("-1"=>$this->tr->translate("Choose Location Type"));
+		if(!empty($location_rs))foreach($location_rs AS $row){
+			$_arr_loca[$row['id']]=$row['name'];
+		}
+		$_location_type->setMultiOptions($_arr_loca);
+		$_location_type->setAttribs(array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'required'=>'false',
+				'class'=>'fullside'));
+		$_location_type->setValue($request->getParam("location_type"));
+		
+		
 		$_driver_type = new Zend_Dojo_Form_Element_FilteringSelect('driver_type');
 		$_driver_type->setAttribs(array('dojoType'=>'dijit.form.FilteringSelect','class'=>'fullside',));
 		$_status_opt = array("-1"=>$this->tr->translate("CHOOSE_DRIVER_TYPE"));
@@ -70,7 +84,7 @@ Class Location_Form_FrmSearch extends Zend_Dojo_Form{
 		$province->setMultiOptions($opt);
 		$province->setValue($request->getParam("province"));
 		
-		$this->addElements(array($_service_type,$_title,$_status,$_driver_type,$province));
+		$this->addElements(array($_service_type,$_title,$_status,$_driver_type,$province,$_location_type));
 	
 		return $this;
 	}

@@ -11,10 +11,21 @@ class Vehicle_VehicletypeController extends Zend_Controller_Action {
 	}
 	public function indexAction(){
 		$db_make = new Vehicle_Model_DbTable_DbVehicleType();
-		$rows=$db_make->getAllVehicleType();
-		$glClass = new Application_Model_GlobalClass();
-		$rows = $glClass->getImgActive($rows, BASE_URL, true);
+		
 		try{
+			if($this->getRequest()->isPost()){
+				$search=$this->getRequest()->getPost();
+			}
+			else{
+				$search = array(
+						'adv_search' => '',
+						'status' => -1,
+				);
+			}
+			$rows=$db_make->getAllVehicleType($search);
+			$glClass = new Application_Model_GlobalClass();
+			$rows = $glClass->getImgActive($rows, BASE_URL, true);
+			
 			$list = new Application_Form_Frmtable();
 			$collumns = array("VEHICLETYPE","STATUS");
 			$link=array(
@@ -25,6 +36,11 @@ class Vehicle_VehicletypeController extends Zend_Controller_Action {
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 		}
+		
+		$frm = new Application_Form_FrmAdvanceSearch();
+		$frm =$frm->AdvanceSearch();
+		Application_Model_Decorator::removeAllDecorator($frm);
+		$this->view->frm_search = $frm;
 	}
 	
 	function addAction(){
@@ -74,6 +90,14 @@ class Vehicle_VehicletypeController extends Zend_Controller_Action {
 		$status=$db->getViews();
 		$this->view->status_view=$status;
 	}
-	
+	function addvehiceltypeAction(){
+		if($this->getRequest()->isPost()){
+			$db = new Vehicle_Model_DbTable_DbVehicleType();
+			$data = $this->getRequest()->getPost();
+			$id = $db->addVehicleTypeAjax($data);
+			print_r(Zend_Json::encode($id));
+			exit();
+		}
+	}
 }
 

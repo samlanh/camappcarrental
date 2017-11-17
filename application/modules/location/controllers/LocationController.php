@@ -18,6 +18,7 @@ class location_LocationController extends Zend_Controller_Action {
 						'service_type'=>0,
 						'title' => '',
 						'status_search' => -1,
+						'location_type' => -1
 				);
 		
 			}
@@ -25,7 +26,7 @@ class location_LocationController extends Zend_Controller_Action {
 			$rs_rows= $db->getAllLocations($search);
 		
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Location Name","Province","Service Type","Modify Date","STATUS");
+			$collumns = array("Location Name","Province","Service Type","Location Type","Modify Date","STATUS");
 			$link=array(
 					'module'=>'location','controller'=>'location','action'=>'edit',
 			);

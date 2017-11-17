@@ -169,6 +169,7 @@ class Location_Model_DbTable_DbLocation extends Zend_Db_Table_Abstract
     	$array_ser = array(1=>"title_en",2=>"title_kh");
     	$sql = " SELECT  id,location_name, (SELECT ".$array[$lang]." FROM `ldc_province` WHERE id=province_id) AS province_name,
     			(SELECT ".$array_ser[$lang]." FROM ldc_service_type as st WHERE st.id = service_type limit 1) as service_type,
+    			(SELECT lt.title FROM `ldc_locationtype` AS lt WHERE lt.id = ldc_package_location.`locationtype_id` LIMIT 1) AS location_type,
                  date,(SELECT ".$arrayview[$lang]." FROM `ldc_view` WHERE TYPE=2 AND key_code =$this->_name.`status`) AS status
                  FROM $this->_name WHERE is_package !=1 AND location_name!='' ";
     	$order=" order by id DESC";
@@ -185,6 +186,9 @@ class Location_Model_DbTable_DbLocation extends Zend_Db_Table_Abstract
     	}
     	if($search['status_search']>-1){
     		$where.= " AND status = ".$db->quote($search['status_search']);
+    	}
+    	if($search['location_type']>-1){
+    		$where.= " AND locationtype_id = ".$db->quote($search['location_type']);
     	}
     	return $db->fetchAll($sql.$where.$order);
     }

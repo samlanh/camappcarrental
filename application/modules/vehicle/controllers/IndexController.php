@@ -68,20 +68,29 @@ class Vehicle_indexController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
-		
+		$tr= Application_Form_FrmLanguages::getCurrentlanguage();
 		$db=new Vehicle_Model_DbTable_DbVehicle();
 		$rows_engin=$db->getAllEnGince();
 		$this->view->rows_engine=$rows_engin;
 		
 		$rows_enginAsName=$db->getAllEnGinceAsname();
+		array_unshift($rows_enginAsName, array ( 'id' => 0, 'name' => $tr->translate("Choose Horse Power")), array ( 'id' => -1, 'name' => $tr->translate("ADD_NEW")) );
 		$this->view->rows_enginename=$rows_enginAsName;
 		
 		$rows_type=$db->getAllType();
 		$this->view->rows_type=$rows_type;
+		$rows_typename=$db->getAllTypeAsName();
+		array_unshift($rows_typename, array ( 'id' => 0, 'name' => $tr->translate("Choose Type")), array ( 'id' => -1, 'name' => $tr->translate("ADD_NEW")) );
+		$this->view->rows_typename=$rows_typename;
+		
 		$rows_tran=$db->getAllTransmisstion();
 		$this->view->rows_tran=$rows_tran;
+		
 		$rows_veh_typ=$db->getAllVehicleType();
 		$this->view->rows_veh_typ=$rows_veh_typ;
+		$rows_veh_typAsname=$db->getAllVehicleTypeAsName();
+		array_unshift($rows_veh_typAsname, array ( 'id' => 0, 'name' => $tr->translate("Choose Vehicle Type")), array ( 'id' => -1, 'name' => $tr->translate("ADD_NEW")) );
+		$this->view->rows_veh_typasname=$rows_veh_typAsname;
 		//select store mark
 		$db = new Application_Model_DbTable_DbGlobal();
 		$model = $db->getAllMake();
@@ -109,6 +118,7 @@ class Vehicle_indexController extends Zend_Controller_Action {
 				Application_Model_DbTable_DbUserLog::writeMessageError($err);
 			}
 		}
+		$tr= Application_Form_FrmLanguages::getCurrentlanguage();
 		$id=$this->getRequest()->getParam('id');
 		$db=new Vehicle_Model_DbTable_DbVehicle();
 		$rows_v=$db->getVehicleById($id);
@@ -120,14 +130,24 @@ class Vehicle_indexController extends Zend_Controller_Action {
 		$this->view->row_carprice=$db->getCarpriceById($id);// get Price Rental Vehicle By Location to Location
 		
 		$rows_enginAsName=$db->getAllEnGinceAsname();
+		array_unshift($rows_enginAsName, array ( 'id' => 0, 'name' => $tr->translate("Choose Horse Power")), array ( 'id' => -1, 'name' => $tr->translate("ADD_NEW")) );
 		$this->view->rows_enginename=$rows_enginAsName;
 		
 		$rows_type=$db->getAllType();
 		$this->view->rows_type=$rows_type;
+		$rows_typename=$db->getAllTypeAsName();
+		array_unshift($rows_typename, array ( 'id' => 0, 'name' => $tr->translate("Choose Type")), array ( 'id' => -1, 'name' => $tr->translate("ADD_NEW")) );
+		$this->view->rows_typename=$rows_typename;
+		
 		$rows_tran=$db->getAllTransmisstion();
 		$this->view->rows_tran=$rows_tran;
+		
 		$rows_veh_typ=$db->getAllVehicleType();
 		$this->view->rows_veh_typ=$rows_veh_typ;
+		$rows_veh_typAsname=$db->getAllVehicleTypeAsName();
+		array_unshift($rows_veh_typAsname, array ( 'id' => 0, 'name' => $tr->translate("Choose Vehicle Type")), array ( 'id' => -1, 'name' => $tr->translate("ADD_NEW")) );
+		$this->view->rows_veh_typasname=$rows_veh_typAsname;
+		
 		//select store mark
 		$db = new Application_Model_DbTable_DbGlobal();
 		$model = $db->getAllMake();

@@ -11,10 +11,11 @@ class Stuff_indexController extends Zend_Controller_Action {
 	public function indexAction(){
 		try{
 			if($this->getRequest()->isPost()){
-				$_data=$this->getRequest()->getPost();
+				$search=$this->getRequest()->getPost();
 			}else{
 				$search= array(
-						'title'=>''
+						'title'=>'',
+						'status_search'=>-1
 						);
 			}
 				$db = new Stuff_Model_DbTable_DbStuff();
@@ -31,6 +32,11 @@ class Stuff_indexController extends Zend_Controller_Action {
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 		}
+		
+		$frm = new Stuff_Form_FrmSearch();
+		$fm = $frm->FrmSearch();
+		Application_Model_Decorator::removeAllDecorator($fm);
+		$this->view->frm_search = $fm;
 			
 	}
 	function addAction(){

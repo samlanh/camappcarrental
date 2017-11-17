@@ -45,7 +45,18 @@ class Booking_Form_FrmSearchBooking extends Zend_Dojo_Form{
 		$search_tex = new Zend_Dojo_Form_Element_TextBox("search_text");
 		$search_tex->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",));
 		
-		$this->addElements(array($from_book_date,$to_book_date,$search_tex));
+		
+		$db_booking = new Booking_Model_DbTable_DbBooking();
+		$row_cu = $db_booking->getIdNamecustomer();
+		$opt_cu = array('-1'=>$this->tr->translate("CHOOSE_CUSTOMER"));
+		$customer = new Zend_Dojo_Form_Element_FilteringSelect("customer");
+		$customer->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside"));
+		foreach ($row_cu as $rs){
+			$opt_cu[$rs["id"]] = $rs["first_name"]." ".$rs["last_name"];
+		}
+		$customer->setMultiOptions($opt_cu);
+		$customer->setValue($request->getParam("customer"));
+		$this->addElements(array($from_book_date,$to_book_date,$search_tex,$customer));
 		return $this;
 	}
 	

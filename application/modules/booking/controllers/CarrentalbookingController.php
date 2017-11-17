@@ -102,18 +102,14 @@ class Booking_CarrentalbookingController extends Zend_Controller_Action {
 		try{
 			$db = new Booking_Model_DbTable_DbCarRental();
 			if($this->getRequest()->isPost()){
-				$formdata=$this->getRequest()->getPost();
-				$search = array(
-						'from_book_date' => $formdata['from_book_date'],
-						'to_book_date' => $formdata['to_book_date'],
-						'search_text'=>$formdata['search_text'],
-				);
+				$search=$this->getRequest()->getPost();
 			}
 			else{
 				$search = array(
 						'to_book_date' => date("Y-m-d"),
 						'from_book_date' => date("Y-m-d"),
 						'search_text' => "",
+						'customer'=>-1,
 				);
 			}
 			$rs_rows= $db->getAllCarBooking($search);

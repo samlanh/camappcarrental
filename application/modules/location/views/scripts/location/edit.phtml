@@ -4,8 +4,7 @@ echo $this->headTitle($tr->translate('Edit Location'));
 $frm = $this->frm;
 ?>
 <script src="<?php echo $this->baseUrl();?>/ckeditor/ckeditor.js"></script>
-<script src="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.js"></script>
-<link href="<?php echo $this->baseUrl();?>/ckeditor/samples/sample.css" rel="stylesheet">
+
 <form id="add_location" action="<?php echo $this->url(array('module'=>'location','controller'=>'location','action'=>'edit')); ?>" dojoType="dijit.form.Form" method="post" enctype="multipart/form-data" >
 	 <script type="dojo/method" event="onSubmit">			
 			if(this.validate()) {

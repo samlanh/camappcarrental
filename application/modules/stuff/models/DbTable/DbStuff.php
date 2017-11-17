@@ -174,10 +174,25 @@ class Stuff_Model_DbTable_DbStuff extends Zend_Db_Table_Abstract
       		echo $e->getMessage();
       	}
       }
-      function getAllStuff(){
+      function getAllStuff($search){
       	$db = $this->getAdapter();
-      	$sql = " SELECT `id`,`equipment_name`,`reference_no`,`year`,model,serial_no,telephone_num,`status` FROM ldc_stuff ORDER BY id DESC";
-      	return $db->fetchAll($sql);
+      	$sql = " SELECT `id`,`equipment_name`,`reference_no`,`year`,model,serial_no,telephone_num,`status` FROM ldc_stuff WHERE 1";
+      	$where='';
+      	if(!empty($search['title'])){
+      		$s_where=array();
+      		$s_search=addslashes(trim($search['title']));
+      		$s_where[]=" equipment_name LIKE '%{$s_search}%'";
+      		$s_where[]=" reference_no LIKE '%{$s_search}%'";
+      		$s_where[]=" year LIKE '%{$s_search}%'";
+      		$s_where[]=" model LIKE '%{$s_search}%'";
+      		$s_where[]=" telephone_num LIKE '%{$s_search}%'";
+      		$where.=' AND ('.implode(' OR ',$s_where).')';
+      	}
+      	if($search['status_search']>-1){
+      		$where.= " AND status = ".$search['status_search'];
+      	}
+      	$order=" ORDER BY id DESC";
+      	return $db->fetchAll($sql.$where.$order);
       }
       function getAllStuffInFrontend(){
       	$db = $this->getAdapter();
