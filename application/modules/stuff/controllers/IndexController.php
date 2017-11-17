@@ -40,10 +40,12 @@ class Stuff_indexController extends Zend_Controller_Action {
 			try {
 				if(!empty($_data['save_new'])){
 				   $_dbmodel->addStuff($_data);
-					Application_Form_FrmMessage::Sucessfull(("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
+				   $this->_redirect(self::REDIRECT_URL_ADD);
+// 					Application_Form_FrmMessage::Sucessfull(("INSERT_SUCCESS"),self::REDIRECT_URL_ADD);
 				}else if(!empty($_data['save_close'])){
 				    $_dbmodel->addStuff($_data);
-					Application_Form_FrmMessage::Sucessfull(("INSERT_SUCCESS"),self::REDIRECT_URL);
+				    $this->_redirect(self::REDIRECT_URL);
+// 					Application_Form_FrmMessage::Sucessfull(("INSERT_SUCCESS"),self::REDIRECT_URL);
 				}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message("INSERT_FAIL");
@@ -65,7 +67,8 @@ class Stuff_indexController extends Zend_Controller_Action {
 			try {
 				 if(!empty($data['save_close'])){
 					$db->updateStuff($data);
-					Application_Form_FrmMessage::Sucessfull(("INSERT_SUCCESS"),self::REDIRECT_URL);
+					$this->_redirect(self::REDIRECT_URL);
+// 					Application_Form_FrmMessage::Sucessfull(("INSERT_SUCCESS"),self::REDIRECT_URL);
 				}
 			}catch (Exception $e) {
 				Application_Form_FrmMessage::message("INSERT_FAIL");

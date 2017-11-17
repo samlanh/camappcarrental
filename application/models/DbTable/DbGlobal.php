@@ -172,6 +172,7 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 		$returntime = $data["return_time"];
 		$sql = "SELECT v.id,v.`reffer`,v.`frame_no`,v.`max_weight`,
 		v.`seat_amount`,v.`color`,v.`year`,v.`steering`,v.`test_url`,v.`show_url`,
+		v.`img_front`,
 		v.`img_front_right`,v.img_seat,
 		v.`is_promotion`,v.`discount`,(SELECT m.title FROM `ldc_make` AS m WHERE m.id=v.`make_id`)
 		AS make,(SELECT md.title FROM `ldc_model` AS md WHERE md.id=v.`model_id`) AS model,

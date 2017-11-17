@@ -36,6 +36,7 @@ img.image_view {
                		<div class="clearfix"></div>
          	 	</div>
 	       		<div class="x_content">
+	       		<div class="col-md-8 col-sm-8 col-xs-12">
 	       			<div class="form-group">
 	                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Equipment Name')?>
 	                   </label>
@@ -124,39 +125,35 @@ img.image_view {
 							</select>
 	                   </div>
 	                </div>
-	                
-	              	 <div>
-	              	 	<div class="col-md-8 col-sm-8 col-xs-12">
-	              	 		<div class="form-group">
-								<input type="hidden" dojoType="dijit.form.TextBox" id="record_row" name="record_row" />
-								<div  id="store_record"></div>
-								<input iconClass="dijitIconClear" type="button" onClick="addPockage();" label="Add Record Photo" dojoType="dijit.form.Button"/>
-			                </div>
-	              	 	</div>
-	              	 	<div class="col-md-4 col-sm-4 col-xs-12">
-	              	 		 <div class="title_form_blog" style="  margin: 0;">
-			               		<h4><i class="fa  fa-file" aria-hidden="true"></i> <?php echo $tr->translate("Photo")?></h4>
-			              	 </div>
-	                		<div class="form-group " style="max-height: 244px;  min-height: 244px;    overflow: auto;     border: solid 1px #eee">
-		                		<table class="set-style" style="margin: 0 auto; width: 100%;  " >
-									<thead>
-										<tr>
-											<td colspan="8">
-												
-												<table id="table_row"   style="margin: 0 auto; width: 100%; border-collapse: collapse; ">
-												</table>
-											</td>
-										</tr>
-									</thead>
-								</table>
-							</div>
-							<div class="text-center">
-								<input type="button" label="<?php echo $tr->translate('ADD_MORE');?>" dojoType="dijit.form.Button" 
-													 	iconClass="dijitIconEditProperty" onclick="addRow();" />
-								<input type="hidden" name="identity" id="identity"  value="" >
-							</div>
-	                	</div>
+	                <div class="form-group">
+							<input type="hidden" dojoType="dijit.form.TextBox" id="record_row" name="record_row" />
+							<div  id="store_record"></div>
+							<input iconClass="dijitIconClear" type="button" onClick="addPockage();" label="Add Record Photo" dojoType="dijit.form.Button"/>
+		                </div>
+	       		</div>
+	       		<div class="col-md-4 col-sm-4 col-xs-12">
+	       			<div class="title_form_blog" style="  margin: 0;">
+	               		<h4><i class="fa  fa-file" aria-hidden="true"></i> <?php echo $tr->translate("Photo")?></h4>
 	              	 </div>
+                		<div class="form-group " style="max-height: 244px;  min-height: 244px;    overflow: auto;     border: solid 1px #eee">
+                		<table class="set-style" style="margin: 0 auto; width: 100%;  " >
+							<thead>
+								<tr>
+									<td colspan="8">
+										
+										<table id="table_row"   style="margin: 0 auto; width: 100%; border-collapse: collapse; ">
+										</table>
+									</td>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div class="text-center">
+						<input type="button" label="<?php echo $tr->translate('ADD_MORE');?>" dojoType="dijit.form.Button" 
+											 	iconClass="dijitIconEditProperty" onclick="addRow();" />
+						<input type="hidden" name="identity" id="identity"  value="" >
+					</div>
+	       		</div>
 	                <div class="form-group text-center">
 					    	 <input type="reset" value="clear" label="<?php echo $tr->translate('CLEAR');?>"dojoType="dijit.form.Button" iconClass="dijitIconClear"/>
 							 <input type="submit" value="save_close" name="save_close" label="<?php echo $tr->translate('SAVECLOSE');?>" dojoType="dijit.form.Button" 
@@ -261,7 +258,7 @@ function addPockage(){
 	tmp+="</tr>";
 		dojo.query("#t_amountmoneytype").append(tmp);
 		
-	temp='<td><select  class="fullside"  id="package_id'+r+'" name="package_id'+r+'" dojoType="dijit.form.FilteringSelect" onchange="getLocation('+r+')">'+province_option+'</select></td>';
+	temp='<td><select  class="fullside"  id="package_id'+r+'" name="package_id'+r+'" dojoType="dijit.form.FilteringSelect" >'+province_option+'</select></td>';
 	temp+='<td><input class="fullside" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="price_'+r+'" id="price_'+r+'" value="" type="text"></td>';
 	temp+='<td><input class="fullside"  dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="extracharge_'+r+'" id="extracharge_'+r+'" value="" type="text"></td>';
 	temp+='<td><input class="fullside" dojoType="dijit.form.TextBox" class="fullside" name="note_'+r+'" id="note_'+r+'" value="" type="text"></td>';

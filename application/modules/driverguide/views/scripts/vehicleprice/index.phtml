@@ -115,30 +115,41 @@ function getallSubModel(model_id){
 		<form id="list" name="list" action="<?php echo $this->url(array('module'=>'driverguide','controller'=>'vehicleprice','action'=>'index')); ?>" dojoType="dijit.form.Form" method="post">
 		   <div class="clearfix"></div>
 		  	  <div class="form-group">
-				  <div class="col-md-2 col-xs-12">
+				  <div class="col-md-2 col-xs-12 mg-10">
 				  	<input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $this->translate("Search");?>" type="text" >
 				  </div>
-				  <div class="col-md-2 col-xs-12">
+				  <div class="col-md-2 col-xs-12 mg-10">
 				  	<input id="make" />
 				  </div>
-				  <div class="col-md-2 col-xs-12">
+				  <div class="col-md-2 col-xs-12 mg-10">
 				  	<input id="model" />
 				  </div>
-				  <div class="col-md-2 col-xs-12">
+				  <div class="col-md-2 col-xs-12 mg-10">
 				  	<input id="submodel" />
 				  </div>
-				  <div class="col-md-2 col-xs-12">
+			  </div>
+			  <div class="form-group">
+				  <div class="col-md-2 col-xs-12 mg-10">
+				  		<select tabindex="22" name="type" id="type" dojoType="dijit.form.FilteringSelect" class="fullside">
+				  			<option value="-1" ><?php echo $tr->translate("CHOOSE_TYPE")?></option>
+					         <?php foreach ($this->rows_type as $rs){?>
+					         <option value="<?php echo $rs['id'];?>" <?php if ($request->getParam('type')==$rs['id']){echo 'selected="selected"';}?> ><?php echo $rs['type'];?> </option>
+					         <?php }?>
+						</select>
+				  </div>
+				 <div class="col-md-2 col-xs-12 mg-10">
 				  	<select name="search_status" id="search_status" dojoType="dijit.form.FilteringSelect" class="fullside">
-		                <option value="-1" <?php if($status==-1){ echo"selected='selected'";} ?>><?php echo $tr->translate("STATUS")?></option>
+		                <option value="-1" <?php if($status==-1){ echo"selected='selected'";} ?>><?php echo $tr->translate("Status All")?></option>
 		                <?php if (!empty($this->status_view)) foreach ($this->status_view as $rss){?>
-					    <option value="<?php echo $rss['key_code'];?>" <?php if($rss['key_code']==1){ echo"selected='selected'";} ?> ><?php echo $rss['name_en'];?></option>
+					    <option value="<?php echo $rss['key_code'];?>" <?php if($rss['key_code']==$request->getParam('search_status')){ echo"selected='selected'";} ?> ><?php echo $rss['name_en'];?></option>
 					    <?php }?>
 						</select>
 				  </div>
-				  <div class="col-md-2 col-xs-12">
+				  <div class="col-md-1 col-xs-12 mg-10">
 				  	<button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button>
 				  </div>
-			  </div>
+			</div>
+			  
 		</form>
 		<?php echo $this->list;?>
 	</div>

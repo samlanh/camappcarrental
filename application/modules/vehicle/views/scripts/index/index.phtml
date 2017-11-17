@@ -125,6 +125,15 @@ function getallSubModel(model_id){
 				 	<input dojoType="dijit.form.TextBox" class="fullside" id="adv_search" name="adv_search" value="<?php echo $request->getParam('adv_search');?>" placeholder="<?php echo $this->translate("Search");?>" type="text" >
 				  </div>
 				  <div class="col-md-2 col-xs-12 mg-10">
+					  <input id="make" />
+				  </div>
+				  <div class="col-md-2 col-xs-12 mg-10">
+					  <input id="model" />
+				  </div>
+				   <div class="col-md-2 col-xs-12 mg-10">
+				 	 <input id="submodel" />
+				  </div>
+				  <div class="col-md-2 col-xs-12 mg-10">
 					  <select tabindex="6" name="vehicle_type" id="vehicle_type" dojoType="dijit.form.FilteringSelect" class="fullside">
 					  		<option value="-1" <?php if($vehicle_type==-1){ echo"selected='selected'";} ?>><?php echo $tr->translate("CHOOSE_VEHICLE_TYPE")?></option>
 							<?php foreach ($rows_veh_typ as $rs){?>
@@ -132,7 +141,10 @@ function getallSubModel(model_id){
 							<?php }?>
 						</select>
 				  </div>
-				   <div class="col-md-2 col-xs-12 mg-10">
+				   
+			  </div>
+			  <div class="form-group">
+		  		 <div class="col-md-2 col-xs-12 mg-10">
 					  <select tabindex="2" name="year" id="year" dojoType="dijit.form.FilteringSelect" class="fullside">
 					  	<option value="-1" <?php if($year_search==-1){ echo"selected='selected'";} ?>><?php echo $tr->translate("CHOOSE_YEAR")?></option>
 						<?php $year=1995; $i=1; $now = date("Y"); $max_year =  ($now-$year)+3;
@@ -147,17 +159,6 @@ function getallSubModel(model_id){
 							    <option value="1" <?php if($status==1){ echo"selected='selected'";} ?> ><?php echo $tr->translate("Active")?></option>
 							    <option value="0"  <?php if($status==0){ echo"selected='selected'";} ?>><?php echo $tr->translate("Deactive")?></option>
 						</select>
-				  </div>
-			  </div>
-			  <div class="form-group">
-		  		 <div class="col-md-2 col-xs-12 mg-10">
-					  <input id="make" />
-				  </div>
-				  <div class="col-md-2 col-xs-12 mg-10">
-					  <input id="model" />
-				  </div>
-				   <div class="col-md-2 col-xs-12 mg-10">
-				 	 <input id="submodel" />
 				  </div>
 				  <div class="col-md-2 col-xs-12 mg-10">
 					 <button iconclass="dijitIconSearch" dojoType="dijit.form.Button" showLabel="true" type="submit"><?php echo $tr->translate("SEARCH");?></button>

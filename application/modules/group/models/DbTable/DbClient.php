@@ -137,10 +137,12 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 // 		$where = " WHERE (first_name!='' OR  last_name!='') AND ".$from_date." AND ".$to_date;		
 		$where = " WHERE (first_name!='' OR  last_name!='') ";
 		$sql = " SELECT id,customer_code,first_name,last_name,
-		(SELECT name_en FROM `ldc_view` WHERE TYPE=1 AND key_code =$this->_name.`sex`) AS sex
+		(SELECT name_en FROM `ldc_view` WHERE TYPE=1 AND key_code =$this->_name.`sex` LIMIT 1) AS sex,
+		(SELECT name_en FROM `ldc_view` WHERE TYPE=9 AND key_code =ldc_customer.`customer_type` LIMIT 1) AS custype
 		,dob,phone,pob,nationality,company_name,
 			group_num,house_num,commune,district,
-		(SELECT province_en_name FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name
+		(SELECT province_en_name FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name,
+		status
 	    FROM $this->_name ";
 		if(!empty($search['title'])){
 			$s_where = array();
@@ -161,6 +163,9 @@ class Group_Model_DbTable_DbClient extends Zend_Db_Table_Abstract
 		}
 		if($search['status_search']>-1){
 			$where.= " AND status = ".$search['status_search'];
+		}
+		if($search['customer_type']>-1){
+			$where.= " AND customer_type = ".$search['customer_type'];
 		}
 
 		$order=" ORDER BY id DESC";

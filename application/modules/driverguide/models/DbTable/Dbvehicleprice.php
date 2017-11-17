@@ -23,6 +23,9 @@ class Driverguide_Model_DbTable_Dbvehicleprice extends Zend_Db_Table_Abstract
     	if($search['search_status']>-1){
     		$where.= " AND v.status = ".$search['search_status'];
     	}
+    	if($search['type']>-1){
+    		$where.= " AND v.type = ".$search['type'];
+    	}
     	if($search['make']>0){
     		$where.=" AND v.make_id = ".$search['make'];
     		echo 333;
@@ -118,7 +121,12 @@ class Driverguide_Model_DbTable_Dbvehicleprice extends Zend_Db_Table_Abstract
     	$sql = "SELECT id,reffer,frame_no FROM `ldc_vehicle` WHERE STATUS=1 AND reffer!=''";
    		return $db->fetchAll($sql);
     }
-   
+    function getAllType(){
+    	$db=$this->getAdapter();
+    	$sql="SELECT id,`type` FROM ldc_type WHERE `status`= 1 ";
+    	$order=' ORDER BY id DESC';
+    	return $db->fetchAll($sql.$order);
+    }
 }  
 	  
 

@@ -7,7 +7,7 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 	}
 	public function search(){
 		$request=Zend_Controller_Front::getInstance()->getRequest();
-	
+		$db = new Application_Model_DbTable_DbGlobal();
 		$_title = new Zend_Dojo_Form_Element_TextBox('title');
 		$_title->setAttribs(array('dojoType'=>'dijit.form.TextBox',
 				'placeholder'=>$this->tr->translate("ADVANCE_SEARCH")));
@@ -21,7 +21,22 @@ Class Group_Form_FrmClient extends Zend_Dojo_Form {
 				0=>$this->tr->translate("DACTIVE"));
 		$_status->setMultiOptions($_status_opt);
 		$_status->setValue($request->getParam("status_search"));
-		$this->addElements(array($_title,$_status));
+		
+		$customer_type=  new Zend_Dojo_Form_Element_FilteringSelect('customer_type');
+		$customer_type->setAttribs(
+				array(
+						'dojoType'=>'dijit.form.FilteringSelect',
+						'class'=>'fullside',
+				));
+		$_status_opt = array("-1"=>$this->tr->translate("CHOOSE_CUSTOMER_TYPE"));
+		$customer_opt= $db->getViewsAsName(9);
+		if(!empty($customer_opt))foreach($customer_opt AS $row){
+			$_status_opt[$row['id']]=$row['name'];
+		}
+		$customer_type->setMultiOptions($_status_opt);
+		$customer_type->setValue($request->getParam("customer_type"));
+		
+		$this->addElements(array($_title,$_status,$customer_type));
 	
 		return $this;
 	}
@@ -425,7 +440,7 @@ $district->setValue($data['district']);
 	}
 	public function FrmaddGuide($data=null){
 	 
-                $monthly_price =new Zend_Dojo_Form_Element_NumberTextBox('monthly_price');
+        $monthly_price =new Zend_Dojo_Form_Element_NumberTextBox('monthly_price');
 		$monthly_price->setAttribs(array(
 				'dojoType'=>'dijit.form.NumberTextBox',
 				'class'=>'fullside',
@@ -596,11 +611,12 @@ $district->setValue($data['district']);
 		
 		$_type = new Zend_Dojo_Form_Element_FilteringSelect('type');
 		$_type->setAttribs(array('dojoType'=>'dijit.form.FilteringSelect','class'=>'fullside',));
-		$_status_opt = array(
-				1=>$this->tr->translate("Guide"),
-				2=>$this->tr->translate("Driver"),
-				3=>$this->tr->translate("Both")
-		);
+// 		$_status_opt = array(
+// 				1=>$this->tr->translate("Guide"),
+// 				2=>$this->tr->translate("Driver"),
+// 				3=>$this->tr->translate("Both")
+// 		);
+		$_status_opt = array();
 	    $_status_opt = $db->getVewOptoinTypeByType(8,1,null,1);	
 		$_type->setMultiOptions($_status_opt);
 		

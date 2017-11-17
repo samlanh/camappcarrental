@@ -46,7 +46,31 @@ Class Location_Form_FrmSearch extends Zend_Dojo_Form{
 				'class'=>'fullside'));
 		$_service_type->setValue($request->getParam("service_type"));
 		
-		$this->addElements(array($_service_type,$_title,$_status));
+		$_driver_type = new Zend_Dojo_Form_Element_FilteringSelect('driver_type');
+		$_driver_type->setAttribs(array('dojoType'=>'dijit.form.FilteringSelect','class'=>'fullside',));
+		$_status_opt = array("-1"=>$this->tr->translate("CHOOSE_DRIVER_TYPE"));
+		$_driver_rs = $db->getViewsAsName(8);
+		if(!empty($_driver_rs))foreach($_driver_rs AS $row){
+			$_status_opt[$row['id']]=$row['name'];
+		}
+		
+		$_driver_type->setMultiOptions($_status_opt);
+		$_driver_type->setValue($request->getParam("driver_type"));
+		
+		$province = new Zend_Dojo_Form_Element_FilteringSelect('province');
+		$province->setAttribs(array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'class'=>'fullside',
+		));
+		$opt = array("-1"=>$this->tr->translate("CHOOSE_PROVINCE"));
+		$rss = $db->getAllProvince();
+		if(!empty($rss))foreach($rss AS $row){
+			$opt[$row['id']]=$row['name'];
+		}
+		$province->setMultiOptions($opt);
+		$province->setValue($request->getParam("province"));
+		
+		$this->addElements(array($_service_type,$_title,$_status,$_driver_type,$province));
 	
 		return $this;
 	}

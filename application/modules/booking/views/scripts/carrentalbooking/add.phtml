@@ -206,8 +206,8 @@ require(["dijit/form/CheckBox","dijit/Dialog","dijit/layout/TabContainer"]);
 										<li class="carList">
 											<div class="col-md-3 col-sm-3 col-xs-12">
 												<div class="image_limk">
-													<?php if (!empty($rs['img_front_right'])){?>
-													<img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front_right'];?>" class="preview" alt="<?php echo $rs["make"]." ".$rs["model"]." ".$rs["sub_model"]."(".$rs["reffer"].")"?>">
+													<?php if (!empty($rs['img_front'])){?>
+													<img src="<?php echo $this->baseUrl();?>/images/vehicle/<?php echo $rs['img_front'];?>" class="preview" alt="<?php echo $rs["make"]." ".$rs["model"]." ".$rs["sub_model"]."(".$rs["reffer"].")"?>">
 													<?php }else{?>
 													<img src="<?php echo $this->baseUrl();?>/images/noimage.jpg" class="preview" alt="preview">
 													<?php }?>

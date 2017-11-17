@@ -16,7 +16,9 @@ class Driverguide_Model_DbTable_DbDriver extends Zend_Db_Table_Abstract
     	$array = array(1=>"province_en_name",2=>"province_kh_name");
     	$arrayview = array(1=>"name_en",2=>"name_kh");
     	$sql = "SELECT id,driver_id,first_name,last_name,
-    	(SELECT ".$arrayview[$lang]." FROM `ldc_view` WHERE TYPE=1 AND key_code =$this->_name.`sex`) AS sex ,tel,dob,pob,nationality,
+    	(SELECT ".$arrayview[$lang]." FROM `ldc_view` WHERE TYPE=1 AND key_code =$this->_name.`sex`) AS sex ,
+    	(SELECT ".$arrayview[$lang]." FROM `ldc_view` WHERE TYPE=8 AND key_code =$this->_name.`position_type`) AS position_type ,
+    	tel,dob,pob,nationality,
     	group_num,home_num,street,commune,district,
     	(SELECT ".$array[$lang]." FROM `ldc_province` WHERE `ldc_province`.id=province_id LIMIT 1) AS province_name,
     	status
@@ -24,6 +26,12 @@ class Driverguide_Model_DbTable_DbDriver extends Zend_Db_Table_Abstract
     	$where = ' WHERE 1 ';
     	if($search['status_search']>-1){
     		$where.= " AND $this->_name.`status`= ".$search['status_search'];
+    	}
+    	if($search['driver_type']>-1){
+    		$where.= " AND $this->_name.`position_type`= ".$search['driver_type'];
+    	}
+    	if($search['province']>-1){
+    		$where.= " AND $this->_name.`province_id`= ".$search['province'];
     	}
     	if(!empty($search['title'])){
     		$s_where=array();

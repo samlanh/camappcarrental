@@ -10,23 +10,21 @@ class Driverguide_indexController extends Zend_Controller_Action {
 		try{
 			$db = new Driverguide_Model_DbTable_DbDriver();
 			if($this->getRequest()->isPost()){
-				$formdata=$this->getRequest()->getPost();
-				$search = array(
-						'title' => $formdata['title'],
-						'status_search'=>$formdata['status_search'],
-				);
+				$search=$this->getRequest()->getPost();
 			}
 			else{
 				$search = array(
 						'title' => '',
 						'status_search' => -1,
+						'driver_type'=>-1,
+						'province'=>-1,
 				);
 			}	
 			$rs_rows= $db->getAllDriverGuide($search);
 			$glClass = new Application_Model_GlobalClass();
 			$rs_rows = $glClass->getImgActive($rs_rows, BASE_URL, true,null);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Driver's Id","First Name","Last Name","Gender","TEL","DOB","POB","Nationality","Group No","House No","Street No",
+			$collumns = array("Driver's Id","First Name","Last Name","Gender","Type","TEL","DOB","POB","Nationality","Group No","House No","Street No",
 					"Commune","District","Province","STATUS");
 			$link=array(
 					'module'=>'driverguide','controller'=>'index','action'=>'edit',

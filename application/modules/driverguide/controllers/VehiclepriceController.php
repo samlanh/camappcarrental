@@ -7,8 +7,8 @@ class Driverguide_VehiclepriceController extends Zend_Controller_Action {
     	defined('BASE_URL')	|| define('BASE_URL', Zend_Controller_Front::getInstance()->getBaseUrl());
 	}
 	public function indexAction(){
+		$db_make = new Driverguide_Model_DbTable_Dbvehicleprice();
 		try{
-			$db_make = new Driverguide_Model_DbTable_Dbvehicleprice();
 			if($this->getRequest()->isPost()){
 				$search=$this->getRequest()->getPost();
 			}
@@ -19,23 +19,29 @@ class Driverguide_VehiclepriceController extends Zend_Controller_Action {
 						'model'=> -1,
 						'submodel'=> -1,
 						'search_status' =>-1,
+						'type' =>-1,
 				);
 			}
 			$rows=$db_make->getAllVehiclePrice($search);
 			$list = new Application_Form_Frmtable();
-			$collumns = array("Vehicle Ref","Frame No","Licence No","YEAR","MAKE","MODEL","Sub Model","Type ","Tax","DATE","STATUS");
+			$collumns = array("Vehicle Ref","Frame No","Licence No","YEAR","MAKE","MODEL","Sub Model","TYPE","Tax","DATE","STATUS");
 			$link=array('module'=>'driverguide','controller'=>'vehicleprice','action'=>'edit',);
 			$this->view->list=$list->getCheckList(0, $collumns, $rows,array('reffer'=>$link,'licence_plate'=>$link,'frame_no'=>$link,'year'=>$link,'sub_model'=>$link,'model_id'=>$link,'type'=>$link));
 		}catch (Exception $e){
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 		}
+		$rows_type=$db_make->getAllType();
+		$this->view->rows_type=$rows_type;
+		
 		$db = new Application_Model_DbTable_DbGlobal();
 		$model = $db->getAllMake();
 		$this->view->all_make=$model;
 		
 		$status=$db->getViews(2);
 		$this->view->status_view=$status;
+		
+		
 	}
 	public function addAction(){
 		$db_model = new Driverguide_Model_DbTable_Dbvehicleprice();
