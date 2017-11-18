@@ -37,45 +37,201 @@ $module=$request->getModuleName();
 	$tel = $db->getWebsiteSetting('tel');
 	$email = $db->getWebsiteSetting('email');
 ?>
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
- <!-- Favicon Icon -->
- <link rel="shortcut icon" href="<?php echo $this->baseUrl();?>/images/icon.ico" type="image/x-icon"/>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Cam App Car Rental Home Page</title>
 
-<!-- Reset CSS -->
-<link href="<?php echo $this->baseUrl();?>/templates/css/reset.css" rel="stylesheet" type="text/css">
-<!-- Custom Fonts -->
-<link href="<?php echo $this->baseUrl();?>/templates/css/fonts.css" rel="stylesheet" type="text/css">
-<!-- Bootstrap -->
-<link href="<?php echo $this->baseUrl();?>/templates/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<!-- Select2 -->
-<link href="<?php echo $this->baseUrl();?>/templates/assets/select2/css/select2.min.css" rel="stylesheet" type="text/css">
-<!-- Font Awesome -->
-<link href="<?php echo $this->baseUrl();?>/templates/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-<!-- Magnific Popup -->
-<link href="<?php echo $this->baseUrl();?>/templates/assets/magnific-popup/css/magnific-popup.css" rel="stylesheet" type="text/css">
-<!-- Iconmoon -->
-<link href="<?php echo $this->baseUrl();?>/templates/assets/iconmoon/css/iconmoon.css" rel="stylesheet" type="text/css">
-<!-- Owl Carousel -->
-<link href="<?php echo $this->baseUrl();?>/templates/assets/owl-carousel/css/owl.carousel.min.css" rel="stylesheet" type="text/css">
-<!-- Animate -->
-<link href="<?php echo $this->baseUrl();?>/templates/css/animate.css" rel="stylesheet" type="text/css">
+    <!-- Css Files -->
+    <link href="<?php echo $this->baseUrl();?>/templates/css/bootstrap.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl();?>/templates/css/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl();?>/templates/css/flaticon.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl();?>/templates/css/slick-slider.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl();?>/templates/css/fancybox.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl();?>/templates/build/mediaelementplayer.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl();?>/templates/style.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl();?>/templates/css/color.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl();?>/templates/css/datepicker.css" rel="stylesheet">
+    <link href="<?php echo $this->baseUrl();?>/templates/css/responsive.css" rel="stylesheet">
+    
 
-<!-- Custom Style -->
-<link href="<?php echo $this->baseUrl();?>/templates/css/jquery.mmenu.all.css" rel="stylesheet" type="text/css">
-<link href="<?php echo $this->baseUrl();?>/templates/css/template.css" rel="stylesheet" type="text/css">
-<link href="<?php echo $this->baseUrl();?>/templates/css/custom.css" rel="stylesheet" type="text/css">
-<link href="<?php echo $this->baseUrl();?>/templates/css/responsivemenu/css/responsivemultimenu.css" rel="stylesheet" type="text/css">
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-<script type="text/javascript" src="<?php echo $this->baseUrl();?>/templates/js/jquery.min.js"></script> 
-</head>
-<script>		
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+	
+    <!--// Main Wrapper \\-->
+    <div class="automobile-main-wrapper">
+        <!--// Header \\-->
+        <header id="automobile-header" class="automobile-header-one">
+            <div class="container">
+                <div class="row">
+                    <aside class="col-md-2"> <a href="<?php echo $this->baseUrl();?>" class="automobile-logo"><img src="<?php echo $this->baseUrl();?>/templates/images/logo.png" alt=""></a> </aside>
+                    <aside class="col-md-10">
+                        <!--// Navigation \\-->
+                        <nav class="navbar navbar-default">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div>
+                            <div class="collapse navbar-collapse" id="navbar-collapse-1">
+                                <ul class="nav navbar-nav">
+                                    <li class="active"><a href="<?php echo $this->baseUrl();?>"><?php echo $tr->translate("HOME");?></a></li>
+                                    <li><a href="#">Blogs</a>
+                                        <ul class="sub-menu">
+                                            <li><a href="#">Blog Classic</a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="blog-classic.html">Blog Classic WLS</a></li>
+                                                    <li><a href="blog-classic-wrs.html">Blog Classic WRS</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Blog Medium</a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="blog-medium.html">Blog Medium WLS</a></li>
+                                                    <li><a href="blog-medium-wrs.html">Blog Medium WRS</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Blog Detail</a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="blog-detail.html">Blog Detail WLS</a></li>
+                                                    <li><a href="blog-detail-wrs.html">Blog Detail WRS</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="automobile-megamenu-li"><a href="#">Pages</a>
+                                        <ul class="automobile-megamenu">
+                                            <li class="row">
+                                                <div class="col-md-2">
+                                                    <h4>Link 1</h4>
+                                                    <ul class="automobile-megalist">
+                                                        <li><a href="about-us.html">About Us</a></li>
+                                                        <li><a href="account-favorite-list.html">Account Favorite List</a></li>
+                                                        <li><a href="account-package.html">Account Package</a></li>
+                                                        <li><a href="account-payment.html">Account Payment</a></li>
+                                                        <li><a href="account-profile.html">Account Profile</a></li>
+                                                        <li><a href="account-vehicle.html">Account Vehicle</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <h4>Link 2</h4>
+                                                    <ul class="automobile-megalist">
+                                                        <li><a href="coming-soon.html">Coming Soon</a></li>
+                                                        <li><a href="compare.html">Compare</a></li>
+                                                        <li><a href="services.html">Services</a></li>
+                                                        <li><a href="vehicle.html">Vehicle</a></li>
+                                                        <li><a href="search-result-wrs.html">Search Result WRS</a></li>
+                                                        <li><a href="search-result.html">Search Result</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <h4>Link 3</h4>
+                                                    <ul class="automobile-megalist">
+                                                        <li><a href="typography.html">Typography</a></li>
+                                                        <li><a href="faq.html">Our FAQ</a></li>
+                                                        <li><a href="priceplan.html">Price Plan</a></li>
+                                                        <li><a href="404.html">404 Error Page</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <a href="#" class="automobile-thumbnail">
+                                                        <img src="<?php echo $this->baseUrl();?>/templates/extra-images/megamenu-frame.jpg" alt="">
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Listing</a>
+                                        <ul class="sub-menu">
+                                            <li><a href="#">Listing Dealer</a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="listing-dealer.html">Listing Dealer WLS</a></li>
+                                                    <li><a href="listing-dealer-wrs.html">Listing Dealer WRS</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Listing Grid</a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="listing-grid.html">Listing Grid WLS</a></li>
+                                                    <li><a href="listing-grid-wrs.html">Listing Grid WRS</a></li>
+                                                    <li><a href="listing-grid-wos.html">Listing Grid WOS</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Listing List</a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="listing-list.html">Listing List WLS</a></li>
+                                                    <li><a href="listing-list-wrs.html">Listing List WRS</a></li>
+                                                    <li><a href="listing-list-wos.html">Listing List WOS</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Listing Detail</a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="listing-detail.html">Listing Detail WLS</a></li>
+                                                    <li><a href="listing-detail-wrs.html">Listing Detail WRS</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Our Shop</a>
+                                        <ul class="sub-menu">
+                                            <li><a href="#">Shop Grid</a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="shop-grid.html">Shop Grid WLS</a></li>
+                                                    <li><a href="shop-grid-wrs.html">Shop Grid WRS</a></li>
+                                                    <li><a href="shop-grid-wos.html">Shop Grid WOS</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Shop List</a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="shop-list.html">Shop List WLS</a></li>
+                                                    <li><a href="shop-list-wrs.html">Shop List WRS</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#">Shop Detail</a>
+                                                <ul class="sub-menu">
+                                                    <li><a href="shop-detail.html">Shop Detail WLS</a></li>
+                                                    <li><a href="shop-detail-wrs.html">Shop Detail WRS</a></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#">Contact Us</a>
+                                        <ul class="sub-menu">
+                                            <li><a href="contact-us.html">Contact Us WRS</a></li>
+                                            <li><a href="contact-us-wls.html">Contact Us WLS</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                        <!--// Navigation \\-->
+                        <div class="automobile-right-section">
+                            <ul class="automobile-user-section">
+                                <li><a href="#" data-toggle="modal" data-target="#accountmodal"><i class="automobile-color icon-avatar3"></i> Account</a></li>
+                                <li><a href="#" class="automobile-shoppingcart-btn"><i class="automobile-color icon-interface5"></i> Cart</a>
+                                    <div class="automobile-cartbox"> No products in the cart. </div>
+                                </li>
+                            </ul>
+                            <a href="vehicle.html" class="automobile-sell-btn automobile-bgcolor">Sell My Car</a>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </header>
+        <!--// Header \\-->
+        <script>		
 			var url_changelang = '<?php echo $this->url(array('module'=>'default','controller'=>'index','action'=>'changelange'));?> ';
 			function changeLange(lang){
 				jQuery.ajax({
@@ -108,80 +264,4 @@ $module=$request->getModuleName();
 		      var baseurl = '<?php echo $this->baseUrl();?>';
 		      var currentlanguage='<?php echo $currentlang;?>';
 	</script>
-<body>
-
-<!-- Start Header -->
-<header style="background: url(<?php echo $this->baseUrl()."/images/headerbackground/".$headerbg['value'];?>) no-repeat;background-size: 100%;"> 
-  <!-- Start Header Middle -->
-  <div class="container header-middle">
-    <div class="row"> <span class="col-xs-6 col-sm-3"><a class="logo" href="<?php echo $this->baseUrl();?>"><img src="<?php echo $this->baseUrl().'/images/lang/'.$row['value']?>" class="img-responsive" alt=""></a></span>
-      <div class="col-xs-6 col-sm-3"></div>
-      <div class="col-xs-6 col-sm-9">
-        <div class="contact clearfix">
-          <ul class="hidden-xs" style="
-				background: rgba(255, 226, 15, 0.8);
-				padding: 5px 0;
-				-webkit-box-shadow: 7px 11px 43px -17px rgba(69,69,69,1);
-				-moz-box-shadow: 7px 11px 43px -17px rgba(69,69,69,1);
-				box-shadow: 7px 11px 43px -17px rgba(69,69,69,1);
-				border-radius: 4px;
-			">
-            <li> <span><?php echo $tr->translate("EMAIL");?></span> <?php echo $email['value'];?> </li>
-            <li> <span><?php echo $tr->translate("PHONE");?></span> <?php echo $tel['value'];?> </li>
-			<li>
-			    <div class="lang-wrapper">
-				  <div class="select-lang2">
-					<div class="lang">
-                       <?php if (!empty($alllang)) foreach ($alllang as $ll){
-						if ($currentlang != $ll['id']){?>
-                          		<img title="<?php echo $tr->translate(strtoupper($ll['title']));?>" src="<?php echo $this->baseUrl()."/images/lang/".$ll['iconImage'];?>" onclick="changeLange('<?php echo $ll['id'];?>');" />
-                            <?php }
-						}?>
-                     </div>
-				  </div>
-				</div>
-			</li>
-          </ul>
-          
-		  </div>
-      </div>
-    </div>
-  </div>
-  <!-- End Header Middle --> 
-  <!-- Start Navigation -->
-  <div class="menu_mobile">
- 	 <a href="#primary-navigation" class="menu-button primary-navigation-button">
-		<i class="fa fa-bars" aria-hidden="true"></i> <?php echo $tr->translate("MENU");?>
-	</a>
-  	<?php if (!empty($alllang)) foreach ($alllang as $ll){
-		if ($currentlang != $ll['id']){?>
-           <img title="<?php echo $tr->translate(strtoupper($ll['title']));?>" src="<?php echo $this->baseUrl()."/images/lang/".$ll['iconImage'];?>" onclick="changeLange('<?php echo $ll['id'];?>');" />
-           <?php }
-		}?>
-	
-  </div>
-  <nav class="navbar navbar-inverse">
-    <div class="container">
-        <form action="<?php echo $this->baseUrl()."/index/result"?>" method="GET" class="navbar-form navbar-right">
-          <input type="text" name="textsearch" placeholder="<?php echo $tr->translate("SEARCH_NOW");?>" value="<?php echo $searchtxt;?>" class="form-control">
-          <button class="search-btn"><span class="icon-search-icon"></span></button>
-        </form>
-		  
-			<nav id="primary-navigation" class="site-navigation main-menu">
-				<div class="rmm style" >
-					<ul id="primary-menu"  class="rmm-menu">
-						<li class="<?php if($controller=="index" && $action=="index") { echo 'active';}?>"><a href="<?php echo $this->baseUrl();?>"><?php echo $tr->translate("HOME");?></a></li>
-						<?php if (!empty($menu_items)) foreach ($menu_items as $menu){?>
-	                    <li class="<?php if($menu['alias_menu']==$param[0]) { echo 'active';}?>">
-	                      <a href="<?php echo $this->baseUrl()."/page/index?param=".$menu['alias_menu'].".html";?>"><?php echo $menu['title']; if (!empty($vdgb->checkSubMenu($menu['id']))){ ?><i class="icon-arrow-down"></i><?php }?></a>
-	                      <?php echo $vdgb->getSubMaiMenu($this->baseUrl(), $menu['id']); ?>
-	                    </li>
-	                     <?php }?>
-					</ul>
-				</div>
-			</nav>
-		</div>
-  </nav>
-  <!-- End Navigation --> 
-</header>
-<!-- End Header -->
+        

@@ -1091,7 +1091,7 @@ function addPockageRent(){
 	temp='<td align="center">'+k+'</td>';	
 	temp+='<td><select style="width:260px;"  id="from_locaation'+k+'" name="from_locaation'+k+'" dojoType="dijit.form.FilteringSelect" >'+location_option+'</select></td>';
 	temp+='<td><select style="width:260px;"  id="to_locaation'+k+'" name="to_locaation'+k+'" dojoType="dijit.form.FilteringSelect" >'+location_option+'</select></td>';
-	temp+='<td><input style="width:250px;" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="rent_price_'+k+'" id="rent_price_'+k+'" value="" type="text" ></td>';
+	temp+='<td><input style="width:250px;" dojoType="dijit.form.NumberTextBox" class="fullside" name="rent_price_'+k+'" id="rent_price_'+k+'" value="" type="text" ></td>';
 	temp+='<td><input style="width:250px;" dojoType="dijit.form.TextBox" class="fullside"  name="rent_note_'+k+'" id="rent_note_'+k+'" value="" type="text" ></td>';
 	temp+='<td style="width:30px !important;text-align:center;" ><img style="cursor:pointer" onclick="deleteRecordRent('+k+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"  ></td>';
 	dojo.html.set(dojo.byId("row_guide_rent"+k),temp, {
@@ -1134,7 +1134,7 @@ function initList(){
 	temp='<td align="center">'+k+'</td>';	
 	temp+='<td><select style="width:260px;"  id="from_locaation'+k+'" name="from_locaation'+k+'" dojoType="dijit.form.FilteringSelect" >'+location_option+'</select></td>';
 	temp+='<td><select style="width:260px;"  id="to_locaation'+k+'" name="to_locaation'+k+'" dojoType="dijit.form.FilteringSelect" >'+location_option+'</select></td>';
-	temp+='<td><input style="width:250px;" dojoType="dijit.form.NumberTextBox" class="fullside" required="true" name="rent_price_'+k+'" id="rent_price_'+k+'" value="" type="text" ></td>';
+	temp+='<td><input style="width:250px;" dojoType="dijit.form.NumberTextBox" class="fullside"  name="rent_price_'+k+'" id="rent_price_'+k+'" value="" type="text" ></td>';
 	temp+='<td><input style="width:250px;" dojoType="dijit.form.TextBox" class="fullside"  name="rent_note_'+k+'" id="rent_note_'+k+'" value="" type="text" ><input type="hidden" name="old_id_price_locattion'+k+'" id="old_id_price_locattion'+k+'"  value="<?php echo $rs['id'];?>" ></td>';
 	temp+='<td style="width:30px !important;text-align:center;" ><img style="cursor:pointer" onclick="deleteRecordRent('+k+')" src="<?php echo $this->baseUrl();?>/images/Delete_16.png"  ></td>';
 	dojo.html.set(dojo.byId("row_guide_rent"+k),temp, {

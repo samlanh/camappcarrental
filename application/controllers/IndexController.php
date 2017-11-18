@@ -15,7 +15,6 @@ class IndexController extends Zend_Controller_Action
     {
     	//$this->_helper->layout()->disableLayout();
 		$db = new Application_Model_DbTable_DbGlobalSelect();
-		
 		$slidepartner = $db->getWebsiteSetting("slide_partner");
 		if(!empty($slidepartner)){
 			if(!empty($slidepartner['value'])){
@@ -23,14 +22,12 @@ class IndexController extends Zend_Controller_Action
 				$this->view->partner = $slidespa;
 			}			
 		}
-		
 		$video = $db->getWebsiteSetting("youtubeframe");
 		if(!empty($video)){
 			if(!empty($video['value'])){
 				$this->view->videos = $video;
 			}			
 		}
-		
 		$homecategory = $db->getWebsiteSetting("homecategorycontent");
 		if (!empty($homecategory['value'])){
 			$this->view->categoryinfo = $db->getCategoryByID($homecategory['value']);
@@ -51,9 +48,6 @@ class IndexController extends Zend_Controller_Action
 				$this->view->slides = $image;
 			}
 		}
-		
-// 		$cate = $db->getWebsiteSetting("home_article_bycate");
-// 		$this->view->categoryhomefeature = $db->getCategoryForHomepageArticle($cate['value']);
 		
 		$this->view->menuright= $db->getMenuRight();
 
@@ -245,15 +239,6 @@ class IndexController extends Zend_Controller_Action
     		$db = new Application_Model_DbTable_DbVdGlobal();
     		$rs = $db->checkEmailClient($data['email']);
     		print_r(Zend_Json::encode($rs));
-    		exit();
-    	}
-    }
-    function checkmediaAction(){
-    	if($this->getRequest()->isPost()){
-    		$data=$this->getRequest()->getPost();
-    		$media_session=new Zend_Session_Namespace('mediascreen');
-    		$media_session->width = $data['screenwidth'];
-    		print_r(Zend_Json::encode($media_session->width));
     		exit();
     	}
     }
