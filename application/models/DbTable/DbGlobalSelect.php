@@ -293,5 +293,39 @@ class Application_Model_DbTable_DbGlobalSelect extends Zend_Db_Table_Abstract
 		return $row;
 	
 	}
+	
+	/* for get feature of booking/sale vehicle */
+	public function getAllSaleVehicle($limit_num=null){
+		$db = $this->getAdapter();
+		$sql="SELECT v.*,
+			(SELECT e.capacity FROM `ldc_engince` AS e WHERE e.id=v.engine) AS engine_title,
+        	(SELECT TYPE FROM `ldc_type` WHERE id = v.type AND STATUS=1) AS type_title,
+        	(SELECT t.title FROM `ldc_vechicletye` AS t WHERE t.id=v.car_type) AS car_type,
+  			(SELECT m.title FROM `ldc_make` AS m WHERE m.id=v.`make_id`) AS make,
+  			(SELECT md.title FROM `ldc_model` AS md WHERE md.id=v.`model_id`) AS model,
+  			(SELECT sm.title FROM `ldc_submodel` AS sm WHERE sm.id=v.`sub_model`) AS sub_model,
+  			(SELECT t.`tran_name` FROM `ldc_transmission` AS t WHERE t.`id`=v.`transmission`) AS transmission
+  		    FROM `ldc_vehicle` AS v WHERE is_sale =1 AND v.status=1";
+		$where="";
+		$order="";
+		$limit="";
+		if (!empty($limit_num)){
+			$limit = " LIMIT $limit_num";
+		}
+		return $db->fetchAll($sql.$where.$order.$limit);
+	}
+	public function getVehicleDetail($id){
+		$db = $this->getAdapter();
+		$sql="SELECT v.*,
+		(SELECT e.capacity FROM `ldc_engince` AS e WHERE e.id=v.engine) AS engine_title,
+		(SELECT TYPE FROM `ldc_type` WHERE id = v.type AND STATUS=1) AS type_title,
+		(SELECT t.title FROM `ldc_vechicletye` AS t WHERE t.id=v.car_type) AS car_type,
+		(SELECT m.title FROM `ldc_make` AS m WHERE m.id=v.`make_id`) AS make,
+		(SELECT md.title FROM `ldc_model` AS md WHERE md.id=v.`model_id`) AS model,
+		(SELECT sm.title FROM `ldc_submodel` AS sm WHERE sm.id=v.`sub_model`) AS sub_model,
+		(SELECT t.`tran_name` FROM `ldc_transmission` AS t WHERE t.`id`=v.`transmission`) AS transmission
+		FROM `ldc_vehicle` AS v WHERE is_sale =1 AND v.status=1 AND v.`id`=$id LIMIT 1";
+		return $db->fetchRow($sql);
+	}
 }
 ?>

@@ -4,17 +4,7 @@ $tr = Application_Form_FrmLanguages::getCurrentlanguage();
 $session_lang=new Zend_Session_Namespace('lang');
 $currentlang = $session_lang->lang_id;
 
-$home_article = json_decode($this->home_article['value'],true);
-$db = new Application_Model_DbTable_DbGlobalSelect();
-$facebook = $db->getWebsiteSetting('facebook');
-
-$homecategory = $db->getWebsiteSetting("homecategorycontent");
-$lastestart="";
-$cateinfo='';
-if (!empty($homecategory['value'])){
-	$cateinfo = $db->getCategoryByID($homecategory['value']);
-	$lastestart = $db->getArcticleByCateLastesArticle($homecategory['value']);
-}
+$vehicle = $this->vehiclesale;
 ?>
 
 <!--// Main Banner \\-->
@@ -889,17 +879,22 @@ if (!empty($homecategory['value'])){
                     <div class="row">
                         <div class="col-md-12">
                             <div class="automobile-fancy-title">
-                                <h2>check <span>our new cars</span></h2>
-                                <span>The best cars are the newest ones.</span>
+                                <h2><?php echo $tr->translate("Car For Sale");?></h2>
                             </div>
                             <div class="automobile-listing automobile-listing-list automobile-listing-list2">
                                 <ul class="row">
+                                	<?php if (!empty($vehicle)) foreach ($vehicle as $veh){
+                                			$imgage = $this->baseUrl()."/images/vehicle/no-img.jpg";
+                                			if (!empty($veh['img_front'])){
+                                				$imgage = $this->baseUrl()."/images/vehicle/".$veh['img_front'];
+                                			}
+                                		?>
                                     <li class="col-md-12">
-                                        <figure><a href="listing-detail.html"><img src="<?php echo $this->baseUrl();?>/templates/extra-images/listing-view-two-img1.jpg" alt=""></a></figure>
+                                        <figure><a href="<?php echo $this->baseUrl()."/index/vehicle?detail=".base64_encode($veh['id']).".html";?>"><img src="<?php echo $imgage;?>" alt=""></a></figure>
                                         <div class="automobile-listing-list-text">
-                                            <h4><a href="listing-detail.html">2016 Aston Martin V8 Vantage Coupe</a></h4>
+                                            <h4><a href="<?php echo $this->baseUrl()."/index/vehicle?detail=".base64_encode($veh['id']).".html";?>"><?php echo $veh['year']." ".$veh['make']." ".$veh['model']." ".$veh['sub_model'];?></a></h4>
                                             <ul>
-                                                <li>$36.900</li>
+                                                <li><?php echo "$ ".number_format($veh['sale_price'],2);?></li>
                                                 <li>MSRP $33.000</li>
                                             </ul>
                                             <h6>Mileage: <span>25,804 Miles</span></h6>
@@ -909,17 +904,17 @@ if (!empty($homecategory['value'])){
                                                     <div class="automobile-listing-option-text">
                                                         <div class="new-car-info">
                                                             <h6>Specs:</h6>
-                                                            <span>2.0L I4</span>
-                                                            <span>Manual</span>
-                                                            <span>21 city / 29 hwy</span>
-                                                            <span>Interior - Gray</span>
+                                                            <span><?php echo $veh['reffer'];?></span>
+                                                            <span><?php echo $veh['transmission'];?></span>
+                                                            <span><?php echo $veh['engine_title'];?></span>
+                                                            <span><?php echo $tr->translate("Color");?> - <?php echo $veh['color'];?></span>
                                                         </div>
                                                         <div class="new-car-info">
                                                             <h6>highlights:</h6>
-                                                            <span>Sunroof</span>
-                                                            <span>Good MPG</span>
-                                                            <span>Power Windows</span>
-                                                            <span>Daytime Running Lights</span>
+                                                            <span><?php echo $veh['car_type'];?></span>
+                                                            <span><?php echo $veh['type_title'];?></span>
+                                                            <span><?php echo $veh['steering'];?></span>
+                                                            <span><?php echo $tr->translate("NO. OF SEATS");?> - <?php echo $veh['seat_amount'];?></span>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -935,129 +930,7 @@ if (!empty($homecategory['value'])){
                                             </ul>
                                         </div>
                                     </li>
-                                    <li class="col-md-12">
-                                        <figure><a href="listing-detail.html"><img src="<?php echo $this->baseUrl();?>/templates/extra-images/listing-view-two-img2.jpg" alt=""></a></figure>
-                                        <div class="automobile-listing-list-text">
-                                            <h4><a href="listing-detail.html">2004 Chevrolet Captiva old</a></h4>
-                                            <ul>
-                                                <li>$36.900</li>
-                                                <li>MSRP $33.000</li>
-                                            </ul>
-                                            <h6>Mileage: <span>25,804 Miles</span></h6>
-                                            <ul class="automobile-listing-option">
-                                                <li class="highlights">
-                                                    <figure><img src="<?php echo $this->baseUrl();?>/templates/extra-images/listing-dealers-img2.jpg" alt=""></figure>
-                                                    <div class="automobile-listing-option-text">
-                                                        <div class="new-car-info">
-                                                            <h6>Specs:</h6>
-                                                            <span>2.0L I4</span>
-                                                            <span>Manual</span>
-                                                            <span>21 city / 29 hwy</span>
-                                                            <span>Interior - Gray</span>
-                                                        </div>
-                                                        <div class="new-car-info">
-                                                            <h6>highlights:</h6>
-                                                            <span>Sunroof</span>
-                                                            <span>Good MPG</span>
-                                                            <span>Power Windows</span>
-                                                            <span>Daytime Running Lights</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <ul class="automobile-listing-like">
-                                                        <li><a href="404.html">Compare</a></li>
-                                                        <li><a href="404.html"><i class="icon-favorite3"></i>Add to Favorites</a></li>
-                                                        <li><a href="404.html"><i class="icon-calendar3"></i> Listed 5 days</a></li>
-                                                        <li><a href="404.html"><i class="icon-eye"></i> 14 Views</a></li>
-                                                        <li><a href="404.html"><i class="icon-social10"></i> 0 Inquiries</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-12">
-                                        <figure><a href="listing-detail.html"><img src="<?php echo $this->baseUrl();?>/templates/extra-images/listing-view-two-img3.jpg" alt=""></a></figure>
-                                        <div class="automobile-listing-list-text">
-                                            <h4><a href="listing-detail.html">2011 Ford Ranger Truck</a></h4>
-                                            <ul>
-                                                <li>$36.900</li>
-                                                <li>MSRP $33.000</li>
-                                            </ul>
-                                            <h6>Mileage: <span>25,804 Miles</span></h6>
-                                            <ul class="automobile-listing-option">
-                                                <li class="highlights">
-                                                    <figure><img src="<?php echo $this->baseUrl();?>/templates/extra-images/listing-dealers-img3.jpg" alt=""></figure>
-                                                    <div class="automobile-listing-option-text">
-                                                        <div class="new-car-info">
-                                                            <h6>Specs:</h6>
-                                                            <span>2.0L I4</span>
-                                                            <span>Manual</span>
-                                                            <span>21 city / 29 hwy</span>
-                                                            <span>Interior - Gray</span>
-                                                        </div>
-                                                        <div class="new-car-info">
-                                                            <h6>highlights:</h6>
-                                                            <span>Sunroof</span>
-                                                            <span>Good MPG</span>
-                                                            <span>Power Windows</span>
-                                                            <span>Daytime Running Lights</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <ul class="automobile-listing-like">
-                                                        <li><a href="404.html">Compare</a></li>
-                                                        <li><a href="404.html"><i class="icon-favorite3"></i>Add to Favorites</a></li>
-                                                        <li><a href="404.html"><i class="icon-calendar3"></i> Listed 5 days</a></li>
-                                                        <li><a href="404.html"><i class="icon-eye"></i> 14 Views</a></li>
-                                                        <li><a href="404.html"><i class="icon-social10"></i> 0 Inquiries</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-12">
-                                        <figure><a href="listing-detail.html"><img src="<?php echo $this->baseUrl();?>/templates/extra-images/listing-view-two-img4.jpg" alt=""></a></figure>
-                                        <div class="automobile-listing-list-text">
-                                            <h4><a href="listing-detail.html">2011 Honda Accord Crosstour</a></h4>
-                                            <ul>
-                                                <li>$36.900</li>
-                                                <li>MSRP $33.000</li>
-                                            </ul>
-                                            <h6>Mileage: <span>25,804 Miles</span></h6>
-                                            <ul class="automobile-listing-option">
-                                                <li class="highlights">
-                                                    <figure><img src="<?php echo $this->baseUrl();?>/templates/extra-images/listing-dealers-img4.jpg" alt=""></figure>
-                                                    <div class="automobile-listing-option-text">
-                                                        <div class="new-car-info">
-                                                            <h6>Specs:</h6>
-                                                            <span>2.0L I4</span>
-                                                            <span>Manual</span>
-                                                            <span>21 city / 29 hwy</span>
-                                                            <span>Interior - Gray</span>
-                                                        </div>
-                                                        <div class="new-car-info">
-                                                            <h6>highlights:</h6>
-                                                            <span>Sunroof</span>
-                                                            <span>Good MPG</span>
-                                                            <span>Power Windows</span>
-                                                            <span>Daytime Running Lights</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <ul class="automobile-listing-like">
-                                                        <li><a href="404.html">Compare</a></li>
-                                                        <li><a href="404.html"><i class="icon-favorite3"></i>Add to Favorites</a></li>
-                                                        <li><a href="404.html"><i class="icon-calendar3"></i> Listed 5 days</a></li>
-                                                        <li><a href="404.html"><i class="icon-eye"></i> 14 Views</a></li>
-                                                        <li><a href="404.html"><i class="icon-social10"></i> 0 Inquiries</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
+                                    <?php }?>
                                 </ul>
                             </div>
                         </div>

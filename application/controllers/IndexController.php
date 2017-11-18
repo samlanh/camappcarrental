@@ -13,7 +13,6 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-    	//$this->_helper->layout()->disableLayout();
 		$db = new Application_Model_DbTable_DbGlobalSelect();
 		$slidepartner = $db->getWebsiteSetting("slide_partner");
 		if(!empty($slidepartner)){
@@ -22,47 +21,9 @@ class IndexController extends Zend_Controller_Action
 				$this->view->partner = $slidespa;
 			}			
 		}
-		$video = $db->getWebsiteSetting("youtubeframe");
-		if(!empty($video)){
-			if(!empty($video['value'])){
-				$this->view->videos = $video;
-			}			
-		}
-		$homecategory = $db->getWebsiteSetting("homecategorycontent");
-		if (!empty($homecategory['value'])){
-			$this->view->categoryinfo = $db->getCategoryByID($homecategory['value']);
-			$this->view->gethomearticle = $db->getArcticleByCateLastesArticle($homecategory['value']);
-		}
-		
-		$feature_article = $db->getWebsiteSetting("feature_article");
-		if(!empty($feature_article)){
-			if(!empty($feature_article['value'])){
-				$this->view->feature_article = $db->getAticleByListId($feature_article['value']);
-			}			
-		}
-		
-		$slideshow = $db->getWebsiteSetting("slideshow");
-		if(!empty($slideshow)){
-			if(!empty($slideshow['value'])){
-				$image = explode(",", $slideshow['value']);
-				$this->view->slides = $image;
-			}
-		}
-		
-		$this->view->menuright= $db->getMenuRight();
-
-		$article_announcement = $db->getWebsiteSetting("announcement");	
-		if(!empty($article_announcement)){
-			if(!empty($article_announcement['value'])){
-			$this->view->announcement = $db->getAticleByListId($article_announcement['value']);	
-			}			
-		}
-		
-		$homearticle = $db->getWebsiteSetting("home_article");
-		if (!empty($homearticle['value'])){
-			$this->view->homearticle = $db->getAticleByID($homearticle['value']);
-		}
-		
+		$limithome = 6;
+		$vehiclesale = $db->getAllSaleVehicle($limithome);
+		$this->view->vehiclesale = $vehiclesale;	
     }
 	
    
@@ -172,7 +133,6 @@ class IndexController extends Zend_Controller_Action
     public function logoutAction()
     {
         // action body
-       // $this->_redirect("/index");
         if($this->getRequest()->getParam('value')==1){        	
         	$aut=Zend_Auth::getInstance();
         	$aut->clearIdentity();        	
@@ -303,7 +263,16 @@ class IndexController extends Zend_Controller_Action
 		$this->view->param = $param;
 		$this->view->menuright= $db->getMenuRight();
 	}
-
+	function vehicleAction(){
+		$url = $this->getRequest()->getParams();
+		$db = new Application_Model_DbTable_DbGlobalSelect();
+		if (!empty($url['detail'])){
+			$temp = explode(".", $url['detail']);
+			$id = base64_decode($temp[0]);
+			$this->view->vehicledetail = $db->getVehicleDetail($id);
+		}
+		
+	}
 }
 
 
