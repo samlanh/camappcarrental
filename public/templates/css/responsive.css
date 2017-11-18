@@ -1,0 +1,552 @@
+/*	Media 768Px Start */
+@media (min-width: 768px) and (max-width: 990px) {
+	.navbar { position: relative;}
+	.navbar-toggle { display: block; background-color: #eee; margin: 40px 0px 25px 30px;}
+	.navbar-collapse { padding: 0px 0px 0px 0px; width: 260px; background-color: #fff; box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.10); border: none; position: absolute; left: 0%; top: 100%; z-index: 9999; margin: 10px 0px 0px 0px; }
+	#automobile-header .collapse { display: none; } #automobile-header .collapse.in { display: block; } .automobile-thumbnail { margin-bottom: 0px; }
+	.navbar-nav { margin: 0px; } .navbar-nav > li > a:before,.navbar-nav > li > a:after { display: none; }
+	.navbar-nav .sub-menu { float: left; width: 100%; position: relative; opacity: 1; visibility: visible; background-color: transparent; }
+	.automobile-megamenu,.navbar-nav .sub-menu {
+		-webkit-transform: translate(0px);
+		   -moz-transform: translate(0px);
+		    -ms-transform: translate(0px);
+		     -o-transform: translate(0px);
+		        transform: translate(0px);
+	}
+	.navbar .navbar-collapse { padding: 0px;}
+	.automobile-megamenu { float: left; min-width: 100%; position: relative; right: auto; top: auto; padding: 0px 8px 5px 8px; box-shadow: none; opacity: 1; visibility: visible; }
+	.automobile-megamenu [class*="col-md-"] { width: 100%; float: left; margin-bottom: 0px; }
+	.automobile-megamenu .row { margin: 0px; } .navbar-nav > li > a { float: left; width: 100%; padding: 20px 20px 22px 20px; color: #555555; line-height: 14px;}
+	.navbar-nav > li { width: 100%; float: left; }
+	.automobile-megamenu li h4 { padding: 15px 0px 0px;}
+	/* Main Grid */
+	.automobile-main-content .col-md-4,.automobile-main-content .col-md-3 { float: none; display: inline-block; vertical-align: top; margin-right: -4px; width: 50%; }
+	.automobile-main-content .col-md-7,.automobile-main-content .col-md-5 { width: 100%; float: left; margin-bottom: 30px; }
+	.col-md-12 { float: left; width: 100%; }
+	.automobile-main-content aside.col-md-3,.automobile-main-content aside.col-md-4 { width: 100%;}
+	.automobile-main-content .widget { width: 50%; padding: 0px 15px;}
+	/*header*/
+	.automobile-logo { width: 100%;	text-align: center; margin: 40px 0px 10px;}
+	.automobile-right-section { margin: 30px 0px 40px;}
+	a.automobile-sell-btn { margin: 0px 0px 0px 35px;}
+	.automobile-user-section li { padding-top: 6px;}
+	.automobile-car-list-img,.video-promo-img { display: none;}
+	.automobile-banner-text { width: 78%;}
+	.automobile-about-services-text { padding: 0px;}
+	.automobile-call-to-actionfull1 { background-size: cover;}
+	.automobile-listing-list.automobile-listing-list2 figure ~ .automobile-listing-list-text { float: left; margin: 0px;}
+	.automobile-listing-list figure ~ .automobile-listing-list-text,.automobile-listing-list .shape ~ .automobile-listing-list-text { float: left; margin: 0px;}
+	.automobile-listing-list-text { padding: 20px 0px 0px;}
+	.automobile-listing-list-text > .automobile-listing-option > li { margin: 0px 0px 15px;}
+	.automobile-main-section.automobile-call-to-actionfull1 .col-md-7,.automobile-main-section.automobile-call-to-actionfull1 .col-md-5 { width: 50%;}
+	.automobile-call-to-action2 { padding: 0px;}
+	.automobile-call-to-action1 h2 { margin: 0px 50px 0px 0px; width: 50%;}
+	.automobile-blog-classic-wrap { padding: 0px 25px;}
+	.automobile-blog-heading h2 { font-size: 23px;}
+	.automobile-footer-widget .widget { float: left; width: 50%;}
+	.automobile-about-newsletter-text i ~ h2 { padding-bottom: 15px;}
+	.automobile-404-full { background-position: 250% top;}
+	.automobile-favorite-list-wrap .close { margin: -7px 0px 0px;}
+	.datepicker.dropdown-menu { width: auto;}
+	.automobile-account-profile form ul li .date-of-birth { width: 30.433%;}
+	.automobile-vehicle-account-text { width: 79%;}
+	.automobile-blog-classic-tab .tab-content { width: 60%;}
+	.automobile-classic-blog-tab .automobile-single-post-tag { width: 59%;}
+	.automobile-car-compare-grid > ul { width: 100%; margin: 0px;}
+	.automobile-car-feature li { padding: 0px; width: 33.333%;}
+	.automobile-shop-filter-nav .nav-tabs { text-align: center;}
+	.automobile-shop-filter-nav .nav-tabs li { float: none; display: inline-block;}
+	.automobile-listing-slide { height: auto;}
+	.automobile-images-thumb .slick-arrow { margin: -20px 0px 0px;}
+	.automobile-listing-grid-text > ul > li { margin: 0px 4px 4px 0px;}
+	.automobile-priceplan-title h3:before { border-right: 325px solid transparent;}
+	.automobile-pricing-plan > ul > li { padding: 0px 15px;}
+	.automobile-pricing-plan > ul { margin: 0px -15px;}
+	.automobile-testimonial figure ~ .automobile-testimonial-text { float: left; padding: 0px;}
+	.automobile-appointment-form { width: 85%;}
+	.star-rating { width: 21%;}
+	.automobile-shop-thumb,.automobile-shop-thumb-list { width: 100%;}
+	.automobile-shop-thumb-list .slick-arrow.slick-arrow-left { left: 0px; right: 0px; top: auto; bottom: 50%;}
+	.automobile-shop-thumb-list .slick-arrow { right: 0px; margin: 0px 0px -17px 0px; bottom: 50%;}
+	.automobile-shop-slide .slick-arrow-right.slick-arrow,.automobile-shop-slide .slick-arrow-left.slick-arrow { padding-top: 13px;
+		-webkit-transform: rotate(-87deg);
+		   -moz-transform: rotate(-87deg);
+		    -ms-transform: rotate(-87deg);
+		     -o-transform: rotate(-87deg);
+		        transform: rotate(-87deg);
+	}
+	.automobile-shop-slide .slick-arrow-left.slick-arrow { padding-top: 10px;}
+	.automobile-promo-box-wrap figure figcaption p,.automobile-promo-box-btn,.automobile-full-promo-text .automobile-appointment-btn-two { display: none;}
+	.automobile-call-to-action4 h3 { line-height: 0.8; font-size: 38px;}
+	.automobile-call-to-action4 h2 { font-size: 35px;}
+	.automobile-call-to-action4 { padding: 32px 0;}
+	.automobile-full-promo-caption { padding: 10px 10px 0 10px;}
+	.automobile-promo-box-text { margin: 0px 0px 40px;}
+	.automobile-main-vehicle-text { padding: 0px 30px;}
+	.automobile-footer-widget { background-size: cover;}
+	.widget-auto-expert-text span { display: block;}
+	.automobile-listing-filter .automobile-shop-filter-nav .automobile-number-select li:last-child { margin: 0px;}
+	.automobile-shop-filter-nav .nav-tabs > li:first-child { margin-left: 0px;}
+	.automobile-shop-filter-nav { padding: 11px 10px 12px 10px;}
+	.automobile-listing-filter .automobile-shop-filter-nav .automobile-number-select li { margin: 0px 20px 0px 0px;}
+	.automobile-compare-box > a::after { top: 1;}
+	.modal-dialog { width: 100%;}
+	.automobile-social-modal li { padding: 0px 3px;}
+	.automobile-404-text h2 { line-height: 1.2;}
+	.navbar-nav .sub-menu .sub-menu { left: auto; right: 0%;}
+	.automobile-sticky .automobile-header-one { position: relative;}
+	.automobile-sticky .automobile-header-one { animation: none;}
+	.automobile-footer-widget,.automobile-comingsoonfull { background-size: cover;}
+	.automobile-about-services-list ul li.list-three { margin-left: 0px;}
+	.automobile-coming-social-icone li { float: none; display: inline-block; margin-right: -4px;}
+	.automobile-coming-social-icone { width: 100%; text-align: center; padding-bottom: 20px;}
+	.automobile-comingsoon-text form { width: 85%;}
+	.automobile-listing.automobile-listing-list > ul > li.col-md-12 { float: none; display: inline-block; width: 50%; margin-right: -4px; vertical-align: top;}
+    .automobile-listing-list2.automobile-listing-list > ul > li > figure,.automobile-listing-list2 .automobile-listing-list-text > .automobile-listing-option > li,
+    .automobile-listing-list2 .automobile-listing-list-text > .automobile-listing-option > li:last-child { width: 100%; }
+    .automobile-listing-list-text > h6 { margin-left: 0px; } .automobile-listing-list2 .automobile-listing-like { padding-left: 0px; margin: 0px; }
+    .automobile-listing-option > li figure ~ .automobile-listing-option-text { padding-right: 0px; width: 100%; margin: 15px 0px 0px 0px; float: left; }
+    .automobile-listing-option > li > figure { display: none; }
+    .automobile-main-content .widget.widget_newsletter { padding: 30px 26px 42px;}
+    .automobile-listing-like { padding-left: 0px;}
+    .automobile-listing-like li { font-size: 14px;}
+    .automobile-shop-summery { padding-left: 12px;}
+    .automobile-shop-summery .automobile-post-tags { text-align: center;}
+    .automobile-shop-summery .automobile-social-tag { margin: 0px 0px 20px;}
+    .automobile-shop-summery .automobile-blog-social,.automobile-shop-summery .automobile-social-tag { float: none; display: inline-block;}
+	.automobile-banner-caption { position: relative; left: auto; top: auto; margin: 0px 0px 30px;}
+	.automobile-banner-text { display: none;}
+	.automobile-listing-list2 .automobile-listing-like li { width: 50%;}
+	.automobile-banner .slick-dots { top: 0px; bottom: auto;}
+
+}
+
+
+/* Media 420Px Start */
+@media (max-width: 767px) {
+	.navbar { position: relative;}
+	.navbar-toggle { background-color: #eee; margin: 30px 0px 25px 30px;}
+	.navbar-collapse { padding: 0px 0px 0px 0px; width: 260px; background-color: #fff; box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.10); border: none; position: absolute; left: 0%; top: 100%; z-index: 9999; margin: 10px 0px 0px 0px; }
+	#automobile-header .collapse { display: none; } #automobile-header .collapse.in { display: block; } .automobile-thumbnail { margin-bottom: 0px; }
+	.navbar-nav { margin: 0px; } .navbar-nav > li > a:before,.navbar-nav > li > a:after { display: none; }
+	.navbar-nav .sub-menu { float: left; width: 100%; position: relative; opacity: 1; visibility: visible; background-color: transparent; }
+	.automobile-megamenu,.navbar-nav .sub-menu {
+		-webkit-transform: translate(0px);
+		   -moz-transform: translate(0px);
+		    -ms-transform: translate(0px);
+		     -o-transform: translate(0px);
+		        transform: translate(0px);
+	}
+	.navbar .navbar-collapse { padding: 0px;}
+	.automobile-megamenu { float: left; min-width: 100%; position: relative; right: auto; top: auto; padding: 0px 8px 5px 8px; box-shadow: none; opacity: 1; visibility: visible; }
+	.automobile-megamenu [class*="col-md-"] { width: 100%; float: left; margin-bottom: 0px; }
+	.automobile-megamenu .row { margin: 0px; } .navbar-nav > li > a { float: left; width: 100%; padding: 20px 20px 22px 20px; color: #555555; line-height: 14px;}
+	.navbar-nav > li { width: 100%; float: left; }
+	.automobile-megamenu li h4 { padding: 15px 0px 0px;}
+	/* Main Grid */
+	.automobile-main-content .col-md-4,.automobile-main-content .col-md-3{ float: none; display: inline-block; vertical-align: top; margin-right: -4px; width: 50%; }
+	.automobile-main-content .col-md-7,.automobile-main-content .col-md-5 { width: 100%; float: left; margin-bottom: 30px; }
+	.col-md-12 { float: left; width: 100%; }
+	.automobile-main-content aside.col-md-3,.automobile-main-content aside.col-md-4 { width: 100%;}
+	.automobile-main-content .widget { width: 50%; padding: 0px 15px;}
+	/*header*/
+	.automobile-logo { width: 100%;	text-align: center; margin: 40px 0px 10px;}
+	.automobile-right-section { margin: 30px 0px 40px;}
+	a.automobile-sell-btn { margin: 0px 0px 0px 35px;}
+	.automobile-user-section li { padding-top: 6px;}
+	.automobile-banner-caption { position: relative; left: auto; top: auto; margin: 0px 0px 30px;}
+	.automobile-banner-text { display: none;}
+	.automobile-car-list h2 { line-height: 1.3;}
+	.automobile-car-list ul li { font-size: 15px;}
+	.automobile-fancy-title h2 { line-height: 1.2;}
+	.automobile-about-services-list ul li.list-one,.automobile-about-services-list ul li.list-two,
+	.automobile-about-services-list ul li.list-three { padding: 0px;}
+	.automobile-about-services-list ul li.list-three { margin-left: 0px;}
+	.automobile-call-to-actionfull1 { background-size: cover;}
+	.automobile-call-to-action2 { padding: 0px;}
+	.automobile-about-services-text { padding: 0px;}
+	.automobile-blog-post-comment { margin: 3px 0px 0px;}
+	.automobile-tour-filterable ul li { margin: 0px 10px;}
+	.automobile-car-deals figure figcaption { padding: 0 20px 21px 0px;}
+	.automobile-listing-list.automobile-listing-list2 figure ~ .automobile-listing-list-text { float: left; margin: 0px;}
+	.automobile-listing-list-text { padding: 20px 0px 0px;}
+	.automobile-listing-list2 .automobile-listing-list-text > .automobile-listing-option > li,
+	.automobile-listing-list2 .automobile-listing-list-text > .automobile-listing-option > li:last-child { width: 100%;}
+	.automobile-listing-list2 .automobile-listing-like { margin: 0px; padding: 0px;}
+	.automobile-listing-list2 .automobile-listing-like li { width: 50%;}
+	.automobile-listing-option > li > figure { margin: 0px 0px 15px;}
+	.automobile-blog-classic-wrap { padding: 0px;}
+	.automobile-blog.automobile-blog-medium > ul { margin: 0px -15px;}
+	.automobile-blog.automobile-blog-medium > ul > li { padding: 0px 15px;}
+	.automobile-car-deals figure > span,.automobile-car-deals figure:before { top: 10px;}
+	.automobile-call-to-action1 h2 { margin: 0 30px 0 0; width: 60%;}
+	.automobile-blog-heading h2 { font-size: 19px;}
+	.widget_financing_calculator ul li { width: 100%;}
+	.widget_financing_calculator ul li:nth-child(2n) { padding: 0px;}
+	.automobile-blog-medium .automobile-social-tag a { font-size: 15px;}
+	.automobile-blog-medium .automobile-blog-post-comment li { font-size: 14px; line-height: 1.6;}
+	.automobile-call-to-action1 > a { float: right;}
+	.automobile-404-text { width: 100%; padding: 0px;}
+	.automobile-404-full { background-image: none;}
+	.automobile-favorite-list-wrap .close { float: left; margin: 0px 0px 0px 0px;}
+	.automobile-favorite-list-text > span { margin: 0px 0px 5px 13px;}
+	.automobile-footer-widget .widget { float: left; width: 50%;}
+	.automobile-account-packages { float: left;}
+	.automobile-account-packages ul { float: left; width: 100%; border-bottom: 1px solid #f6f6f6;}
+	.automobile-account-packages ul li { float: left; width: 20%; border-bottom: none;}
+	.automobile-account-profile form > ul > li:first-child { width: 100%;}
+	.automobile-account-profile form ul li .date-of-birth { width: 100%; margin: 0px 0px 15px;}
+	.datepicker.dropdown-menu { width: auto;}
+	.automobile-vehicle-social { float: left; margin: 10px 0px 0px;}
+	.automobile-blog-classic-tab .tab-content,.automobile-blog-classic-tab .nav-tabs,.automobile-classic-blog-tab .automobile-single-post-tag { width: 100%;}
+	.automobile-blog-classic-tab .nav-tabs li { padding: 0px 7px 15px; width: 25%;}
+	.automobile-medium-blog figure ~ .automobile-medium-blog-text { float: left; width: 100%; margin: 0px; padding: 20px 0px 0px;}
+	.widget_video_post figure ~ .widget-video-post-text,.widget_trading_post figure ~ .widget-trading-post-text { padding-left: 115px;}
+	.widget_contact .automobile-widget-heading h2 { line-height: 1.2;}
+	.automobile-post-tags > .automobile-social-tag,.automobile-blog-social { width: 100%;}
+	.automobile-post-tags { text-align: center;}
+	.automobile-blog-social ul,.automobile-social-tag i,.automobile-blog-social span { float: none; display: inline-block;}
+	.automobile-blog-social ul { margin: 0px 0px -17px;}
+	.automobile-post-tags .automobile-social-tag,.automobile-prenxt-post ul li,.comment-list li figure { margin-bottom: 20px;}
+	.automobile-prenxt-post ul li,.automobile-prev-post-text h6, .automobile-next-post-text h6 { width: 100%;}
+	.comment-list .children { padding: 0px;}
+	.automobile-car-compare-grid > ul { margin: 0px;}
+	.automobile-comingsoon-text form,.automobile-car-compare-grid > ul { width: 100%;}
+	.automobile-car-compare-grid > ul > li { width: 50%;}
+	.automobile-comparsion-list li h3 { width: 37%;}
+	.automobile-comparsion-list li span { width: 21%;}
+	.automobile-car-feature li { margin: 0px 0px 30px; width: 50%; padding-left: 50px;}
+	.automobile-car-compare-grid > ul > li { padding: 0px 7px;}
+	.automobile-contact-us-text ul li { width: 50%;}
+	.automobile-contact-info span, .automobile-contact-info a { font-size: 13px; padding-left: 18px;}
+	.automobile-faq-tabs .nav-tabs > li { margin-right: 13px;}
+	.automobile-faq-tabs .nav-tabs > li > a { font-size: 24px;}
+	.automobile-shop-filter-nav.listing-bar .automobile-number-select { width: 100%; float: left;}
+	.automobile-shop-filter-nav.listing-bar .automobile-number-select li:last-child { margin: 0px;}
+	.automobile-shop-filter-nav.listing-bar .automobile-Color-select { width: 166px;}
+	.automobile-shop-filter-nav span { margin: 6px 10px 10px 0px;}
+	.automobile-shop-filter-nav.listing-bar .automobile-number-select li { margin: 0 11px 10px 0;}
+	.automobile-dealer-contact-info { width: 56%;}
+	.automobile-dealer-address { width: 44%;}
+	.automobile-shop-filter-nav .nav-tabs { width: 100%; text-align: center;}
+	.automobile-shop-filter-nav .nav-tabs li { float: none; display: inline-block;}
+	.automobile-listing-filter .automobile-shop-filter-nav .automobile-number-select li { margin: 0px 15px 10px 0px;}
+	.automobile-listing-filter .automobile-shop-filter-nav .automobile-number-select li:last-child { margin-right: 0px;}
+	.automobile-listing-slide { height: auto;}
+	.automobile-listing-grid-text { padding: 21px 15px 53px;}
+	.automobile-listing-grid-text > ul > li { margin-bottom: 4px;}
+	.automobile-listing-list figure ~ .automobile-listing-list-text { float: left; width: 100%; margin: 0px;}
+	.automobile-listing-list-text > .automobile-listing-option > li,.automobile-listing-list-text > .automobile-listing-option > li:last-child { width: 100%;}
+	.automobile-listing-like { padding-left: 0px; margin: 0px;}
+	.automobile-listing-list .shape ~ .automobile-listing-list-text { float: left; margin: 0px;}
+	.automobile-images-thumb .slick-arrow { margin: -30px 0px 0px;}
+	.automobile-vehicle-text { padding: 0px;}
+	.widget-car-info-view { padding: 22px 0 8px 25px;}
+	.widget_finance_calculator .widget-finance-checkbox { margin: 0px 8px 10px 0px;}
+	.automobile-pricing-plan,.automobile-service { overflow: hidden;}
+	.automobile-priceplan-title h3:before { border-right: 252px solid transparent;}
+	.automobile-priceplan-title:before { border-left: 252px solid transparent;}
+	.automobile-priceplan-title:after { border-left: 250px solid transparent;}
+	.automobile-priceplan-text ul li { padding: 6px 40px 5px;}
+	.automobile-pricing-plan > ul > li { padding: 0px 15px;}
+	.automobile-pricing-plan > ul { margin: 0px -15px;}
+	.automobile-testimonial-wrap { padding: 0px;}
+	.automobile-testimonial figure ~ .automobile-testimonial-text { float: left; width: 100%; padding: 0px 0px 0px;}
+	.automobile-testimonial { padding: 37px 20px 33px 22px}
+	.automobile-testimonial-wrap .slick-arrow { bottom: -15px;}
+	.automobile-appointment-form,.automobile-shop-summery { width: 100%;}
+	.automobile-shop-filter-nav .automobile-number-select li { margin: 0px 10px 10px 0px;}
+	.automobile-shop-filter-nav .automobile-number-select li:last-child { margin-right: 0px;}
+	.automobile-widget-heading h2 { line-height: 1.2;}
+	.automobile-widget-heading i { top: 4px;}
+	.star-rating { width: 28%;}
+	.automobile-shop-slide,.automobile-shop-thumb,.automobile-shop-thumb-list,.automobile-shop-tabs .nav-tabs,.automobile-shop-tabs .tab-content { width: 100%;}
+	.automobile-shop-thumb-list .slick-arrow.slick-arrow-left { left: 0px; right: 0px; top: auto; bottom: 50%;}
+	.automobile-shop-thumb-list .slick-arrow { right: 0px; margin: 0px 0px -17px 0px; bottom: 50%;}
+	.automobile-shop-slide .slick-arrow-right.slick-arrow,.automobile-shop-slide .slick-arrow-left.slick-arrow { padding-top: 13px;
+		-webkit-transform: rotate(-87deg);
+		   -moz-transform: rotate(-87deg);
+		    -ms-transform: rotate(-87deg);
+		     -o-transform: rotate(-87deg);
+		        transform: rotate(-87deg);
+	}
+	.automobile-full-promo-caption,.automobile-promo-box-wrap figure figcaption { display: none;}
+	.automobile-peralex-two-social li { margin: 0px 6px 20px 0px;}
+	.automobile-shop-slide .slick-arrow-left.slick-arrow { padding-top: 10px;}
+	.automobile-shop-summery { padding: 0px;}
+	.automobile-shop-tabs .tab-content { padding: 40px 0px 0px;}
+	.automobile-background-layers { background-size: cover; padding: 50px 0px;}
+	.automobile-about-btn,.automobile-appointment-btn-list .automobile-appointment-btn-one { margin: 0px 12px 10px 0px;}
+	.automobile-light-background,.automobile-image-background { width: 100%; padding: 0px;}
+	.automobile-typography-tab figure ~ section { margin: 0px; float: left; padding: 20px 0px 0px;}
+	.automobile-typography-tour-tabs .nav-tabs li a { padding: 9px 21px 11px 21px;}
+	.automobile-typography-listing ul li { width: 33.333%;}
+	.automobile-typography-listing ul { width: 100%;}
+	.automobile-typography-table table,.automobile-typography-heading { float: left;}
+	.automobile-typography-table table > tbody > tr > th, .automobile-typography-table table > tbody > tr > td { float: left; width: 50%;}
+	.automobile-call-to-action4 h3,.automobile-call-to-action4 h4 { width: 100%; margin: 0px 0px 20px;}
+	.automobile-call-to-action4 h2 { margin: 0px 0px 30px;}
+	.automobile-with-left-label.automobile-full-label ul li.input-with-info,.automobile-with-left-label.automobile-full-label ul li.input-with-warning,
+	.automobile-with-left-label.automobile-full-label ul li.input-with-success,.automobile-with-left-label.automobile-full-label ul li.input-with-error { width: 100%; padding: 0px; }
+	.automobile-simple-btn { margin: 0px;}
+	.automobile-main-vehicle-text { padding: 0px;}
+	.automobile-footer-widget { background-size: cover;}
+	.automobile-about-newsletter-text, .automobile-about-newsletter-form { width: 100%;}
+	.automobile-about-newsletter-text { margin: 0px 0px 30px;}
+	.automobile-contact-us-text ul li i ~ .automobile-contact-info { padding: 21px 0 0 77px;}
+	.widget-auto-expert-text span { display: block;}
+	.automobile-section-heading h2 { line-height: 1.2;}
+	.automobile-vehicle-option i ~ .automobile-vehicle-option-text { padding: 4px 0 0 100px;}
+	.new-car-info { margin: 0px 0px 20px;}
+	.listing-bar.automobile-shop-filter-nav span { display: inline-block; float: none;}
+	.automobile-shop-filter-nav.listing-bar { text-align: center;}
+	.automobile-typography-table2 { margin: 0px 0px 20px;}
+	.automobile-account-packages ul.packages-heading li { padding-top: 12px;}
+	.automobile-vehicle-account-text { width: 100%;}
+	.automobile-favorite-list-text > span { width: 100%;}
+	.automobile-social-modal li { width: 50%; padding: 0px 3px;}
+	.modal-dialog { margin: 53px 10px 10px 10px;}
+	.automobile-404-text h2 { line-height: 1.2;}
+	.automobile-video-promo-list { margin: 0px 0px 20px;}
+	.navbar-nav .sub-menu .sub-menu { left: auto; right: 0%;}
+	.automobile-sticky .automobile-header-one { position: relative;}
+	.automobile-sticky .automobile-header-one { animation: none;}
+	.automobile-cartbox { right: 19px;}
+	.automobile-footer-widget,.automobile-comingsoonfull,.automobile-subheader-image { background-size: cover;}
+	.automobile-coming-social-icone li { float: none; display: inline-block; margin-right: -4px;}
+	.automobile-coming-social-icone { width: 100%; text-align: center; padding-bottom: 20px;}
+	.automobile-main-content .widget.widget_newsletter { padding: 30px 26px 42px;}
+	.automobile-archive-list ul li figure ~ .automobile-archive-list-text { padding-top: 15px;}
+	.automobile-banner .slick-dots { top: 0px; bottom: auto;}
+	.automobile-listing-list2.automobile-listing-list > ul > li > figure { width: 100%;}
+	.banner-check { float: left; width: 100%; }
+	.automobile-listing-option > li > figure { display: none; }
+	.automobile-listing-option > li figure ~ .automobile-listing-option-text { float: left; width: 100%; padding-right: 0px; margin: 0px }
+	.automobile-medium-blog figure { width: 100%; }
+
+}
+
+/* Media 300Px Start */
+@media (max-width: 480px) {
+	.navbar { width: 100%; text-align: center;}
+	.navbar-toggle { display: inline-block; float: none; margin: 30px 0px 25px 0px;}
+	/*main grid*/
+	.automobile-main-content .col-md-4,.automobile-main-content .col-md-3,.automobile-main-content .col-md-6 { margin-right: 0px; width: 100%; }
+	/*main grid*/
+	.automobile-right-section { margin-top: 0px; width: 100%; text-align: center;}
+	.automobile-user-section li { padding: 6px 0 0 10px; float: none; display: inline-block;}
+	a.automobile-sell-btn { margin: 0px;}
+	.automobile-car-list ul li i { margin: 10px 11px 0 0;}
+	.automobile-car-list ul li { width: 50%;}
+	.automobile-listing-list-text > h6 { margin: 5px 0 22px;}
+	.automobile-blog.automobile-blog-medium > ul > li { width: 100%;}
+	.automobile-about-newsletter-text i ~ h2, .automobile-about-newsletter-text i ~ p { padding-bottom: 5px;}
+	.automobile-footer-widget .widget { width: 100%;}
+	.automobile-blog-medium .automobile-social-tag a { font-size: 16px;}
+	.automobile-blog-medium .automobile-blog-post-comment li { font-size: 16px; line-height: 1.4;}
+	.automobile-favorite-list figure ~ .automobile-favorite-list-text { float: left; margin: 0px; padding: 20px 0px 0px; width: 100%;}
+	.automobile-favorite-list-text > span { margin: 0px 0px 0px 0px; width: 100%;}
+	.automobile-favorite-list-wrap .close { margin-left: 0px;}
+	.automobile-account-packages ul { border-bottom: none;}
+	.automobile-account-packages ul li { width: 100%; border-bottom: 1px solid #f6f6f6;}
+	.automobile-account-packages ul.packages-heading li { width: 50%;}
+	.automobile-account-profile form > ul > li,.automobile-medium-blog figure { width: 100%;}
+	.automobile-vehicle-account figure ~ .automobile-vehicle-wrap { float: left; width: 100%; margin: 0px; padding: 20px 0px 0px;}
+	.automobile-classic-blog figure,.automobile-medium-blog figure { width: 100%;}
+	.widget_video_post figure ~ .widget-video-post-text,.widget_trading_post figure ~ .widget-trading-post-text { padding-left: 123px;}
+	.comment-respond form p,.automobile-car-compare-grid > ul > li { width: 100%;}
+	.automobile-comparsion-list li h3,.automobile-comparsion-list li span { width: 50%;}
+	.automobile-car-feature li,.automobile-contact-us-form form ul li,.automobile-contact-us-text ul li,.automobile-dealer-contact-info { width: 100%;}
+	.automobile-contact-info span, .automobile-contact-info a { font-size: 15px; padding-left: 24px;}
+	.automobile-shop-filter-nav.listing-bar .automobile-number-select li:last-child { float: left;}
+	.automobile-shop-filter-nav.listing-bar .automobile-number-select li { margin: 0px 0px 10px;}
+	.automobile-dealer-address,.automobile-listing-list figure,.automobile-vehicle-text-form form ul li { width: 100%;}
+	.automobile-dealer-contact-info { margin: 0px 0px 20px;}
+	.automobile-listing-list-text > ul { margin: 0px 0px 6px;}
+	.automobile-list-style-one li,.automobile-shop-list figure,.automobile-typography-tab figure { width: 100%;}
+	.widget-car-info-view { padding: 22px 0 8px 50px;}
+	.automobile-priceplan-title:before,.automobile-priceplan-title:after { border-left: 270px solid transparent;}
+	.automobile-priceplan-text ul li { padding: 6px 68px 5px;}
+	.automobile-archive-list ul li figure,.automobile-appointment-form form ul li,.automobile-with-left-label,.automobile-promo-box-wrap ul li { width: 100%;}
+	.automobile-testimonial-wrap .slick-arrow { bottom: -28px;}
+	.star-rating { width: 29%;}
+	.automobile-typography-listing ul li { width: 50%;}
+	.automobile-typography-table table > tbody > tr > th, .automobile-typography-table table > tbody > tr > td { width: 100%;}
+	.automobile-alert-message .information { padding: 10px 52px;}
+	.automobile-contact-us-text ul li i ~ .automobile-contact-info { padding: 21px 0 0 88px;}
+	.automobile-blog-classic-tab .nav-tabs li { width: 50%;}
+	.automobile-shop-filter-nav .automobile-number-select li { margin: 0px 0px 10px 0px;}
+	.automobile-vehicle-option i ~ .automobile-vehicle-option-text { padding: 4px 0 0 119px;}
+	.automobile-listing-list.automobile-listing-list2 .automobile-listing-option figure ~ .automobile-listing-option-text { float: left; margin: 0px; padding: 0px;}
+	.automobile-listing-list.automobile-listing-list2 .automobile-listing-option figure { float: left;}
+	.automobile-typography-table2 table > tbody > tr > td:first-child, .automobile-typography-table2 table > tbody > tr > th:first-child { padding: 6px 12px 0 14px;}
+	.automobile-radio-partition { margin-right: 12px;}
+	.automobile-with-left-label ul li label.title { width: 72px;}
+	.automobile-with-left-label ul li textarea,.modal-section,.automobile-account-register { width: 100%;}
+	.automobile-with-left-label.automobile-full-label { padding: 0px;}
+	.automobile-ortag { display: none;}
+	.automobile-account-register { padding-left: 0px;}
+	.modal-section { margin: 0px 0px 20px;}
+	.automobile-user-section { margin: 0px 0px 20px; width: 100%;}
+	a.automobile-sell-btn { display: inline-block; float: none;}
+	.automobile-cartbox { width: 280px;}
+	.automobile-main-content .widget { width: 100%; padding: 0px;}
+	.automobile-main-content .widget.widget_newsletter { padding: 30px 26px 42px;}
+	.automobile-admin-post figure ~ .automobile-admin-post-text { float: left; width: 100%; padding: 15px 0px 0px;}
+	.comment-list figure ~ .text-holder { float: left; margin: 0px; padding: 0px 0px 18px;}
+	.automobile-classic-blog figure ~ .automobile-classic-blog-text,
+	.automobile-dealer-listing figure ~ .automobile-dealer-listing-text { float: left; width: 100%; margin: 0px; padding: 20px 0px 0px;}
+	.automobile-dealer-address { width: 48%;}
+	.automobile-dealer-contact-info { width: 52%}
+	.automobile-listing.automobile-listing-list > ul > li.col-md-12 { float: left; width: 100%; }
+	.automobile-archive-list ul li figure ~ .automobile-archive-list-text { margin: 0px; float: left; width: 100%; padding: 20px 0px 0px;}
+	.automobile-shop-list figure ~ .automobile-shop-list-text { float: left; margin: 0px; padding: 20px 0px 0px;}
+	.automobile-about-services-list i ~ .automobile-about-list-text { float: left; padding: 15px 0px 0px;}
+	.automobile-banner-form form > ul > li,.banner-check { width: 100%;}
+	.banner-check { padding-top: 10px;}
+	.automobile-favorite-list figure { width: 100%; }
+	
+}
+
+/* Media 940Px Start */
+@media screen and (min-width: 991px) and (max-width: 1054px) {
+	.automobile-header-one .col-md-2,.automobile-header-one .col-md-10 { width: 100%;}
+	.automobile-header-one .navbar .automobile-megamenu > li .col-md-2 { width: 16.6667%;}
+	.automobile-banner-caption .col-md-6 { width: 60%;}
+	.automobile-banner-caption { margin: 0px 0px -165px;}
+	.automobile-logo { width: 100%; text-align: center;}
+	.automobile-banner-tabs { display: none;}
+	.automobile-call-to-action2 { padding: 0px;}
+	.automobile-call-to-action1.automobile-call-to-action2 h2 { width: 61%;}
+	.automobile-call-to-action1 h2 { width: 48%;}
+	.automobile-listing-list.automobile-listing-list2 .automobile-listing-like { margin: -10px 0px 0px; padding-left: 40px;}
+	.automobile-listing-like li { font-size: 13px;}
+	.automobile-404-full { background-position: -150% bottom;}
+	.automobile-about-feature-text h4 { font-size: 20px;}
+	.automobile-favorite-list-wrap .close { margin: 0px;}
+	.automobile-footer-slider figure figcaption { padding: 6px 10px 0 0;}
+	.automobile-account-profile form ul li .date-of-birth { width: 30.333%;}
+	.datepicker.dropdown-menu { width: auto;}
+	.automobile-vehicle-account-text { width: 78%;}
+	.automobile-blog-classic-tab .tab-content { width: 58.7%;}
+	.automobile-classic-blog-tab .automobile-single-post-tag { width: 58%;}
+	.automobile-social-tag a { font-size: 13px;}
+	.widget_video_post figure ~ .widget-video-post-text,.widget_trading_post figure ~ .widget-trading-post-text { padding: 0 0 0 115px;}
+	.automobile-prev-post-text h6, .automobile-next-post-text h6 { width: 63%;}
+	.automobile-car-feature li { padding: 0px 0px 0px 45px;}
+	.automobile-dealer-contact-info { width: 60%;}
+	.automobile-dealer-address { width: 40%;}
+	.automobile-listing-filter .automobile-shop-filter-nav .automobile-number-select li:last-child { margin: 0px;}
+	.automobile-listing-grid-text { padding: 21px 10px 53px 14px;}
+	.automobile-listing-grid-text > ul > li { margin: 0px 0px 4px 0px;}
+	.automobile-listing-slide { height: 179px;}
+	.automobile-listing-list .automobile-listing-like { padding-left: 10px;}
+	.automobile-listing-list > .automobile-listing-option > li figure ~ .automobile-listing-option-text { padding-right: 108px;}
+	.automobile-images-thumb .slick-arrow { margin: -15px 0px 0px;}
+	.automobile-priceplan-title:after,.automobile-priceplan-title:before { border-left: 250px solid transparent;}
+	.automobile-priceplan-title h3:before { border-right: 270px solid transparent;}
+	.automobile-priceplan-text ul li { padding: 6px 50px 5px;}
+	.automobile-car-review-slider figure figcaption { bottom: -115%; padding: 25px 10px 10px 16px;}
+	.automobile-appointment-form { width: 80%;}
+	.automobile-shop-grid-text h4 { font-size: 19px;}
+	.automobile-widget-heading h2 { line-height: 1.2;}
+	.automobile-widget-heading i { top: 4px;}
+	.star-rating { width: 23%;}
+	.automobile-shop-thumb { width: 350px;}
+	.automobile-typography-table table > tbody > tr > th { padding: 8px 25px 5px;}
+	.automobile-promo-box-wrap figure figcaption p { width: 82%;}
+	.automobile-promo-box-wrap figure figcaption { padding: 20px 15px 0;}
+	.automobile-promo-box-btn { margin: -45px 0 0;}
+	.automobile-call-to-action4 h3 { font-size: 43px;}
+	.automobile-call-to-action4 { padding: 40px 0 24px;}
+	.automobile-full-promo-caption { padding: 10px 60px 0 70px;}
+	.automobile-alert-message .information { padding: 10px 48px;}
+	.automobile-alert-message .information i { left: 25px;}
+	.widget_newsletter { padding: 30px 20px 42px;}
+	.automobile-listing-list-text > .automobile-listing-option > li:last-child { width: 44%;}
+	.automobile-listing-list-text > .automobile-listing-option > li { width: 56%;}
+	.automobile-listing-grid-text h4 { font-size: 18px;}
+	.widget-car-info-view { padding: 22px 0 8px 30px;}
+	.widget-finance-checkbox { margin: 0px 0px 8px 8px;}
+	.automobile-404-text h2 { line-height: 1.2;}
+	.automobile-sticky .automobile-header-one { position: relative;}
+	.automobile-sticky .automobile-header-one { animation: none;}
+	.automobile-footer-widget,.automobile-comingsoonfull { background-size: cover;}
+	.automobile-coming-social-icone li { float: none; display: inline-block; margin-right: -4px;}
+	.automobile-coming-social-icone { width: 100%; text-align: center; padding-bottom: 20px;}
+	.automobile-main-section.automobile-typography-headingfull .col-md-6 { display: inline-block; float: none; margin-right: -4px; vertical-align: top;}
+	.automobile-blog-classic-tab .nav-tabs { width: 290px;}
+	.automobile-listing-option > li figure ~ .automobile-listing-option-text { padding-right: 115px;}
+	
+}
+
+/* Media 940Px Start */
+@media screen and (min-width: 991px) and (max-width: 1250px) {
+	.automobile-header-one .col-md-2,.automobile-header-one .col-md-10 { width: 100%;}
+	.automobile-header-one .navbar .automobile-megamenu > li .col-md-2 { width: 16.6667%;}
+	.automobile-banner-caption .col-md-6 { width: 60%;}
+	.automobile-banner-caption { margin: 0px 0px -165px;}
+	.automobile-logo { width: 100%; text-align: center;}
+	.automobile-banner-tabs { display: none;}
+	.automobile-call-to-action2 { padding: 0px;}
+	.automobile-call-to-action1.automobile-call-to-action2 h2 { width: 61%;}
+	.automobile-call-to-action1 h2 { width: 48%;}
+	.automobile-listing-list.automobile-listing-list2 .automobile-listing-like { margin: -10px 0px 0px; padding-left: 40px;}
+	.automobile-listing-like li { font-size: 13px;}
+	.automobile-404-full { background-position: -150% bottom;}
+	.automobile-about-feature-text h4 { font-size: 20px;}
+	.automobile-favorite-list-wrap .close { margin: 0px;}
+	.automobile-footer-slider figure figcaption { padding: 6px 10px 0 0;}
+	.automobile-account-profile form ul li .date-of-birth { width: 30.333%;}
+	.datepicker.dropdown-menu { width: auto;}
+	.automobile-vehicle-account-text { width: 78%;}
+	.automobile-blog-classic-tab .tab-content { width: 58.7%;}
+	.automobile-classic-blog-tab .automobile-single-post-tag { width: 58%;}
+	.automobile-social-tag a { font-size: 13px;}
+	.widget_video_post figure ~ .widget-video-post-text,.widget_trading_post figure ~ .widget-trading-post-text { padding: 0 0 0 115px;}
+	.automobile-prev-post-text h6, .automobile-next-post-text h6 { width: 63%;}
+	.automobile-car-feature li { padding: 0px 0px 0px 45px;}
+	.automobile-dealer-contact-info { width: 60%;}
+	.automobile-dealer-address { width: 40%;}
+	.automobile-listing-filter .automobile-shop-filter-nav .automobile-number-select li:last-child { margin: 0px;}
+	.automobile-listing-grid-text { padding: 21px 10px 53px 14px;}
+	.automobile-listing-grid-text > ul > li { margin: 0px 0px 4px 0px;}
+	.automobile-listing-slide { height: 179px;}
+	.automobile-listing-list .automobile-listing-like { padding-left: 10px;}
+	.automobile-listing-list > .automobile-listing-option > li figure ~ .automobile-listing-option-text { padding-right: 108px;}
+	.automobile-images-thumb .slick-arrow { margin: -15px 0px 0px;}
+	.automobile-priceplan-title:after,.automobile-priceplan-title:before { border-left: 250px solid transparent;}
+	.automobile-priceplan-title h3:before { border-right: 270px solid transparent;}
+	.automobile-priceplan-text ul li { padding: 6px 50px 5px;}
+	.automobile-car-review-slider figure figcaption { bottom: -115%; padding: 25px 10px 10px 16px;}
+	.automobile-appointment-form { width: 80%;}
+	.automobile-shop-grid-text h4 { font-size: 19px;}
+	.automobile-widget-heading h2 { line-height: 1.2;}
+	.automobile-widget-heading i { top: 4px;}
+	.star-rating { width: 23%;}
+	.automobile-shop-thumb { width: 350px;}
+	.automobile-typography-table table > tbody > tr > th { padding: 8px 25px 5px;}
+	.automobile-promo-box-wrap figure figcaption p { width: 82%;}
+	.automobile-promo-box-wrap figure figcaption { padding: 20px 15px 0;}
+	.automobile-promo-box-btn { margin: -45px 0 0;}
+	.automobile-call-to-action4 h3 { font-size: 43px;}
+	.automobile-call-to-action4 { padding: 40px 0 24px;}
+	.automobile-full-promo-caption { padding: 10px 60px 0 70px;}
+	.automobile-alert-message .information { padding: 10px 48px;}
+	.automobile-alert-message .information i { left: 25px;}
+	.widget_newsletter { padding: 30px 20px 42px;}
+	.automobile-listing-list-text > .automobile-listing-option > li:last-child { width: 44%;}
+	.automobile-listing-list-text > .automobile-listing-option > li { width: 56%;}
+	.automobile-listing-grid-text h4 { font-size: 18px;}
+	.widget-car-info-view { padding: 22px 0 8px 30px;}
+	.widget-finance-checkbox { margin: 0px 0px 8px 8px;}
+	.automobile-404-text h2 { line-height: 1.2;}
+	.automobile-sticky .automobile-header-one { position: relative;}
+	.automobile-sticky .automobile-header-one { animation: none;}
+	.automobile-footer-widget,.automobile-comingsoonfull { background-size: cover;}
+	.automobile-coming-social-icone li { float: none; display: inline-block; margin-right: -4px;}
+	.automobile-coming-social-icone { width: 100%; text-align: center; padding-bottom: 20px;}
+	.automobile-main-section.automobile-typography-headingfull .col-md-6 { display: inline-block; float: none; margin-right: -4px; vertical-align: top;}
+	.automobile-blog-classic-tab .nav-tabs { width: 290px;}
+	.automobile-listing-option > li figure ~ .automobile-listing-option-text { padding-right: 115px;}
+}

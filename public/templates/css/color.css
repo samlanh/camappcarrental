@@ -1,0 +1,62 @@
+ /* ThemeColor One */
+.automobile-color,.automobile-colorhover:hover,/*arslan*/.automobile-social-tag a:hover,.widget_recent_post ul li:hover a,.widget_video_post ul li:hover h6 a,
+.automobile-shop-title span,.automobile-shop-summery > .fa-heart-o,.automobile-shop-grid-text span,.automobile-shop-grid-text > a.fa-heart-o,.widget_search form i,
+.automobile-shop-grid figure a span,.star-rating-box:before,.automobile-shop-list-text > span a:after,.automobile-shop-list-text > span a.fa-heart-o,
+.automobile-shop-list-text > span,.automobile-shop-list figure a span,.automobile-dealer-contact-info span i,.automobile-dealer-address p i,.automobile-promo-box-text span ,
+.automobile-check.widget-check input[type="checkbox"]:checked + label,.automobile-listing-like li i,.widget_useful_links ul li i,.widget_useful_links ul li:before,
+.widget_finance_calculator ul li p,.widget-popular-car-text > span,.automobile-list-style-one li:before,.automobile-listing-grid-slider .slick-arrow:hover,
+.automobile-circle-arrows-btn li a:hover,.automobile-typography-listing ul li:before,.automobile-typography-listing ul.automobile-list-six li span,.automobile-banner-btn:hover,
+.automobile-classic-team-text h5 a,.automobile-team-contact li i,.team-classic-social li:hover a,.automobile-about-newsletter-text i,.automobile-service-grid i,
+.automobile-appointment-form form ul li label:hover input[type="submit"],.automobile-appointment-form form ul li label:hover i,.automobile-banner-text ul li i,
+.automobile-car-list ul li i,.automobile-car-deals ul li:hover figure figcaption h5 a,/*majid*/.automobile-404-text span,.automobile-404-text p a:hover,
+.automobile-archive-list-text > a,.automobile-faq-accordion .panel-default > .panel-heading,.widget_address i,.automobile-coming-social-icone li a i:hover,
+.automobile-priceplan-package-text h3,.nav-tabs > li.active > a:focus,.automobile-fancy-title h3 strong:after,.automobile-priceplan-package ul li i,
+.automobile-comparsion-accordion .panel-default > .panel-heading,.automobile-car-feature-list span:before,.automobile-comparsion-accordion .automobile-feature-btn,
+.automobile-vehicle-option i,.automobile-vehicle-option-text span,.icone-text i,.automobile-zip-code,.automobile-faq-accordion .panel-default > .panel-heading,
+.automobile-check.widget-check input[type="checkbox"]:checked + label:before,.automobile-priceplan-text ul li i,.automobile-pricing-plan ul li:hover .automobile-priceplan-btn,
+.automobile-faq-tabs .nav-tabs > li.active > a,.automobile-faq-tabs .nav-tabs > li.active > a:hover,.automobile-faq-tabs .nav-tabs > li.active,.automobile-vehicle-account-text time,
+.automobile-vehicle-social > li a:hover,.automobile-listing-like li:first-child:after,.automobile-listing-like li:hover a,.automobile-blog-post-comment li:hover a,
+.widget_range input[type="submit"]:hover,.automobile-about-services-text .automobile-about-readmore:hover,.automobile-dealer-listing ul li:hover .automobile-dealer-contact-btn,
+.automobile-medium-blog ul li:hover .automobile-read-btn {
+    color: #fa6a2f;
+}
+.automobile-bgcolor,.automobile-bgcolorhover:hover,.widget_recent_listing figure > a:before,.automobile-read-btn,.widget_trading_post figure a:before,
+.automobile-classic-blog figure a:before,.widget_auto_repair figure a:before,.automobile-pagination > ul > li:hover > a,.automobile-cart-box,
+.automobile-shop-grid figure a:before,.automobile-shop-grid figure a:after,.automobile-shop-grid figure > span,.automobile-shop-list figure > span,
+.automobile-images-thumb-layer small,.automobile-shop-list figure a:before,.automobile-shop-list figure a:after,.submit input[type="submit"],
+.automobile-dealer-contact-btn,.automobile-listing-grid-text > ul > li:first-child,.automobile-listing-toggle .btn-primary.collapsed,.automobile-simple-btn li a,
+.automobile-listing-grid figure > span.featured,.automobile-widget-select:after,.automobile-listing-list-text > ul > li:first-child,.automobile-learn-btn,
+.automobile-listing-list figure > span.featured,.widget_popular_car figure a:before,.automobile-typography-accordion .panel-title > a:before,.automobile-call-to-action1 > a,
+.typography-toggle:before,.automobile-typography-listing ul.automobile-list-five li:before,.automobile-archive-list ul li figure a:before,
+.automobile-fancy-title h2 > span:before,.automobile-fancy-title h2 > span:after,.automobile-about-services-list i:after,.automobile-classic-team figure a:before,
+.automobile-blog-medium figure a:before,.widget_account_links ul li.logout a,.automobile-favorite-list-text ul li:first-child,.automobile-testimonial-wrap .slick-arrow:hover,
+.automobile-appointment-form form ul li label input[type="submit"],.automobile-banner-text:before,.automobile-banner-text:after,.automobile-banner-form form ul li input[type="submit"],
+.automobile-car-deals figure > span,.automobile-tour-filterable ul li a:before,/*majid*/.automobile-contact-us-text ul li i,.contact-btn input[type="submit"],
+.automobile-comingsoon-text form input[type="submit"],.automobile-fancy-title h3 strong:before,.automobile-car-feature li:hover .automobile-feature-btn,
+.automobile-vehile-photo-post form input[type="file"],.automobile-vehile-photo-post form label input[type="submit"],.date-of-birth i,.automobile-faq-tabs .nav-tabs > li.active a:before,
+.automobile-shop-tabs .nav-tabs > li.active > a,.automobile-shop-tabs .nav-tabs > li.active > a:hover,.automobile-shop-tabs .nav-tabs > li.active > a:focus,
+.widget_range input[type="submit"],.automobile-typography-tabs .nav-tabs > li.active > a,.automobile-typography-tabs .nav-tabs > li.active > a:hover,
+.automobile-typography-tabs .nav-tabs > li.active > a:focus,.automobile-typography-tour-tabs .nav-tabs > li.active > a,.automobile-typography-tour-tabs .nav-tabs > li.active > a:hover,
+.automobile-typography-tour-tabs .nav-tabs > li.active > a:focus,
+.automobile-priceplan-btn,.automobile-banner-tabs .nav-tabs > li.active > a,.automobile-banner-tabs .nav-tabs > li.active > a:hover,.automobile-banner-tabs .nav-tabs > li.active > a:focus,
+.automobile-vehile-photo-post input[type="submit"],.automobile-select-full-width:before,.automobile-account-profile form ul li input[type="submit"],
+.automobile-account-user-text label.file-uplode span,.widget-finance-checkbox input[type="checkbox"]:checked + label,.automobile-banner-text3 h1:before,
+.automobile-banner-text3 h1:after,.automobile-listing-list2 figure > a:before {
+    background-color: #fa6a2f;
+}
+.automobile-bordercolor,.automobile-bordercolorhover:hover,/*arslan*/.automobile-blog-social ul li:hover a,.widget-contact-btn,.automobile-banner-btn,
+.automobile-listing-toggle .btn-primary.collapsed,.automobile-appointment-form form ul li label input[type="submit"],.automobile-listing-list2 .automobile-check.widget-check label::before,
+.automobile-comingsoon-text h2 strong,.automobile-comparsion-accordion .automobile-feature-btn,.automobile-vehicle-text-form form ul li input[type="text"]:focus,
+.automobile-check.widget-check input[type="checkbox"]:checked + label:before,#slider-range2 span:before,.automobile-priceplan-btn,.automobile-listing-like li:first-child:before,
+.widget_range input[type="submit"],.automobile-about-services-text .automobile-about-readmore,.automobile-dealer-contact-btn,.automobile-read-btn {
+    border-color: #fa6a2f;
+}
+.shape:before {
+	border-right-color: #fa6a2f;
+}
+.automobile-shop-tabs,.automobile-priceplan-title:after {
+	border-top-color: #fa6a2f;
+}
+.automobile-priceplan-title:before {
+	border-bottom-color: #fa6a2f;
+}
