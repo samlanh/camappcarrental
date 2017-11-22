@@ -680,6 +680,16 @@ function getallSubModel(model_id){
 		</form>
 	</div>
 </div>
+<div class="dijitHidden">
+	<div data-dojo-type="dijit.Dialog" data-dojo-props="title:'<?php echo $tr->translate("DO_YOU_WANT_TO_DEL")?>'"  id="deleteForm" style="width:350px;" >
+		<div style=" text-align: center;">
+			<h4><?php echo $tr->translate("DO_YOU_WANT_TO_DEL")?></h4>
+			<input type="hidden" name="recorddelete" id="recorddelete" dojoType="dijit.form.TextBox" />
+			<button onclick="closeForm();" dojoType="dijit.form.Button" showLabel="true" type="button"><?php echo $tr->translate("CANCEL");?></button>
+			<button onclick="deleteRecord('',1);" iconclass="dijitIconDelete" dojoType="dijit.form.Button" showLabel="true" type="button"><?php echo $tr->translate("DELETE");?></button>
+		</div>
+	</div>
+</div>
 <script type="text/javascript">
 dojo.require("dijit.form.Textarea"); 
 dojo.require("dojo.parser");
@@ -864,6 +874,27 @@ function initailize() {
 	});
 	<?php }?>
 	title=1;
+}
+function loadImage(index){
+	 var output = document.getElementById('image_view'+index);
+  output.src = URL.createObjectURL(event.target.files[0]);
+}
+function deleteRecord(index,type=''){
+	 if(type==''){
+		 dijit.byId("recorddelete").attr('value',index);
+		 dijit.byId('deleteForm').show();
+	 }else{
+		index = dijit.byId("recorddelete").get('value');
+		var identity = $('#identity').val();
+		var arrays = identity.split(',');
+		for(var i=0;i<arrays.length;i++) {
+		if(arrays[i] == index) arrays.splice(i,1);
+		}
+		var strings = arrays.join(',');
+		$('#identity').val(strings);
+		dojo.query("#row"+index).remove();
+		dijit.byId('deleteForm').hide();
+	 }
 }
 var url_make = '<?php echo $this->url(array('module'=>'vehicle','controller'=>'model','action'=>'add-make')); ?>';
 function addMake(){

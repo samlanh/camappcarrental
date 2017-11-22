@@ -1,5 +1,5 @@
 <?php
-class Booking_Form_FrmBooking extends Zend_Dojo_Form{
+class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 	protected $tr = null;
 	protected $btn =null;//text validate
 	protected $filter = null;
@@ -41,7 +41,7 @@ class Booking_Form_FrmBooking extends Zend_Dojo_Form{
 				));
 		$pickup_date->setValue($c_date);
 		$return_date = new Zend_Form_Element_Text("return_date");
-		$return_date->setAttribs(array('dojoType'=>$this->date,'constraints'=>"{datePattern:'dd/MM/yyyy'}",'class'=>"fullside",));
+		$return_date->setAttribs(array('dojoType'=>$this->date,'constraints'=>"{datePattern:'dd/MM/yyyy'}",'class'=>"fullside",'onchange'=>'calculateGrandtotal();'));
 		if($request->getParam("return_date")==""){
 			$return_date->setValue($c_date);
 		}else{
@@ -54,7 +54,7 @@ class Booking_Form_FrmBooking extends Zend_Dojo_Form{
 			foreach($rows AS $row) {$opt_location[$row['id']]=$row['name'];};
 		}
 		$pickup_location = new Zend_Form_Element_Select("pickup_location");
-		$pickup_location->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside"));
+		$pickup_location->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside","onChange"=>"calculateGrandtotal();"));
 		$pickup_location->setMultiOptions($opt_location);
 		//$pickup_location->setValue(25);
 		if($request->getParam("pickup_location")==""){
@@ -65,7 +65,7 @@ class Booking_Form_FrmBooking extends Zend_Dojo_Form{
 		
 		
 		$return_location = new Zend_Form_Element_Select("return_location");
-		$return_location->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside"));
+		$return_location->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside","onChange"=>"calculateGrandtotal();"));
 		$return_location->setMultiOptions($opt_location);
 		if($request->getParam("return_location")==""){
 			$return_location->setValue(25);
@@ -83,11 +83,11 @@ class Booking_Form_FrmBooking extends Zend_Dojo_Form{
 			$option_time[$time] = $value;
 		}
 		$pickup_time = new Zend_Dojo_Form_Element_FilteringSelect("pickup_time");
-		$pickup_time->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside"));
+		$pickup_time->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside","onChange"=>"calculateGrandtotal();"));
 		$pickup_time->setMultiOptions($option_time);
 		
 		$return_time = new Zend_Dojo_Form_Element_FilteringSelect("return_time");
-		$return_time->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside",'onChange'=>'calculateDate();'));
+		$return_time->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside",'onChange'=>'calculateGrandtotal();'));
 		$return_time->setMultiOptions($option_time);
 		
 		$option_minute = array('00'=>'00');
@@ -100,12 +100,12 @@ class Booking_Form_FrmBooking extends Zend_Dojo_Form{
 		
 		$pickup_minute = new Zend_Form_Element_Select("pickup_minute");
 		
-		$pickup_minute->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside"));
+		$pickup_minute->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside","onChange"=>"calculateGrandtotal();"));
 		$pickup_minute->setMultiOptions($option_minute);
 		
 		$return_minute = new Zend_Form_Element_Select("return_minute");
 		
-		$return_minute->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside"));
+		$return_minute->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside","onChange"=>"calculateGrandtotal();"));
 		$return_minute->setMultiOptions($option_minute);
 		
 		$db_booking = new Booking_Model_DbTable_DbBooking();
@@ -197,7 +197,7 @@ class Booking_Form_FrmBooking extends Zend_Dojo_Form{
 				'class'=>'control_style','placeholder'=>'Date of Birth : d-m-YYYY'
 		));
 		$cash_pay = new Zend_Dojo_Form_Element_NumberTextBox("cash_pay");
-		$cash_pay->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside"));
+		$cash_pay->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside",'onKeyup'=>"checkMaxPay();"));
 		
 		$province = new Zend_Dojo_Form_Element_FilteringSelect("provice");
 		$province->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside",'onChange'=>'getCityPackage();'));
@@ -206,53 +206,58 @@ class Booking_Form_FrmBooking extends Zend_Dojo_Form{
 		$package = new Zend_Dojo_Form_Element_FilteringSelect("package");
 		
 		$other_fee1 = new Zend_Dojo_Form_Element_NumberTextBox("other_fee1");
-		$other_fee1->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true));
-		
+		$other_fee1->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
+		$other_fee1->setValue(0);
 		$other_fee_note1 = new Zend_Dojo_Form_Element_TextBox("other_fee_note1");
-		$other_fee_note1->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true));
+		$other_fee_note1->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
 		
 		$other_fee2 = new Zend_Dojo_Form_Element_NumberTextBox("other_fee2");
-		$other_fee2->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true));
-		
+		$other_fee2->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
+		$other_fee2->setValue(0);
 		$other_fee_note2 = new Zend_Dojo_Form_Element_TextBox("other_fee_note2");
-		$other_fee_note2->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true));
+		$other_fee_note2->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
 		
 		$other_fee3 = new Zend_Dojo_Form_Element_NumberTextBox("other_fee3");
-		$other_fee3->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true));
-		
+		$other_fee3->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
+		$other_fee3->setValue(0);
 		$other_fee_note3 = new Zend_Dojo_Form_Element_TextBox("other_fee_note3");
-		$other_fee_note3->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true));
+		$other_fee_note3->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
 		
 		$other_fee4 = new Zend_Dojo_Form_Element_NumberTextBox("other_fee4");
-		$other_fee4->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true));
-		
+		$other_fee4->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
+		$other_fee4->setValue(0);
 		$other_fee_note4 = new Zend_Dojo_Form_Element_TextBox("other_fee_note4");
-		$other_fee_note4->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true));
+		$other_fee_note4->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
 		
 		$other_fee5 = new Zend_Dojo_Form_Element_NumberTextBox("other_fee5");
-		$other_fee5->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true));
-		
+		$other_fee5->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
+		$other_fee5->setValue(0);
 		$other_fee_note5 = new Zend_Dojo_Form_Element_TextBox("other_fee_note5");
-		$other_fee_note5->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true));
+		$other_fee_note5->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
 		
 		$other_fee6 = new Zend_Dojo_Form_Element_NumberTextBox("other_fee6");
-		$other_fee6->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true));
+		$other_fee6->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
+		$other_fee6->setValue(0);
 		
 		$other_fee_note6 = new Zend_Dojo_Form_Element_TextBox("other_fee_note6");
-		$other_fee_note6->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true));
+		$other_fee_note6->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
 		
 		$other_fee7 = new Zend_Dojo_Form_Element_NumberTextBox("other_fee7");
-		$other_fee7->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true));
+		$other_fee7->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
+		$other_fee7->setValue(0);
 		
 		$other_fee_note7 = new Zend_Dojo_Form_Element_TextBox("other_fee_note7");
-		$other_fee_note7->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true));
+		$other_fee_note7->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside","disabled"=>true,"onKeyup"=>"calculateGrandtotal();"));
 		
 		
 		$opt_trip = array(1=>"One Way",2=>"Round Trip");
 		$trip_type = new Zend_Dojo_Form_Element_FilteringSelect("trip_type");
 		$trip_type->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside"));
 		$trip_type->setMultiOptions($opt_trip);
-		$this->addElements(array($cash_pay,$other_fee_note1,$other_fee_note2,$other_fee_note3,$other_fee_note4,$other_fee_note5,$other_fee_note6,$other_fee_note7,$other_fee1,$other_fee2,$other_fee3,$other_fee4,$other_fee5,$other_fee6,$other_fee7,$province,$trip_type,$wu_code,$card_id,$card_exp_date,$card_name,$secu_code,$fly_no,$fly_date,$fly_destination,$fly_time,$customer,$cu_email,$cu_first_name,$cu_last_name,$cu_pass,$cu_phone,$cu_user_name,$gender,$pickup_minute,$return_minute,$return_time,$pickup_time,$pickup_date,$return_date,$pickup_location,$return_location,$_booking_no));
+		
+		
+		$this->addElements(array($cash_pay,$other_fee_note1,$other_fee_note2,$other_fee_note3,$other_fee_note4,$other_fee_note5,$other_fee_note6,$other_fee_note7,$other_fee1,$other_fee2,$other_fee3,$other_fee4,$other_fee5,$other_fee6,$other_fee7,$province,$trip_type,$wu_code,$card_id,$card_exp_date,$card_name,$secu_code,$fly_no,$fly_date,$fly_destination,$fly_time,$customer,$cu_email,$cu_first_name,$cu_last_name,$cu_pass,$cu_phone,$cu_user_name,$gender,$pickup_minute,$return_minute,$return_time,$pickup_time,$pickup_date,$return_date,$pickup_location,$return_location,$_booking_no,
+			));
 		return $this;
 	}
 	

@@ -347,7 +347,7 @@ class Booking_Model_DbTable_DbBooking extends Zend_Db_Table_Abstract
 	    		}
     		}
     
-                $total_other_fee = 0;
+            $total_other_fee = 0;
     		if($session->other_fee !=""){
     			foreach ($session->other_fee as  $rs){
     				$total_other_fee+= $rs["price"];

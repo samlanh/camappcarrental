@@ -165,11 +165,23 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 		$pickup_date = new DateTime($data["pickup_date"]);
 		$return_date = new DateTime($data["return_date"]);
 		 
-		$pickupdate = $pickup_date->format('Y-m-d'); // 2003-10-16
+		$pickupdate = $pickup_date->format('Y-m-d'); // 2017-11-20
 		$returndate = $return_date->format('Y-m-d');
 		 
-		$pickuptime = $data["pickup_time"];
+// 		$pickuptime = $data["pickup_time"];
 		$returntime = $data["return_time"];
+// 		$sql = "SELECT v.id,v.`reffer`,v.`frame_no`,v.`max_weight`,
+// 		v.`seat_amount`,v.`color`,v.`year`,v.`steering`,v.`test_url`,v.`show_url`,
+// 		v.`img_front`,
+// 		v.`img_front_right`,v.img_seat,
+// 		v.`is_promotion`,v.`discount`,(SELECT m.title FROM `ldc_make` AS m WHERE m.id=v.`make_id`)
+// 		AS make,(SELECT md.title FROM `ldc_model` AS md WHERE md.id=v.`model_id`) AS model,
+// 		(SELECT sm.title FROM `ldc_submodel` AS sm WHERE sm.id=v.`sub_model`) AS sub_model,
+// 		(SELECT t.`tran_name` FROM `ldc_transmission` AS t WHERE t.`id`=v.`transmission`) AS transmission,
+// 		(SELECT vt.`title` FROM `ldc_vechicletye` AS vt WHERE vt.id=v.`car_type` LIMIT 1) AS `type`,
+// 		(SELECT e.`capacity` FROM `ldc_engince` AS e WHERE e.id=v.`engine`) AS `engine` FROM `ldc_vehicle` AS v WHERE v.is_sale !=1 AND v.status=1 AND v.id
+// 		NOT IN(SELECT bd.`item_id` FROM ldc_booking AS b , `ldc_booking_detail` AS bd WHERE b.id=bd.`book_id` AND '$pickupdate' BETWEEN b.`pickup_date` AND b.`return_date` AND '$returndate ' BETWEEN b.`pickup_date` AND b.`return_date` AND bd.item_type=1 AND b.status!=3)"; // it wiil include with new version AND b.`return_time` >= '$returntime'
+		
 		$sql = "SELECT v.id,v.`reffer`,v.`frame_no`,v.`max_weight`,
 		v.`seat_amount`,v.`color`,v.`year`,v.`steering`,v.`test_url`,v.`show_url`,
 		v.`img_front`,
@@ -180,7 +192,10 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 		(SELECT t.`tran_name` FROM `ldc_transmission` AS t WHERE t.`id`=v.`transmission`) AS transmission,
 		(SELECT vt.`title` FROM `ldc_vechicletye` AS vt WHERE vt.id=v.`car_type` LIMIT 1) AS `type`,
 		(SELECT e.`capacity` FROM `ldc_engince` AS e WHERE e.id=v.`engine`) AS `engine` FROM `ldc_vehicle` AS v WHERE v.is_sale !=1 AND v.status=1 AND v.id
-		NOT IN(SELECT bd.`item_id` FROM ldc_booking AS b , `ldc_booking_detail` AS bd WHERE b.id=bd.`book_id` AND '$pickupdate' BETWEEN b.`pickup_date` AND b.`return_date` AND '$returndate ' BETWEEN b.`pickup_date` AND b.`return_date` AND bd.item_type=1 AND b.status!=3)"; // it wiil include with new version AND b.`return_time` >= '$returntime'
+		NOT IN(SELECT bd.`item_id` FROM ldc_booking AS b , `ldc_booking_detail` AS bd WHERE b.id=bd.`book_id` AND
+		('$pickupdate' BETWEEN b.`pickup_date` AND b.`return_date`
+				OR '$returndate ' BETWEEN b.`pickup_date` AND b.`return_date`)
+				AND bd.item_type=1 AND b.status!=3)"; // it wiil include with new version AND b.`return_time` >= '$returntime'
 		$row = $db->fetchAll($sql);
 		if(!empty($row)){
 			return $db->fetchAll($sql);
@@ -247,7 +262,31 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 			$row_randay=$db->fetchOne($sql_rankday);
 		}
 		$sql="SELECT d.`id`,d.`equipment_name`,d.`reference_no`,d.`photo_front`,d.`url`,(SELECT st.price FROM `ldc_stuff_details` AS st WHERE st.`stuff_id`=d.`id` AND st.`package_id`=$row_randay limit 1) AS price,(SELECT st.`extra_price` FROM `ldc_stuff_details` AS st WHERE st.`stuff_id`=d.`id` AND st.`package_id`=$row_randay limit 1) AS extra_price  FROM `ldc_stuff` AS d WHERE d.`status`=1";
-		 
+// 		$sql="SELECT d.`id`,d.`equipment_name`,d.`reference_no`,d.`photo_front`,d.`url`,(SELECT st.price FROM `ldc_stuff_details` AS st WHERE st.`stuff_id`=d.`id` AND st.`package_id`=$row_randay limit 1) AS price,(SELECT st.`extra_price` FROM `ldc_stuff_details` AS st WHERE st.`stuff_id`=d.`id` AND st.`package_id`=$row_randay limit 1) AS extra_price  FROM `ldc_stuff` AS d WHERE d.`status`=1
+// 		AND d.id NOT IN(SELECT bd.`item_id` FROM ldc_booking AS b , `ldc_booking_detail` AS bd WHERE b.id=bd.`book_id` AND
+// 		('$pickupdate' BETWEEN b.`pickup_date` AND b.`return_date`
+// 				OR '$returndate' BETWEEN b.`pickup_date` AND b.`return_date`)
+// 				AND bd.item_type=3 AND b.status!=3)";
+		return $db->fetchAll($sql);
+	}
+	public function getAllAvailableGuide($data,$type=3){ // 1=driver,2=guide,3=both
+		$db= $this->getAdapter();
+	
+		$pickup_date = new DateTime($data["pickup_date"]);
+		$return_date = new DateTime($data["return_date"]);
+		$pickupdate = $pickup_date->format('Y-m-d'); // 2003-10-16
+		$returndate = $return_date->format('Y-m-d');
+		$returntime = $data["return_time"];
+		if($type==1){
+			$position_type = " AND d.`position_type`=1";
+		}elseif ($type==2){
+			$position_type = " AND d.`position_type`=2";
+		}else {
+			$position_type = "";
+		}
+		$sql="SELECT d.`id`,d.`driver_id`,CONCAT(d.`first_name`,' ',d.`last_name`) AS `name`,d.`experience_desc`,d.`sex`,d.`nationality`,d.`lang_note`,d.`tel`,d.`email`,d.`photo`,d.`c_holidayprice`,d.`c_normalprice`,d.`c_otprice`,d.`c_weekendprice`,d.`p_holidayprice`,d.`p_normalprice`,d.`p_otprice`,d.`p_weekendprice`,d.`monthly_price`,d.`position_type`,
+		(SELECT lv.name_en FROM `ldc_view` AS lv WHERE lv.key_code=d.`position_type` AND lv.type =8 LIMIT 1) AS position_type_title
+		FROM `ldc_driver` AS d WHERE  d.id NOT IN(SELECT bd.`item_id` FROM ldc_booking AS b , `ldc_booking_detail` AS bd WHERE b.id=bd.`book_id` AND b.`return_date` BETWEEN '$pickupdate' AND '$returndate'  AND bd.item_type=2 AND b.status !=3) AND d.`status`=1 $position_type"; // Will Include with new Version AND b.`return_time` >= '$returntime'
 		return $db->fetchAll($sql);
 	}
 	public function getAllNameOwner($opt=null){
