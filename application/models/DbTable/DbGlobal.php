@@ -31,6 +31,28 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 		}
 		return $pre.$new_acc_no;
 	}
+	public function getNewAgreementCode($date=null){
+		$db = $this->getAdapter();
+		$row = $this->getSystemSetting('agreement_code');
+		$sql=" SELECT COUNT(id)​ FROM `ldc_vehicleagreement` LIMIT 1 ";
+		$number = $db->fetchOne($sql);
+		$new_no= (int)$number+101;
+		$number= strlen((int)$number+1);
+		$sub='';
+		for($i = $number;$i<6;$i++){
+			$sub.='0';
+		}
+		if($date==null){
+			$sub=date("y")."-".date("m")."-".date("d")."-".$sub.$new_no;
+		}else{
+			$sub=date("y",strtotime($date))."-".date("m",strtotime($date))."-".date("d",strtotime($date))."-".$sub.$new_no;
+				
+		}
+		 
+		$pre = ($row['value']);
+		return $pre."-".$sub;
+		 
+	}
 	public function getAllPackageDay($opt=null){
 		$this->_name='ldc_rankday';
 		$sql = " SELECT id,CONCAT(day_title,'(',from_amountday,'-',to_amountday,')') as package FROM $this->_name WHERE status=1 AND day_title!='' ";

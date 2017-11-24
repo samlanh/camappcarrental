@@ -9,6 +9,12 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
     	return $cud;
 	
 	}
+	function getOwnerById($id){
+		$db = $this->getAdapter();
+		$sql = "SELECT id,owner_name,`position`,id_card,hand_phone,email,hotline,`status` FROM ldc_owner where id= ".$id;
+		return $db->fetchRow($sql);
+	}
+	
 	public function addBookingRental($data){
 		$db = $this->getAdapter();
 		$db->beginTransaction();
@@ -133,7 +139,9 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 			
 			$this->_name = "ldc_booking";
 			$book_id = $this->insert($arr);
+			$data['booking_id'] = $book_id;
 			
+			$this->addAgreement($data); 
 			//Other fee blog
 			if($data["identity_other_fee"]!=""){
 				$ids = explode(',', $data['identity_other_fee']);
@@ -258,6 +266,141 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
     		echo $e->getMessage();
                 Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
     	}
+	}
+	
+	function addAgreement($data){
+// 		$db = $this->getAdapter();
+// 		$db->beginTransaction();
+		try{
+			$diff=date_diff(date_create($data["pickup_date"]),date_create($data["return_date"]));
+			$total_day = $diff->format("%a%")+1;
+			
+			$db_globle = new Application_Model_DbTable_DbGlobal();
+			$agreement_code = $db_globle->getNewAgreementCode($data['agreement_date']);
+			
+			//Vehicle Blog
+			$total_deposit_vehicle=0;
+			$total_price_vehicle=0;
+			$vat_vehicle = 0;
+			if(!empty($data['identity_vehicle'])){
+				$ids = explode(',', $data['identity_vehicle']);
+				if(!empty($ids))foreach ($ids as $p){
+					$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
+					$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
+					$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
+						
+					$total_deposit_vehicle+= $row_vehicle["refun_deposit"];
+					$total_row_price_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
+						
+					$total_price_vehicle = number_format(($total_price_vehicle + $total_row_price_vehicle),2);
+					$vat_vehicle = $vat_vehicle + $row_vehicle_price["vat_value"];
+				}
+			}
+			$total_payment = $total_price_vehicle+$total_deposit_vehicle;
+			$diposit = number_format(($total_payment*50/100)+(($total_payment*50/100)*3/100),2);
+			
+			if($data["payment_type"]==4){
+				$total_pay = $data["cash_pay"];
+			}else{
+				$total_pay = $diposit;
+			}
+			
+			$arr = array(
+					//'vat_owner'=>$data['vat_owner'],
+					//'vat_customer'=>$data['vat_customer'],
+					'agreement_code'=>$agreement_code,
+					'agreement_date'=>$data['agreement_date'],
+					'booking_id'=>$data['booking_id'],
+					'ownder_id'=>$data['owner_name'],
+					'customer_id'=>$data['customer'],
+// 					'vehicle_id'=>$data['vehicle_ref_no'],
+					'inception_date'=>$data['pickup_date'],
+					'return_date'=>$data['return_date'],
+					'return_time'=>$data['return_time'].":".$data['return_minute'],
+					'period'=>$total_day,
+					
+					//'price_perday'=>$data['price_day'],
+					//'vat_amount'=>$data['total_vat'],
+					 
+// 					'amount_price'=>$data['amount_price'],
+// 					'discount_value'=>$data['discount_value'],
+// 					'discount_percent'=>$data['discount_percent'],
+// 					'refundable'=>$data['amount_f_d'],
+// 					'longdist_acc'=>$data['longdast'],
+					'grand_total'=>$total_payment,
+					'paid_amount'=>$total_pay,
+					'due_amount'=>($total_payment-$total_pay) ,
+					 
+					'date_create'=>date("d-m-Y"),
+					'user_id'=>$this->getUserId(),
+					'regular_id'=>$data['regular_maintanance'],
+					'unlimited'=>$data['unlimited_mileage'],
+					'repare'=>$data['repair_spare_part'],
+					'insurance'=>$data['insurance_coverage'],
+					'fule'=>$data['fuel'],
+					'fuel_full'=>$data['fuel_full_tank'],
+					'art1_id'=>$data['article'],
+					'toart1_id'=>$data['toart1_id'],
+					'art2_id'=>$data['art2_id'],
+					'toart2_id'=>$data['toart2_id'],
+					'art3_id'=>$data['art3_id'],
+					'toart3_id'=>$data['toart3_id'],
+			
+// 					'sunday_price'=>$data['sunday_price'],
+// 					'airport_price'=>$data['airport_price'],
+// 					'dropairport_price'=>$data['dropairport_price'],
+// 					'item_1'=>$data['item_1'],
+// 					'item_2'=>$data['item_2'],
+// 					'item_3'=>$data['item_3'],
+					 
+// 					'sunday_remark'=>$data['sunday_remark'],
+// 					'airport_remark'=>$data['airport_remark'],
+// 					'dropairport_remark'=>$data['dropairport_remark'],
+// 					'item_1remark'=>$data['item_1remark'],
+// 					'item_2remark'=>$data['item_2remark'],
+// 					'item_3remark'=>$data['item_3remark'],
+// 					'is_passport'=>empty($data['passport'])?0:1,
+// 					'is_idcard'=>empty($data['idcard'])?0:1,
+// 					'is_familybook'=>empty($data['familybook'])?0:1,
+// 					'witness'=>$data['witness']
+			);
+			$this->_name="ldc_agreementvehicle";
+			$agreement_id = $this->insert($arr);
+			
+			// Vehicle info Blog
+			if(!empty($data['identity_vehicle'])){
+				$ids = explode(',', $data['identity_vehicle']);
+				if(!empty($ids))foreach ($ids as $p){
+					$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
+					$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
+					$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
+						
+					$discount_ve= empty($discount["discount"])?0:$discount["discount"];
+					$row_net_total_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
+						
+					$arr_deatail = array(
+							'agreement_id'	=>	$agreement_id,
+							'vehicle_id'	=>	$row_vehicle["id"],
+							'price_perday'	=>	$row_vehicle_price["price"],
+							'vat_amount'	=>	$row_vehicle_price["vat_value"],
+							'amount_price'	=>	$row_net_total_vehicle,
+							'refundable'	=>	$row_vehicle["refun_deposit"],
+							'discount_value'=>	$discount_ve,
+// 							'longdist_acc'	=>""
+					);
+						
+					$this->_name="ldc_agreementvehicle_detail";
+					$this->insert($arr_deatail);
+				}
+			}
+			
+// 			$db->commit();
+			return $agreement_id;
+		}catch (Exception$e){
+// 			$db->rollBack();
+			echo $e->getMessage();
+			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
+		}
 	}
 	function getVehicleSelected($id){ //get vehicle was choosed booking
 		$db = $this->getAdapter();

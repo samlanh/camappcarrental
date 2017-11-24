@@ -173,7 +173,7 @@ class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 		
 		$fly_no = new Zend_Dojo_Form_Element_TextBox("fly_no");
 		$fly_no->setAttribs(array(
-				'dojoType'=>$this->text,'class'=>"fullside"
+				'dojoType'=>$this->text,'class'=>"fullside",'constraints'=>"{datePattern:'dd/MM/yyyy'}",'class'=>"fullside"
 		));
 		
 		$fly_date = new Zend_Dojo_Form_Element_DateTextBox("fly_date");
@@ -329,7 +329,138 @@ class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 			));
 		return $this;
 	}
-	
+	public function FromBookingAgreement($data=null){
+		$request=Zend_Controller_Front::getInstance()->getRequest();
+		$_db = new Application_Model_DbTable_DbGlobal();
+		
+		$_owner_name = new Zend_Dojo_Form_Element_FilteringSelect("owner_name");
+		$_owner_name->setAttribs(array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'required'=>'true',
+				'class'=>'fullside',
+				'onchange'=>'getOwner();',
+				));
+		$option = array();
+		$result = $_db->getAllNameOwner();
+		if(!empty($result))foreach($result AS $row){
+			$option[$row['id']]=$row['owner_name'];
+		}
+		$_owner_name->setMultiOptions($option);
+		
+		$position = new Zend_Dojo_Form_Element_ValidationTextBox("position");
+		$position->setAttribs(array('dojoType'=>$this->validate,'class'=>"fullside",'required'=>true));
+		
+		$id_card = new Zend_Dojo_Form_Element_NumberTextBox("id_card");
+		$id_card->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside",'required'=>true));
+		
+		$hand_phone = new Zend_Dojo_Form_Element_ValidationTextBox("hand_phone");
+		$hand_phone->setAttribs(array('dojoType'=>$this->validate,'class'=>"fullside",'required'=>true));
+		
+		$email = new Zend_Dojo_Form_Element_ValidationTextBox("email");
+		$email->setAttribs(array('dojoType'=>$this->validate,'class'=>"fullside",'required'=>true));
+		
+		$hotline = new Zend_Dojo_Form_Element_ValidationTextBox("hotline");
+		$hotline->setAttribs(array('dojoType'=>$this->validate,'class'=>"fullside",'required'=>true));
+		
+		$agreement_date = new Zend_Dojo_Form_Element_DateTextBox("agreement_date");
+		$agreement_date->setAttribs(array(
+				'dojoType'=>$this->date,'class'=>"fullside",'required'=>true,'constraints'=>"{datePattern:'dd/MM/yyyy'}",'class'=>"fullside"
+		));
+		$agreement_date->setValue(date("Y-m-d"));
+		
+		$article = new Zend_Dojo_Form_Element_TextBox("article");
+		$article->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",'required'=>true));
+		$article->setValue("11 th");
+		
+		$toart1_id = new Zend_Dojo_Form_Element_TextBox("toart1_id");
+		$toart1_id->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",'required'=>true));
+		$toart1_id->setValue("33 rd");
+		
+		$art2_id = new Zend_Dojo_Form_Element_TextBox("art2_id");
+		$art2_id->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",'required'=>true));
+		$art2_id->setValue("13 th");
+		
+		$toart2_id = new Zend_Dojo_Form_Element_TextBox("toart2_id");
+		$toart2_id->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",'required'=>true));
+		$toart2_id->setValue("15 th");
+		
+		$art3_id = new Zend_Dojo_Form_Element_TextBox("art3_id");
+		$art3_id->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",'required'=>true));
+		$art3_id->setValue("16 th");
+		
+		$toart3_id = new Zend_Dojo_Form_Element_TextBox("toart3_id");
+		$toart3_id->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",'required'=>true));
+		$toart3_id->setValue("17 th");
+		
+		
+		$_regular_maintanance = new Zend_Dojo_Form_Element_FilteringSelect("regular_maintanance");
+		$_regular_maintanance->setAttribs(array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'required'=>'true',
+				'class'=>'fullside',
+		));
+		$option = array('1'=>'Yes','0'=>'No');
+		$_regular_maintanance->setMultiOptions($option);
+		
+		$_unlimited_mileage = new Zend_Dojo_Form_Element_FilteringSelect("unlimited_mileage");
+		$_unlimited_mileage->setAttribs(array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'required'=>'true',
+				'class'=>'fullside',
+		));
+		$option = array('1'=>'Yes','0'=>'No');
+		$_unlimited_mileage->setMultiOptions($option);
+		
+		$_repair_spare_part = new Zend_Dojo_Form_Element_FilteringSelect("repair_spare_part");
+		$_repair_spare_part->setAttribs(array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'required'=>'true',
+				'class'=>'fullside',
+		));
+		$option = array('1'=>'Yes','0'=>'No');
+		$_repair_spare_part->setMultiOptions($option);
+		
+		$_insurance_coverage = new Zend_Dojo_Form_Element_FilteringSelect("insurance_coverage");
+		$_insurance_coverage->setAttribs(array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'required'=>'true',
+				'class'=>'fullside',
+		));
+		$option = array('1'=>'Yes','0'=>'No');
+		$_insurance_coverage->setMultiOptions($option);
+		
+		$_fuel = new Zend_Dojo_Form_Element_FilteringSelect("fuel");
+		$_fuel->setAttribs(array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'required'=>'true',
+				'class'=>'fullside',
+		));
+		$option = array('1'=>'Yes','0'=>'No');
+		$_fuel->setMultiOptions($option);
+		
+		$_fuel_full_tank = new Zend_Dojo_Form_Element_FilteringSelect("fuel_full_tank");
+		$_fuel_full_tank->setAttribs(array(
+				'dojoType'=>'dijit.form.FilteringSelect',
+				'required'=>'true',
+				'class'=>'fullside',
+		));
+		$option = array('1'=>'Yes','0'=>'No');
+		$_fuel_full_tank->setMultiOptions($option);
+		
+		$this->addElements(array(
+				$_owner_name,$position,$id_card,$hand_phone,$email,$hotline,
+				$agreement_date,
+				$article,$toart1_id,
+				$art2_id,$toart2_id,
+				$art3_id,$toart3_id,
+				
+				$_regular_maintanance,$_unlimited_mileage,
+				$_repair_spare_part,$_insurance_coverage,
+				$_fuel,$_fuel_full_tank
+				
+		));
+		return $this;
+	}
 	
 }
 

@@ -62,6 +62,10 @@ class Booking_indexController extends Zend_Controller_Action {
 		$form = $frm->FromBooking();
 		Application_Model_Decorator::removeAllDecorator($form);
 		$this->view->frm = $form;
+		
+		$formagreement = $frm->FromBookingAgreement();
+		Application_Model_Decorator::removeAllDecorator($formagreement);
+		$this->view->frmagreement = $formagreement;
 	}
 	
 	public function editAction(){
@@ -144,6 +148,17 @@ class Booking_indexController extends Zend_Controller_Action {
 			$data = $this->getRequest()->getPost();
 			$db = new Booking_Model_DbTable_DbCarRentalNew();
 			$row = $db->getBookingListToShow($data);
+			print_r(Zend_Json::encode($row));
+			exit();
+		}
+	}
+	
+	public function getrowownerAction(){
+		if($this->getRequest()->isPost()){
+			$post=$this->getRequest()->getPost();
+			$ids = $post["owner_name"];
+			$db = new Booking_Model_DbTable_DbCarRentalNew();
+			$row=$db->getOwnerById($ids);
 			print_r(Zend_Json::encode($row));
 			exit();
 		}
