@@ -162,11 +162,8 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 	}
 	public function getAllAvailableVehicle($data){
 		$db = $this->getAdapter();
-		$pickup_date = new DateTime($data["pickup_date"]);
-		$return_date = new DateTime($data["return_date"]);
-		 
-		$pickupdate = $pickup_date->format('Y-m-d'); // 2017-11-20
-		$returndate = $return_date->format('Y-m-d');
+		$pickupdate = date("Y-m-d",strtotime($data["pickup_date"]));
+		$returndate = date("Y-m-d",strtotime($data["return_date"]));
 		 
 // 		$pickuptime = $data["pickup_time"];
 		$returntime = $data["return_time"];
@@ -242,11 +239,8 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 	}
 	public function getEquipment($data){
 		$db= $this->getAdapter();
-		$pickup_date = new DateTime($data["pickup_date"]);
-		$return_date = new DateTime($data["return_date"]);
-		 
-		$pickupdate = $pickup_date->format('Y-m-d'); // 2003-10-16
-		$returndate = $return_date->format('Y-m-d');
+		$pickupdate = date("Y-m-d",strtotime($data["pickup_date"]));
+		$returndate = date("Y-m-d",strtotime($data["return_date"]));
 		$returntime = $data["return_time"];
 		 
 		$pickupdates=date_create($data["pickup_date"]);
@@ -267,15 +261,18 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 // 		('$pickupdate' BETWEEN b.`pickup_date` AND b.`return_date`
 // 				OR '$returndate' BETWEEN b.`pickup_date` AND b.`return_date`)
 // 				AND bd.item_type=3 AND b.status!=3)";
-		return $db->fetchAll($sql);
+		$row = $db->fetchAll($sql);
+		if (!empty($row)) {
+			return $row;
+		}
+		return "";
 	}
 	public function getAllAvailableGuide($data,$type=3){ // 1=driver,2=guide,3=both
 		$db= $this->getAdapter();
 	
-		$pickup_date = new DateTime($data["pickup_date"]);
-		$return_date = new DateTime($data["return_date"]);
-		$pickupdate = $pickup_date->format('Y-m-d'); // 2003-10-16
-		$returndate = $return_date->format('Y-m-d');
+		$pickupdate = date("Y-m-d",strtotime($data["pickup_date"]));
+		$returndate = date("Y-m-d",strtotime($data["return_date"]));
+		
 		$returntime = $data["return_time"];
 		if($type==1){
 			$position_type = " AND d.`position_type`=1";
@@ -287,7 +284,11 @@ class Application_Model_DbTable_DbGlobal extends Zend_Db_Table_Abstract
 		$sql="SELECT d.`id`,d.`driver_id`,CONCAT(d.`first_name`,' ',d.`last_name`) AS `name`,d.`experience_desc`,d.`sex`,d.`nationality`,d.`lang_note`,d.`tel`,d.`email`,d.`photo`,d.`c_holidayprice`,d.`c_normalprice`,d.`c_otprice`,d.`c_weekendprice`,d.`p_holidayprice`,d.`p_normalprice`,d.`p_otprice`,d.`p_weekendprice`,d.`monthly_price`,d.`position_type`,
 		(SELECT lv.name_en FROM `ldc_view` AS lv WHERE lv.key_code=d.`position_type` AND lv.type =8 LIMIT 1) AS position_type_title
 		FROM `ldc_driver` AS d WHERE  d.id NOT IN(SELECT bd.`item_id` FROM ldc_booking AS b , `ldc_booking_detail` AS bd WHERE b.id=bd.`book_id` AND b.`return_date` BETWEEN '$pickupdate' AND '$returndate'  AND bd.item_type=2 AND b.status !=3) AND d.`status`=1 $position_type"; // Will Include with new Version AND b.`return_time` >= '$returntime'
-		return $db->fetchAll($sql);
+		$row = $db->fetchAll($sql);
+		if (!empty($row)) {
+			return $row;
+		}
+		return "";
 	}
 	public function getAllNameOwner($opt=null){
 		$sql="SELECT id,owner_name FROM ldc_owner WHERE 1";

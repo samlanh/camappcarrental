@@ -19,20 +19,34 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
     		
     		$diff=date_diff(date_create($data["pickup_date"]),date_create($data["return_date"]));
     		$total_day = $diff->format("%a%")+1;
-    		$row_vehicle = $this->getVehicleSelected($data['vehicle_id']);
-    		$discount = $this->getVehicleDiscount($data['vehicle_id']);
-    		$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id']);
+    	
     		
     		$rows = $this->getProductSelected($data);
     		$row_driver = $this->getDriverSelected($data);
     		
     		$pickup_location = $this->getLocationById($data['pickup_location']);
     		$return_location = $this->getLocationById($data['return_location']);
-    		$row_pickup =$this->getPickUpPrice($data);
+    		$row_pickup =$this->getPickUpPriceMultiVehicle($data);
+    		
+    		
     		//Vehicle Blog
-    		$total_price_vehicle = number_format((($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100),2);
-    		$total_deposit_vehicle = $row_vehicle["refun_deposit"];
-    		$vat_vehicle = $row_vehicle_price["vat_value"];
+    		$total_deposit_vehicle=0;
+    		$total_price_vehicle=0;
+    		$vat_vehicle = 0;
+    		if(!empty($data['identity_vehicle'])){
+    			$ids = explode(',', $data['identity_vehicle']);
+    			if(!empty($ids))foreach ($ids as $p){
+    				$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
+    				$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
+    				$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
+    		
+    				$total_deposit_vehicle+= $row_vehicle["refun_deposit"];
+    				$total_row_price_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
+    				
+    				$total_price_vehicle = number_format(($total_price_vehicle + $total_row_price_vehicle),2);
+    				$vat_vehicle = $vat_vehicle + $row_vehicle_price["vat_value"];
+    			}
+    		}
     		
     		//Product blog
     		$total_price_product =0;
@@ -138,24 +152,40 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 					$this->insert($arr);
 				}
 			}
+			
 			// Vehicle info Blog
-			$arr_deatail = array(
-					'book_id'			=>	$book_id,
-					'item_id'			=>	$row_vehicle["id"],
-					'item_name'			=>	$row_vehicle["make"]." ".$row_vehicle["model"]." ".$row_vehicle["sub_model"]." (".$row_vehicle["reffer"].")",
-					'rent_num'			=>	1,
-					'price'				=>	$row_vehicle_price["price"],
-					'VAT'				=>	$row_vehicle_price["vat_value"],
-					'total'				=>	(($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100),
-					'total_paymented'	=>	(($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100),
-					'status'			=>	1,
-					'refund_deposit'	=>	$row_vehicle["refun_deposit"],
-					'discount'			=>	$discount["discount"],
-					'item_type'			=>	1
-			);
-				
-			$this->_name="ldc_booking_detail";
-			$this->insert($arr_deatail);
+			if(!empty($data['identity_vehicle'])){
+				$ids = explode(',', $data['identity_vehicle']);
+				if(!empty($ids))foreach ($ids as $p){
+					$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
+					$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
+					$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
+			
+					$vehicle_name = $row_vehicle["make"]." ".$row_vehicle["model"]." ".$row_vehicle["sub_model"]." (".$row_vehicle["reffer"].")";
+					$discount_ve= empty($discount["discount"])?0:$discount["discount"];
+					$row_net_total_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
+					
+					$arr_deatail = array(
+							'book_id'			=>	$book_id,
+							'item_id'			=>	$row_vehicle["id"],
+							'item_name'			=>	$vehicle_name,
+							'rent_num'			=>	1,
+							'price'				=>	$row_vehicle_price["price"],
+							'VAT'				=>	$row_vehicle_price["vat_value"],
+							'total'				=>	$row_net_total_vehicle,
+							'total_paymented'	=>	$row_net_total_vehicle,
+							'status'			=>	1,
+							'refund_deposit'	=>	$row_vehicle["refun_deposit"],
+							'discount'			=>	$discount_ve,
+							'item_type'			=>	1
+					);
+					
+					$this->_name="ldc_booking_detail";
+					$this->insert($arr_deatail);
+				}
+			}
+			
+			
 			
 			// Product info Blog
 			if(!empty($rows)){
@@ -249,14 +279,40 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 		$sql="SELECT p.`id`,".$array[$lang]." as province_name FROM `ldc_province` AS p WHERE p.`id`=$id";
 		return $db->fetchRow($sql);
 	}
-	function getPickUpPrice($data){ // get price location pick
+// 	function getPickUpPrice($data){ // get price location pick
 		
+// 		$db = $this->getAdapter();
+// 		$pickup_id = $data['pickup_location'];
+// 		$return_id = $data['return_location'];
+	
+// 		$sql="SELECT p.`id`,p.`price`,p.`tax` FROM `ldc_pickupcarprice` AS p WHERE p.`form_location`=$pickup_id AND p.`to_location`=$return_id AND p.`vehicle_id`=".$data['vehicle_id'];
+// 		return $db->fetchRow($sql);
+// 	}
+	
+	function getPickUpPriceMultiVehicle($data){ // get price location pick
+	
 		$db = $this->getAdapter();
 		$pickup_id = $data['pickup_location'];
 		$return_id = $data['return_location'];
-	
-		$sql="SELECT p.`id`,p.`price`,p.`tax` FROM `ldc_pickupcarprice` AS p WHERE p.`form_location`=$pickup_id AND p.`to_location`=$return_id AND p.`vehicle_id`=".$data['vehicle_id'];
-		return $db->fetchRow($sql);
+		$array= array();
+		$price=0;
+		$tax=0;
+		if(!empty($data['identity_vehicle'])){
+			$ids = explode(',', $data['identity_vehicle']);
+			if(!empty($ids))foreach ($ids as $p){
+				$sql="SELECT p.`id`,p.`price`,p.`tax` FROM `ldc_pickupcarprice` AS p WHERE p.`form_location`=$pickup_id AND p.`to_location`=$return_id AND p.`vehicle_id`=".$data['vehicle_id'.$p];
+				$row = $db->fetchRow($sql);
+				if (!empty($row)){
+					$price+= $row['price'];
+					$tax= $row['tax'];
+				}
+			}
+		}
+		$array = array(
+				'price'=>$price,
+				'tax'=>$tax,
+				);
+		return $array;
 	}
 	
 	function getProductSelected($data){
@@ -357,13 +413,15 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 		$vehiclevaliable = $db_globle->getAllAvailableVehicle($search);
 		$productavailable= $db_globle->getEquipment($search);
 		
-		
 		$carlist="";
 		$tr = Application_Form_FrmLanguages::getCurrentlanguage();
 		$baseurl= Zend_Controller_Front::getInstance()->getBaseUrl();
-		if (!empty($vehiclevaliable)) foreach ($vehiclevaliable as $k_index => $vehicle){
+		$k=0;
+		if (!empty($vehiclevaliable)){
+			$initail_veh_ide="";
+			foreach ($vehiclevaliable as $k_index => $vehicle){ $k++;
 			$checked="";
-			if ($k_index==0){$checked ='checked="checked"';	}
+			if ($k_index==0){$checked ='checked="checked"';	$initail_veh_ide =$k;}
 			if (!empty($vehicle['img_front'])){
 				$image='<img src="'.$baseurl.'/images/vehicle/'.$vehicle['img_front'].'" class="preview_carlist" alt="'.$vehicle["make"].' '.$vehicle["model"].' '.$vehicle["sub_model"].' ('.$vehicle["reffer"].')'.'" />';
 			}else{
@@ -374,7 +432,11 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 				<div class="col-md-6 col-sm-6 col-xs-12 profile_details">
                 	<div class="well profile_view">
 						<div class="col-sm-12">
-							<h4 class="brief car_title"><input type="radio" onchange="calculateGrandtotal();"  name="vehicle_id" value="'.$vehicle['id'].'" '.$checked.'> '.$vehicle["make"].' '.$vehicle["model"].' '.$vehicle["sub_model"].' ('.$vehicle["reffer"].')'.'</h4>
+							<h4 class="brief car_title">
+								<input '.$checked.'  type="checkbox" id="checkevehiecle'.$k.'" name="checkevehiecle'.$k.'" onClick="addVehicle('.$k.');" >
+				                <input type="hidden" name="vehicle_id'.$k.'" value="'.$vehicle["id"].'" />
+								'.$vehicle["make"].' '.$vehicle["model"].' '.$vehicle["sub_model"].' ('.$vehicle["reffer"].')'.'
+							</h4>
 	                            <div class="left carl col-xs-5">
 	                            	<div class=" col-xs-12">
 	                            		<div class="image_car">
@@ -418,9 +480,11 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 	                            </div>
 	                          </div>
 	                        </div>
-	                      </div>';
+	                      </div>
+							';
+						}
 		}
-		
+		$carlist.='<input type=hidden name="identity_vehicle" id="identity_vehicle" value="'.$initail_veh_ide.'" />';
 		$guidlist="";
 		$i=0;
 		if (!empty($rowsguide)) foreach ($rowsguide as $guid){ $i++;
@@ -476,7 +540,9 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
                 </div>
               </div>
 			';
+			
 		}
+		$guidlist.='<input type=hidden name="identity_driver" id="identity_driver"/>';
 			
 		$productlist = '';
 		$k=0;
@@ -518,8 +584,10 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 	                   </div>
 	              </div>
 	          </div>
-	       </div>';
+	       </div>
+			';
 		}
+		$productlist.='<input type="hidden" name="identity_equipment" id="identity_equipment"/>';
 		$array = array(
 				'vehilce_available'=>$carlist,
 				'guide_available'=>$guidlist,
@@ -531,23 +599,21 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 	
 	function getBookingListToShow($data){
 		
+		
 		$db_globle = new Application_Model_DbTable_DbGlobal();
 		$booking_code = $db_globle->getNewBookingCode();
 		
 		
 		$diff=date_diff(date_create($data["pickup_date"]),date_create($data["return_date"]));
 		$total_day = $diff->format("%a%")+1;
-		$row_vehicle = $this->getVehicleSelected($data['vehicle_id']);
-		$discount = $this->getVehicleDiscount($data['vehicle_id']);
-		$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id']);
 		
 		$rows = $this->getProductSelected($data);
 		$row_driver = $this->getDriverSelected($data);
 		
 		$pickup_location = $this->getLocationById($data['pickup_location']);
 		$return_location = $this->getLocationById($data['return_location']);
-		$row_pickup =$this->getPickUpPrice($data);
 		
+	
 		$cus_name="";
 		if (!empty($data['customer'])){
 			$customer = $this->getNameCustomer($data['customer']);
@@ -600,21 +666,39 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 				     <th class="totalbr text-center" width="5%">Discount</th>
 				     <th class="totalbr text-center" width="25%" nowrap="nowrap">Amount</th>
 				  </tr>';
+
 		//row vehicle
-		$vehicle_name = $row_vehicle["make"]." ".$row_vehicle["model"]." ".$row_vehicle["sub_model"]." (".$row_vehicle["reffer"].")";
-		$refun_deposit = $row_vehicle["refun_deposit"];
-		$discount_ve = empty($discount["discount"])?0:$discount["discount"];
-		$net_total_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
-		$string.='
+		$refun_deposit=0;
+		$net_total_vehicle=0;
+		if(!empty($data['identity_vehicle'])){
+			$ids = explode(',', $data['identity_vehicle']);
+			if(!empty($ids))foreach ($ids as $p){
+				$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
+				$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
+				$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
+				
+				$vehicle_name = $row_vehicle["make"]." ".$row_vehicle["model"]." ".$row_vehicle["sub_model"]." (".$row_vehicle["reffer"].")";
+				$refun_deposit+= $row_vehicle["refun_deposit"];
+				$discount_ve= empty($discount["discount"])?0:$discount["discount"];
+				
+				$row_net_total_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
+				
+				$net_total_vehicle = $net_total_vehicle + $row_net_total_vehicle;
+				$string.='
 				<tr>
 					<td class="totalbr text-center">1</td>
-                    <td class="totalbr" style="text-align: left; !important;">'.$vehicle_name.'</td>
-                    <td class="totalbr" style="text-align: center; !important;">1</td>
-                    <td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($row_vehicle_price["price"],2).'</td>
-                    <td class="totalbr" align="right" style="padding-right: 10px">'.number_format($row_vehicle_price["vat_value"],2).'%</td>
-                    <td class="totalbr" align="right" style="padding-right: 10px">'.number_format($discount_ve,2).'%</td>
-                    <td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($net_total_vehicle,2).'</td>
+					<td class="totalbr" style="text-align: left; !important;">'.$vehicle_name.'</td>
+					<td class="totalbr" style="text-align: center; !important;">1</td>
+					<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($row_vehicle_price["price"],2).'</td>
+					<td class="totalbr" align="right" style="padding-right: 10px">'.number_format($row_vehicle_price["vat_value"],2).'%</td>
+					<td class="totalbr" align="right" style="padding-right: 10px">'.number_format($discount_ve,2).'%</td>
+					<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($row_net_total_vehicle,2).'</td>
 				</tr>';
+			}
+		}
+		
+		
+		
 		
 		
 		// Product info Blog
@@ -687,6 +771,7 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 		}
 		
 		//Pickup & Return Info Price Blog
+		$row_pickup =$this->getPickUpPriceMultiVehicle($data);
 		$net_total_pickup = ($row_pickup["price"]+($row_pickup["price"]*$row_pickup["tax"]/100));
 		$string.='
 			<tr>
@@ -755,5 +840,592 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 		$order=' LIMIT 1';
 		return $this->getAdapter()->fetchRow($sql.$order);
 	}
+	
+	//edit booking
+	function getBookingById($id){
+		$db = $this->getAdapter();
+		$sql="SELECT * FROM `ldc_booking` AS b WHERE b.`id`=$id LIMIT 1";
+		return $db->fetchRow($sql);
+	}
+	function getProductBookingInfor($bookingid,$items_id){
+		$db = $this->getAdapter();
+		$sql="SELECT * FROM `ldc_booking_detail` AS bd WHERE bd.`book_id`=$bookingid AND bd.`item_id`=$items_id LIMIT 1";
+		return $db->fetchRow($sql);
+	}
+	function getBookingDetail($booking_id,$itemstype=null){
+		$db = $this->getAdapter();
+		$sql="SELECT bd.* FROM`ldc_booking_detail` AS bd WHERE bd.`book_id`=$booking_id ";
+		if (!empty($itemstype)){
+			$sql.=" AND bd.item_type=$itemstype";
+		}
+		return $db->fetchAll($sql);
+	}
+	function getVehicelByBookingId($booking_id,$onlyid=null){
+		$db = $this->getAdapter();
+		$sql="SELECT bd.* FROM`ldc_booking_detail` AS bd WHERE bd.`book_id`=$booking_id AND bd.item_type=1 ";
+		$row = $db->fetchAll($sql);
+		if (empty($onlyid)){
+			return $row;
+		}else{
+			$idlist="";
+			foreach ($row as $rs){
+				if (empty($idlist)){
+					if (!empty($rs['item_id'])){
+						$idlist=$rs['item_id'];
+					}
+				}else{
+					if (!empty($rs['item_id'])){
+						$idlist=$idlist.",".$rs['item_id'];
+					}
+				}
+			}
+			return $idlist;
+		}
+	}
+	public function getAllAvailableVehicleForEdit($data){
+		$db = $this->getAdapter();
+		$pickup_date = new DateTime($data["pickup_date"]);
+		$return_date = new DateTime($data["return_date"]);
+		$pickupdate = $pickup_date->format('Y-m-d'); // 2017-11-20
+		$returndate = $return_date->format('Y-m-d');
+			
+		// 		$pickuptime = $data["pickup_time"];
+		$returntime = $data["return_time"];
+			$sql = "SELECT v.id,v.`reffer`,v.`frame_no`,v.`max_weight`,
+			v.`seat_amount`,v.`color`,v.`year`,v.`steering`,v.`test_url`,v.`show_url`,
+			v.`img_front`,
+			v.`img_front_right`,v.img_seat,
+			v.`is_promotion`,v.`discount`,(SELECT m.title FROM `ldc_make` AS m WHERE m.id=v.`make_id`)
+			AS make,(SELECT md.title FROM `ldc_model` AS md WHERE md.id=v.`model_id`) AS model,
+			(SELECT sm.title FROM `ldc_submodel` AS sm WHERE sm.id=v.`sub_model`) AS sub_model,
+			(SELECT t.`tran_name` FROM `ldc_transmission` AS t WHERE t.`id`=v.`transmission`) AS transmission,
+			(SELECT vt.`title` FROM `ldc_vechicletye` AS vt WHERE vt.id=v.`car_type` LIMIT 1) AS `type`,
+			(SELECT e.`capacity` FROM `ldc_engince` AS e WHERE e.id=v.`engine`) AS `engine` FROM `ldc_vehicle` AS v WHERE v.is_sale !=1 AND v.status=1 AND v.id
+			NOT IN(SELECT bd.`item_id` FROM ldc_booking AS b , `ldc_booking_detail` AS bd WHERE b.id=bd.`book_id` AND
+			('$pickupdate' BETWEEN b.`pickup_date` AND b.`return_date`
+			OR '$returndate ' BETWEEN b.`pickup_date` AND b.`return_date`)
+			AND bd.item_type=1 AND b.status!=3)"; // it wiil include with new version AND b.`return_time` >= '$returntime'
+			if (!empty($data['id'])){
+				$bookinginfo = $this->getBookingById($data['id']);
+				if (date("Y-m-d",strtotime($bookinginfo['return_date'])) < date("Y-m-d",strtotime($data['pickup_date']))){
+					
+				}else{
+					$vehicle_id = $this->getVehicelByBookingId($data['id'],1);
+					if (!empty($vehicle_id)){
+						$sql.=" OR v.id IN (".$vehicle_id.")";
+					}
+				}
+			}
+			
+			$row = $db->fetchAll($sql);
+			if(!empty($row)){
+				return $db->fetchAll($sql);
+			}
+		}
+		
+		function getGuidByBookingId($booking_id,$onlyid=null){
+			$db = $this->getAdapter();
+			$sql="SELECT bd.* FROM`ldc_booking_detail` AS bd WHERE bd.`book_id`=$booking_id AND bd.item_type=2 ";
+			$row = $db->fetchAll($sql);
+			if (empty($onlyid)){
+				return $row;
+			}else{
+				$idlist="";
+				foreach ($row as $rs){
+					if (empty($idlist)){
+						if (!empty($rs['item_id'])){
+							$idlist=$rs['item_id'];
+						}
+					}else{
+						if (!empty($rs['item_id'])){
+							$idlist=$idlist.",".$rs['item_id'];
+						}
+					}
+				}
+				return $idlist;
+			}
+		}
+		public function getAllAvailableGuideEdit($data,$type=3){ // 1=driver,2=guide,3=both
+			$db= $this->getAdapter();
+			$pickup_date = new DateTime($data["pickup_date"]);
+			$return_date = new DateTime($data["return_date"]);
+			$pickupdate = $pickup_date->format('Y-m-d'); // 2003-10-16
+			$returndate = $return_date->format('Y-m-d');
+			$returntime = $data["return_time"];
+			if($type==1){
+				$position_type = " AND d.`position_type`=1";
+			}elseif ($type==2){
+				$position_type = " AND d.`position_type`=2";
+			}else {
+				$position_type = "";
+			}
+			$sql="SELECT d.`id`,d.`driver_id`,CONCAT(d.`first_name`,' ',d.`last_name`) AS `name`,d.`experience_desc`,d.`sex`,d.`nationality`,d.`lang_note`,d.`tel`,d.`email`,d.`photo`,d.`c_holidayprice`,d.`c_normalprice`,d.`c_otprice`,d.`c_weekendprice`,d.`p_holidayprice`,d.`p_normalprice`,d.`p_otprice`,d.`p_weekendprice`,d.`monthly_price`,d.`position_type`,
+			(SELECT lv.name_en FROM `ldc_view` AS lv WHERE lv.key_code=d.`position_type` AND lv.type =8 LIMIT 1) AS position_type_title
+			FROM `ldc_driver` AS d WHERE  d.`status`=1 AND  d.id NOT IN(SELECT bd.`item_id` FROM ldc_booking AS b , `ldc_booking_detail` AS bd WHERE b.id=bd.`book_id` AND b.`return_date` BETWEEN '$pickupdate' AND '$returndate'  AND bd.item_type=2 AND b.status !=3) 
+			 $position_type"; // Will Include with new Version AND b.`return_time` >= '$returntime'
+			
+			if (!empty($data['id'])){
+				$guide_id = $this->getGuidByBookingId($data['id'],1);
+				if (!empty($guide_id)){
+					$sql.=" OR d.id IN (".$guide_id.")";
+				}
+			}
+			$row = $db->fetchAll($sql);
+			if (!empty($row)) {
+				return $row;
+			}
+			return "";
+		}
+		public function editBookingRental($data){
+			$db = $this->getAdapter();
+			$db->beginTransaction();
+			try{
+				$db_globle = new Application_Model_DbTable_DbGlobal();
+		
+		
+				$diff=date_diff(date_create($data["pickup_date"]),date_create($data["return_date"]));
+				$total_day = $diff->format("%a%")+1;
+				 
+		
+				$rows = $this->getProductSelected($data);
+				$row_driver = $this->getDriverSelected($data);
+		
+				$pickup_location = $this->getLocationById($data['pickup_location']);
+				$return_location = $this->getLocationById($data['return_location']);
+				$row_pickup =$this->getPickUpPriceMultiVehicle($data);
+		
+		
+				//Vehicle Blog
+				$total_deposit_vehicle=0;
+				$total_price_vehicle=0;
+				$vat_vehicle = 0;
+				if(!empty($data['identity_vehicle'])){
+					$ids = explode(',', $data['identity_vehicle']);
+					if(!empty($ids))foreach ($ids as $p){
+						$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
+						$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
+						$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
+		
+						$total_deposit_vehicle+= $row_vehicle["refun_deposit"];
+						$total_row_price_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
+		
+						$total_price_vehicle = number_format(($total_price_vehicle + $total_row_price_vehicle),2);
+						$vat_vehicle = $vat_vehicle + $row_vehicle_price["vat_value"];
+					}
+				}
+		
+				//Product blog
+				$total_price_product =0;
+				if(!empty($rows)){
+					foreach ($rows as $row){
+						$total_price_product+= number_format(($row['pro_price']*$row['amount_rent'])*$total_day,2);
+					}
+				}
+		
+				// Driver Blog
+				$total_price_driver = 0;
+				if(!empty($row_driver)){
+					foreach ($row_driver as $row){
+						$total_price_driver+= number_format(($row['driver_price']*$row['amount_rent'])*$total_day,2);
+					}
+				}
+				// other fee Blog
+				$total_other_fee = 0;
+				if($data["identity_other_fee"]!=""){
+					$ids = explode(',', $data['identity_other_fee']);
+					foreach ($ids as $i){
+						$total_other_fee+=$data["other_fee".$i];
+					}
+				}
+				//Pickup & Return Blog
+				$total_price_pickup = number_format($row_pickup["price"]+($row_pickup["price"]*$row_pickup["tax"]/100),2);
+				$vat_pickup = $row_pickup["tax"];
+				///
+				$total_payment = $total_price_vehicle+$total_price_driver+$total_price_product+$total_price_pickup+$total_other_fee;
+				$diposit = number_format(($total_payment*50/100)+(($total_payment*50/100)*3/100),2);
+		
+		
+				if($data["payment_type"]==4){
+					$total_fee = $total_payment;
+					$deposit_fee = 0;
+					$total_pay = $data["cash_pay"];
+				}else{
+					$total_fee = $total_payment;
+					$deposit_fee = $diposit;
+					$total_pay = $diposit;
+				}
+		
+				$arr = array(
+						'customer_id'			=>	$data["customer"],
+// 						'date_book'			=>	date("Y-m-d"),
+						'pickup_date'			=>	date("Y-m-d",strtotime($data["pickup_date"])),
+						'pickup_time'			=>	$data['pickup_time'].":".$data['pickup_minute'],
+						'return_date'			=>	date("Y-m-d",strtotime($data["return_date"])),
+						'return_time'			=>	$data['return_time'].":".$data['return_minute'],
+						'total_fee'				=>	$total_fee,
+						'total_paymented'		=>	$total_pay,
+						'item_type'				=>	1,
+						//'rental_type'		=>	$rental_type,
+						//'total_duration'	=>	$session->duration,
+						'pickup_location'		=>	$pickup_location["id"],
+						'dropoff_location'		=>	$return_location["id"],
+						'fly_no'				=>	$data["fly_no"],
+						'fly_date'				=>	date("Y-m-d",strtotime($data["fly_date"])),
+						'fly_time_of_arrival'	=>	$data["fly_time"],
+						'fly_destination'		=>	$data["fly_destination"],
+						'status'				=>	1,
+						'deposite_fee'			=>	$deposit_fee,
+						'total_vat'				=>	$vat_pickup+$vat_vehicle,
+						'user_id'				=>	$this->getUserId(),
+						'modify_date'			=>	date("Y-m-d H:i:s"),
+				);
+					
+				if($data["payment_type"]==1){
+					$arr['visa_name']= $data["card_name"];
+					$arr['card_id']  = $data["card_id"];
+					$arr['secu_code']= $data["secu_code"];
+					$arr['card_exp_date']=$data["card_exp_date"];
+					$arr['card_id']  = $data["card_id"];
+					$arr['payment_type']=1;
+						
+				}elseif($data["payment_type"]==2){
+					$arr['card_id']=$data["wu_code"];
+					$arr['payment_type']=2;
+				}elseif($data["payment_type"]==3){
+					$arr['payment_type']=3;
+				}elseif($data["payment_type"]==4){
+					$arr['payment_type']=4;
+				}
+					
+				$this->_name = "ldc_booking";
+				$where = ' id = '.$data['id'];
+				$book_id = $this->update($arr, $where);
+					
+				//delete old Detail booking
+				$this->_name="ldc_booking_detail";
+				$where1 = " book_id = ".$data['id'];
+				$this->delete($where1);
+				
+				
+				//insert new Detail booking
+				
+				//Other fee blog
+				if($data["identity_other_fee"]!=""){
+					$ids = explode(',', $data['identity_other_fee']);
+		
+					foreach ($ids as $i){
+						$arr = array(
+								'book_id'			=>	$book_id,
+								'item_name'			=>	$data["other_fee_note".$i],
+								'price'				=>	$data["other_fee".$i],
+								'total'				=> 	$data["other_fee".$i],
+								'total_paymented'	=>	$data["other_fee".$i],
+								'item_type'			=>	7,
+								'status'			=>	1,
+						);
+						$this->_name="ldc_booking_detail";
+						$this->insert($arr);
+					}
+				}
+					
+				// Vehicle info Blog
+				if(!empty($data['identity_vehicle'])){
+					$ids = explode(',', $data['identity_vehicle']);
+					if(!empty($ids))foreach ($ids as $p){
+						$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
+						$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
+						$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
+							
+						$vehicle_name = $row_vehicle["make"]." ".$row_vehicle["model"]." ".$row_vehicle["sub_model"]." (".$row_vehicle["reffer"].")";
+						$discount_ve= empty($discount["discount"])?0:$discount["discount"];
+						$row_net_total_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
+							
+						$arr_deatail = array(
+								'book_id'			=>	$book_id,
+								'item_id'			=>	$row_vehicle["id"],
+								'item_name'			=>	$vehicle_name,
+								'rent_num'			=>	1,
+								'price'				=>	$row_vehicle_price["price"],
+								'VAT'				=>	$row_vehicle_price["vat_value"],
+								'total'				=>	$row_net_total_vehicle,
+								'total_paymented'	=>	$row_net_total_vehicle,
+								'status'			=>	1,
+								'refund_deposit'	=>	$row_vehicle["refun_deposit"],
+								'discount'			=>	$discount_ve,
+								'item_type'			=>	1
+						);
+							
+						$this->_name="ldc_booking_detail";
+						$this->insert($arr_deatail);
+					}
+				}
+					
+					
+					
+				// Product info Blog
+				if(!empty($rows)){
+		
+					foreach ($rows as $row){
+						$total_price = number_format(($row['pro_price']*$row['amount_rent'])*$total_day,2);
+						$arr_product = array(
+								'book_id'	=>	$book_id,
+								'item_id'	=>	$row["product_id"],
+								'item_name'	=>	$row["product_name"],
+								'rent_num'	=>	$row["amount_rent"],
+								'price'		=>	$row['pro_price'],
+								'total'		=>	$total_price,
+								'VAT'		=>	0,
+								'total_paymented'	=>	$total_price,
+								'status'	=>	1,
+								'item_type'	=>	3
+						);
+							
+						$this->_name="ldc_booking_detail";
+						$this->insert($arr_product);
+					}
+				}
+				// Driver Info Blog
+				if(!empty($row_driver)){
+		
+					foreach ($row_driver as $row){
+						$refun_deposit_driver = $row["refund_deposit"];
+						$total_price = number_format(($row['driver_price']*$row['amount_rent'])*$total_day,2);
+						$arr_driver = array(
+								'book_id'	=>	$book_id,
+								'item_id'	=>	$row["driver_id"],
+								'item_name'	=>	$row["driver_name"],
+								'rent_num'	=>	$row["amount_rent"],
+								'price'		=>	$row['driver_price'],
+								'total'		=>	$total_price,
+								'VAT'		=>	0,
+								'total_paymented'	=>	$total_price,
+								'refund_deposit'	=>	$refun_deposit_driver,
+								'status'	=>	1,
+								'item_type'	=>	2
+						);
+		
+						$this->_name="ldc_booking_detail";
+						$this->insert($arr_driver);
+					}
+				}
+					
+				//Pickup & Return Info Price Blog
+				$arr_pickup = array(
+						'book_id'			=>	$book_id,
+						'item_id'			=>	$row_pickup["id"],
+						'item_name'			=>	"Pickup From ".$pickup_location["province_name"] ."& Return ".$return_location["province_name"],
+						'rent_num'			=>	1,
+						'price'				=>	$row_pickup['price'],
+						'total'				=>	$row_pickup['price']+($row_pickup['price']*$row_pickup["tax"]/100),
+						'VAT'				=>	$row_pickup["tax"],
+						'total_paymented'	=>	$row_pickup['price']+($row_pickup['price']*$row_pickup["tax"]/100),
+						// 					'refund_deposit'	=>	$refun_deposit_driver,
+						'status'			=>	1,
+						'item_type'			=>	6
+				);
+				$this->_name="ldc_booking_detail";
+				$this->insert($arr_pickup);
+					
+				$db->commit();
+				return $book_id;
+			}catch (Exception$e){
+				$db->rollBack();
+				echo $e->getMessage();
+				Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
+			}
+		}
+		function getSearchAvailableEdit($search){
+		
+			$db_globle = new Application_Model_DbTable_DbGlobal();
+			$rowsguide = $this->getAllAvailableGuideEdit($search);
+			$vehiclevaliable = $this->getAllAvailableVehicleForEdit($search);
+			$productavailable= $db_globle->getEquipment($search);
+		
+			$carlist="";
+			$tr = Application_Form_FrmLanguages::getCurrentlanguage();
+			$baseurl= Zend_Controller_Front::getInstance()->getBaseUrl();
+			$k=0;
+			if (!empty($vehiclevaliable)){
+				$initail_veh_ide="";
+				foreach ($vehiclevaliable as $k_index => $vehicle){
+					$k++;
+					$checked="";
+					if ($k_index==0){
+						$checked ='checked="checked"';	$initail_veh_ide =$k;
+					}
+					if (!empty($vehicle['img_front'])){
+						$image='<img src="'.$baseurl.'/images/vehicle/'.$vehicle['img_front'].'" class="preview_carlist" alt="'.$vehicle["make"].' '.$vehicle["model"].' '.$vehicle["sub_model"].' ('.$vehicle["reffer"].')'.'" />';
+					}else{
+						$image='<img src="'.$baseurl.'/images/noimage.jpg" class="preview_carlist" alt="'.$vehicle["make"].' '.$vehicle["model"].' '.$vehicle["sub_model"].' ('.$vehicle["reffer"].')'.'" />';
+					}
+					$rowprice = $db_globle->getVehiceRankingDay($vehicle["id"]);
+					$carlist.='
+					<div class="col-md-6 col-sm-6 col-xs-12 profile_details">
+						<div class="well profile_view">
+							<div class="col-sm-12">
+								<h4 class="brief car_title">
+									<input '.$checked.'  type="checkbox" id="checkevehiecle'.$k.'" name="checkevehiecle'.$k.'" onClick="addVehicle('.$k.');" >
+									<input type="hidden" name="vehicle_id'.$k.'" value="'.$vehicle["id"].'" />
+								'.$vehicle["make"].' '.$vehicle["model"].' '.$vehicle["sub_model"].' ('.$vehicle["reffer"].')'.'
+								</h4>
+								<div class="left carl col-xs-5">
+									<div class=" col-xs-12">
+										<div class="image_car">
+										'.$image.'
+										</div>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class=" col-xs-7  text-left">
+									<ul class="list-unstyled">
+										<li><div class="col-md-6 col-sm-6 col-xs-12"><span class="span_title">'.$tr->translate("Ranking Day").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12"><span class="span_title">'.$tr->translate("PRICE").'</span></div></li>';
+										if(!empty($rowprice)) foreach($rowprice As $pric){
+											$carlist.='
+										<li>
+											<div class="col-md-6 col-sm-6 col-xs-12"><span class="span_value">'.$pric["package_name"].'</span></div>
+											<div class="col-md-6 col-sm-6 col-xs-12"><span class="span_value color">$ '.number_format($pric["price"],2).'/'.$tr->translate("Day").'</span></div>
+											<div class="clearfix"></div>
+										</li>';
+								}
+						$carlist.='
+									</ul>
+								</div>
+							</div>
+							<div class="col-xs-12" style="margin-top: 7px;">
+								<ul class="list-unstyled">
+									<li><div class="col-md-4 col-sm-4 col-xs-12"><span class="span_title">'.$tr->translate("Ref. No.").'</span></div> <div class="col-md-8 col-sm-8 col-xs-12">: <span class="span_value">'.$vehicle["reffer"].'</span></div><div class="clearfix"></div></li>
+									<li><div class="col-md-4 col-sm-4 col-xs-12"><span class="span_title">'.$tr->translate("Year").'</span></div> <div class="col-md-8 col-sm-8 col-xs-12">: <span class="span_value">'.$vehicle["year"].'</span></div><div class="clearfix"></div></li>
+									<li><div class="col-md-4 col-sm-4 col-xs-12"><span class="span_title">'.$tr->translate("Color").'</span></div> <div class="col-md-8 col-sm-8 col-xs-12">: <span class="span_value">'.$vehicle["color"].'</span></div><div class="clearfix"></div></li>
+									<li><div class="col-md-4 col-sm-4 col-xs-12"><span class="span_title">'.$tr->translate("No. of Seats").'</span></div> <div class="col-md-8 col-sm-8 col-xs-12">: <span class="span_value">'.$vehicle["seat_amount"].'</span></div><div class="clearfix"></div></li>
+									<li><div class="col-md-4 col-sm-4 col-xs-12"><span class="span_title">'.$tr->translate("Trans. Type").'</span></div> <div class="col-md-8 col-sm-8 col-xs-12">: <span class="span_value">'.$vehicle["transmission"].'</span></div><div class="clearfix"></div></li>
+									<li><div class="col-md-4 col-sm-4 col-xs-12"><span class="span_title">'.$tr->translate("VEHICLETYPE").'</span></div> <div class="col-md-8 col-sm-8 col-xs-12">: <span class="span_value">'.$vehicle["type"].'</span></div><div class="clearfix"></div></li>
+									<li><div class="col-md-4 col-sm-4 col-xs-12"><span class="span_title">'.$tr->translate("Ref. No.").'</span></div> <div class="col-md-8 col-sm-8 col-xs-12">: <span class="span_value">'.$vehicle["reffer"].'</span></div><div class="clearfix"></div></li>
+								</ul>
+							</div>
+							<div class="col-xs-12 bottom text-center">
+								<div class="col-xs-12 col-sm-6 emphasis">
+								</div>
+								<div class="col-xs-12 col-sm-6 emphasis text-right">
+									<a class="btn btn-round btn-default" href="'.$baseurl.'/index/vehicle/id/'.$vehicle["id"].'" target="_blank">'.$tr->translate("View Details").'</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					';
+				}
+			}
+			$carlist.='<input type=hidden name="identity_vehicle" id="identity_vehicle" value="'.$initail_veh_ide.'" />';
+			$guidlist="";
+			$i=0;
+			if (!empty($rowsguide)) foreach ($rowsguide as $guid){
+				$i++;
+				if (!empty($guid['photo'])){
+					$image='<img src="'.$baseurl.'/images/driverphoto/'.$guid['photo'].'" class="img-circle img-responsive" alt="'.$guid["name"].'" />';
+				}else{
+					$image='<img src="'.$baseurl.'/images/noimage.jpg" class="img-circle img-responsive" alt="'.$guid["name"].'" />';
+				}
+				$guidlist.='
+				<div class="col-md-6 col-sm-6 col-xs-12 profile_details">
+					<div class="well profile_view">
+						<div class="col-sm-12">
+							<div class="left col-xs-5">
+								<div class="col-md-6 col-sm-6 col-xs-12">
+								'.$image.'
+								</div>
+								<div class="clearfix"></div>
+								<h2>'.$guid["name"].'</h2>
+								<p><strong>'.$tr->translate("Type").': </strong> '.$guid["position_type_title"].'</p>
+								<ul class="list-unstyled">
+									<li> '.$tr->translate("Driver ID").' :'.$guid["driver_id"].'</li>
+									<li> '.$tr->translate("Nationality").' : '.$guid["nationality"].'</li>
+									<li> '.$tr->translate("Language").':'.$guid["lang_note"].'</li>
+								</ul>
+							</div>
+							<div class=" col-xs-7  text-left">
+								<ul class="list-unstyled">
+									<li> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("City Nomal Price").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_value">: $ '.number_format($guid["c_normalprice"],2).'/'.$tr->translate("Day").'</span></div> <div class="clearfix"></div></li>
+									<li> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("City Holiday Price").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_value">: $ '.number_format($guid["c_holidayprice"],2).'/'.$tr->translate("Day").'</span></div> <div class="clearfix"></div></li>
+									<li> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("City Weekend Price").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_value">: $ '.number_format($guid["c_weekendprice"],2).'/'.$tr->translate("Day").'</span></div> <div class="clearfix"></div></li>
+									<li> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("City OT Price").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_value">: $ '.number_format($guid["c_otprice"],2).'/'.$tr->translate("Day").'</span></div> <div class="clearfix"></div></li>
+									<li> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("Province Nomal Price").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_value">: $ '.number_format($guid["p_normalprice"],2).'/'.$tr->translate("Day").'</span></div> <div class="clearfix"></div></li>
+									<li> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("Province Holiday Price").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_value">: $ '.number_format($guid["p_holidayprice"],2).'/'.$tr->translate("Day").'</span></div> <div class="clearfix"></div></li>
+									<li> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("Province Weekend Price").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_value">: $ '.number_format($guid["p_weekendprice"],2).'/'.$tr->translate("Day").'</span></div> <div class="clearfix"></div></li>
+									<li> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("Province OT Price").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_value">: $ '.number_format($guid["p_otprice"],2).'/'.$tr->translate("Day").'</span></div> <div class="clearfix"></div></li>
+								</ul>
+							</div>
+							<div class=" col-xs-12  text-left">
+								<ul class="list-unstyled">
+									<li style="line-height: 1.5em;  height: 3em;  overflow: hidden;"> '.$tr->translate("Experience").' : '.$guid["experience_desc"].'</li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-xs-12 bottom text-center">
+							<div class="col-xs-12 col-sm-6 emphasis">
+							</div>
+							<div class="col-xs-12 col-sm-6 emphasis text-right">
+								<a class="btn btn-primary btn-xs"  href="'.$baseurl.'/index/vehicle/id/'.$guid["id"].'" target="_blank"><i class="fa fa-user"> </i> '.$tr->translate("View Details").'</a>
+								<input type="checkbox" name="driver_'.$i.'" class="checkbox input-checkbox" id="driver_'.$i.'" onClick="addDriver('.$i.')" value="'.$guid["id"].'" style="display: inline-block;"/>
+								<input type="hidden" name="driverid_'.$i.'" value="'.$guid["id"].'" />
+							</div>
+						</div>
+					</div>
+				</div>
+				';
+					
+			}
+			$guidlist.='<input type=hidden name="identity_driver" id="identity_driver"/>';
+			$productlist = '';
+			$k=0;
+			if (!empty($productavailable)) foreach ($productavailable as $rs){
+				$k++;
+				if (!empty($rs["photo_front"])){
+					$imagess='<img  src="'.$baseurl.'/images/product/'.$rs["photo_front"].'" class="img-circle img-responsive" alt="'.$rs["equipment_name"].'">';
+				}else{
+					$imagess='<img src="'.$baseurl.'/images/noimage.jpg" class="img-circle img-responsive" alt="'.$rs["equipment_name"].'">';
+				}
+				$productlist.='
+				<div class="col-md-4 col-sm-4 col-xs-12 profile_details">
+					<div class="well profile_view" >
+						<div class="col-sm-12">
+							<h2>
+								'.$rs["equipment_name"].'
+								<input type="hidden" name="equipmentid_'.$k.'" value="'.$rs["id"].'" />
+							</h2>
+							<div class="clearfix"></div>
+							<div class="left col-xs-4" style=" margin-top: 0;">
+								'.$imagess.'
+								<div class="clearfix"></div>
+							</div>
+							<div class="col-xs-8 text-left">
+								<ul class="list-unstyled">
+									<li style="line-height: 1.5em;  height: 3em;  overflow: hidden;"><div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("Reference No").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;">: <span class="span_value">'.$rs["reference_no"].'</span></div><div class="clearfix"></div></li>
+									<li><div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("PRICE").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;">: <span class="span_value">$ '.number_format($rs["price"],2).'/'.$tr->translate("Day").'</span></div><div class="clearfix"></div></li>
+									<li><div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;"><span class="span_title">'.$tr->translate("Extra Price").'</span></div> <div class="col-md-6 col-sm-6 col-xs-12" style="  margin: 0; padding: 0;">: <span class="span_value">$ '.number_format($rs["extra_price"],2).'/'.$tr->translate("Day").'</span></div><div class="clearfix"></div></li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-xs-12 bottom text-center">
+							<div class="col-xs-12 col-sm-12 emphasis">
+								<ul class="list-unstyled">
+									<li>
+										<div class="col-md-6 col-sm-6 col-xs-12"><span class="span_title"><input type="checkbox" name="equipment_'.$k.'" class="checkbox input-checkbox" onClick="addEquipment('.$k.')" id="equipment_'.$k.'" style="display: inline-block;" /> '.$tr->translate("Number of Rent").'</span></div>
+										<div class="col-md-6 col-sm-6 col-xs-12"><input onKeyup="calculateGrandtotal();" type="text" class="form-control" name="number_equipment_'.$k.'"  id="number_equipment_'.$k.'" placeholder="'.$tr->translate("Qantity").'"></div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				';
+			}
+			$productlist.='<input type="hidden" name="identity_equipment" id="identity_equipment"/>';
+			$array = array(
+					'vehilce_available'=>$carlist,
+					'guide_available'=>$guidlist,
+					'product_available'=>$productlist
+			);
+		
+			return $array;
+		}
 }
 ?>

@@ -1,8 +1,17 @@
 <?php 
    $tr = Application_Form_FrmLanguages::getCurrentlanguage();
-   echo $this->headTitle($tr->translate("BOOKING"));
-   
+   echo $this->headTitle($tr->translate("Edit Booking"));
+   $db = new Booking_Model_DbTable_DbCarRentalNew();
    $frm = $this->frm;
+   $vehicel_id = explode(",", $this->vehicle);
+   $guide_id = explode(",", $this->guide);
+   
+   $string_pro_id="";
+   if (!empty($this->product))foreach ($this->product as $pro){
+   		if (empty($string_pro_id)){ $string_pro_id=$pro['item_id'];}else{$string_pro_id=$string_pro_id.",".$pro['item_id'];}
+   }
+  
+   $pro_id = explode(",", $string_pro_id);
 ?>
 <script type="text/javascript">
 dojo.ready(function(){
@@ -158,7 +167,7 @@ dt{ display: none;}
 	                  	<?php echo $frm->getElement("customer"); ?>
 	                </div>
        			</div>
-       			<div id="confirm_btn" style="display: none;">
+       			<div id="confirm_btn" style="display: block;">
 					<div class="form-group" >
 	                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
 	                   	<?php echo $tr->translate('Filght No')?>. :
@@ -246,6 +255,7 @@ dt{ display: none;}
 		                   </div>
 		                   <div class="col-md-4 col-sm-4 col-xs-12">
 		                   		<input  dojoType="dijit.form.TextBox" class="fullside" id="main_net_total" name="main_net_total" value="" type="hidden">
+		                   		<input type="hidden" name="id" id="id" value="<?php echo $this->id;?>"/>
 		                   		<input type="button" iconclass="dijitIconSearch" dojoType="dijit.form.Button" value="Find Vehicle Now" onClick="findvehicle();" label="<?php echo $tr->translate("Find Vehicle Now");?>">
 		                   </div>
 		             </div>
@@ -275,12 +285,18 @@ dt{ display: none;}
                   		<div class="tab-content">
 	                  		<div role="tabpanel" class="tab-pane fade active in taboverflow" id="tap2" aria-labelledby="tap2-tab">
                   				<div id="carlists">
-                  					<?php $k=0; $initail_veh_ide=""; if($this->vehiclevaliable) foreach ($this->vehiclevaliable as $k_index => $rs){ $k++;?>
+                  					<?php $k=0; $initail_veh_ide=""; if($this->vehiclevaliable) foreach ($this->vehiclevaliable as $k_index => $rs){ $k++;
+	                  					$check="";
+	                  					if (in_array($rs["id"], $vehicel_id) ){
+	                  						$check='checked="checked"';
+	                  						if (empty($initail_veh_ide)){$initail_veh_ide=$k;}else{$initail_veh_ide=$initail_veh_ide.",".$k;}
+	                  					}
+                  					?>
                   					<div class="col-md-6 col-sm-6 col-xs-12 profile_details">
 				                        <div class="well profile_view">
 				                          <div class="col-sm-12">
 				                          <h4 class="brief car_title">
-				                          	<input  type="checkbox" id="checkevehiecle<?php echo $k ?>" name="checkevehiecle<?php echo $k ?>" onClick="addVehicle(<?php echo $k ?>);" <?php if ($k_index==0){ $initail_veh_ide =$k; echo 'checked="checked"';}?>> <?php echo $rs["make"]." ".$rs["model"]." ".$rs["sub_model"]."(".$rs["reffer"].")"?>
+				                          	<input  type="checkbox" id="checkevehiecle<?php echo $k ?>" name="checkevehiecle<?php echo $k ?>" onClick="addVehicle(<?php echo $k ?>);" <?php echo $check;?>> <?php echo $rs["make"]." ".$rs["model"]." ".$rs["sub_model"]."(".$rs["reffer"].")"?>
 				                         	<input type="hidden" name="vehicle_id<?php echo $k ?>" value="<?php echo $rs["id"] ?>" />
 				                          </h4>
 				                            <div class="left carl col-xs-5">
@@ -336,15 +352,24 @@ dt{ display: none;}
 	                  		<div role="tabpanel" class="tab-pane fade taboverflow" id="tap3" aria-labelledby="tap3-tab">
 								<div style="z-index: 100000000;height: 50px;">
 									<div style="float: left;padding-right: 99px;">
-			                           	<input type="radio" name="self_drive" id="self_drive" checked="checked" style="left: 5px; float: left;" onClick="activeSelfDrive();" /><p style="margin-left: 34px;"><?php echo $tr->translate("Self-drive")?></p>
+			                           	<input type="radio" name="self_drive" id="self_drive" <?php if (empty($this->guide)){?> checked="checked"<?php }?> style="left: 5px; float: left;" onClick="activeSelfDrive();" /><p style="margin-left: 34px;"><?php echo $tr->translate("Self-drive")?></p>
 			                        </div>
 			                        <div style="float: left;width: 206px;" >
-			                           	<input type="radio" name="self_drive" id="chauffeur" style="margin-right: 30px !important;left: 165px; float: left;" onClick="activeChauffeur();" /><p style="margin-left: 34px;"><?php echo $tr->translate("Chauffeur Rental")?></p>
+			                           	<input type="radio" name="self_drive" id="chauffeur" <?php if (!empty($this->guide)){?> checked="checked"<?php }?> style="margin-right: 30px !important;left: 165px; float: left;" onClick="activeChauffeur();" /><p style="margin-left: 34px;"><?php echo $tr->translate("Chauffeur Rental")?></p>
 			                        </div>
 		                        </div>
 		                        <div id="drive_select" style="display:block" >
-								<?php if(!empty($this->rowsguide)){?>
-									<?php $i=0; foreach ($this->rowsguide as $rs){ $i++;?>
+								<?php $initail_guide_ide=""; if(!empty($this->rowsguide)){?>
+									<?php $i=0;  foreach ($this->rowsguide as $rs){ $i++;
+										$check="";
+										if (in_array($rs["id"], $guide_id) ){
+											$check='checked="checked"';
+											if (empty($initail_guide_ide)){
+												$initail_guide_ide=$i;
+											}else{$initail_guide_ide=$initail_guide_ide.",".$i;
+											}
+										}
+									?>
 									<div class="col-md-6 col-sm-6 col-xs-12 profile_details">
 				                        <div class="well profile_view">
 				                          <div class="col-sm-12">
@@ -388,7 +413,7 @@ dt{ display: none;}
 				                            </div>
 				                            <div class="col-xs-12 col-sm-6 emphasis text-right">
 				                               <a class="btn btn-primary btn-xs"  href="<?php echo $this->baseUrl();?>/index/vehicle/id/<?php echo $rs["id"];?>" target="_blank"><i class="fa fa-user"> </i> <?php echo $tr->translate("View Details")?></a>
-				                               <input type="checkbox" name="driver_<?php echo $i?>" class="checkbox input-checkbox" id="driver_<?php echo $i;?>" onClick="addDriver(<?php echo $i?>)" value="<?php echo $rs["id"];?>" style="display: inline-block;"/>
+				                               <input type="checkbox" <?php echo $check; ?> name="driver_<?php echo $i?>" class="checkbox input-checkbox" id="driver_<?php echo $i;?>" onClick="addDriver(<?php echo $i?>)" value="<?php echo $rs["id"];?>" style="display: inline-block;"/>
 				                           	   <input type="hidden" name="driverid_<?php echo $i ?>" value="<?php echo $rs["id"] ?>" />
 				                            </div>
 				                          </div>
@@ -396,14 +421,24 @@ dt{ display: none;}
 				                      </div>
 				                      <?php }?>
 							     <?php }else echo "No Driver Available!";?>
-							     <input type=hidden name="identity_driver" id="identity_driver"/>
+							      <input type=hidden name="identity_driver" id="identity_driver" value="<?php echo $initail_guide_ide;?>"/>
 			                    </div>
-				                
 	                  		</div>
 	                  		<div role="tabpanel" class="tab-pane fade taboverflow" id="tap4" aria-labelledby="tap4-tab">
 		                        <div id="product_list" class="col-md-12 col-sm-12 col-xs-12">
 		                        <?php if(!empty($this->productavailable)){ ?> 
-			                        <?php $i=0; foreach ($this->productavailable as $rs){ $i++;?>
+			                        <?php $i=0; $initail_produ_ide=""; foreach ($this->productavailable as $rs){ $i++;
+			                        $check="";
+			                        $rowre = "";
+			                        if (in_array($rs["id"], $pro_id) ){
+			                        	$rowre = $db->getProductBookingInfor($this->id,$rs["id"]);
+			                        	$check='checked="checked"';
+			                        	if (empty($initail_produ_ide)){
+			                        		$initail_produ_ide=$i;
+			                        	}else{$initail_produ_ide=$initail_produ_ide.",".$i;
+			                        	}
+			                        }
+			                        ?>
 			                        	<div class="col-md-4 col-sm-4 col-xs-12 profile_details">
 					                        <div class="well profile_view" >
 					                          <div class="col-sm-12">
@@ -432,8 +467,8 @@ dt{ display: none;}
 					                            <div class="col-xs-12 col-sm-12 emphasis">
 					                            	<ul class="list-unstyled">
 						                              	<li>
-					                                		<div class="col-md-6 col-sm-6 col-xs-12"><span class="span_title"><input type="checkbox" name="equipment_<?php echo $i; ?>" class="checkbox input-checkbox" onClick="addEquipment(<?php echo $i; ?>)" id="equipment_<?php echo $i;?>" style="display: inline-block;" /> <?php echo $tr->translate("Number of Rent")?></span></div> 
-					                                		<div class="col-md-6 col-sm-6 col-xs-12"><input type="text" onKeyup="calculateGrandtotal();" class="form-control" name="number_equipment_<?php echo $i;?>"  id="number_equipment_<?php echo $i;?>" placeholder="<?php echo $tr->translate("Qantity")?>"></div>
+					                                		<div class="col-md-6 col-sm-6 col-xs-12"><span class="span_title"><input <?php echo $check; ?> type="checkbox" name="equipment_<?php echo $i; ?>" class="checkbox input-checkbox" onClick="addEquipment(<?php echo $i; ?>)" id="equipment_<?php echo $i;?>" style="display: inline-block;" /> <?php echo $tr->translate("Number of Rent")?></span></div> 
+					                                		<div class="col-md-6 col-sm-6 col-xs-12"><input type="text" onKeyup="calculateGrandtotal();" value="<?php if (!empty($rowre['rent_num'])){ echo $rowre['rent_num'];}?>" class="form-control" name="number_equipment_<?php echo $i;?>"  id="number_equipment_<?php echo $i;?>" placeholder="<?php echo $tr->translate("Qantity")?>"></div>
 				                                		</li>
 				                                	</ul>
 					                            </div>
@@ -442,9 +477,9 @@ dt{ display: none;}
 					                      </div>
 			                        <?php }?>
 		                        <?php }else echo "No Product Available!";?>
-		                         <input type="hidden" name="identity_equipment" id="identity_equipment"/>
+		                        <input type="hidden" name="identity_equipment" id="identity_equipment" value="<?php echo $initail_produ_ide;?>"/>
 		                        </div>
-				               
+				                
 	                  		</div>
 	                  		<div role="tabpanel" class="tab-pane fade " id="tap5" aria-labelledby="tap5-tab">
 									<div class="form-group">
@@ -539,25 +574,25 @@ dt{ display: none;}
 	                  		<div role="tabpanel" class="tab-pane fade " id="tap8" aria-labelledby="tap8-tab">
 								<div class="form-group">
 				                   <div class="col-md-6 col-sm-6 col-xs-12">
-				                    	<input id="visa_type" class="payment_type" onChange="paymentType(1);" type="radio" name="payment_type" checked="checked" value="1" style="margin-top: 11px;">
+				                    	<input id="visa_type" class="payment_type" <?php if ($this->row['payment_type']==1){?> checked="checked" <?php }?> onChange="paymentType(1);" type="radio" name="payment_type" checked="checked" value="1" style="margin-top: 11px;">
 	                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/visa.jpg" style="margin-left: 30px;"> 
 				                   </div>
 				                   <div class="col-md-6 col-sm-6 col-xs-12">
-				                    	<input id="ws_type" class="payment_type" onChange="paymentType(2);" type="radio" name="payment_type" value="2" style="margin-top: 11px;">
+				                    	<input id="ws_type" class="payment_type" onChange="paymentType(2);" <?php if ($this->row['payment_type']==2){?> checked="checked" <?php }?> type="radio" name="payment_type" value="2" style="margin-top: 11px;">
 	                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/western-union-small.jpg" style="margin-left: 30px;"> 
 				                   </div>
 				             	</div>
 				             	<div class="form-group">
 				             		<div class="col-md-6 col-sm-6 col-xs-12">
-				                    	<input id="wing_type" class="payment_type" onChange="paymentType(3);" type="radio" name="payment_type" value="3" style="margin-top: 11px;">
+				                    	<input id="wing_type" class="payment_type" onChange="paymentType(3);" <?php if ($this->row['payment_type']==3){?> checked="checked" <?php }?> type="radio" name="payment_type" value="3" style="margin-top: 11px;">
 	                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/acleda.jpg" style="margin-left: 30px;">
 				                    </div>
 				                    <div class="col-md-6 col-sm-6 col-xs-12">
-				                    	<input id="cash_type" class="payment_type" onChange="paymentType(4);" type="radio" name="payment_type" value="4" style="margin-top: 11px;">
-				                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/cptlogo.png" style="margin-left: 30px;width:174px">
+				                    	<input id="cash_type" class="payment_type" onChange="paymentType(4);" <?php if ($this->row['payment_type']==4){?> checked="checked" <?php }?> type="radio" name="payment_type" value="4" style="margin-top: 11px;">
+	                            		<img alt="" src="<?php echo $this->baseUrl();?>/images/cptlogo.png" style="margin-left: 30px;width:174px">
 				                    </div>
 				             	</div>
-				             	<div id="visa">
+				             	<div id="visa" <?php if ($this->row['payment_type']==1){?> style="display: block;" <?php }else{?>style="display: none;"<?php }?>>
 				             		<div class="form-group">
 					                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
 					                   	<?php echo $tr->translate('Card Name')?> :
@@ -587,7 +622,7 @@ dt{ display: none;}
 						                   </div>
 							         </div>
 				             	</div>
-	                            <div id="ws_union" style="display: none">
+	                            <div id="ws_union" <?php if ($this->row['payment_type']==2){?> style="display: block;" <?php }else{?>style="display: none;"<?php }?>>
 	                            	 <div class="form-group">
 							         	<label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
 					                   		<?php echo $tr->translate('Code Number')?> :
@@ -597,7 +632,7 @@ dt{ display: none;}
 					                   	</div>
 							         </div>
 	                            </div>
-	                            <div id="wing" style="text-align: center;display: none;">
+	                            <div id="wing" style="text-align: center;<?php if ($this->row['payment_type']==4){?> display: block;<?php }else{?>display: none;<?php }?>">
 	                            </div>
 	                            <div id="cash" style="display: none;">
 	                            	<div class="form-group">
@@ -625,6 +660,13 @@ dt{ display: none;}
 <script type="text/javascript">
 require(["dojo/ready"], function(ready){
 	ready(function(){
+		<?php if (!empty($this->guide)){?>
+			activeChauffeur();
+		<?php }else{?>
+			activeSelfDrive();
+		<?php }?>
+		
+		initailOtherFee();
 		calculateGrandtotal();
 	});
 });
@@ -654,9 +696,24 @@ function checkMaxPay(){
 	}
 	
 }
-$( document ).ready(function() {
-	activeSelfDrive();
-});
+function initailOtherFee(){
+	var id=$('#identity_other_fee').val();
+	<?php if (!empty($this->otherfee)) foreach ($this->otherfee as $key => $rs){?>
+		if($("#identity_other_fee").val()!="") {
+			$("#identity_other_fee").val($("#identity_other_fee").val()+','+'<?php echo $key+1;?>');
+			
+		}else { 
+			$("#identity_other_fee").val(<?php echo $key+1;?>);
+		}
+		$('#other_<?php echo $key+1;?>').attr('checked', true);
+		dijit.byId("other_fee<?php echo $key+1;?>").attr("disabled",false);
+		dijit.byId("other_fee_note<?php echo $key+1;?>").attr("disabled",false);
+		dijit.byId("other_fee_note<?php echo $key+1;?>").attr("required",true);
+		dijit.byId("other_fee<?php echo $key+1;?>").attr("required",true);
+		dijit.byId("other_fee<?php echo $key+1;?>").attr('value',<?php echo $rs['price'];?>);
+		dijit.byId("other_fee_note<?php echo $key+1;?>").attr('value','<?php echo $rs['item_name'];?>');
+	<?php }?>
+}
 function addDriver(index){
 	var ids=$('#identity_driver').val();
 	var arrays = ids.split(',');
@@ -860,7 +917,7 @@ function paymentType(type){
 		$('#wing').css("display","none");
 	}
 }
-var url_search="<?php echo $this->url(array('module'=>'booking','controller'=>'index','action'=>'searchavailable'));?>";
+var url_search="<?php echo $this->url(array('module'=>'booking','controller'=>'index','action'=>'searchavailableonedit'));?>";
 	function findvehicle(){
 		loadingonpage();
 		pickup_date = dijit.byId('pickup_date').get('value');

@@ -19,7 +19,7 @@ class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 		$this->textarea = 'dijit.form.SimpleTextarea';
 		$this->number = 'dijit.form.NumberTextBox';
 	}
-	public function FromBooking(){
+	public function FromBooking($data=null){
 		$request=Zend_Controller_Front::getInstance()->getRequest();
 		
 		$_db = new Application_Model_DbTable_DbGlobal();
@@ -255,8 +255,77 @@ class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 		$trip_type->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside"));
 		$trip_type->setMultiOptions($opt_trip);
 		
+		if (!empty($data)){
+			
+			$pickup_date->setValue($data['pickup_date']);
+			$return_date->setValue($data['return_date']);
+			$pickup_location->setValue($data['pickup_location']);
+			$return_location->setValue($data['dropoff_location']);
+			
+			$re_time = explode(":", $data['return_time']);
+			$pick_time = explode(":", $data['pickup_time']);
+			$return_time->setValue($re_time[0]);
+			$pickup_time->setValue($re_time[1]);
+			$pickup_minute->setValue($pick_time[0]);
+			$return_minute->setValue($pick_time[1]);
+			$_booking_no->setValue($data['booking_no']);
+			$customer->setValue($data['customer_id']);
+			
+			$fly_no->setValue($data['fly_no']);
+			$fly_date->setValue($data['fly_date']);
+			$fly_destination->setValue($data['fly_destination']);
+			$fly_time->setValue($data['fly_time_of_arrival']);
+			
+			
+			
+			if($data["payment_type"]==1){
+				$card_name->setValue($data['visa_name']);
+				$card_id->setValue($data['card_id']);
+				$secu_code->setValue($data['secu_code']);
+				$card_exp_date->setValue($data['card_exp_date']);
+			}elseif($data["payment_type"]==2){
+				$wu_code->setValue($data['card_id']);
+			}elseif($data["payment_type"]==4){
+				$cash_pay->setValue($data['total_paymented']);
+			}
+		}
 		
-		$this->addElements(array($cash_pay,$other_fee_note1,$other_fee_note2,$other_fee_note3,$other_fee_note4,$other_fee_note5,$other_fee_note6,$other_fee_note7,$other_fee1,$other_fee2,$other_fee3,$other_fee4,$other_fee5,$other_fee6,$other_fee7,$province,$trip_type,$wu_code,$card_id,$card_exp_date,$card_name,$secu_code,$fly_no,$fly_date,$fly_destination,$fly_time,$customer,$cu_email,$cu_first_name,$cu_last_name,$cu_pass,$cu_phone,$cu_user_name,$gender,$pickup_minute,$return_minute,$return_time,$pickup_time,$pickup_date,$return_date,$pickup_location,$return_location,$_booking_no,
+		$this->addElements(array(
+				$cash_pay,
+				$other_fee_note1,
+				$other_fee_note2,
+				$other_fee_note3,
+				$other_fee_note4,
+				$other_fee_note5,
+				$other_fee_note6,
+				$other_fee_note7,
+				$other_fee1,
+				$other_fee2,
+				$other_fee3,
+				$other_fee4,
+				$other_fee5,
+				$other_fee6,
+				$other_fee7,$province,
+				$trip_type,
+				$wu_code,
+				$card_id,
+				$card_exp_date,
+				$card_name,
+				$secu_code,$fly_no,
+				$fly_date,$fly_destination,
+				$fly_time,$customer,
+				$cu_email,$cu_first_name,
+				$cu_last_name,$cu_pass,
+				$cu_phone,$cu_user_name,
+				$gender,
+				$pickup_minute,
+				$return_minute,
+				$return_time,
+				$pickup_time,
+				$pickup_date,
+				$return_date,
+				$pickup_location,
+				$return_location,$_booking_no,
 			));
 		return $this;
 	}
