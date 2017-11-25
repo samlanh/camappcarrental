@@ -3,6 +3,8 @@
    echo $this->headTitle($tr->translate("Edit Booking"));
    $db = new Booking_Model_DbTable_DbCarRentalNew();
    $frm = $this->frm;
+   $frm_agre = $this->frmagreement;
+   
    $vehicel_id = explode(",", $this->vehicle);
    $guide_id = explode(",", $this->guide);
    
@@ -158,46 +160,211 @@ dt{ display: none;}
                <div class="clearfix"></div>
           	</div>
        		<div class="x_content">
-       			<div class="title_form_blog">
-               		<h4><i class="fa  fa-user" aria-hidden="true"></i> <?php echo $tr->translate('Customer Information')?></h4>
-               </div>
-               <div class="form-group">
-	                <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Choose Customer')?> :</label>
-	                <div class="col-md-2 col-sm-2 col-xs-12">
-	                  	<?php echo $frm->getElement("customer"); ?>
-	                </div>
-       			</div>
-       			<div id="confirm_btn" style="display: block;">
-					<div class="form-group" >
-	                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
-	                   	<?php echo $tr->translate('Filght No')?>. :
-	                   </label>
-	                   <div class="col-md-2 col-sm-2 col-xs-12">
-	                    	<?php echo $frm->getElement("fly_no"); ?>
-	                   </div>
-	                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
-	                   	<?php echo $tr->translate('Flight Date')?> :
-	                   </label>
-	                   <div class="col-md-2 col-sm-2 col-xs-12">
-	                    	<?php echo $frm->getElement("fly_date"); ?>
-	                   </div>
-	                  
-	             	</div>
-	             	<div class="form-group">
-	             		 <label class="col-md-2 col-sm-2 col-xs-12" for="first-name">
-	                   	<?php echo $tr->translate('Flight Time Arrival')?> :
-	                   </label>
-	                   <div class="col-md-2 col-sm-2 col-xs-12">
-	                    	<?php echo $frm->getElement("fly_time"); ?>
-	                   </div>
-	             		<label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
-	                   	<?php echo $tr->translate('Flight Distination')?> :
-	                   </label>
-	             		<div class="col-md-2 col-sm-2 col-xs-12">
-	                    	<?php echo $frm->getElement("fly_destination"); ?>
-	                   </div>
-	             	</div>
-	            </div>
+       			<div class="" role="tabpanel" data-example-id="togglable-tabs">
+       				<div class="" role="tabpanel" data-example-id="togglable-tabs">
+                      <ul class="nav nav-tabs bar_tabs">
+                      		<li role="presentation" class="active">
+                      			<a href="#customer_tap" id="tap1-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Customer Infomrmation");?></a>
+                      		</li>
+                      		<li role="presentation" class="">
+                      			<a href="#agreement_tap" id="tap2-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Agreement Information");?></a>
+                      		</li>
+                      </ul>
+                      <div id="myTabContentss" class="tab-content">
+                  			<div class="tab-content">
+	                  			<div role="tabpanel" class="tab-pane fade active in" id="customer_tap" aria-labelledby="customer_tap-tab">
+					       			<div class="title_form_blog">
+					               		<h4><i class="fa  fa-user" aria-hidden="true"></i> <?php echo $tr->translate('Customer Information')?></h4>
+					               </div>
+					               <div class="form-group">
+						                <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Choose Customer')?> :</label>
+						                <div class="col-md-2 col-sm-2 col-xs-12">
+						                  	<?php echo $frm->getElement("customer"); ?>
+						                </div>
+					       			</div>
+					       			<div id="confirm_btn" style="display: block;">
+										<div class="form-group" >
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('Filght No')?>. :
+						                   </label>
+						                   <div class="col-md-2 col-sm-2 col-xs-12">
+						                    	<?php echo $frm->getElement("fly_no"); ?>
+						                   </div>
+						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('Flight Date')?> :
+						                   </label>
+						                   <div class="col-md-2 col-sm-2 col-xs-12">
+						                    	<?php echo $frm->getElement("fly_date"); ?>
+						                   </div>
+						                  
+						             	</div>
+						             	<div class="form-group">
+						             		 <label class="col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('Flight Time Arrival')?> :
+						                   </label>
+						                   <div class="col-md-2 col-sm-2 col-xs-12">
+						                    	<?php echo $frm->getElement("fly_time"); ?>
+						                   </div>
+						             		<label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
+						                   	<?php echo $tr->translate('Flight Distination')?> :
+						                   </label>
+						             		<div class="col-md-2 col-sm-2 col-xs-12">
+						                    	<?php echo $frm->getElement("fly_destination"); ?>
+						                   </div>
+						             	</div>
+						            </div>
+					        	 </div>
+					        	 <div role="tabpanel" class="tab-pane fade" id="agreement_tap" aria-labelledby="agreement_tap-tab">
+			                  		<div class="col-md-8 col-sm-8 col-xs-12">
+			                  			<div class="title_form_blog">
+						               		<h4><i class="fa  fa-user" aria-hidden="true"></i> <?php echo $tr->translate('Ownder of The Vehicle')?></h4>
+						               </div>
+						               <div class="form-group">
+						             	  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Name')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("owner_name"); ?>
+						                   </div>
+						                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Position')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("position"); ?>
+						                   </div>
+						             	</div>
+						             	<div class="form-group">
+						             	  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('ID Card')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("id_card"); ?>
+						                   </div>
+						                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Hand Phone')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("hand_phone"); ?>
+						                   </div>
+						             	</div>
+						             	<div class="form-group">
+						             	  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Email')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("email"); ?>
+						                   </div>
+						                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Insurance Hotline')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("hotline"); ?>
+						                   </div>
+						             	</div>
+						             	<div class="title_form_blog">
+						               		<h4><i class="fa fa fa-gears" aria-hidden="true"></i> <?php echo $tr->translate('Service Include')?></h4>
+						               </div>
+						               <div class="form-group">
+						             	  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Regular Maintenance')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("regular_maintanance"); ?>
+						                   </div>
+						                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Unlimited Mileage')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("unlimited_mileage"); ?>
+						                   </div>
+						             	</div>
+						             	<div class="form-group">
+						             	  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Repair/Spare Parts')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("repair_spare_part"); ?>
+						                   </div>
+						                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Insurance Coverage')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("insurance_coverage"); ?>
+						                   </div>
+						             	</div>
+						             	<div class="form-group">
+						             	  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Fuel')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("fuel"); ?>
+						                   </div>
+						                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">
+							                   	<?php echo $tr->translate('Fuel Full Tank')?> :
+						                   </label>
+						             		<div class="col-md-3 col-sm-3 col-xs-12">
+						                    	<?php echo $frm_agre->getElement("fuel_full_tank"); ?>
+						                   </div>
+						             	</div>
+						             </div>
+						             <div class="col-md-4 col-sm-4 col-xs-12">	
+						             	<div class="title_form_blog">
+						               		<h4><i class="fa fa-file-text-o"></i> <?php echo $tr->translate("Agreement Information")?></h4>
+						          		</div>
+						          		<div class="form-group">
+						                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('Agreement Date')?>
+						                   </label>
+						                   <div class="col-md-8 col-sm-8 col-xs-12">
+						                   		<?php echo $frm_agre->getElement("agreement_date"); ?>
+					                  		</div>
+						                </div>
+						                
+						                <div class="title_form_blog">
+						               		<h4><i class="fa fa-chevron-circle-right"></i> <?php echo $tr->translate("Special Notices")?></h4>
+						          		</div>
+						          		<div class="form-group">
+						                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('Articles')?>
+						                   </label>
+						                   <div class="col-md-3 col-sm-3 col-xs-12">
+						                   		<?php echo $frm_agre->getElement("article"); ?>
+					                  		</div>
+					                  		<label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('To')?>
+						                   </label>
+						                   <div class="col-md-3 col-sm-3 col-xs-12">
+						                   		<?php echo $frm_agre->getElement("toart1_id"); ?>
+					                  		</div>
+						                </div>
+						                <div class="form-group">
+						                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('No Driver')?>
+						                   </label>
+						                   <div class="col-md-3 col-sm-3 col-xs-12">
+						                   		<?php echo $frm_agre->getElement("art2_id"); ?>
+					                  		</div>
+					                  		<label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('To')?>
+						                   </label>
+						                   <div class="col-md-3 col-sm-3 col-xs-12">
+						                  	 <?php echo $frm_agre->getElement("toart2_id"); ?>
+					                  		</div>
+						                </div>
+						                 <div class="form-group">
+						                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php //echo $tr->translate('No Driver')?>
+						                   </label>
+						                   <div class="col-md-3 col-sm-3 col-xs-12">
+						                  	 <?php echo $frm_agre->getElement("art3_id"); ?>
+					                  		</div>
+					                  		<label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('To')?>
+						                   </label>
+						                   <div class="col-md-3 col-sm-3 col-xs-12">
+						                  		 <?php echo $frm_agre->getElement("toart3_id"); ?>
+					                  		</div>
+						                </div>
+						             </div>
+						             <div class="clearfix"></div>
+		                  		</div>
+					    	 </div>
+						 </div>
+					</div>
+				</div>
        		   <div class="title_form_blog">
                		<h4><i class="fa  fa-car" aria-hidden="true"></i> <?php echo $tr->translate('Booking Information')?></h4>
                </div>
@@ -668,6 +835,7 @@ require(["dojo/ready"], function(ready){
 		
 		initailOtherFee();
 		calculateGrandtotal();
+		getOwner();
 	});
 });
 var url_getbookingitem = '<?php echo $this->url(array('module'=>'booking','controller'=>'index','action'=>'getbookinglistform')); ?>';
@@ -969,6 +1137,37 @@ var url_search="<?php echo $this->url(array('module'=>'booking','controller'=>'i
 	}
 	function loadingonpage(){
 	    document.getElementsByClassName("overlay_page")[0].style.display="block";
+	}
+	var url_owner = "<?php echo $this->url(array('module'=>'booking','controller'=>'index','action'=>'getrowowner'));?>";
+	function getOwner(){
+       name_id=dijit.byId('owner_name').get('value');
+       if(name_id==''){
+    	   dijit.byId('position').attr('value','');
+		   dijit.byId('id_card').attr('value','');
+		   dijit.byId('hand_phone').attr('value','');
+		   dijit.byId('email').attr('value','');
+		   dijit.byId('hotline').attr('value','');
+       }else{
+		dojo.xhrPost({
+		     url: url_owner, 
+		     content : { 
+		     'owner_name':dijit.byId('owner_name').get('value'),
+		  }, 
+		  handleAs:"json",
+		  load: function(data) {
+			  //alert(data);
+		   dijit.byId('position').attr('value',data.position);
+		   dijit.byId('id_card').attr('value',data.id_card);
+		   dijit.byId('hand_phone').attr('value',data.hand_phone);
+		   dijit.byId('email').attr('value',data.email);
+		   dijit.byId('hotline').attr('value',data.hotline);
+		  },
+		  error: function(err) {
+		   alert(err);
+		  alert("Your message could not be sent, please try again!.");         
+		  }
+		 });
+       }
 	}
 </script>
 <div class="overlay_page">

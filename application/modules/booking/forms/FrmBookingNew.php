@@ -447,6 +447,30 @@ class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 		$option = array('1'=>'Yes','0'=>'No');
 		$_fuel_full_tank->setMultiOptions($option);
 		
+		if (!empty($data)){
+			$_owner_name->setValue($data['ownder_id']);
+// 			$position->setValue($data['ownder_id']);
+// 			$id_card->setValue($data['ownder_id']);
+// 			$hand_phone->setValue($data['ownder_id']);
+// 			$email->setValue($data['ownder_id']);
+// 			$hotline->setValue($data['ownder_id']);
+			
+			$agreement_date->setValue(date("Y-m-d",strtotime($data['agreement_date'])));
+			$article->setValue($data['art1_id']);
+			$toart1_id->setValue($data['toart1_id']);
+			$art2_id->setValue($data['art2_id']);
+			$toart2_id->setValue($data['toart2_id']);
+			$art3_id->setValue($data['art3_id']);
+			$toart3_id->setValue($data['toart3_id']);
+			
+			$_regular_maintanance->setValue($data['regular_id']);
+			$_unlimited_mileage->setValue($data['unlimited']);
+			$_repair_spare_part->setValue($data['repare']);
+			$_insurance_coverage->setValue($data['insurance']);
+			$_fuel->setValue($data['fule']);
+			$_fuel_full_tank->setValue($data['fuel_full']);
+		}
+		
 		$this->addElements(array(
 				$_owner_name,$position,$id_card,$hand_phone,$email,$hotline,
 				$agreement_date,

@@ -115,6 +115,11 @@ class Booking_indexController extends Zend_Controller_Action {
 		$form = $frm->FromBooking($row);
 		Application_Model_Decorator::removeAllDecorator($form);
 		$this->view->frm = $form;
+		
+		$agreement = $db->getAgreementbyBookingId($id);
+		$formagreement = $frm->FromBookingAgreement($agreement);
+		Application_Model_Decorator::removeAllDecorator($formagreement);
+		$this->view->frmagreement = $formagreement;
 	}
 	function getCustomerAction(){
 		if($this->getRequest()->isPost()){

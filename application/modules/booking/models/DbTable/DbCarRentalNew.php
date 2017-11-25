@@ -402,6 +402,114 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
 		}
 	}
+	
+	function updateAgreement($data){
+		try{
+			$diff=date_diff(date_create($data["pickup_date"]),date_create($data["return_date"]));
+			$total_day = $diff->format("%a%")+1;
+				
+			$db_globle = new Application_Model_DbTable_DbGlobal();
+			$agreement_code = $db_globle->getNewAgreementCode($data['agreement_date']);
+			
+			//Vehicle Blog
+			$total_deposit_vehicle=0;
+			$total_price_vehicle=0;
+			$vat_vehicle = 0;
+			if(!empty($data['identity_vehicle'])){
+				$ids = explode(',', $data['identity_vehicle']);
+				if(!empty($ids))foreach ($ids as $p){
+					$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
+					$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
+					$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
+	
+					$total_deposit_vehicle+= $row_vehicle["refun_deposit"];
+					$total_row_price_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
+	
+					$total_price_vehicle = number_format(($total_price_vehicle + $total_row_price_vehicle),2);
+					$vat_vehicle = $vat_vehicle + $row_vehicle_price["vat_value"];
+				}
+			}
+			$total_payment = $total_price_vehicle+$total_deposit_vehicle;
+			$diposit = number_format(($total_payment*50/100)+(($total_payment*50/100)*3/100),2);
+				
+			
+			if($data["payment_type"]==4){
+				$total_pay = $data["cash_pay"];
+			}else{
+				$total_pay = $diposit;
+			}
+			$agreement = $this->getAgreementbyBookingId($data['booking_id']);
+			$arr = array(
+// 					'agreement_code'=>$agreement_code,
+					'agreement_date'=>$data['agreement_date'],
+					'booking_id'=>$data['booking_id'],
+					'ownder_id'=>$data['owner_name'],
+					'customer_id'=>$data['customer'],
+					'inception_date'=>$data['pickup_date'],
+					'return_date'=>$data['return_date'],
+					'return_time'=>$data['return_time'].":".$data['return_minute'],
+					'period'=>$total_day,
+						
+					'grand_total'=>$total_payment,
+					'paid_amount'=>$total_pay,
+					'due_amount'=>($total_payment-$total_pay) ,
+	
+					'date_create'=>date("d-m-Y"),
+					'user_id'=>$this->getUserId(),
+					'regular_id'=>$data['regular_maintanance'],
+					'unlimited'=>$data['unlimited_mileage'],
+					'repare'=>$data['repair_spare_part'],
+					'insurance'=>$data['insurance_coverage'],
+					'fule'=>$data['fuel'],
+					'fuel_full'=>$data['fuel_full_tank'],
+					'art1_id'=>$data['article'],
+					'toart1_id'=>$data['toart1_id'],
+					'art2_id'=>$data['art2_id'],
+					'toart2_id'=>$data['toart2_id'],
+					'art3_id'=>$data['art3_id'],
+					'toart3_id'=>$data['toart3_id'],
+						
+			);
+			$this->_name="ldc_agreementvehicle";
+			$where = " booking_id =".$data['booking_id']." AND id = ".$agreement['id'];
+			 $this->update($arr, $where);
+			 $agreement_id = $agreement['id'];
+			$this->_name="ldc_agreementvehicle_detail";
+			$where1 = " agreement_id = ".$agreement['id'];
+			$this->delete($where1);
+			// Vehicle info Blog
+			if(!empty($data['identity_vehicle'])){
+				$ids = explode(',', $data['identity_vehicle']);
+				if(!empty($ids))foreach ($ids as $p){
+					$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
+					$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
+					$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
+	
+					$discount_ve= empty($discount["discount"])?0:$discount["discount"];
+					$row_net_total_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
+	
+					$arr_deatail = array(
+							'agreement_id'	=>	$agreement_id,
+							'vehicle_id'	=>	$row_vehicle["id"],
+							'price_perday'	=>	$row_vehicle_price["price"],
+							'vat_amount'	=>	$row_vehicle_price["vat_value"],
+							'amount_price'	=>	$row_net_total_vehicle,
+							'refundable'	=>	$row_vehicle["refun_deposit"],
+							'discount_value'=>	$discount_ve,
+							// 							'longdist_acc'	=>""
+					);
+	
+					$this->_name="ldc_agreementvehicle_detail";
+					$this->insert($arr_deatail);
+				}
+			}
+				
+			return $agreement_id;
+		}catch (Exception$e){
+			echo $e->getMessage();
+			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
+		}
+	}
 	function getVehicleSelected($id){ //get vehicle was choosed booking
 		$db = $this->getAdapter();
 		$sql = "SELECT v.`id`,v.ordering AS refun_deposit,(SELECT `title` FROM `ldc_make` WHERE `id`=v.`make_id`) AS make ,(SELECT `title` FROM `ldc_model` WHERE `id`=v.`model_id`) AS model,(SELECT `title` FROM `ldc_submodel` WHERE `id`=v.`sub_model`) AS sub_model ,v.`reffer` FROM `ldc_vehicle` AS v WHERE v.id=$id";
@@ -990,6 +1098,11 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 		$sql="SELECT * FROM `ldc_booking` AS b WHERE b.`id`=$id LIMIT 1";
 		return $db->fetchRow($sql);
 	}
+	function getAgreementbyBookingId($bookingid){
+		$db = $this->getAdapter();
+		$sql="SELECT * FROM `ldc_agreementvehicle` AS agv WHERE agv.`booking_id` =$bookingid";
+		return $db->fetchRow($sql);
+	}
 	function getProductBookingInfor($bookingid,$items_id){
 		$db = $this->getAdapter();
 		$sql="SELECT * FROM `ldc_booking_detail` AS bd WHERE bd.`book_id`=$bookingid AND bd.`item_id`=$items_id LIMIT 1";
@@ -1242,8 +1355,12 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 					
 				$this->_name = "ldc_booking";
 				$where = ' id = '.$data['id'];
-				$book_id = $this->update($arr, $where);
-					
+				$this->update($arr, $where);
+				$book_id = $data['id'];
+			
+				$data['booking_id'] = $data['id'];
+				$this->updateAgreement($data);
+				
 				//delete old Detail booking
 				$this->_name="ldc_booking_detail";
 				$where1 = " book_id = ".$data['id'];
@@ -1369,6 +1486,7 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 				$this->_name="ldc_booking_detail";
 				$this->insert($arr_pickup);
 					
+
 				$db->commit();
 				return $book_id;
 			}catch (Exception$e){
