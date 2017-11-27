@@ -188,6 +188,7 @@ class Report_PricingController extends Zend_Controller_Action {
 	  	$db = new Report_Model_DbTable_DbGuide();
 	  	$this->view->customer = $db->getCustomerInfoByBooking($id);
 	  	$this->view->rows = $db->getItemBookingDetail($id);
+	  	$this->view->agreeinfo = $db->getAgreementByBookingId($id);
 	  }
      function rptVehicleagreementAction(){
      	if($this->getRequest()->isPost()){
@@ -195,26 +196,29 @@ class Report_PricingController extends Zend_Controller_Action {
      	}
      	else{
      		$search = array(
-     				'adv_search'=>'',
-     				'status'=>'',
-     				'start_date'=> date('Y-m-d'),
-     				'end_date'=>date('Y-m-d'));
+	     				'to_book_date' => date("Y-m-d"),
+	     				'from_book_date' => date("Y-m-d"),
+     					'search_text' => "",
+						'customer'=>-1,
+     				);
      	}
      	
 	  	$db = new Report_Model_DbTable_DbRptAgreement();
-	  	$this->view->rows = $db->getAllVehicleAgreement($search);
+// 	  	$this->view->rows = $db->getAllVehicleAgreement($search);
+	  	$this->view->rows = $db->getAllVehicleAgreementNew($search);
 	  	
-	  	$frm = new Application_Form_FrmAdvanceSearch();
-	  	$form = $frm->AdvanceSearch();
-	  	Application_Model_Decorator::removeAllDecorator($form);
-	  	$this->view->frm = $form;
+	  	$frm = new Booking_Form_FrmSearchBooking();
+		$frm =$frm->FormSearch();
+		Application_Model_Decorator::removeAllDecorator($frm);
+		$this->view->frm_search = $frm;
 	  }
 	  function vehicleagreementAction(){
 	  	$id = $this->getRequest()->getParam('id');
 	  	$db = new Report_Model_DbTable_DbRptAgreement();
-	  	$row = $db->getAllVehicleAgreementById($id);
+	  	$row = $db->getAllVehicleAgreementByIdNew($id);
 	  	$this->view->row =$row;
-	  	 $this->view->vehicle = $db->getVehicleById($row['vehicle_id']);
+	  	$this->view->agreementdeatil = $db->getVehicleAgreementDetail($id);
+// 	  	 $this->view->vehicle = $db->getVehicleById($row['vehicle_id']);
 	  }
           function rptDriveragreementAction(){
 	  	$db = new Report_Model_DbTable_DbRptAgreement();

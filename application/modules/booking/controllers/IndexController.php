@@ -27,7 +27,10 @@ class Booking_indexController extends Zend_Controller_Action {
 			$link=array(
 					'module'=>'booking','controller'=>'index','action'=>'edit',
 			);
-			$this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('booking_no'=>$link,'customer'=>$link,));
+			$linkivoice=array(
+					'module'=>'report','controller'=>'pricing','action'=>'viewbooking',
+			);
+			$this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('booking_no'=>$link,'customer'=>$link,'View Invoice'=>$linkivoice));
 		}catch (Exception $e){
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());
@@ -117,6 +120,7 @@ class Booking_indexController extends Zend_Controller_Action {
 		$this->view->frm = $form;
 		
 		$agreement = $db->getAgreementbyBookingId($id);
+		$this->view->agreement = $agreement;
 		$formagreement = $frm->FromBookingAgreement($agreement);
 		Application_Model_Decorator::removeAllDecorator($formagreement);
 		$this->view->frmagreement = $formagreement;

@@ -60,7 +60,8 @@
 						  <td width="160px">International Address</td>
 						  <td rowspan="7" colspan="2" align="right" valign="top" width="70px">
 						  	<div style="width:100%; text-align: right;">
-							    <img style="width:100px;border: 1px solid #000;text-align:right ;min-height: 120px; margin-bottom: 2px;" src="<?php echo $this->baseUrl()."/images/".$rs['photo'];?>" />
+						  	<?php if (!empty($rs['photo'])){ $profile = $this->baseUrl()."/images/profile/".$rs['photo'];}else{ $profile = $this->baseUrl()."/images/profile.jpg";}?>
+							    <img style="width:100px;border: 1px solid #000;text-align:right ;min-height: 120px; margin-bottom: 2px;" src="<?php echo $profile;?>" />
 							    <img style="width: 107px; height:20px; margin-right:-5px;text-align:right;" src="<?php echo $this->url(array('module'=>'report','controller'=>'pricing','action'=>'generatebarcode'), null, true)."/generatebarcode/".$rs['agreement_code'];?> " />
 						    </div>
 						  </td>
@@ -130,32 +131,32 @@
 		                <td colspan="7" class="fontsize14"><strong>IV.&nbsp;&nbsp;Vehicle Information</strong></td>
 		            </tr>
 		            <tr>
-		                <td class="paddingleft">Vehicle ID: </td><td class="color">&nbsp;<?php echo $vehicle['reffer'];?></td>
-		                <td>&nbsp;Color: </td><td class="color">&nbsp;<?php echo $vehicle['color'];?></td>
-		                <td>&nbsp;No of Seats: </td><td class="color">&nbsp;<?php echo $vehicle['seat_amount'];?></td>
+		                <td class="paddingleft">Vehicle ID: </td><td class="color">&nbsp;<?php //echo $vehicle['reffer'];?></td>
+		                <td>&nbsp;Color: </td><td class="color">&nbsp;<?php //echo $vehicle['color'];?></td>
+		                <td>&nbsp;No of Seats: </td><td class="color">&nbsp;<?php //echo $vehicle['seat_amount'];?></td>
 		                <td rowspan="5" width="180px">
 		                	<div style="width: 100%;border: 1px solid #000; text-align:center;">Comes into effect from<div class="color"><?php echo date("d-M-Y",strtotime($rs["inception_date"]));?></div></div>
 		                	<div style="width: 100%;border: 1px solid #000;border-top:0px;text-align:center;">Expected date/time of return<div class="color">&nbsp;<?php echo date("d-M-Y",strtotime($rs['return_date'])); echo "&nbsp;&nbsp;".$rs['return_time']?> </div></div>
 		                </td>
 		            </tr>
 		            <tr>
-		                <td class="paddingleft">Year: </td><td class="color">&nbsp;<?php echo $vehicle['year'];?></td>
-		                <td>&nbsp;Engine No: </td><td class="color">&nbsp;<?php echo $vehicle['engine_number'];?></td>
-		                <td>&nbsp;Transmission: </td><td class="color">&nbsp;<?php echo $vehicle['transmission'];?></td>
+		                <td class="paddingleft">Year: </td><td class="color">&nbsp;<?php //echo $vehicle['year'];?></td>
+		                <td>&nbsp;Engine No: </td><td class="color">&nbsp;<?php //echo $vehicle['engine_number'];?></td>
+		                <td>&nbsp;Transmission: </td><td class="color">&nbsp;<?php //echo $vehicle['transmission'];?></td>
 		            </tr>
 		            <tr>
-		                <td class="paddingleft">Make: </td><td class="color">&nbsp;<?php echo $vehicle['make'];?></td>
-		                <td>&nbsp;Chassis No: </td><td class="color">&nbsp;<?php echo $vehicle['chassis_no'];?></td>
-		                <td>&nbsp;Type: </td><td class="color">&nbsp;<?php echo $vehicle['type'];?></td>
+		                <td class="paddingleft">Make: </td><td class="color">&nbsp;<?php //echo $vehicle['make'];?></td>
+		                <td>&nbsp;Chassis No: </td><td class="color">&nbsp;<?php //echo $vehicle['chassis_no'];?></td>
+		                <td>&nbsp;Type: </td><td class="color">&nbsp;<?php //echo $vehicle['type'];?></td>
 		            </tr>
 		            <tr>
-		                <td class="paddingleft">Model: </td><td class="color">&nbsp;<?php echo $vehicle['model'];?></td>
-		                <td>&nbsp;Frame No</td><td class="color">&nbsp;<?php echo $vehicle['frame_no'];?></td>
+		                <td class="paddingleft">Model: </td><td class="color">&nbsp;<?php //echo $vehicle['model'];?></td>
+		                <td>&nbsp;Frame No</td><td class="color">&nbsp;<?php //echo $vehicle['frame_no'];?></td>
 		                <td colspan="2"></td>
 		            </tr>
 		            <tr>
-		                <td class="paddingleft">Submodel: </td><td class="color">&nbsp;<?php echo $vehicle['sub_model'];?></td>
-		                <td>&nbsp;Plate No</td><td class="color">&nbsp;<?php echo $vehicle['licence_plate'];?></td>
+		                <td class="paddingleft">Submodel: </td><td class="color">&nbsp;<?php //echo $vehicle['sub_model'];?></td>
+		                <td>&nbsp;Plate No</td><td class="color">&nbsp;<?php //echo $vehicle['licence_plate'];?></td>
 		                <td colspan="2"></td>
 		            </tr>
 		            <tr>
@@ -174,24 +175,24 @@
 		                <td class="bordertd" align="right">&nbsp;The Period Of :&nbsp;</td>
 		                <td class="bordertd color" >&nbsp;<?php echo $rs['period'];?> day(s)</td>
 		                <td class="bordertd">&nbsp;1. Vehicle Rental </td>
-		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php echo $rs['price_perday']?>&nbsp;</td>
-		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php echo $rs['amount_price']?>&nbsp;</td>
+		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php //echo $rs['price_perday']?>&nbsp;</td>
+		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php //echo $rs['amount_price']?>&nbsp;</td>
 		                <td class="bordertd">&nbsp;</td>
 		            </tr>
 		             <tr>
 		                <td class="bordertd" align="right">&nbsp;Inception Date : &nbsp;</td>
 		                <td class="bordertd color" >&nbsp;<?php echo date("d-m-Y",strtotime($rs['inception_date']));?></td>
 		                <td class="bordertd">&nbsp;2. Refundable Deposit </td>
-		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php echo $rs['refundable'];?>&nbsp;</td>
-		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php echo $rs['refundable'];?>&nbsp;</td>
+		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php //echo $rs['refundable'];?>&nbsp;</td>
+		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php //echo $rs['refundable'];?>&nbsp;</td>
 		                <td class="bordertd">&nbsp;</td>
 		            </tr>
 		             <tr>
 		                <td class="bordertd" align="right">&nbsp;Return Date : &nbsp;</td>
 		                <td class="bordertd color">&nbsp;<?php echo date("d-m-Y",strtotime($rs['return_date']));?></td>
 		                <td class="bordertd">&nbsp;3. Long Distance Assistance Fee</td>
-		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php echo $rs['longdist_acc']; ?>&nbsp;</td>
-		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php echo $rs['longdist_acc']; ?>&nbsp;</td>
+		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php //echo $rs['longdist_acc']; ?>&nbsp;</td>
+		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php //echo $rs['longdist_acc']; ?>&nbsp;</td>
 		                <td class="bordertd">&nbsp;</td>
 		            </tr>
 		            <tr>
@@ -199,7 +200,7 @@
 		                <td class="bordertd color" >&nbsp;<?php echo $rs['return_time'];?></td>
 		                <td class="bordertd">&nbsp;<?php //echo //$i?>Discount </td>
 		                <td class="bordertd color">&nbsp;</td>
-		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php echo $rs['discount_value'];?>&nbsp;</td>
+		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php //echo $rs['discount_value'];?>&nbsp;</td>
 		                <td class="bordertd">&nbsp;</td>
 		            </tr>
 		            <tr>
@@ -207,7 +208,7 @@
 		                <td class="bordertd color">&nbsp;<?php echo($rs['fule']==1)?"Yes":"No";?></td>
 		                <td class="bordertd">&nbsp;Other Charge</td>
 		                <td class="bordertd">&nbsp;</td>
-		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php echo number_format($rs['sunday_price']+$rs['airport_price']+$rs['dropairport_price']+$rs['item_1']+$rs['item_2']+$rs['item_3'],2);?>&nbsp;</td>
+		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php //echo number_format($rs['sunday_price']+$rs['airport_price']+$rs['dropairport_price']+$rs['item_1']+$rs['item_2']+$rs['item_3'],2);?>&nbsp;</td>
 		                <td class="bordertd">&nbsp;</td>
 		            </tr>
 		            <tr>
@@ -215,13 +216,13 @@
 		                <td class="bordertd color" >&nbsp;<?php echo($rs['fuel_full']==1)?"Yes":"No";?></td>
 		                <td class="bordertd">&nbsp;<?php //echo //$i?>VAT </td>
 		                <td class="bordertd">&nbsp;</td>
-		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php echo $rs['vat_amount'];?>&nbsp;</td>
+		                <td class="bordertd color" align="right">&nbsp;$&nbsp;<?php //echo $rs['vat_amount'];?>&nbsp;</td>
 		                <td class="bordertd">&nbsp;</td>
 		            </tr>
 		            <tr>
 		            	<td class="bordertd" colspan="3" style="border:1px solid #fff;border-top:1px solid #000;border-right: 1px solid #000;">&nbsp;&nbsp;&nbsp;</td>
 		                <td class="bordertd">&nbsp;&nbsp;&nbsp;<strong>&nbsp;Grand Total:</strong><strong></strong></td>
-		                <td style="background: rgb(212, 210, 210)" class="bordertd color" align="right">&nbsp;$&nbsp;<?php echo number_format($rs['grand_total'],2);?>&nbsp;</td>
+		                <td style="background: rgb(212, 210, 210)" class="bordertd color" align="right">&nbsp;$&nbsp;<?php //echo number_format($rs['grand_total'],2);?>&nbsp;</td>
 		                <td class="bordertd">&nbsp;</td>
 		            </tr>
 		        </table>
@@ -240,7 +241,7 @@
 		            </tr>
 		            <tr>
 		            	<td colspan="2"><p style="padding: 5px;border: 1px solid #000;height: 45px;font-size: 9px;">1. If the length of the agreement is last more than 3 months both the parties cannot break the agreement earlier.
-		            	 In this case, the Renter wishes to break the agreement earlier, the deposite of <u class="color" style="color:">US$ <?php echo number_format($rs['refundable'],2);?></u> won't be refunded.</p></td>
+		            	 In this case, the Renter wishes to break the agreement earlier, the deposite of <u class="color" style="color:">US$ <?php //echo number_format($rs['refundable'],2);?></u> won't be refunded.</p></td>
 		            	<td colspan="2"><p style="padding: 5px;border: 1px solid #000;height: 45px; margin-left: 5px;font-size: 9px;">2. For more details, Please turnover to the back page(s) of the agreement and read carefully from article <span class="color"><?php echo $rs['art1_id'];?></span> to <span class="color"><?php echo $rs['toart1_id'];?></span> and the rest.</p></td>
 		            	<td colspan="2"><p style="padding: 5px;border: 1px solid #000;height: 45px; margin-left: 5px;font-size: 9px;">3. The above statement having been agreed between the signatories who have them declared to understand all clauses.</p></td>
 		            	<td colspan="2"><p style="padding: 5px;border: 1px solid #000;height: 45px;margin-left: 5px;font-size: 9px;">4. Note:If driver <span class="color">[No]</span>, you are under the articles <span class="color"><?php echo $rs['art2_id'];?></span> to <span class="color"><?php echo $rs['toart2_id'];?></span>. If <span class="color">[Yes]</span>, you are under the articles <span class="color"><?php echo $rs['art3_id'];?></span> to <span class="color"><?php echo $rs['toart3_id'];?></span></p></td>

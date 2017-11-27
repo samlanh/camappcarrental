@@ -345,7 +345,7 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 					'toart2_id'=>$data['toart2_id'],
 					'art3_id'=>$data['art3_id'],
 					'toart3_id'=>$data['toart3_id'],
-			
+					'date_create'=>date("Y-m-d"),
 // 					'sunday_price'=>$data['sunday_price'],
 // 					'airport_price'=>$data['airport_price'],
 // 					'dropairport_price'=>$data['dropairport_price'],
@@ -359,10 +359,10 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 // 					'item_1remark'=>$data['item_1remark'],
 // 					'item_2remark'=>$data['item_2remark'],
 // 					'item_3remark'=>$data['item_3remark'],
-// 					'is_passport'=>empty($data['passport'])?0:1,
-// 					'is_idcard'=>empty($data['idcard'])?0:1,
-// 					'is_familybook'=>empty($data['familybook'])?0:1,
-// 					'witness'=>$data['witness']
+					'is_passport'=>empty($data['passport'])?0:1,
+					'is_idcard'=>empty($data['idcard'])?0:1,
+					'is_familybook'=>empty($data['familybook'])?0:1,
+					'witness'=>$data['witness']
 			);
 			$this->_name="ldc_agreementvehicle";
 			$agreement_id = $this->insert($arr);
@@ -468,6 +468,11 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 					'toart2_id'=>$data['toart2_id'],
 					'art3_id'=>$data['art3_id'],
 					'toart3_id'=>$data['toart3_id'],
+					
+					'is_passport'=>empty($data['passport'])?0:1,
+					'is_idcard'=>empty($data['idcard'])?0:1,
+					'is_familybook'=>empty($data['familybook'])?0:1,
+					'witness'=>$data['witness']
 						
 			);
 			$this->_name="ldc_agreementvehicle";
@@ -639,7 +644,11 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 		$db = $this->getAdapter();
 		$from_date=$search["from_book_date"];
 		$to_date=$search["to_book_date"];
-		$sql = "SELECT b.`id`,b.`booking_no`,(SELECT CONCAT(c.`first_name`,' ',c.`last_name`) FROM `ldc_customer` AS c WHERE c.`id`=b.`customer_id`) AS customer,b.`date_book`,CONCAT(b.`pickup_date`,' ',b.`pickup_time`) AS pickup_date,CONCAT(b.`return_date`,' ',b.`return_time`) AS return_date,b.`total_fee`,b.`total_paymented` FROM `ldc_booking` AS b,`ldc_customer` AS c WHERE b.`item_type`=1 AND c.`id`=b.`customer_id` AND b.`date_book`>='$from_date' AND b.`date_book`<='$to_date'";
+		$sql = "SELECT b.`id`,b.`booking_no`,
+		(SELECT CONCAT(c.`first_name`,' ',c.`last_name`) FROM `ldc_customer` AS c WHERE c.`id`=b.`customer_id`) AS customer,
+		b.`date_book`,CONCAT(b.`pickup_date`,' ',b.`pickup_time`) AS pickup_date,CONCAT(b.`return_date`,' ',b.`return_time`) AS return_date,
+		b.`total_fee`,b.`total_paymented`,'View Invoice'
+		FROM `ldc_booking` AS b,`ldc_customer` AS c WHERE b.`item_type`=1 AND c.`id`=b.`customer_id` AND b.`date_book`>='$from_date' AND b.`date_book`<='$to_date'";
 		$where = '';
 		if($search["search_text"] !=""){
 			$s_where=array();

@@ -362,6 +362,9 @@ class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 		$hotline = new Zend_Dojo_Form_Element_ValidationTextBox("hotline");
 		$hotline->setAttribs(array('dojoType'=>$this->validate,'class'=>"fullside",'required'=>true));
 		
+		$witness = new Zend_Dojo_Form_Element_ValidationTextBox("witness");
+		$witness->setAttribs(array('dojoType'=>$this->validate,'class'=>"fullside",'required'=>true));
+		
 		$agreement_date = new Zend_Dojo_Form_Element_DateTextBox("agreement_date");
 		$agreement_date->setAttribs(array(
 				'dojoType'=>$this->date,'class'=>"fullside",'required'=>true,'constraints'=>"{datePattern:'dd/MM/yyyy'}",'class'=>"fullside"
@@ -448,6 +451,8 @@ class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 		$_fuel_full_tank->setMultiOptions($option);
 		
 		if (!empty($data)){
+			
+			$witness->setValue($data['witness']);
 			$_owner_name->setValue($data['ownder_id']);
 // 			$position->setValue($data['ownder_id']);
 // 			$id_card->setValue($data['ownder_id']);
@@ -472,6 +477,7 @@ class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 		}
 		
 		$this->addElements(array(
+				$witness,
 				$_owner_name,$position,$id_card,$hand_phone,$email,$hotline,
 				$agreement_date,
 				$article,$toart1_id,

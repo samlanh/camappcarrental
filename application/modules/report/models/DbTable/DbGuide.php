@@ -239,5 +239,16 @@ class Report_Model_DbTable_DbGuide extends Zend_Db_Table_Abstract
       	return $db->fetchAll($sql);
       }
       
+      function getAgreementByBookingId($booking_id){ // 27-11-2017 for show on invoice detail footer owner name
+      	$db = $this->getAdapter();
+      	$sql="SELECT agv.*,
+			owe.`owner_name`
+			 FROM `ldc_agreementvehicle` AS agv,
+			 `ldc_owner` AS owe
+			  WHERE owe.`id` = agv.`ownder_id` AND agv.`booking_id` =$booking_id";
+      	return $db->fetchRow($sql);
+      	
+      }
+      
  }
 

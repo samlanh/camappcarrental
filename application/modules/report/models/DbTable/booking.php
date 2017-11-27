@@ -15,7 +15,9 @@ class Report_Model_DbTable_booking extends Zend_Db_Table_Abstract
 		(SELECT p.'.$array[$lang].' FROM `ldc_province` AS p WHERE p.`id`=b.`pickup_location` LIMIT 1) AS pickup_lc,
 		(SELECT p.'.$array[$lang].' FROM `ldc_province` AS p WHERE p.`id`=b.`dropoff_location` LIMIT 1) AS return_lc,
 		b.`date_book`,CONCAT(b.`pickup_date`," ",b.`pickup_time`) AS pickup_date,CONCAT(b.`return_date`," ",b.`return_time`) AS return_date,
-		b.`total_vat`,b.`total_fee`,b.`deposite_fee`,b.`total_paymented`,b.`payment_type` FROM `ldc_booking` AS b WHERE 1';
+		b.`total_vat`,b.`total_fee`,b.`deposite_fee`,b.`total_paymented`,b.`payment_type` ';
+		$sql.=",(SELECT SUM(bd.refund_deposit) FROM `ldc_booking_detail` AS bd WHERE bd.book_id = b.`id` ) AS total_refund_deposit";//new additional 27/11/2017
+		$sql.=" FROM `ldc_booking` AS b WHERE 1";
 		$where ="";
 		if($search["customer"]!=-1){
 			$where.=" AND b.`customer_id` =".$search["customer"];
@@ -28,6 +30,7 @@ class Report_Model_DbTable_booking extends Zend_Db_Table_Abstract
 		if($search["status"]!=-1){
 			$where.=" AND b.`status` =".$search["status"];
 		}
+	
 		$order= " ORDER BY id DESC";
 		return $db->fetchAll($sql.$where.$order);
 	}

@@ -212,6 +212,18 @@ dt{ display: none;}
 						                    	<?php echo $frm->getElement("fly_destination"); ?>
 						                   </div>
 						             	</div>
+						             	
+						       			 <div class="form-group">
+						                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">
+						                  	 <input dojoType="dijit.form.CheckBox" type="checkbox" <?php if ($this->agreement['is_passport']==1){?> checked="checked"<?php }?> id="passport" name="passport" />&nbsp;<?php echo $tr->translate('Passport')?>&nbsp;
+						                   </label>
+						                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">
+						                  	<input dojoType="dijit.form.CheckBox" type="checkbox" id="idcard" name="idcard" <?php if ($this->agreement['is_idcard']==1){?> checked="checked"<?php }?> />&nbsp;<?php echo $tr->translate('ID Card')?>&nbsp;
+						                   </label>
+						                    <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name">
+						                  	 <input dojoType="dijit.form.CheckBox" type="checkbox" id="familybook" name="familybook" <?php if ($this->agreement['is_familybook']==1){?> checked="checked"<?php }?> />&nbsp;<?php echo $tr->translate('Family Book')?>&nbsp;
+						                   </label>
+						                </div>
 						            </div>
 					        	 </div>
 					        	 <div role="tabpanel" class="tab-pane fade" id="agreement_tap" aria-labelledby="agreement_tap-tab">
@@ -261,6 +273,12 @@ dt{ display: none;}
 						                    	<?php echo $frm_agre->getElement("hotline"); ?>
 						                   </div>
 						             	</div>
+						             	<div class="form-group">
+							                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?php echo $tr->translate('Witness Name')?> :</label>
+							                <div class="col-md-3 col-sm-3 col-xs-12">
+							                  	<?php echo $frm_agre->getElement("witness"); ?>
+							                </div>
+						       			</div>
 						             	<div class="title_form_blog">
 						               		<h4><i class="fa fa fa-gears" aria-hidden="true"></i> <?php echo $tr->translate('Service Include')?></h4>
 						               </div>
