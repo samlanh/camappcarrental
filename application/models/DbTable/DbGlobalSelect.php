@@ -302,6 +302,7 @@ class Application_Model_DbTable_DbGlobalSelect extends Zend_Db_Table_Abstract
         	(SELECT TYPE FROM `ldc_type` WHERE id = v.type AND STATUS=1) AS type_title,
         	(SELECT t.title FROM `ldc_vechicletye` AS t WHERE t.id=v.car_type) AS car_type,
   			(SELECT m.title FROM `ldc_make` AS m WHERE m.id=v.`make_id`) AS make,
+  			(SELECT m.images FROM `ldc_make` AS m WHERE m.id=v.`make_id`) AS make_images,
   			(SELECT md.title FROM `ldc_model` AS md WHERE md.id=v.`model_id`) AS model,
   			(SELECT sm.title FROM `ldc_submodel` AS sm WHERE sm.id=v.`sub_model`) AS sub_model,
   			(SELECT t.`tran_name` FROM `ldc_transmission` AS t WHERE t.`id`=v.`transmission`) AS transmission

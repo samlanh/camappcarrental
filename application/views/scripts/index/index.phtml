@@ -888,6 +888,11 @@ $vehicle = $this->vehiclesale;
                                 			if (!empty($veh['img_front'])){
                                 				$imgage = $this->baseUrl()."/images/vehicle/".$veh['img_front'];
                                 			}
+                                			
+                                			$make_img = $this->baseUrl()."/images/vehicle/make/noavailable.png";
+                                			if (!empty($veh['make_images'])){
+                                				$make_img = $this->baseUrl()."/images/vehicle/make/".$veh['make_images'];
+                                			}
                                 		?>
                                     <li class="col-md-12">
                                         <figure><a href="<?php echo $this->baseUrl()."/index/vehicle?detail=".base64_encode($veh['id']).".html";?>"><img src="<?php echo $imgage;?>" alt=""></a></figure>
@@ -900,7 +905,7 @@ $vehicle = $this->vehiclesale;
                                             <h6>Mileage: <span>25,804 Miles</span></h6>
                                             <ul class="automobile-listing-option">
                                                 <li class="highlights">
-                                                    <figure><img src="<?php echo $this->baseUrl();?>/templates/extra-images/listing-dealers-img1.jpg" alt=""></figure>
+                                                    <figure><img src="<?php echo $make_img;?>" alt="<?php echo $veh['make'];?>"></figure>
                                                     <div class="automobile-listing-option-text">
                                                         <div class="new-car-info">
                                                             <h6>Specs:</h6>

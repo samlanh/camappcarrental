@@ -5,17 +5,48 @@ class Vehicle_Model_DbTable_DbMake extends Zend_Db_Table_Abstract
 
     protected $_name = 'ldc_make';
     function addMake($data){
-    	//print_r($data);exit();
+    	$title = str_replace(" ", "_",$data['make']);
+   		$part= PUBLIC_PATH.'/images/vehicle/make/';
+    	$photo="";
+    		$name = $_FILES['photo']['name'];
+    		if (!empty($name)){
+    			$ss = 	explode(".", $name);
+    			$image_name = $title.".".end($ss);
+    			$tmp = $_FILES['photo']['tmp_name'];
+    			if(move_uploaded_file($tmp, $part.$image_name)){
+    				$photo = $image_name;
+    			}
+    			else
+    				$string = "Image Upload failed";
+    		}
     	$_arr = array(
     			'title'=>$data['make'],
     			'status'=>1,
+    			'images'=>$photo
     			);
     	$this->insert($_arr);//insert data
     }
     public function updateMake($data){
+    	$title = str_replace(" ", "_",$data['make']);
+    	$part= PUBLIC_PATH.'/images/vehicle/make/';
+    	$photo="";
+    	$name = $_FILES['photo']['name'];
+    	if (!empty($name)){
+    		$ss = 	explode(".", $name);
+    		$image_name = $title.".".end($ss);
+    		$tmp = $_FILES['photo']['tmp_name'];
+    		if(move_uploaded_file($tmp, $part.$image_name)){
+    			$photo = $image_name;
+    		}
+    		else
+    			$string = "Image Upload failed";
+    	}else{
+    		$photo = $data['old_photo'];
+    	}
     	$_arr = array(
     			'title'=>$data['make'],
     			'status'=>$data['status'],
+    			'images'=>$photo
     	);
     	$where='id='.$data['id'];
     	$this->update($_arr, $where);
@@ -31,7 +62,7 @@ class Vehicle_Model_DbTable_DbMake extends Zend_Db_Table_Abstract
     
  function getMakeById($id){
     	$db = $this->getAdapter();
-    	$sql = "SELECT id,title ,status FROM  $this->_name WHERE id=".$id;
+    	$sql = "SELECT * FROM  $this->_name WHERE id=".$id;
    		return $db->fetchRow($sql);
     }
 //     public static function getBranchCode(){

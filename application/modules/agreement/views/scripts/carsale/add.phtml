@@ -448,7 +448,10 @@ var url_customer = '<?php echo $this->url(array('module'=>'agreement','controlle
 			
 			dijit.byId('phone').attr('value',data.phone);
 			dijit.byId('email').attr('value',data.email);
-
+			if(data.dob!=""){
+				dijit.byId('age').attr('value',getAge(data.dob));
+			}
+			dijit.byId('address').attr('value',data.group_num+'|'+data.house_num+'| Street '+data.street+'| Shangkat '+data.commune+'| Khan '+data.district+'| '+data.province);
 // 			calCulateDay();
 // 			getBookingVehicleDetail(booking_id);
 		  },
@@ -478,7 +481,10 @@ var url_customer = '<?php echo $this->url(array('module'=>'agreement','controlle
 			
 			dijit.byId('cus_phone').attr('value',data.phone);
 			dijit.byId('cus_email').attr('value',data.email);
-			
+			if(data.dob!=""){
+				dijit.byId('cus_age').attr('value',getAge(data.dob));
+			}
+			dijit.byId('cus_address').attr('value',data.group_num+'|'+data.house_num+'| Street '+data.street+'| Shangkat '+data.commune+'| Khan '+data.district+'| '+data.province);
 // 			calCulateDay();
 // 			getBookingVehicleDetail(booking_id);
 		  },
@@ -487,7 +493,18 @@ var url_customer = '<?php echo $this->url(array('module'=>'agreement','controlle
 		  }
 		 });
 	}
-
+	function getAge(dateString) 
+	{
+	    var today = new Date();
+	    var birthDate = new Date(dateString);
+	    var age = today.getFullYear() - birthDate.getFullYear();
+	    var m = today.getMonth() - birthDate.getMonth();
+	    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+	    {
+	        age--;
+	    }
+	    return age;
+	}
 	var url_vehicle = '<?php echo $this->url(array('module'=>'agreement','controller'=>'carsale','action'=>'getvehicle'));?>';
 	function getVehicle(){
 		reffer=dijit.byId('reffer').get('value');

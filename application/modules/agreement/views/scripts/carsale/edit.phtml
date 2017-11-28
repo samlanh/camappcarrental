@@ -10,6 +10,21 @@ echo $this->headTitle($tr->translate("CARSALE"));
 	$rs_vechicle = $this->rs_vechicle;
 	$barcode = $rs["ag_code"];
 	$url_barcode = $this->url(array("module"=>"agreement","controller"=>"carsale","action"=>"generate-barcode","product_code"=>$barcode),null,true);
+	$cus_age = "";
+	if (!empty($rs['c_dob'])){
+		$dateOfBirth = date("Y-m-d",strtotime($rs['c_dob']));
+		$today = date("Y-m-d");
+		$diff = date_diff(date_create($dateOfBirth), date_create($today));
+		$cus_age = $diff->format('%y');
+	}
+	
+	$o_age = "";
+	if (!empty($rs['o_dob'])){
+		$dateOfBirth = date("Y-m-d",strtotime($rs['o_dob']));
+		$today = date("Y-m-d");
+		$diff = date_diff(date_create($dateOfBirth), date_create($today));
+		$o_age = $diff->format('%y');
+	}
 ?>
 <style>
 .fixed_lable{ 
@@ -69,7 +84,7 @@ dojo.require("dijit.form.CheckBox");
 		                </div>
 		                <div class="form-group">
 		               		 <div class="col-md-8 col-sm-8 col-xs-12" >
-		               		 <img src="<img src="<?php echo $url_barcode;?>"/>
+		               		 <img src="<?php echo $url_barcode;?>"/>
 		       		   		</div>
 		                	<div class="col-md-4 col-sm-4 col-xs-12" >
 		               			<select name="opt_type" id="opt_type" dojoType="dijit.form.FilteringSelect" class="fullside" onchange="getOwner();">
@@ -113,7 +128,7 @@ dojo.require("dijit.form.CheckBox");
 			                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?php echo $tr->translate("Age")?>
 			                   </label>
 			                   <div class="col-md-3 col-sm-3 col-xs-12">
-			                   		<input style="width: 100%" dojoType="dijit.form.TextBox" name="age" id="age"  />
+			                   		<input style="width: 100%" dojoType="dijit.form.TextBox" name="age" id="age" value="<?php echo $o_age;?>"  />
 			                   </div>
 			                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?php echo $tr->translate("Nationality")?>
 			                   </label>
@@ -192,7 +207,7 @@ dojo.require("dijit.form.CheckBox");
 			                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?php echo $tr->translate("Age")?>
 			                   </label>
 			                   <div class="col-md-3 col-sm-3 col-xs-12">
-			                   		<input style="width: 100%" dojoType="dijit.form.TextBox" name="cus_age" id="cus_age"  value=""/>
+			                   		<input style="width: 100%" dojoType="dijit.form.TextBox" name="cus_age" id="cus_age"  value="<?php echo $cus_age;?>"/>
 			                   </div>
 			                   <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?php echo $tr->translate("Nationality")?>
 			                   </label>
@@ -471,7 +486,10 @@ var url_customer = '<?php echo $this->url(array('module'=>'agreement','controlle
 			
 			dijit.byId('phone').attr('value',data.phone);
 			dijit.byId('email').attr('value',data.email);
-
+			if(data.dob!=""){
+				dijit.byId('age').attr('value',getAge(data.dob));
+			}
+			dijit.byId('address').attr('value',data.group_num+'|'+data.house_num+'| Street '+data.street+'| Shangkat '+data.commune+'| Khan '+data.district+'| '+data.province);
 // 			calCulateDay();
 // 			getBookingVehicleDetail(booking_id);
 		  },
@@ -501,7 +519,10 @@ var url_customer = '<?php echo $this->url(array('module'=>'agreement','controlle
 			
 			dijit.byId('cus_phone').attr('value',data.phone);
 			dijit.byId('cus_email').attr('value',data.email);
-
+			if(data.dob!=""){
+				dijit.byId('cus_age').attr('value',getAge(data.dob));
+			}
+			dijit.byId('cus_address').attr('value',data.group_num+'|'+data.house_num+'| Street '+data.street+'| Shangkat '+data.commune+'| Khan '+data.district+'| '+data.province);
 // 			calCulateDay();
 // 			getBookingVehicleDetail(booking_id);
 		  },
@@ -510,7 +531,18 @@ var url_customer = '<?php echo $this->url(array('module'=>'agreement','controlle
 		  }
 		 });
 	}
-
+	function getAge(dateString) 
+	{
+	    var today = new Date();
+	    var birthDate = new Date(dateString);
+	    var age = today.getFullYear() - birthDate.getFullYear();
+	    var m = today.getMonth() - birthDate.getMonth();
+	    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+	    {
+	        age--;
+	    }
+	    return age;
+	}
 	var url_vehicle = '<?php echo $this->url(array('module'=>'agreement','controller'=>'carsale','action'=>'getvehicle'));?>';
 	function getVehicle(){
 		reffer=dijit.byId('reffer').get('value');

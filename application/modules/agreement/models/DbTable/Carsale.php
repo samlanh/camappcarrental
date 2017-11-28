@@ -67,7 +67,13 @@ class agreement_Model_DbTable_Carsale extends Zend_Db_Table_Abstract
     
     function getCustomerById($id){
     	$db = $this->getAdapter();
-    	$sql = "SELECT c.id,c.`first_name`,c.`last_name`,c.`sex`,c.company_name,c.`occupation`,c.`address1`,c.`address2`,c.`passport_name`,c.`nationality`,c.`name_oncard`,c.`phone`,c.`email` FROM ldc_customer AS c WHERE c.`id`=$id";
+    	$dbgb = new Application_Model_DbTable_DbGlobal();
+    	$lang= $dbgb->getCurrentLang();
+    	$array = array(1=>"province_en_name",2=>"province_kh_name");
+    	$sql = "SELECT c.id,c.`first_name`,c.`last_name`,c.`sex`,c.company_name,c.`occupation`,c.`address1`,c.`address2`,c.`passport_name`,c.`nationality`,c.`name_oncard`,c.`phone`,c.`email`,
+    	c.dob,c.group_num,c.house_num,c.street,c.commune,c.district,
+    	(SELECT ".$array[$lang]." as `province_name` FROM ldc_province AS p WHERE p.`id`=c.`province_id`) AS province
+    	 FROM ldc_customer AS c WHERE c.`id`=$id";
     	$row = $db->fetchRow($sql);
     	if($row){
     		return $row;
