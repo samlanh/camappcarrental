@@ -478,7 +478,7 @@ var url_customer = '<?php echo $this->url(array('module'=>'agreement','controlle
 			
 			dijit.byId('cus_phone').attr('value',data.phone);
 			dijit.byId('cus_email').attr('value',data.email);
-
+			
 // 			calCulateDay();
 // 			getBookingVehicleDetail(booking_id);
 		  },
@@ -517,7 +517,8 @@ var url_customer = '<?php echo $this->url(array('module'=>'agreement','controlle
 
 			dijit.byId('cylinder_size').attr('value',data.cylinders_dip);
 			dijit.byId('plaque_no').attr('value',data.licence_plate);
-
+			dijit.byId('sale_price').attr('value',data.sale_price);
+			doTotal();
 // 			calCulateDay();
 // 			getBookingVehicleDetail(booking_id);
 		  },

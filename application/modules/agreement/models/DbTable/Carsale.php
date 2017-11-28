@@ -75,7 +75,15 @@ class agreement_Model_DbTable_Carsale extends Zend_Db_Table_Abstract
     }
     function getVehicleById($id){
     	$db = $this->getAdapter();
-    	$sql = "SELECT v.`reffer`,v.`frame_no`,v.`licence_plate`,(SELECT m.`title` FROM `ldc_make` AS m WHERE m.`id`=v.`make_id`) AS make,(SELECT m.`title` FROM `ldc_model` AS m WHERE m.`id`=v.`model_id`) AS model,(SELECT s.`title` FROM `ldc_submodel` AS s WHERE s.`id`=v.`sub_model`) AS sub_model,v.`year`,v.`chassis_no`,v.`engine_number`,v.`of_axlex`,v.`of_cylinder`,v.`color`,v.`cylinders_dip`,(SELECT e.`capacity` FROM `ldc_engince` AS e WHERE e.`id`=v.`engine`) AS hors_power,(SELECT t.`type` FROM `ldc_type` AS t WHERE t.`id`=v.`car_type`) AS car_type,v.`licence_plate` FROM `ldc_vehicle` AS v  WHERE v.id=$id";
+    	$sql = "SELECT v.`reffer`,
+    	v.`frame_no`,v.`licence_plate`,
+    	(SELECT m.`title` FROM `ldc_make` AS m WHERE m.`id`=v.`make_id`) AS make,
+    	(SELECT m.`title` FROM `ldc_model` AS m WHERE m.`id`=v.`model_id`) AS model,
+    	(SELECT s.`title` FROM `ldc_submodel` AS s WHERE s.`id`=v.`sub_model`) AS sub_model,
+    	v.`year`,v.`chassis_no`,v.`engine_number`,v.`of_axlex`,v.`of_cylinder`,v.`color`,v.`cylinders_dip`,
+    	(SELECT e.`capacity` FROM `ldc_engince` AS e WHERE e.`id`=v.`engine`) AS hors_power,
+    	(SELECT t.`type` FROM `ldc_type` AS t WHERE t.`id`=v.`car_type`) AS car_type,v.sale_price,
+    	v.`licence_plate` FROM `ldc_vehicle` AS v  WHERE v.id=$id";
     	$row = $db->fetchRow($sql);
     	if($row){
     		return $row;
@@ -104,6 +112,7 @@ class agreement_Model_DbTable_Carsale extends Zend_Db_Table_Abstract
 				  o.`first_name` AS o_f_name,
 				  o.`last_name` AS o_l_name,
 				  o.`sex` AS o_sex,
+				  o.`dob` as o_dob,
 				  o.`occupation` AS o_occupation,
 				  o.`group_num` AS o_group_num,
 				  o.`house_num` AS o_home_num,
@@ -129,6 +138,7 @@ class agreement_Model_DbTable_Carsale extends Zend_Db_Table_Abstract
 				  c.`street`,
 				  c.`commune`,
 				  c.`district`,
+				  c.`dob` as c_dob,
 				  (SELECT ".$array[$lang]." as `province_name` FROM `ldc_province` AS p WHERE p.`id`=c.`province_id`) AS provice,
 				  c.`address1`,
 				  c.`address2`,

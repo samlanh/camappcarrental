@@ -30,7 +30,10 @@ class Booking_indexController extends Zend_Controller_Action {
 			$linkivoice=array(
 					'module'=>'report','controller'=>'pricing','action'=>'viewbooking',
 			);
-			$this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('booking_no'=>$link,'customer'=>$link,'View Invoice'=>$linkivoice));
+			$vehicleagreement=array(
+					'module'=>'report','controller'=>'pricing','action'=>'vehicleagreement',
+			);
+			$this->view->list=$list->getCheckList(0, $collumns, $rs_rows,array('booking_no'=>$link,'customer'=>$link,'View Invoice'=>$linkivoice,'View Agreement'=>$vehicleagreement));
 		}catch (Exception $e){
 			Application_Form_FrmMessage::message("Application Error");
 			Application_Model_DbTable_DbUserLog::writeMessageError($e->getMessage());

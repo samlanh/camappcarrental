@@ -647,7 +647,7 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 		$sql = "SELECT b.`id`,b.`booking_no`,
 		(SELECT CONCAT(c.`first_name`,' ',c.`last_name`) FROM `ldc_customer` AS c WHERE c.`id`=b.`customer_id`) AS customer,
 		b.`date_book`,CONCAT(b.`pickup_date`,' ',b.`pickup_time`) AS pickup_date,CONCAT(b.`return_date`,' ',b.`return_time`) AS return_date,
-		b.`total_fee`,b.`total_paymented`,'View Invoice'
+		b.`total_fee`,b.`total_paymented`,'View Invoice','View Agreement'
 		FROM `ldc_booking` AS b,`ldc_customer` AS c WHERE b.`item_type`=1 AND c.`id`=b.`customer_id` AND b.`date_book`>='$from_date' AND b.`date_book`<='$to_date'";
 		$where = '';
 		if($search["search_text"] !=""){

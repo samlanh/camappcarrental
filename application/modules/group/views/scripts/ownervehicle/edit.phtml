@@ -3,6 +3,9 @@
 	echo $this->headTitle($tr->translate("EDIT_OWNERVHICLE"));
 	$row_owner=$this->row_owner;
 ?>	
+<script type="text/javascript">
+dojo.require("dijit.form.DateTextBox");
+</script>
 <form action="<?php echo $this->url(array('module'=>'group','controller'=>'ownervehicle','action'=>'edit')); ?>" dojoType="dijit.form.Form" method="post" enctype="application/x-www-form-urlencoded">
  	<script type="dojo/method" event="onSubmit">			
 			if(this.validate()) {
@@ -40,6 +43,13 @@
 	                   </label>
 	                   <div class="col-md-8 col-sm-8 col-xs-12">
 	                   		<input dojoType="dijit.form.ValidationTextBox" required="required" type="text" name="position" id="position" value="<?php echo $row_owner['position'];?>" class="fullside" />
+	                   </div>
+	                </div>
+	                <div class="form-group">
+	                   <label class="control-label col-md-4 col-sm-4 col-xs-12" for="first-name"><?php echo $tr->translate('DOB')?>
+	                   </label>
+	                   <div class="col-md-8 col-sm-8 col-xs-12">
+	                   		<input constraints="{datePattern:'dd/MM/yyyy'}" value="<?php if (!empty($row_owner['dob'])){ echo date("Y-m-d",strtotime($row_owner['dob']));}?>" dojoType="dijit.form.DateTextBox" required="required" type="text" name="dob" id="dob" class="fullside" />
 	                   </div>
 	                </div>
 	                <div class="form-group">

@@ -12,6 +12,7 @@ class Group_Model_DbTable_DbOwner extends Zend_Db_Table_Abstract
     	$_arr = array(
     			'owner_name'=>$_data['owner_name'],
     			'position'=>$_data['position'],
+    			'dob'=>$_data['dob'],
     			'id_card'=>$_data['id_card'],
     			'hand_phone'=>$_data['hand_phone'],
     			'email'=>$_data['email'],
@@ -27,6 +28,7 @@ class Group_Model_DbTable_DbOwner extends Zend_Db_Table_Abstract
     			'owner_name'=>$_data['owner_name'],
     			'position'=>$_data['position'],
     			'id_card'=>$_data['id_card'],
+    			'dob'=>$_data['dob'],
     			'hand_phone'=>$_data['hand_phone'],
     			'email'=>$_data['email'],
     			'hotline'=>$_data['hotline'],
@@ -60,7 +62,7 @@ class Group_Model_DbTable_DbOwner extends Zend_Db_Table_Abstract
     
  function getOwnerById($id){
     	$db = $this->getAdapter();
-    	$sql = "SELECT id,owner_name,`position`,id_card,hand_phone,email,hotline,`status` FROM ldc_owner where id= ".$id;
+    	$sql = "SELECT * FROM ldc_owner where id= ".$id;
    		return $db->fetchRow($sql);
     }
 
