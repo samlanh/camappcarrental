@@ -262,8 +262,8 @@ dt{ display: none;}
 					                   </div>
 					             	</div>
 					             	 <div class="form-group">
-						                <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate('Witness Name')?> :</label>
-						                <div class="col-md-2 col-sm-2 col-xs-12">
+						                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name"><?php echo $tr->translate('Witness Name')?> :</label>
+						                <div class="col-md-3 col-sm-3 col-xs-12">
 						                  	<?php echo $frm_agre->getElement("witness"); ?>
 						                </div>
 					       			</div>
@@ -445,9 +445,6 @@ dt{ display: none;}
                       			<a href="#tap4" id="tap3-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Product");?></a>
                       		</li>
                       		<li role="presentation" class="">
-                      			<a href="#tap5" id="tap4-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Other Fee");?></a>
-                      		</li>
-                      		<li role="presentation" class="">
                       			<a href="#tap7" id="tap6-tab" role="tab" data-toggle="tab" aria-expanded="true"><?php echo $tr->translate("Booking List");?></a>
                       		</li>
                       		<li role="presentation" class="">
@@ -457,6 +454,104 @@ dt{ display: none;}
                       <div id="myTabContent" class="tab-content">
                   		<div class="tab-content">
 	                  		<div role="tabpanel" class="tab-pane fade active in taboverflow" id="tap2" aria-labelledby="tap2-tab">
+                  				<div class="col-md-12 col-sm-12 col-xs-12">
+                  					<div class="col-md-4 col-sm-4 col-xs-12">
+                  						<div class="form-group">
+						                	<label class="control-label col-md-6 col-sm-6 col-xs-12" style="color: red" for="first-name"><?php echo $tr->translate('Retal Fee')?> ($):</label>
+							           		<div class="col-md-6 col-sm-6 col-xs-12">
+												<?php echo $frm->getElement("rent_fee");?>
+							          		</div>
+							             </div>
+							             <div class="form-group">
+							             	<label class="control-label col-md-6 col-sm-6 col-xs-12" style="color: red" for="first-name"><?php echo $tr->translate("Discount Amount")?> ($):</label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<?php echo $frm->getElement("discount_value");?>
+							   				</div>
+							             </div>
+							             <div class="form-group">
+							             	<label class="control-label col-md-6 col-sm-6 col-xs-12" style="color: red" for="first-name"><?php echo $tr->translate("Refundable Deposit")?> ($):</label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<?php echo $frm->getElement("refundable_deposit");?>
+												<input dojoType="dijit.form.TextBox" class="fullside" id="refund_type" name="refund_type" value="1" type="hidden">
+							   				</div>
+							             </div>
+							             <div class="form-group">
+							             	<label class="control-label col-md-6 col-sm-6 col-xs-12" style="color: red" for="first-name"><?php echo $tr->translate("Long DAST")?> ($):</label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<?php echo $frm->getElement("long_dast");?>
+							   				</div>
+							             </div>
+							             <div class="form-group">
+							             	<label class="control-label col-md-6 col-sm-6 col-xs-12" for="first-name"><?php echo $tr->translate("Total Vehicle Rent")?> ($):</label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<?php echo $frm->getElement("total_rent_fee");?>
+							   				</div>
+							             </div>
+                  					</div>
+                  					<div class="col-md-8 col-sm-8 col-xs-12">
+                  						<div class="form-group">
+							             	<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Extra Charge Sunday")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("sunday_price");?>
+							   				</div>
+							   				<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Remake")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("sunday_price_remake");?>
+							   				</div>
+							             </div>
+							             <div class="form-group">
+							             	<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Pickup Airport")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("airport_price");?>
+							   				</div>
+							   				<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Remake")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("airport_price_remake");?>
+							   				</div>
+							             </div>
+							             <div class="form-group">
+							             	<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Drop of Airport")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("dropairport_price");?>
+							   				</div>
+							   				<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Remake")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("dropairport_price_remake");?>
+							   				</div>
+							             </div>
+							             <div class="form-group">
+							             	<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Item 1")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("item_1");?>
+							   				</div>
+							   				<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Remake")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("item_1_remake");?>
+							   				</div>
+							             </div>
+							             <div class="form-group">
+							             	<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Item 2")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("item_2");?>
+							   				</div>
+							   				<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Remake")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("item_2_remake");?>
+							   				</div>
+							             </div>
+							             <div class="form-group">
+							             	<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Item 3")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("item_3");?>
+							   				</div>
+							   				<label class="control-label col-md-3 col-sm-3 col-xs-12"><?php echo $tr->translate("Remake")?>:</label>
+											<div class="col-md-3 col-sm-3 col-xs-12">
+												<?php echo $frm->getElement("item_3_remake");?>
+							   				</div>
+							             </div>
+                  					</div>
+                  				</div>
+					            <div class="clearfix"></div>
                   				<div id="carlists">
                   					<?php $k=0; $initail_veh_ide=""; if($this->vehiclevaliable) foreach ($this->vehiclevaliable as $k_index => $rs){ $k++;?>
                   					<div class="col-md-6 col-sm-6 col-xs-12 profile_details">
@@ -572,7 +667,7 @@ dt{ display: none;}
 				                            <div class="col-xs-12 col-sm-6 emphasis text-right">
 				                               <a class="btn btn-primary btn-xs"  href="<?php echo $this->baseUrl();?>/index/vehicle/id/<?php echo $rs["id"];?>" target="_blank"><i class="fa fa-user"> </i> <?php echo $tr->translate("View Details")?></a>
 				                               <input type="checkbox" name="driver_<?php echo $i?>" class="checkbox input-checkbox" id="driver_<?php echo $i;?>" onClick="addDriver(<?php echo $i?>)" value="<?php echo $rs["id"];?>" style="display: inline-block;"/>
-				                           	   <input type="hidden" name="driverid_<?php echo $i ?>" value="<?php echo $rs["id"] ?>" />
+				                           	   <input type="hidden" name="driverid_<?php echo $i ?>" id="driverid_<?php echo $i ?>" value="<?php echo $rs["id"] ?>" />
 				                            </div>
 				                          </div>
 				                        </div>
@@ -628,91 +723,6 @@ dt{ display: none;}
 		                         <input type="hidden" name="identity_equipment" id="identity_equipment"/>
 		                        </div>
 				               
-	                  		</div>
-	                  		<div role="tabpanel" class="tab-pane fade " id="tap5" aria-labelledby="tap5-tab">
-									<div class="form-group">
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><input type="checkbox" name="other_1" id="other_1" onClick="addOtherFee(1);"> <?php echo $tr->translate('Other Fee')?> 1 :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee1"); ?>
-						                   </div>
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee_note1"); ?>
-						                   </div>
-						             </div>
-						             <div class="form-group">
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
-						                   	<input type="checkbox" name="other_2" id="other_2" onClick="addOtherFee(2);">
-						                   	<?php echo $tr->translate('Other Fee')?> 2 :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee2"); ?>
-						                   </div>
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee_note2"); ?>
-						                   </div>
-						             </div>
-						             <div class="form-group">
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
-						                   <input type="checkbox" name="other_3" id="other_3" onClick="addOtherFee(3);">
-						                   	<?php echo $tr->translate('Other Fee')?> 3 :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee3"); ?>
-						                   </div>
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee_note3"); ?>
-						                   </div>
-						             </div>
-						             <div class="form-group">
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
-						                  <input type="checkbox" name="other_4" id="other_4" onClick="addOtherFee(4);">
-						                   <?php echo $tr->translate('Other Fee')?> 4 :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee4"); ?>
-						                   </div>
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee_note4"); ?>
-						                   </div>
-						             </div>
-						             <div class="form-group">
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
-						                   	<input type="checkbox" name="other_5" id="other_5" onClick="addOtherFee(5);">
-						                   	<?php echo $tr->translate('Other Fee')?> 5 :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee5"); ?>
-						                   </div>
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee_note5"); ?>
-						                   </div>
-						             </div>
-						             <div class="form-group">
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name">
-						                   <input type="checkbox" name="other_6" id="other_6" onClick="addOtherFee(6);">
-						                   	<?php echo $tr->translate('Other Fee')?> 6 :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee6"); ?>
-						                   </div>
-						                   <label class="control-label col-md-2 col-sm-2 col-xs-12" for="first-name"><?php echo $tr->translate("NOTE")?> :
-						                   </label>
-						                   <div class="col-md-4 col-sm-4 col-xs-12">
-						                    	<?php echo $frm->getElement("other_fee_note6"); ?>
-						                    	<input type="hidden" name="identity_other_fee" id="identity_other_fee">
-						                   </div>
-						             </div>
 	                  		</div>
 	                  		<div role="tabpanel" class="tab-pane fade" id="tap7" aria-labelledby="tap7-tab">
 	                  			<div id="booking_list_items">
@@ -812,8 +822,12 @@ require(["dojo/ready"], function(ready){
 	});
 });
 var url_getbookingitem = '<?php echo $this->url(array('module'=>'booking','controller'=>'index','action'=>'getbookinglistform')); ?>';
-function calculateGrandtotal(){
+function calculateGrandtotal(type=""){
 	//if(dijit.byId('addbookingrental').validate()){
+		dijit.byId("refund_type").attr('value',1);// Refundable Deposit defaults
+		if(type!=""){ // check Refundable Deposit custome by type value
+			dijit.byId("refund_type").attr('value',2);
+		}
 		dojo.xhrPost({
 			url: url_getbookingitem,
 			form: dojo.byId("addbookingrental"),
@@ -821,12 +835,31 @@ function calculateGrandtotal(){
 			load: function(data) {
 				dijit.byId("main_net_total").set('value',data.g_total);
 				document.getElementById('booking_list_items').innerHTML =data.bookinglist;
+				dijit.byId("rent_fee").attr('value',data.rentvehiclefee);
+				dijit.byId("refundable_deposit").attr('value',data.refund_deposite);
 			},
 			error: function(err) {
 				alert(err);
 			}
 		});
 	//}
+}
+function totalvehiclerentfee(){
+	var refundtype = dijit.byId("refund_type").get('value');
+	
+	var rent_fee = dijit.byId("rent_fee").get('value');
+	var refund = dijit.byId("refundable_deposit").get('value');
+	var discount_value = dijit.byId("discount_value").get('value');
+	var long_dast = dijit.byId("long_dast").get('value');
+
+	total = (rent_fee + refund + long_dast) - discount_value;
+	dijit.byId("total_rent_fee").attr('value',total.toFixed(2));
+
+	if(refundtype==2){
+		calculateGrandtotal(1);
+	}else{
+		calculateGrandtotal();
+	}
 }
 function checkMaxPay(){
 	var cash_pay = dijit.byId("cash_pay").get('value');
@@ -903,36 +936,6 @@ function addEquipment(index){
 	calculateGrandtotal();
 }
 
-function addOtherFee(index){
-	var id=$('#identity_other_fee').val();
-	var arrays = id.split(',');
-	for(var j=0;j<arrays.length;j++) {//calculate record row
-		if(arrays[j] == index) arrays.splice(j,1);
-		if(document.getElementById('other_'+index).checked){
-			if(($("#identity_other_fee").val())!="") {
-				$("#identity_other_fee").val(id+','+index);
-				
-			}else { 
-				$("#identity_other_fee").val(index);
-			}
-			dijit.byId("other_fee"+index).attr("disabled",false);
-			dijit.byId("other_fee_note"+index).attr("disabled",false);
-			dijit.byId("other_fee_note"+index).attr("required",true);
-			dijit.byId("other_fee"+index).attr("required",true);
-			dijit.byId("other_fee"+index).attr('value',1);
-		 }else{
-			 //alert(index);
-			var strings = arrays.join(',');
-			$('#identity_other_fee').val(strings);
-			dijit.byId("other_fee"+index).attr('value',0);
-			dijit.byId("other_fee"+index).attr("disabled",true);
-			dijit.byId("other_fee_note"+index).attr("disabled",true);
-			dijit.byId("other_fee_note"+index).attr("required",false);
-			dijit.byId("other_fee"+index).attr("required",false);
-		}
-	}
-	calculateGrandtotal();
-}
 function activeSelfDrive(){
 	var self_drive = $('#self_drive').val();
 		 if(self_drive=="on") {

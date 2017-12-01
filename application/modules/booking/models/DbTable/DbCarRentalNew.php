@@ -46,13 +46,14 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
     				$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
     				$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
     		
-    				$total_deposit_vehicle+= $row_vehicle["refun_deposit"];
     				$total_row_price_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
     				
     				$total_price_vehicle = number_format(($total_price_vehicle + $total_row_price_vehicle),2);
     				$vat_vehicle = $vat_vehicle + $row_vehicle_price["vat_value"];
     			}
     		}
+    		$total_deposit_vehicle = $data['refundable_deposit'];
+    		$vehicle_otherFee = ($total_deposit_vehicle+$data['long_dast'])-$data['discount_value'];
     		
     		//Product blog
     		$total_price_product =0;
@@ -69,20 +70,39 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
     				$total_price_driver+= number_format(($row['driver_price']*$row['amount_rent'])*$total_day,2);
     			}
     		}
-    		// other fee Blog
-    		$total_other_fee = 0;
-    		if($data["identity_other_fee"]!=""){
-    			$ids = explode(',', $data['identity_other_fee']);
-    			foreach ($ids as $i){
-    				$total_other_fee+=$data["other_fee".$i];
-    			}
-    		}
+    		// other fee vehicle
+	    		$Extra_ch_sun = 0;
+				if($data["sunday_price"]>0){
+					$Extra_ch_sun = $data["sunday_price"];
+				}
+				$airport_price=0;
+				if($data["airport_price"]>0){
+					$airport_price = $data["airport_price"];
+				}
+				$dropairport_price=0;
+				if($data["dropairport_price"]>0){
+					$dropairport_price = $data["dropairport_price"];
+				}
+				$item_1=0;
+				if($data["item_1"]>0){
+					$item_1 = $data["item_1"];
+				}
+				$item_2=0;
+				if($data["item_2"]>0){
+					$item_2 = $data["item_2"];
+				}
+				$item_3=0;
+				if($data["item_3"]>0){
+					$item_3 = $data["item_3"];
+				}
+				$total_otherfeevehicel = $Extra_ch_sun+$airport_price+$dropairport_price+$item_1+$item_2+$item_3;
+			
     		//Pickup & Return Blog
-    		$total_price_pickup = number_format($row_pickup["price"]+($row_pickup["price"]*$row_pickup["tax"]/100),2);
-    		$vat_pickup = $row_pickup["tax"];
+	    		$total_price_pickup = round($row_pickup["price"]+($row_pickup["price"]*$row_pickup["tax"]/100),2);
+	    		$vat_pickup = $row_pickup["tax"];
     		///
-    		$total_payment = $total_price_vehicle+$total_price_driver+$total_price_product+$total_price_pickup+$total_other_fee;
-    		$diposit = number_format(($total_payment*50/100)+(($total_payment*50/100)*3/100),2);
+    		$total_payment = $total_price_vehicle+$total_price_driver+$total_price_product+$total_price_pickup+$total_otherfeevehicel+$vehicle_otherFee;
+    		$diposit = round(($total_payment*50/100)+(($total_payment*50/100)*3/100),2);
     		
     		
     		if($data["payment_type"]==4){
@@ -106,8 +126,6 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 					'total_fee'				=>	$total_fee,
 					'total_paymented'		=>	$total_pay,
 					'item_type'				=>	1,
-					//'rental_type'		=>	$rental_type,
-					//'total_duration'	=>	$session->duration,
 					'pickup_location'		=>	$pickup_location["id"],
 					'dropoff_location'		=>	$return_location["id"],
 					'fly_no'				=>	$data["fly_no"],
@@ -142,48 +160,123 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 			$data['booking_id'] = $book_id;
 			
 			$this->addAgreement($data); 
-			//Other fee blog
-			if($data["identity_other_fee"]!=""){
-				$ids = explode(',', $data['identity_other_fee']);
-				
-				foreach ($ids as $i){
-					$arr = array(
-							'book_id'			=>	$book_id,
-							'item_name'			=>	$data["other_fee_note".$i],
-							'price'				=>	$data["other_fee".$i],
-							'total'				=> 	$data["other_fee".$i],
-							'total_paymented'	=>	$data["other_fee".$i],
-							'item_type'			=>	7,
-							'status'			=>	1,
-					);
-					$this->_name="ldc_booking_detail";
-					$this->insert($arr);
-				}
+			//Other fee vehicle
+			if($data["sunday_price"]>0){
+				$arr = array(
+						'book_id'			=>	$book_id,
+						'item_name'			=>	"Extra Charge Sunday | ".$data["sunday_price_remake"],
+						'price'				=>	$data["sunday_price"],
+						'total'				=> 	$data["sunday_price"],
+						'total_paymented'	=>	$data["sunday_price"],
+						'item_type'			=>	7,// type other fee vehilce
+						'status'			=>	1,
+				);
+				$this->_name="ldc_booking_detail";
+				$this->insert($arr);
 			}
+			if($data["airport_price"]>0){
+				$arr = array(
+						'book_id'			=>	$book_id,
+						'item_name'			=>	"Pickup Airport | ".$data["airport_price_remake"],
+						'price'				=>	$data["airport_price"],
+						'total'				=> 	$data["airport_price"],
+						'total_paymented'	=>	$data["airport_price"],
+						'item_type'			=>	7,// type other fee vehilce
+						'status'			=>	1,
+				);
+				$this->_name="ldc_booking_detail";
+				$this->insert($arr);
+			}
+			if($data["dropairport_price"]>0){
+				$arr = array(
+						'book_id'			=>	$book_id,
+						'item_name'			=>	"Drop of Airport | ".$data["dropairport_price_remake"],
+						'price'				=>	$data["dropairport_price"],
+						'total'				=> 	$data["dropairport_price"],
+						'total_paymented'	=>	$data["dropairport_price"],
+						'item_type'			=>	7,// type other fee vehilce
+						'status'			=>	1,
+				);
+				$this->_name="ldc_booking_detail";
+				$this->insert($arr);
+			}
+			if($data["item_1"]>0){
+				$arr = array(
+						'book_id'			=>	$book_id,
+						'item_name'			=>	$data["item_1_remake"],
+						'price'				=>	$data["item_1"],
+						'total'				=> 	$data["item_1"],
+						'total_paymented'	=>	$data["item_1"],
+						'item_type'			=>	7,// type other fee vehilce
+						'status'			=>	1,
+				);
+				$this->_name="ldc_booking_detail";
+				$this->insert($arr);
+			}
+			if($data["item_2"]>0){
+				$arr = array(
+						'book_id'			=>	$book_id,
+						'item_name'			=>	$data["item_2_remake"],
+						'price'				=>	$data["item_2"],
+						'total'				=> 	$data["item_2"],
+						'total_paymented'	=>	$data["item_2"],
+						'item_type'			=>	7,// type other fee vehilce
+						'status'			=>	1,
+				);
+				$this->_name="ldc_booking_detail";
+				$this->insert($arr);
+			}
+			if($data["item_3"]>0){
+				$arr = array(
+						'book_id'			=>	$book_id,
+						'item_name'			=>	$data["item_3_remake"],
+						'price'				=>	$data["item_3"],
+						'total'				=> 	$data["item_3"],
+						'total_paymented'	=>	$data["item_3"],
+						'item_type'			=>	7,// type other fee vehilce
+						'status'			=>	1,
+				);
+				$this->_name="ldc_booking_detail";
+				$this->insert($arr);
+			}
+			
+			
 			
 			// Vehicle info Blog
 			if(!empty($data['identity_vehicle'])){
 				$ids = explode(',', $data['identity_vehicle']);
-				if(!empty($ids))foreach ($ids as $p){
+				$key=0;
+				if(!empty($ids))foreach ($ids as $p){ $key++;
 					$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
 					$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
 					$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
 			
 					$vehicle_name = $row_vehicle["make"]." ".$row_vehicle["model"]." ".$row_vehicle["sub_model"]." (".$row_vehicle["reffer"].")";
 					$discount_ve= empty($discount["discount"])?0:$discount["discount"];
-					$row_net_total_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
 					
+					$refund = 0;
+					$logg_DAST = 0;
+					$dis_val = 0;
+					if ($key==1){
+						$refund = $total_deposit_vehicle;
+						$logg_DAST = $data['long_dast'];
+						$dis_val = $data['discount_value'];
+					}
+					$vehicle_otherFee = ($refund+$logg_DAST)-$dis_val;
+					$row_net_total_vehicle = ((($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100))+$vehicle_otherFee;
 					$arr_deatail = array(
 							'book_id'			=>	$book_id,
 							'item_id'			=>	$row_vehicle["id"],
 							'item_name'			=>	$vehicle_name,
 							'rent_num'			=>	1,
 							'price'				=>	$row_vehicle_price["price"],
+							'long_dast'			=>	$logg_DAST,
+							'discount_value'	=>	$dis_val,
 							'VAT'				=>	$row_vehicle_price["vat_value"],
 							'total'				=>	$row_net_total_vehicle,
 							'total_paymented'	=>	$row_net_total_vehicle,
 							'status'			=>	1,
-							'refund_deposit'	=>	$row_vehicle["refun_deposit"],
+							'refund_deposit'	=>	$refund,//$row_vehicle["refun_deposit"]
 							'discount'			=>	$discount_ve,
 							'item_type'			=>	1
 					);
@@ -794,7 +887,7 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 	                          <div class="col-xs-12 col-sm-6 emphasis text-right">
 	                          	<a class="btn btn-primary btn-xs"  href="'.$baseurl.'/index/vehicle/id/'.$guid["id"].'" target="_blank"><i class="fa fa-user"> </i> '.$tr->translate("View Details").'</a>
 	                         	 <input type="checkbox" name="driver_'.$i.'" class="checkbox input-checkbox" id="driver_'.$i.'" onClick="addDriver('.$i.')" value="'.$guid["id"].'" style="display: inline-block;"/>
-	                         	 <input type="hidden" name="driverid_'.$i.'" value="'.$guid["id"].'" />
+	                         	 <input type="hidden" name="driverid_'.$i.'" id="driverid_'.$i.'" value="'.$guid["id"].'" />
              	           </div>
                      </div>
                 </div>
@@ -935,14 +1028,13 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 			if(!empty($ids))foreach ($ids as $p){
 				$row_vehicle = $this->getVehicleSelected($data['vehicle_id'.$p]);
 				$discount = $this->getVehicleDiscount($data['vehicle_id'.$p]);
-				$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
 				
+				$row_vehicle_price = $db_globle->getVehiclePrice($total_day, $data['vehicle_id'.$p]);
 				$vehicle_name = $row_vehicle["make"]." ".$row_vehicle["model"]." ".$row_vehicle["sub_model"]." (".$row_vehicle["reffer"].")";
 				$refun_deposit+= $row_vehicle["refun_deposit"];
 				$discount_ve= empty($discount["discount"])?0:$discount["discount"];
 				
 				$row_net_total_vehicle = (($row_vehicle_price["price"]*$total_day)-(($row_vehicle_price["price"]*$total_day)*$discount["discount"]/100))+($row_vehicle_price["price"]*$row_vehicle_price["vat_value"]/100);
-				
 				$net_total_vehicle = $net_total_vehicle + $row_net_total_vehicle;
 				$string.='
 				<tr>
@@ -956,9 +1048,11 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 				</tr>';
 			}
 		}
-		
-		
-		
+		if ($data['refund_type']==2){
+			$refun_deposit = $data['refundable_deposit'];
+		}
+		$vehicle_otherFee = 0;
+		$vehicle_otherFee = ($refun_deposit+$data['long_dast'])-$data['discount_value'];
 		
 		
 		// Product info Blog
@@ -1007,35 +1101,107 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 			}
 		}
 		
-		
-		//Other fee blog
-		$x = $j;
-		$net_total_other_fee = 0;
-		if($data["identity_other_fee"]!=""){
-			$ids = explode(',', $data['identity_other_fee']);
-			foreach ($ids as  $key_index){
-				$x = $j+$key_index;
-				$net_total_other_fee+=$data["other_fee".$key_index];
-				$string.='
-				<tr>
-					<td class="totalbr text-center">'.($j+$key_index).'</td>
-					<td class="totalbr" style="text-align: left; !important;">'.$data["other_fee_note".$key_index].'</td>
-					<td class="totalbr" style="text-align: center; !important;">&nbsp;</td>
-					<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["other_fee".$key_index],2).'</td>
-					<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0,2).'%</td>
-					<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0).'%</td>
-					<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["other_fee".$key_index],2).'</td>
-				</tr>
-				';
-			}
+		$aj = $j;
+		//Other fee vehicle
+		$Extra_ch_sun = 0;
+		if($data["sunday_price"]>0){
+			$Extra_ch_sun = $data["sunday_price"];
+			$string.='
+			<tr>
+				<td class="totalbr text-center">'.($j+1).'</td>
+				<td class="totalbr" style="text-align: left; !important;">Extra Charge Sunday | '.$data["sunday_price_remake"].'</td>
+				<td class="totalbr" style="text-align: center; !important;">&nbsp;</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["sunday_price"],2).'</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0,2).'%</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0).'%</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["sunday_price"],2).'</td>
+			</tr>
+			';
+		}
+		$airport_price=0;
+		if($data["airport_price"]>0){
+			$airport_price = $data["airport_price"];
+			$string.='
+			<tr>
+				<td class="totalbr text-center">'.($j+1).'</td>
+				<td class="totalbr" style="text-align: left; !important;">Pickup Airport | '.$data["airport_price_remake"].'</td>
+				<td class="totalbr" style="text-align: center; !important;">&nbsp;</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["airport_price"],2).'</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0,2).'%</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0).'%</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["airport_price"],2).'</td>
+			</tr>
+			';
+		}
+		$dropairport_price=0;
+		if($data["dropairport_price"]>0){
+			$dropairport_price = $data["dropairport_price"];
+			$string.='
+			<tr>
+				<td class="totalbr text-center">'.($j+1).'</td>
+				<td class="totalbr" style="text-align: left; !important;">Drop of Airport | '.$data["dropairport_price_remake"].'</td>
+				<td class="totalbr" style="text-align: center; !important;">&nbsp;</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["dropairport_price"],2).'</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0,2).'%</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0).'%</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["dropairport_price"],2).'</td>
+			</tr>
+			';
+		}
+		$item_1=0;
+		if($data["item_1"]>0){
+			$item_1 = $data["item_1"];
+			$string.='
+			<tr>
+				<td class="totalbr text-center">'.($j+1).'</td>
+				<td class="totalbr" style="text-align: left; !important;">'.$data["item_1_remake"].'</td>
+				<td class="totalbr" style="text-align: center; !important;">&nbsp;</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["item_1"],2).'</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0,2).'%</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0).'%</td>
+				<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["item_1"],2).'</td>
+			</tr>
+			';
+		}
+		$item_2=0;
+		if($data["item_2"]>0){
+			$item_2 = $data["item_2"];
+			$string.='
+			<tr>
+			<td class="totalbr text-center">'.($j+1).'</td>
+			<td class="totalbr" style="text-align: left; !important;">'.$data["item_2_remake"].'</td>
+			<td class="totalbr" style="text-align: center; !important;">&nbsp;</td>
+			<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["item_2"],2).'</td>
+			<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0,2).'%</td>
+			<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0).'%</td>
+			<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["item_2"],2).'</td>
+			</tr>
+			';
+		}
+		$item_3=0;
+		if($data["item_3"]>0){
+			$item_3 = $data["item_3"];
+			$string.='
+			<tr>
+			<td class="totalbr text-center">'.($j+1).'</td>
+			<td class="totalbr" style="text-align: left; !important;">'.$data["item_3_remake"].'</td>
+			<td class="totalbr" style="text-align: center; !important;">&nbsp;</td>
+			<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["item_3"],2).'</td>
+			<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0,2).'%</td>
+			<td class="totalbr" align="right" style="padding-right: 10px">'.number_format(0).'%</td>
+			<td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($data["item_3"],2).'</td>
+			</tr>
+			';
 		}
 		
+		
+		$x = $aj;
 		//Pickup & Return Info Price Blog
 		$row_pickup =$this->getPickUpPriceMultiVehicle($data);
 		$net_total_pickup = ($row_pickup["price"]+($row_pickup["price"]*$row_pickup["tax"]/100));
 		$string.='
 			<tr>
-				<td class="totalbr text-center">'.($x+1).'</td>
+				<td class="totalbr text-center">'.($aj+1).'</td>
                 <td class="totalbr" style="text-align: left; !important;">'."Pickup From ".$pickup_location["province_name"] ."& Return ".$return_location["province_name"].'</td>
                 <td class="totalbr" style="text-align: center; !important;">1</td>
                 <td class="totalbr" align="right" style="padding-right: 10px">$ '.number_format($row_pickup["price"],2).'</td>
@@ -1045,10 +1211,10 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 			</tr>
 		';
 		
-		$net_total= $net_total_vehicle+$net_total_pickup+$net_total_driver+$net_total_prodcut+$net_total_other_fee;
+// 		$net_total= $net_total_vehicle+$net_total_pickup+$net_total_driver+$net_total_prodcut+$net_total_other_fee;
+		$net_total= $net_total_vehicle+$net_total_pickup+$net_total_driver+$net_total_prodcut+$vehicle_otherFee+$Extra_ch_sun+$airport_price+$dropairport_price+$item_1+$item_2+$item_3;
 		$total_refun = $refun_deposit+$refun_deposit_driver;
-		$book = ($net_total*50/100)+(($net_total*50/100)*3/100);
-		
+		$book = round(($net_total*50/100)+(($net_total*50/100)*3/100),2);
 		$grand_total=$net_total+$total_refun;
 		$string.='
 			<tr>
@@ -1063,7 +1229,7 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 			  <td></td>
 			  <td></td>
 			  <td class="totalbr" colspan="2">&nbsp;2. Refundable Deposit:</td>
-			  <td style="font-weight: 800;text-align: right" class="totalbr" colspan="2">&nbsp;$ '.number_format($total_refun,2).'</td>
+			  <td id="refund_deposit_view" style="font-weight: 800;text-align: right" class="totalbr" colspan="2">&nbsp;$ '.number_format($total_refun,2).'</td>
 		   </tr>
 		   <tr>
 			  <td ></td>
@@ -1091,6 +1257,8 @@ class Booking_Model_DbTable_DbCarRentalNew extends Zend_Db_Table_Abstract
 		$array = array(
 				'bookinglist'=>$string,
 				'g_total'=>$grand_total,
+				'refund_deposite'=>$refun_deposit,
+				'rentvehiclefee'=>$net_total_vehicle,
 				);
 		
 		return $array;

@@ -255,6 +255,68 @@ class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 		$trip_type->setAttribs(array('dojoType'=>$this->filter,'class'=>"fullside"));
 		$trip_type->setMultiOptions($opt_trip);
 		
+		$rent_fee = new Zend_Dojo_Form_Element_NumberTextBox("rent_fee");
+		$rent_fee->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true,"onKeyup"=>"totalvehiclerentfee();"));
+		$rent_fee->setValue(0);
+		
+		$long_dast = new Zend_Dojo_Form_Element_NumberTextBox("long_dast");
+		$long_dast->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","onKeyup"=>"totalvehiclerentfee();"));
+		$long_dast->setValue(0);
+		
+		$discount_value = new Zend_Dojo_Form_Element_NumberTextBox("discount_value");
+		$discount_value->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","onKeyup"=>"totalvehiclerentfee();"));
+		$discount_value->setValue(0);
+		
+		$refundable_deposit = new Zend_Dojo_Form_Element_NumberTextBox("refundable_deposit");
+		$refundable_deposit->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","onKeyup"=>"calculateGrandtotal(1), totalvehiclerentfee();"));
+		$refundable_deposit->setValue(0);
+		
+		$total_rent_fee = new Zend_Dojo_Form_Element_NumberTextBox("total_rent_fee");
+		$total_rent_fee->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","disabled"=>true,"onKeyup"=>"totalvehiclerentfee();"));
+		$total_rent_fee->setValue(0);
+		
+		$sunday_price = new Zend_Dojo_Form_Element_NumberTextBox("sunday_price");
+		$sunday_price->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","onKeyup"=>"totalvehiclerentfee();"));
+		$sunday_price->setValue(0);
+		
+		$sunday_price_remake = new Zend_Dojo_Form_Element_TextBox("sunday_price_remake");
+		$sunday_price_remake->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",));
+		
+		$airport_price = new Zend_Dojo_Form_Element_NumberTextBox("airport_price");
+		$airport_price->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","onKeyup"=>"totalvehiclerentfee();"));
+		$airport_price->setValue(0);
+		
+		$airport_price_remake = new Zend_Dojo_Form_Element_TextBox("airport_price_remake");
+		$airport_price_remake->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",));
+		
+		$dropairport_price = new Zend_Dojo_Form_Element_NumberTextBox("dropairport_price");
+		$dropairport_price->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","onKeyup"=>"totalvehiclerentfee();"));
+		$dropairport_price->setValue(0);
+		
+		$dropairport_price_remake = new Zend_Dojo_Form_Element_TextBox("dropairport_price_remake");
+		$dropairport_price_remake->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",));
+		
+		$item_1 = new Zend_Dojo_Form_Element_NumberTextBox("item_1");
+		$item_1->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","onKeyup"=>"totalvehiclerentfee();"));
+		$item_1->setValue(0);
+		
+		$item_1_remake = new Zend_Dojo_Form_Element_TextBox("item_1_remake");
+		$item_1_remake->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",));
+		
+		$item_2 = new Zend_Dojo_Form_Element_NumberTextBox("item_2");
+		$item_2->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","onKeyup"=>"totalvehiclerentfee();"));
+		$item_2->setValue(0);
+		
+		$item_2_remake = new Zend_Dojo_Form_Element_TextBox("item_2_remake");
+		$item_2_remake->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",));
+		
+		$item_3 = new Zend_Dojo_Form_Element_NumberTextBox("item_3");
+		$item_3->setAttribs(array('dojoType'=>$this->number,'class'=>"fullside","onKeyup"=>"totalvehiclerentfee();"));
+		$item_3->setValue(0);
+		
+		$item_3_remake = new Zend_Dojo_Form_Element_TextBox("item_3_remake");
+		$item_3_remake->setAttribs(array('dojoType'=>$this->text,'class'=>"fullside",));
+		
 		if (!empty($data)){
 			
 			$pickup_date->setValue($data['pickup_date']);
@@ -326,6 +388,25 @@ class Booking_Form_FrmBookingNew extends Zend_Dojo_Form{
 				$return_date,
 				$pickup_location,
 				$return_location,$_booking_no,
+				
+				$rent_fee,
+				$long_dast,
+				$discount_value,
+				$refundable_deposit,
+				$total_rent_fee,
+				
+				$sunday_price,
+				$sunday_price_remake,
+				$airport_price,
+				$airport_price_remake,
+				$dropairport_price,
+				$dropairport_price_remake,
+				$item_1,
+				$item_1_remake,
+				$item_2,
+				$item_2_remake,
+				$item_3,
+				$item_3_remake
 			));
 		return $this;
 	}
