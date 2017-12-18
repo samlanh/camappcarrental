@@ -285,8 +285,8 @@ address { font-style: italic; }
 }
 /* Header */
 .automobile-header-one {
-    background-color: #242634;
-    border-bottom: 4px solid #1f212e;
+    background-color: #000000;
+    border-bottom: 4px solid #d70f00;
 }
 .automobile-logo {
     float: left;
@@ -314,7 +314,7 @@ address { font-style: italic; }
     bottom: -4px;
     width: 0%;
     height: 4px;
-    background-color: #242739;
+    background-color: #d70f00;
     opacity: 0;
 }
 .navbar-nav > li:hover > a:before,
@@ -324,7 +324,7 @@ address { font-style: italic; }
 }
 .navbar-nav > li.active > a,
 .navbar-nav > li:hover > a {
-    background-color: #2e3041;
+    background-color: #d70f00;
     color: #fff;
 }
 .navbar-nav > li:first-child { padding-left: 0px; }
